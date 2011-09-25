@@ -12,9 +12,9 @@ Creates a topbar that will be shown at the top of your website.  Customizable an
 
 Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.
 
-Options allow you to:
+Various options allow you to:
 <ol>
-	<li>Enable topbar without disabling the</li>
+	<li>Enable/disable the topbar without disabling the plugin.</li>
 	<li>Enter the amount of time (in milliseconds) for the tobar to appear. Enter 0 for no delay.</li>
 	<li>Enter the amount of time (in milliseconds) for the topbar to take to slide down on the page. Enter 0 for no delay.</li>
 	<li>Enter the height of the border. Default is 3px.</li>
