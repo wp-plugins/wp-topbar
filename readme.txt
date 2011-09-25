@@ -6,11 +6,11 @@ Requires at least: 3.2.1
 Tested up to: 3.2.1
 Stable tag: 1.0
 
-Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.
+Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Live preview!
 
 == Description ==
 
-Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.
+Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Live preview to see your topbar from the Options page.
 
 Various options allow you to:
 <ol>
@@ -41,11 +41,10 @@ Have separate fields for the:
 
 This section describes how to install the plugin and get it working.
 
-e.g.
-
-1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
+1. Upload all files in `wp-topbar.zip` to the `/wp-content/plugins/wp-topbar` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Configure the options
+4. Make sure to set "Enable" to yes to see the plugin on your website.
 
 == Frequently Asked Questions ==
 
