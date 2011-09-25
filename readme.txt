@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: rfgoetz
 Donate link: N/A
-Tags: topbar, header bar
+Tags: topbar, header bar,beforesite, heads up, heads up bar,attention, quick notice, hello bar, hellobar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.2.1
 Stable tag: 1.0
