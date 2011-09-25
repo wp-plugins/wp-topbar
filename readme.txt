@@ -30,8 +30,6 @@ Set the color of the:
 	<li>The Message</li>
 	<li>The Link</li>
 </ol>
-&nbsp;
-
 Have separate fields for the:
 <ol>
 	<li>Message</li>
@@ -59,7 +57,8 @@ None
 
 == Screenshots ==
 
-This is a screenshot of the Options page.
+1. This is a screenshot of the Options page.
+2. This is how it will look on your website.
 
 == Changelog ==
 
