@@ -3,7 +3,7 @@
 Plugin Name: WP-Topbar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.
-Version: 1.0
+Version: 1.1
 Author: Bob Goetz
 Author URI: http://wordpress.org/extend/plugins/profile/rfgoetz
 
@@ -76,11 +76,11 @@ if (!class_exists("wptb")) {
 					{ return; }
 							
 		?>
-<div id="wptbheadline" class="wptbdelay">
-<p style="text-align:center;font-size: <?php echo $wptbOptions['font_size']; ?>px; padding-top:<?php echo $wptbOptions['padding_top']; ?>px; padding-bottom:<?php echo $wptbOptions['padding_bottom']; ?>px; background:<?php echo $wptbOptions['bar_color']; ?>; color:<?php echo $wptbOptions['text_color']; ?> ;display:block; border-bottom-color:<?php echo $wptbOptions['bottom_color']; ?>; border-bottom-style: solid; border-bottom-width:  <?php echo $wptbOptions['bottom_border_height']; ?>px;"><?php echo $wptbOptions['bar_text']; ?><a style="color:<?php echo $wptbOptions['link_color']; ?>" title="<?php echo $wptbOptions['bar_link_text']; ?>"href="<?php echo $wptbOptions['bar_link']; ?>"target="_blank">
+<div>
+<p id="wptbheadline" style="visibility:hidden; text-align:center;font-size: <?php echo $wptbOptions['font_size']; ?>px; padding-top:<?php echo $wptbOptions['padding_top']; ?>px; padding-bottom:<?php echo $wptbOptions['padding_bottom']; ?>px; background:<?php echo $wptbOptions['bar_color']; ?>; color:<?php echo $wptbOptions['text_color']; ?> ; border-bottom-color:<?php echo $wptbOptions['bottom_color']; ?>; border-bottom-style: solid; border-bottom-width:  <?php echo $wptbOptions['bottom_border_height']; ?>px;"><?php echo $wptbOptions['bar_text']; ?><a style="color:<?php echo $wptbOptions['link_color']; ?>" title="<?php echo $wptbOptions['bar_link_text']; ?>"href="<?php echo $wptbOptions['bar_link']; ?>"target="_blank">
  <?php echo $wptbOptions['bar_link_text']; ?></a></p>
 </div>
-			<?php	
+		<?php	
 		}
 
 
@@ -480,6 +480,7 @@ function wptb_enqueue_scripts() {
 }
 
 //Puts javascript in the footer
+
 function wptb_style() {
 		
 	$wptbOptions = get_option('wptbAdminOptions');
@@ -489,8 +490,11 @@ function wptb_style() {
 
 <script type="text/javascript">
 	jQuery(document).ready(function() {
-		jQuery('.wptbdelay').hide();
-		jQuery('.wptbdelay').delay(<?php echo $wptbOptions['delay_time']; ?>).slideDown(<?php echo $wptbOptions['slide_time']; ?>).fadeIn(1000);
+		jQuery('#wptbheadline').hide();
+		jQuery('#wptbheadline').delay(<?php echo $wptbOptions['delay_time']; ?>);
+		jQuery('#wptbheadline').css("visibility","visible");
+		jQuery('#wptbheadline').slideDown(<?php echo $wptbOptions['slide_time']; ?>).fadeIn(1000);
+		jQuery('#wptbheadline').show("slow");
     }); 
 
 </script>
