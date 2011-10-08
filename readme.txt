@@ -4,14 +4,19 @@ Donate link: N/A
 Tags: topbar, header bar,beforesite, heads up, heads up bar,attention, quick notice, hello bar, hellobar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.2.1
-Stable tag: 1.1
+Stable tag: 1.2
 
-Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Live preview!
+Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Live preview!  Now with background image and custom CSS!
 
 == Description ==
 
 Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Live preview to see your topbar from the Options page.
-
+<p><strong>Three new features with version 1.2:</strong>
+<ol>
+	<li>Set a background image, instead of a background color.  With a toggle to turn that on or off.  I've included a sample image for you to try on your website:  wp-topbar_sample_image.jpg.</li>
+	<li>Set custom CSS for the message and the link text</li>
+	<li>Set how to align the text:  left, center or right</li>
+</ol>
 Various options allow you to:
 <ol>
 	<li>Enable/disable the topbar without disabling the plugin.</li>
@@ -21,6 +26,7 @@ Various options allow you to:
 	<li>Enter the top padding. Default is 8px.</li>
 	<li>Enter the bottom padding. Default is 8px.</li>
 	<li>Enter the font size. Default is 14px.</li>
+	<li>Align the text: left, center or right.  Default is Center.</li>
 	<li>Enter the IDs of the pages and posts that you want the topbar to appear on, separated by commas. The topbar will only be shown on those pages. Leave blank or enter 0 to show the topbar on all pages. e.g. 1,9,39,10</li>
 </ol>
 Set the color of the:
@@ -30,11 +36,17 @@ Set the color of the:
 	<li>The Message</li>
 	<li>The Link</li>
 </ol>
-Have separate fields for the:
+Enter custom CSS for the:
+<ol>
+	<li>The Bar</li>
+	<li>The Message</li>
+</ol>
+Has separate fields for the:
 <ol>
 	<li>Message</li>
 	<li>Link</li>
 	<li>Link Text</li>
+	<li>Background Image</li>
 </ol>
 
 == Installation ==
@@ -46,6 +58,8 @@ This section describes how to install the plugin and get it working.
 3. Configure the options
 4. Make sure to set "Enable" to yes to see the plugin on your website.
 
+I've included a sample image for you to try on your website:  wp-topbar_sample_image.jpg.
+
 == Frequently Asked Questions ==
 
 None yet
@@ -56,10 +70,18 @@ None
 
 == Screenshots ==
 
-1. This is a screenshot of the Options page.
-2. This is how it will look on your website.
+1. This is how it will look on your website.
+2. This is the full options page.
+3. Preview screen.
+4. Options page.
+5. Custom CSS Options.
+6. Topbar Text, Image & Link Options.  Pl
 
 == Changelog ==
+
+= 1.2 =
+
+Add image background, custom css, and text alignment.
 
 = 1.1 =
 
