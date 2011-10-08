@@ -79,15 +79,15 @@ None
 
 == Changelog ==
 
-= 1.2 =
+= 1.2  -  10/08/2011 =
 
 Add image background, custom css, and text alignment.
 
-= 1.1 =
+= 1.1  -  10/07/2011 =
 
 Cleaned up the code to make the topbar be invisible upon first load.
 
-= 1.0 =
+= 1.0  -  9/25/2011 =
 
 Initial public version
 
