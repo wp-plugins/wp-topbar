@@ -3,7 +3,7 @@
 Plugin Name: WP-Topbar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.
-Version: 1.2
+Version: 1.2.1
 Author: Bob Goetz
 Author URI: http://wordpress.org/extend/plugins/profile/rfgoetz
 
