@@ -655,7 +655,7 @@ function wptb_plugin_action_links($links) {
 
 
 //Actions and Filters, if on plugin admin page	
-if (isset($wtpb_plugin) && isset($_GET['page']) && $_GET['page'] == 'wp-topbar.php') {
+if (isset($wtpb_plugin)) {
 	//Actions
 	add_action('admin_menu', 'wptb_options_panel');
 	add_action('activate_wptb-plugin-series/wptb-plugin-series.php',  array(&$wtpb_plugin, 'init'));
