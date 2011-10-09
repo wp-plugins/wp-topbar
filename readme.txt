@@ -6,7 +6,7 @@ Requires at least: 3.2.1
 Tested up to: 3.2.1
 Stable tag: 1.2.1
 
-Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Live preview!  Now with background image and custom CSS!
+Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, image, and link.  Live preview!
 
 == Description ==
 
@@ -72,10 +72,10 @@ None
 
 1. This is how it will look on your website.
 2. This is the full options page.
-3. Preview screen.
-4. Options page.
-5. Custom CSS Options.
-6. Topbar Text, Image & Link Options.  Pl
+3. Preview section.
+4. Options section.
+5. Custom CSS Options section.
+6. Topbar Text, Image & Link Options section - plus the uninstall option.
 
 == Changelog ==
 
