@@ -254,7 +254,7 @@ if (!class_exists("wptb")) {
 <div class=wrap>
 <form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 
-<h2><?php _e( 'WP-Topbar - Version 1.2', 'wptb' ); ?></h2>
+<h2><?php _e( 'WP-Topbar - Version 1.2.1', 'wptb' ); ?></h2>
 <div class="postbox">
 <?php if ($wptbOptions['enable_topbar'] == "false") { _e( '<div class="updated"><strong>Topbar is not enabled.</strong></div>', 'wptb' ); } ?>
 
