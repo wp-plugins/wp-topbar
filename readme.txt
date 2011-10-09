@@ -72,10 +72,10 @@ None
 
 1. This is how it will look on your website.
 2. This is the full options page.
-3. Preview screen.
-4. Options page.
-5. Custom CSS Options.
-6. Topbar Text, Image & Link Options.  Pl
+3. Preview section.
+4. Options section.
+5. Custom CSS Options section.
+6. Topbar Text, Image & Link Options section - plus the uninstall option.
 
 == Changelog ==
 
