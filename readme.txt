@@ -11,7 +11,7 @@ Creates a topbar that will be shown at the top of your website.  Customizable an
 == Description ==
 
 Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Live preview to see your topbar from the Options page.
-<p><strong>Three new features with version 1.2:</strong>
+<strong>Three new features with version 1.2:</strong>
 <ol>
 	<li>Set a background image, instead of a background color.  With a toggle to turn that on or off.  I've included a sample image for you to try on your website:  wp-topbar_sample_image.jpg.</li>
 	<li>Set custom CSS for the message and the link text</li>
