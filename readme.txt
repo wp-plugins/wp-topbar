@@ -1,17 +1,19 @@
 === Plugin Name ===
-Contributors: rfgoetz
+Contributors: rfgoetz, douglaskarr
 Donate link: N/A
-Tags: topbar, header bar,beforesite, heads up, heads up bar,attention, quick notice, hello bar, hellobar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
+Tags: topbar, header bar,beforesite, heads up, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.2.1
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 
 Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, image, and link.  Live preview!
 
 == Description ==
 
 Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Live preview to see your topbar from the Options page.
-<strong>Three new features with version 1.2:</strong>
+<p>Version 1.3 adds navigation buttons and allows for more control over the custom CSS.
+<p>
+Three new features with version 1.2:
 <ol>
 	<li>Set a background image, instead of a background color.  With a toggle to turn that on or off.  I've included a sample image for you to try on your website:  wp-topbar_sample_image.jpg.</li>
 	<li>Set custom CSS for the message and the link text</li>
@@ -78,6 +80,25 @@ None
 6. Topbar Text, Image & Link Options section - plus the uninstall option.
 
 == Changelog ==
+
+= 1.3  - 12/05/2011 = 
+
+Added easier navigation buttons.  Added more space to the CSS section.
+
+Added code to allow you to use quotes in your text.
+
+Added <div id="topbar"> to the output.
+
+You can try adding this to our CSS (thanks to douglaskarr): 
+
+#topbar {
+position:fixed;
+top: 0;
+padding: 0;
+margin: 0;
+width: 100%;
+z-index: 99999;
+}`
 
 = 1.2.1  -  10/08/2011 =
 
