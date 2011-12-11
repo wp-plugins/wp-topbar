@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: WP-Topbar
+Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
-Description:  Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.
-Version: 1.3
+Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
+Version: 1.4
 Author: Bob Goetz
 Author URI: http://wordpress.org/extend/plugins/profile/rfgoetz
 
@@ -32,8 +32,8 @@ if (!class_exists("wptb")) {
 		function init() {
 			$this->getWPTBPluginOptions();
 		}
-		
-		//Returns an array of admin options
+				
+		//Returns an array of admin options, but sets default values if none are loaded.
 		function getWPTBPluginOptions() {
 			
 			$wptbAdminOptions = array(
@@ -50,27 +50,64 @@ if (!class_exists("wptb")) {
 				'padding_top' => '8',
 				'padding_bottom' => '8',
 				'bar_link' => 'http://wordpress.org/extend/plugins/wp-topbar/', 
-				'bar_text' => 'Get your own Topbar ',
+				'bar_text' => 'Get your own TopBar ',
 				'bar_link_text' => 'from the Wordpress plugin repository',
 				'text_align' => 'center',
 				'bar_image' => '',
 				'enable_image' => 'false',
 				'custom_css_bar' => 'background:rgb(254,255,255);background:-moz-linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);background:-webkit-gradient(linear,lefttop,leftbottom,color-stop(0%,rgba(254,255,255,1)),color-stop(35%,rgba(221,241,249,1)),color-stop(100%,rgba(160,216,239,1)));background:-webkit-linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);background:-o-linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);background:-ms-linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#feffff",endColorstr="#a0d8ef",GradientType=0);background:linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);',
-				'custom_css_text' => 'font-family:georgia;padding-right:10px;');
+				'custom_css_text' => 'font-family:georgia;padding-right:10px;',
+				'margin_top' => '0',
+				'margin_bottom' => '0');
 			$wptbOptions = get_option($this->adminOptionsName);
 			if (!empty($wptbOptions)) {
 				foreach ($wptbOptions as $key => $option)
 					$wptbAdminOptions[$key] = $option;
-			}				
-			update_option($this->adminOptionsName, $wptbAdminOptions);
+			}
+	
 			return $wptbAdminOptions;
 		}
 
+
+		// common code to display the TopBar
+		
+		function wptb_displayTopBar($visibility, $wptbOptions) {
+ ?>
+		<p id="wptbheadline" style="<?php echo $visibility ?>;
+		<?php if ($wptbOptions['enable_image'] == "false") 
+				echo "background: {$wptbOptions['bar_color']};";
+			else 
+		 		echo "background-image: url({$wptbOptions['bar_image']});	background-position:center;"; 
+		?>
+		margin:  <?php echo $wptbOptions['margin_top']; ?>px 0px <?php echo $wptbOptions['margin_bottom']; ?>px;
+		text-align:<?php echo $wptbOptions['text_align']; ?>;
+		font-size: <?php echo $wptbOptions['font_size']; ?>px; 	
+		padding-top:<?php echo $wptbOptions['padding_top']; ?>px; 
+		padding-bottom:<?php echo $wptbOptions['padding_bottom']; ?>px; 	
+		color:<?php echo $wptbOptions['text_color']; ?>; display:block; 	
+		border-bottom-color:<?php echo $wptbOptions['bottom_color']; ?>; 
+		border-bottom-style: solid; 
+		border-bottom-width: <?php echo $wptbOptions['bottom_border_height']; ?>px;
+		border-bottom-width: <?php echo $wptbOptions['bottom_border_height']; ?>px;
+		<?php if ($wptbOptions['custom_css_bar'] != "") 
+				echo addslashes($wptbOptions['custom_css_bar']); ?>
+	">
+		<?php echo stripslashes_deep($wptbOptions['bar_text']); ?>
+		<a style="color:<?php echo $wptbOptions['link_color']; ?>;
+			<?php if ($wptbOptions['custom_css_text'] != "") 
+				echo "{$wptbOptions['custom_css_text']}"; ?>
+		"href="<?php echo $wptbOptions['bar_link']; ?>"target="_blank"><?php echo stripslashes_deep($wptbOptions['bar_link_text']); ?></a>
+		</p> 
+		
+<?php
+		}
+	
 		//Puts the Top Bar above the Header
 
 		function wptb_addHeaderCode() {
 		
 			global $wp_query;
+	
 			$wptbOptions = $this->getWPTBPluginOptions();						
 
 			if ($wptbOptions['enable_topbar'] == "false") { return; }
@@ -80,35 +117,13 @@ if (!class_exists("wptb")) {
 			if ( ! in_array( $thePostID, explode( ',', $wptbOptions['include_pages'] ) ) && ! in_array( 0, explode( ',', $wptbOptions['include_pages'] ) ) )
 					{ return; }
 							
-		?>
-<div id="topbar">
+			echo '<div id="topbar">';
+		
+				$vis = "visibility:hidden;";
  
-	<p id="wptbheadline" style="visibility:hidden;
-		<?php if ($wptbOptions['enable_image'] == "false") 
-				echo "background: {$wptbOptions['bar_color']};";
-			else 
-		 		echo "background-image: url({$wptbOptions['bar_image']});	background-position:center;"; 
-		?>
-		text-align:<?php echo $wptbOptions['text_align']; ?>;
-		font-size: <?php echo $wptbOptions['font_size']; ?>px; 	
-		padding-top:<?php echo $wptbOptions['padding_top']; ?>px; 
-		padding-bottom:<?php echo $wptbOptions['padding_bottom']; ?>px; 	
-		color:<?php echo $wptbOptions['text_color']; ?> ;display:block; 	
-		border-bottom-color:<?php echo $wptbOptions['bottom_color']; ?>; 
-		border-bottom-style: solid; 
-		border-bottom-width:  <?php echo $wptbOptions['bottom_border_height']; ?>px;
-		border-bottom-width:  <?php echo $wptbOptions['bottom_border_height']; ?>px;
-		<?php if ($wptbOptions['custom_css_bar'] != "") 
-				echo "{$wptbOptions['custom_css_bar']}"; ?>
-	">
-		<?php echo stripslashes_deep($wptbOptions['bar_text']); ?>
-		<a style="color:<?php echo $wptbOptions['link_color']; ?>;
-			<?php if ($wptbOptions['custom_css_text'] != "") 
-				echo "{$wptbOptions['custom_css_text']}"; ?>
-		"href="<?php echo $wptbOptions['bar_link']; ?>"target="_blank"><?php echo stripslashes($wptbOptions['bar_link_text']); ?></a>
-	</p>  
-</div>
-		<?php	
+				$this->wptb_displayTopBar($vis,$wptbOptions);
+		
+			echo '</div';
 		}
 
 
@@ -167,7 +182,7 @@ if (!class_exists("wptb")) {
 						
 							if (!is_numeric($_POST['wptbfontsize'])) {
     							echo '<div class="updated"><strong>Top padding is not numeric. Resetting to 8px.</strong></div>';
-								$wptbOptions['font_size'] = 0;
+								$wptbOptions['font_size'] = 8;
 							} 
 							else 	
 								$wptbOptions['font_size'] = $_POST['wptbfontsize']+0;
@@ -176,7 +191,7 @@ if (!class_exists("wptb")) {
 						
 							if (!is_numeric($_POST['wptbpaddingtop'])) {
     							echo '<div class="updated"><strong>Top padding is not numeric. Resetting to 8px.</strong></div>';
-								$wptbOptions['padding_top'] = 0;
+								$wptbOptions['padding_top'] = 8;
 							} 
 							else 	
 								$wptbOptions['padding_top'] = $_POST['wptbpaddingtop']+0;
@@ -185,10 +200,28 @@ if (!class_exists("wptb")) {
 						
 							if (!is_numeric($_POST['wptbpaddingbottom'])) {
     							echo '<div class="updated"><strong>Bottom padding is not numeric. Resetting to 8px.</strong></div>';
-								$wptbOptions['padding_bottom'] = 0;
+								$wptbOptions['padding_bottom'] = 8;
 							} 
 							else 	
 								$wptbOptions['padding_bottom'] = $_POST['wptbpaddingbottom']+0;
+						}						
+						if (isset($_POST['wptbmargintop'])) {
+						
+							if (!is_numeric($_POST['wptbmargintop'])) {
+    							echo '<div class="updated"><strong>Top margin is not numeric. Resetting to 0px.</strong></div>';
+								$wptbOptions['margin_top'] = 0;
+							} 
+							else 	
+								$wptbOptions['margin_top'] = $_POST['wptbmargintop']+0;
+						}
+						if (isset($_POST['wptbmarginbottom'])) {
+						
+							if (!is_numeric($_POST['wptbmarginbottom'])) {
+    							echo '<div class="updated"><strong>Bottom margin is not numeric. Resetting to 0px.</strong></div>';
+								$wptbOptions['margin_bottom'] = 0;
+							} 
+							else 	
+								$wptbOptions['margin_bottom'] = $_POST['wptbmarginbottom']+0;
 						}						
 						if (isset($_POST['wptblink'])) {
 							$wptbOptions['bar_link'] = $_POST['wptblink'];
@@ -196,7 +229,7 @@ if (!class_exists("wptb")) {
 						if (isset($_POST['wptbbartext'])) {
 							$wptbOptions['bar_text'] = $_POST['wptbbartext'];
 						}
-						if (isset($_POST['wptbbartext'])) {
+						if (isset($_POST['wptblinktext'])) {
 							$wptbOptions['bar_link_text'] = $_POST['wptblinktext'];
 						}
 						if (isset($_POST['wptbtextalign'])) {
@@ -224,27 +257,7 @@ if (!class_exists("wptb")) {
 					if (isset($_POST['delete_wptbSettings'])) { 
 											
 						delete_option($this->adminOptionsName);
-						$wptbOptions = array(
-							'enable_topbar' => 'false',
-							'text_color' => '#000000',
-							'bar_color' => '#ffffff',
-							'bottom_color' => '#f90000',
-							'link_color' => '#c00000',
-							'bottom_border_height' => '3',  
-							'include_pages' => '0',
-							'delay_time' => '5000',
-							'slide_time' => '200',
-							'font_size' => '14',
-							'padding_top' => '8',
-							'padding_bottom' => '8',
-							'bar_link' => 'http://wordpress.org/extend/plugins/wp-topbar/', 
-							'bar_text' => 'Get your own Topbar ',
-							'bar_link_text' => 'from the Wordpress plugin repository',
-							'text_align' => 'center',
-							'bar_image' => '',
-							'enable_image' => 'false',
-							'custom_css_bar' => 'background:rgb(254,255,255);background:-moz-linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);background:-webkit-gradient(linear,lefttop,leftbottom,color-stop(0%,rgba(254,255,255,1)),color-stop(35%,rgba(221,241,249,1)),color-stop(100%,rgba(160,216,239,1)));background:-webkit-linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);background:-o-linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);background:-ms-linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#feffff",endColorstr="#a0d8ef",GradientType=0);background:linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);',
-							'custom_css_text' => 'font-family:georgia;padding-right:10px;');
+						$wptbOptions = $this->getWPTBPluginOptions();
 						?>
 <div class="updated"><p><strong><?php _e("Settings Deleted.", "wptb");?></strong></p></div>
 					<?php
@@ -268,9 +281,11 @@ filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff1a00',endCol
 <div class=wrap>
 <form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 
-<h2><a name="Top"><?php _e( 'WP-Topbar - Version 1.3', 'wptb' ); ?></a></h2>
+<h2><a name="Top"><?php _e( 'WP-Topbar - Version 1.4', 'wptb' ); ?></a></h2>
 <div class="postbox">
-Creates a topbar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Live preview to see your topbar from the Options page.
+<br>
+Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Live preview to see your TopBar from the Options page.
+<p>Version 1.4 adds additional CSS options (margin). <strong>With this update, it may change how your TopBar looks if you were using a previous version.</strong></p>
 <p>Version 1.3 adds navigation buttons and allows for more control over the custom CSS.  You can also now use single quotes in your text.</p>
 Three new features with version 1.2:
 <ol>
@@ -288,21 +303,21 @@ Three new features with version 1.2:
 &nbsp;&nbsp;
 <a class="button" style=<?php echo $wptb_button_style ?> href="#ColorSelection">Color Selection</a>
 &nbsp;&nbsp;
-<a class="button" style=<?php echo $wptb_button_style ?> href="#TopbarText">Topbar Text</a>
+<a class="button" style=<?php echo $wptb_button_style ?> href="#TopbarText">TopBar Text</a>
 &nbsp;&nbsp;
 <a class="button" style=<?php echo $wptb_delete_style ?> href="#Uninstall">Delete Settings</a>
 </center>
 <p></p>
 </div>
 <div class="postbox">
-<?php if ($wptbOptions['enable_topbar'] == "false") { _e( '<div class="updated"><strong>Topbar is not enabled.</strong></div>', 'wptb' ); } ?>
+<?php if ($wptbOptions['enable_topbar'] == "false") { _e( '<div class="updated"><strong>TopBar is not enabled.</strong></div>', 'wptb' ); } ?>
 
 
 <h3><?php _e( 'Preview', 'wptb' ); ?></h3>
 
 
 <div class="inside">
-	<p class="sub"><em><?php _e( 'This is how the topbar will appear on the website.', 'wptb' ); ?></em></p>
+	<p class="sub"><em><?php _e( 'This is how the TopBar will appear on the website. The fist black line represents the top of the screen.  The second black line represents the bottom of the TopBar', 'wptb' ); ?></em></p>
 
 	<div class="table">
 		<table class="form-table">
@@ -310,34 +325,14 @@ Three new features with version 1.2:
 			<tr valign="top">
 			
 <div>
+<hr style="margin: 0px; height: 1px; padding: 0px; background-color: #000; color: #000;" />
 
-	<p style="
-		<?php if ($wptbOptions['enable_image'] == "false") 
-				echo "background: {$wptbOptions['bar_color']};";
-			else 
-		 		echo "background-image: url({$wptbOptions['bar_image']});	background-position:center;"; 
-		?>
-		text-align:<?php echo $wptbOptions['text_align']; ?>;
-		font-size: <?php echo $wptbOptions['font_size']; ?>px; 	
-		padding-top:<?php echo $wptbOptions['padding_top']; ?>px; 
-		padding-bottom:<?php echo $wptbOptions['padding_bottom']; ?>px; 	
-		color:<?php echo $wptbOptions['text_color']; ?> ;display:block; 	
-		border-bottom-color:<?php echo $wptbOptions['bottom_color']; ?>; 
-		border-bottom-style: solid; 
-		border-bottom-width:  <?php echo $wptbOptions['bottom_border_height']; ?>px;
-		border-bottom-width:  <?php echo $wptbOptions['bottom_border_height']; ?>px;
-		<?php if ($wptbOptions['custom_css_bar'] != "") 
-				echo "{$wptbOptions['custom_css_bar']}"; ?>
-	">
-		<?php echo stripslashes_deep($wptbOptions['bar_text']); ?>
-		<a style="color:<?php echo $wptbOptions['link_color']; ?>;
-			<?php if ($wptbOptions['custom_css_text'] != "") 
-				echo "{$wptbOptions['custom_css_text']}"; ?>
-		"href="<?php echo $wptbOptions['bar_link']; ?>"target="_blank"><?php echo stripslashes_deep($wptbOptions['bar_link_text']); ?></a>
-	</p> 
 
+<?php $this->wptb_displayTopBar("",$wptbOptions); ?>
+
+<hr style="margin: 0px; height: 1px; padding: 0px; background-color: #000; color: #000;" />
 </div> 
- 
+
  				</td>
 			</tr>
 		</table>
@@ -356,12 +351,12 @@ Three new features with version 1.2:
 	<div class="table">
 		<table class="form-table">		
 			<tr valign="top">
-				<td width="150"><?php _e( 'Enable topbar:', 'wptb' ); ?></label></td>
+				<td width="150"><?php _e( 'Enable TopBar:', 'wptb' ); ?></label></td>
 				<td>
 					<label for="wptb_enable_topbar"><input type="radio" id="wptb_enable_topbar" name="wptbenabletopbar" value="true" <?php if ($wptbOptions['enable_topbar'] == "true") { _e('checked="checked"', "wptb"); }?> /> Yes</label>&nbsp;&nbsp;&nbsp;&nbsp;<label for="wptbenabletopbar_no"><input type="radio" id="wptbenabletopbar_no" name="wptbenabletopbar" value="false" <?php if ($wptbOptions['enable_topbar'] == "false") { _e('checked="checked"', "wptb"); }?>/> No</label>				
 				</td>
 				<td>
-					<p class="sub"><em><?php _e( 'This allows you to turn off the topbar without disabling the plugin.', 'wptb' ); ?></em></p>
+					<p class="sub"><em><?php _e( 'This allows you to turn off the TopBar without disabling the plugin.', 'wptb' ); ?></em></p>
 				</td>
 			</tr>
 			<tr valign="top">
@@ -380,7 +375,7 @@ Three new features with version 1.2:
 					<input type="text" name="wptbslidetime" id="slidetime" size="30" value="<?php echo $wptbOptions['slide_time']; ?>" >
 				</td>
 				<td>
-						<p class="sub"><em><?php _e( 'Enter the amount of time (in milliseconds) for the topbar to take to slide down on the page.  Enter 0 for no delay.', 'wptb' ); ?></em></p>
+						<p class="sub"><em><?php _e( 'Enter the amount of time (in milliseconds) for the TopBar to take to slide down on the page.  Enter 0 for no delay.', 'wptb' ); ?></em></p>
 				</td>
 			</tr>
 			<tr valign="top">
@@ -408,6 +403,24 @@ Three new features with version 1.2:
 				</td>
 				<td>
 						<p class="sub"><em><?php _e( 'Enter the bottom padding.  Default is 8px.', 'wptb' ); ?></em></p>
+				</td>
+			</tr>		
+			<tr valign="top">
+				<td width="150"><?php _e( 'Top margin (px):', 'wptb' ); ?></label></td>
+				<td>
+					<input type="text" name="wptbmargintop" id="margintop" size="5" value="<?php echo $wptbOptions['margin_top']; ?>" >
+				</td>
+				<td>
+						<p class="sub"><em><?php _e( 'Enter the top margin.  Default is 0px.', 'wptb' ); ?></em></p>
+				</td>
+			</tr>			
+			<tr valign="top">
+				<td width="150"><?php _e( 'Bottom margin (px):', 'wptb' ); ?></label></td>
+				<td>
+					<input type="text" name="wptbmarginbottom" id="marginbottom" size="5" value="<?php echo $wptbOptions['margin_bottom']; ?>" >
+				</td>
+				<td>
+						<p class="sub"><em><?php _e( 'Enter the bottom margin.  Default is 0px.', 'wptb' ); ?></em></p>
 				</td>
 			</tr>				
 			<tr valign="top">
@@ -439,7 +452,7 @@ Three new features with version 1.2:
 					<input type="text" name="wptbincludepages" id="includepages" size="30" value="<?php echo $wptbOptions['include_pages']; ?>" >
 				</td>
 				<td>
-						<p class="sub"><em><?php _e( 'Enter the IDs of the pages and posts that you want the topbar to appear on, separated by commas. The topbar will only be shown on those pages. Leave blank or enter 0 to show the topbar on all pages.  e.g. 1,9,39,10', 'wptb' ); ?></em></p>
+						<p class="sub"><em><?php _e( 'Enter the IDs of the pages and posts that you want the TopBar to appear on, separated by commas. The TopBar will only be shown on those pages. Leave blank or enter 0 to show the TopBar on all pages.  e.g. 1,9,39,10', 'wptb' ); ?></em></p>
 				</td>
 			</tr>
 		</table>
@@ -599,10 +612,10 @@ background: linear-gradient(top, rgba(254,255,255,1) 0%,rgba(221,241,249,1) 35%,
 
 <div class="postbox">
 									
-<h3><a name="TopbarText"><?php _e( 'Topbar Text, Image and Link', 'wptb' ); ?></a></h3>
+<h3><a name="TopbarText"><?php _e( 'TopBar Text, Image and Link', 'wptb' ); ?></a></h3>
 									
 <div class="inside">
-	<p class="sub"><em><?php _e( 'These are the text, image and links to be used in the topbar. The image is placed first, then the text (if any) is overlaid on it.  Scale the image to fix your website.  If you enable the image (by selecting "Yes"), then the image will be used. Otherwise, the bar color will be used.', 'wptb' ); ?></em></p>
+	<p class="sub"><em><?php _e( 'These are the text, image and links to be used in the TopBar. The image is placed first (if any), then the text (if any) is overlaid on it.  Scale the image to fix your website.  If you enable the image (by selecting "Yes"), then the image will be used and the bar color will be ignored.', 'wptb' ); ?></em></p>
 	
 	<div class="table">
 		<table class="form-table">	
@@ -610,13 +623,12 @@ background: linear-gradient(top, rgba(254,255,255,1) 0%,rgba(221,241,249,1) 35%,
 				<td width="150"><?php _e( 'Message:', 'wptb' ); ?></label></td>
 				<td>
 					<input type="text" name="wptbbartext" id="bbartext" size="85" value="<?php echo stripslashes_deep($wptbOptions['bar_text']); ?>" >
-
 				</td>
 			</tr>
 			<tr valign="top">
 				<td width="150"><?php _e( 'Link Text:', 'wptb' ); ?></label></td>
 				<td>
-					<input type="text" name="wptblinktext" id="link" size="100" value="<?php echo $wptbOptions['bar_link_text']; ?>" >
+					<input type="text" name="wptblinktext" id="linktext" size="85" value="<?php echo stripslashes_deep($wptbOptions['bar_link_text']); ?>" >
 				</td>
 			</tr>
 			<tr valign="top">
@@ -636,7 +648,7 @@ background: linear-gradient(top, rgba(254,255,255,1) 0%,rgba(221,241,249,1) 35%,
 				<td><label for="wptbupload_image">
 				<input id="wptbupload_image" type="text" size="85" name="wptbbarimage" value="<?php echo $wptbOptions['bar_image']; ?>" />
 				<input class="button" id="wptbupload_image_button" type="button" value="Upload Image" />
-				<br /><em><?php _e( 'Enter an URL or upload an image for the Topbar.'); ?></em)
+				<br /><em><?php _e( 'Enter an URL or upload an image for the TopBar.'); ?></em)
 				</label></td>
 			</tr>
 		</table>
@@ -700,7 +712,7 @@ if (!function_exists("wptb_options_panel")) {
 		}
 
 		if (function_exists('add_options_page')) {
-	add_menu_page('WP Topbar', 'WP Topbar', 3, basename(__FILE__), array(&$wtpb_plugin, 'wptb_options_page'),plugins_url('/icon/icon.png', __FILE__));
+	add_menu_page('WP TopBar', 'WP TopBar', 3, basename(__FILE__), array(&$wtpb_plugin, 'wptb_options_page'),plugins_url('/icon/icon.png', __FILE__));
 		}
 	}	
 }
