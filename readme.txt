@@ -77,14 +77,14 @@ Use "#topbar"
 
 You can try adding this to your CSS (thanks to douglaskarr).  It replaces the top part of your webpage with the TopBar: 
 
-#topbar {
+"#topbar {
 position:fixed;
 top: 0;
 padding: 0;
 margin: 0;
 width: 100%;
 z-index: 99999;
-}
+}"
 
 = How dow I uninstall? = 
 
@@ -96,7 +96,7 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 == Upgrade Notice ==
 
 = 1.4 =
-This version provides even more control over how the TopBar is placed. Test is carefully on your beta site before upgrading.
+This version provides even more control over how the TopBar is placed. Test it carefully on your beta site before upgrading.
 
 
 
@@ -123,7 +123,7 @@ Added easier navigation buttons.  Added more space to the CSS section.
 
 Added code to allow you to use quotes in your text.
 
-Added <div id="topbar"> to the output.
+Added id="topbar" to the output.
 
 = 1.2.1 - 10/08/2011 =
 
