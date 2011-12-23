@@ -3,7 +3,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 1.4
+Version: 1.5
 Author: Bob Goetz
 Author URI: http://wordpress.org/extend/plugins/profile/rfgoetz
 
@@ -58,7 +58,10 @@ if (!class_exists("wptb")) {
 				'custom_css_bar' => 'background:rgb(254,255,255);background:-moz-linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);background:-webkit-gradient(linear,lefttop,leftbottom,color-stop(0%,rgba(254,255,255,1)),color-stop(35%,rgba(221,241,249,1)),color-stop(100%,rgba(160,216,239,1)));background:-webkit-linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);background:-o-linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);background:-ms-linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#feffff",endColorstr="#a0d8ef",GradientType=0);background:linear-gradient(top,rgba(254,255,255,1)0%,rgba(221,241,249,1)35%,rgba(160,216,239,1)100%);',
 				'custom_css_text' => 'font-family:georgia;padding-right:10px;',
 				'margin_top' => '0',
-				'margin_bottom' => '0');
+				'margin_bottom' => '0',
+				'link_target' => 'blank',
+				'topbar_pos' => 'header',
+				'div_css' => ' ');
 			$wptbOptions = get_option($this->adminOptionsName);
 			if (!empty($wptbOptions)) {
 				foreach ($wptbOptions as $key => $option)
@@ -96,7 +99,7 @@ if (!class_exists("wptb")) {
 		<a style="color:<?php echo $wptbOptions['link_color']; ?>;
 			<?php if ($wptbOptions['custom_css_text'] != "") 
 				echo "{$wptbOptions['custom_css_text']}"; ?>
-		"href="<?php echo $wptbOptions['bar_link']; ?>"target="_blank"><?php echo stripslashes_deep($wptbOptions['bar_link_text']); ?></a>
+		"href="<?php echo $wptbOptions['bar_link']; ?>" target="_<?php echo $wptbOptions['link_target']; ?>"><?php echo stripslashes_deep($wptbOptions['bar_link_text']); ?></a>
 		</p> 
 		
 <?php
@@ -110,22 +113,47 @@ if (!class_exists("wptb")) {
 	
 			$wptbOptions = $this->getWPTBPluginOptions();						
 
-			if ($wptbOptions['enable_topbar'] == "false") { return; }
+			if (($wptbOptions['enable_topbar'] == "false") || ($wptbOptions['topbar_pos'] == "footer")){ return; }
 
 			$thePostID = $wp_query->post->ID;	
 
 			if ( ! in_array( $thePostID, explode( ',', $wptbOptions['include_pages'] ) ) && ! in_array( 0, explode( ',', $wptbOptions['include_pages'] ) ) )
 					{ return; }
 							
-			echo '<div id="topbar">';
+			echo '<div id="topbar" style="',$wptbOptions['div_css'],'">';
 		
 				$vis = "visibility:hidden;";
  
 				$this->wptb_displayTopBar($vis,$wptbOptions);
 		
-			echo '</div';
+			echo '</div>';
 		}
+		
+		
+		//Puts the Top Bar below the Footer
 
+		function wptb_addFooterCode() {
+		
+			global $wp_query;
+	
+			$wptbOptions = $this->getWPTBPluginOptions();						
+
+			if (($wptbOptions['enable_topbar'] == "false") || ($wptbOptions['topbar_pos'] == "header")){ return; }
+			
+
+			$thePostID = $wp_query->post->ID;	
+
+			if ( ! in_array( $thePostID, explode( ',', $wptbOptions['include_pages'] ) ) && ! in_array( 0, explode( ',', $wptbOptions['include_pages'] ) ) )
+					{ return; }
+							
+			echo '<div id="topbar" style="',$wptbOptions['div_css'],'">';
+		
+				$vis = "visibility:hidden;";
+ 
+				$this->wptb_displayTopBar($vis,$wptbOptions);
+		
+			echo '</div>';
+		}
 
 		//Displays the Options Page
 		function wptb_options_page() {
@@ -246,8 +274,17 @@ if (!class_exists("wptb")) {
 						}
 						if (isset($_POST['wptbcustomcsstext'])) {
 							$wptbOptions['custom_css_text'] = str_replace('"',"'",stripslashes_deep($_POST['wptbcustomcsstext']));
-							
-							}
+						}
+						if (isset($_POST['wptbdivcss'])) {
+							$wptbOptions['div_css'] = str_replace('"',"'",stripslashes_deep($_POST['wptbdivcss']));
+						}
+						if (isset($_POST['wptblinktarget'])) {
+							$wptbOptions['link_target'] = $_POST['wptblinktarget'];
+						}
+						if (isset($_POST['wptbtopbarpos'])) {
+							$wptbOptions['topbar_pos'] = $_POST['wptbtopbarpos'];
+						}
+						
 						update_option($this->adminOptionsName, $wptbOptions);
 						
 						?>
@@ -281,18 +318,13 @@ filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff1a00',endCol
 <div class=wrap>
 <form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 
-<h2><a name="Top"><?php _e( 'WP-Topbar - Version 1.4', 'wptb' ); ?></a></h2>
+<h2><a name="Top"><?php _e( 'WP-Topbar - Version 1.5', 'wptb' ); ?></a></h2>
 <div class="postbox">
 <br>
 Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Live preview to see your TopBar from the Options page.
-<p>Version 1.4 adds additional CSS options (margin). <strong>With this update, it may change how your TopBar looks if you were using a previous version.</strong></p>
+<p>Version 1.5 adds additional Link option (target), option to put TopBar at the footer, and new DIV-level CSS.  Also moved TopBar to the Body instead of the Header. <strong>With this update, it may change how your TopBar looks if you were using a previous version.</strong></p>
+<p>Version 1.4 adds additional CSS options (margin). 
 <p>Version 1.3 adds navigation buttons and allows for more control over the custom CSS.  You can also now use single quotes in your text.</p>
-Three new features with version 1.2:
-<ol>
-	<li>Set a background image, instead of a background color.  With a toggle to turn that on or off.  I've included a sample image for you to try on your website:  wp-topbar_sample_image.jpg.</li>
-	<li>Set custom CSS for the message and the link text</li>
-	<li>Set how to align the text:  left, center or right</li>
-</ol>
 <hr>
 <p></p>
 <center>
@@ -359,6 +391,18 @@ Three new features with version 1.2:
 					<p class="sub"><em><?php _e( 'This allows you to turn off the TopBar without disabling the plugin.', 'wptb' ); ?></em></p>
 				</td>
 			</tr>
+			<tr valign="top">
+				<td width="150"><?php _e( 'TopBar Location:', 'wptb' ); ?></label></td>
+				<td>
+				<label for="wptb_topbar_pos_header"><input type="radio" id="wptb_topbar_pos_header" name="wptbtopbarpos" value="header" <?php if ($wptbOptions['topbar_pos'] == "header") { _e('checked="checked"', "wptb"); }?>/> Above Header</label>		
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="wptb_topbar_pos_footer"><input type="radio" id="wptb_topbar_pos_footer" name="wptbtopbarpos" value="footer" <?php if ($wptbOptions['topbar_pos'] == "footer") { _e('checked="checked"', "wptb"); }?> /> Below Footer</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				</td>
+				<td>
+						<p class="sub"><em><?php _e( 'Select where you want to TopBar to be located. Default is Above Header.', 'wptb' ); ?></em></p>
+				</td>
+			</tr>	
 			<tr valign="top">
 				<td width="150"><?php _e( 'Start Delay:', 'wptb' ); ?></label></td>
 				<td>
@@ -443,7 +487,7 @@ Three new features with version 1.2:
 				<label for="wptb_text_align_right"><input type="radio" id="wptb_text_align_right" name="wptbtextalign" value="right" <?php if ($wptbOptions['text_align'] == "right") { _e('checked="checked"', "wptb"); }?>/> Right</label>	
 				</td>
 				<td>
-						<p class="sub"><em><?php _e( 'Enter how you want the text to align. Default is center. When using right -- try adding padding via the Custom CSS box. e.g. padding-right:10px;', 'wptb' ); ?></em></p>
+						<p class="sub"><em><?php _e( 'Select how you want the text to align. Default is center. When using right -- try adding padding via the Custom CSS box. e.g. padding-right:10px;', 'wptb' ); ?></em></p>
 				</td>
 			</tr>	
 			<tr valign="top">
@@ -508,7 +552,17 @@ background: linear-gradient(top, rgba(254,255,255,1) 0%,rgba(221,241,249,1) 35%,
 				<td>
 					<textarea name="wptbcustomcsstext" id="customcsstext" rows="10" cols="100"><?php echo $wptbOptions['custom_css_text']; ?></textarea>
 				</td>
-			</tr>		
+			</tr>	
+			<tr valign="top">
+				<td width="150"><?php _e( 'For the entire TopBar (i.e. at the DIV):', 'wptb' ); ?></label></td>
+				<td>
+					<textarea name="wptbdivcss" id="divcss" rows="2" cols="100"><?php echo $wptbOptions['div_css']; ?></textarea>
+				</td>
+				<td>
+					<p><?php _e( 'Try this CSS to fix the TopBar to the bottom of the page:<em> position:fixed; bottom: 0; padding: 0; margin: 0; width: 100%; z-index: 99999;</em><p>Or this to fix the TopBar to the top of the page:<em>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</em><p><em>Note that by putting your TopBar in a Fixed position, you will overlay the content of your website by the TopBar.</em>', 'wptb' ); ?></p>
+
+				</td>
+			</tr>	
 		</table>
 	</div>
 	<table>
@@ -638,6 +692,24 @@ background: linear-gradient(top, rgba(254,255,255,1) 0%,rgba(221,241,249,1) 35%,
 				</td>
 			</tr>
 			<tr valign="top">
+				<td width="50"><?php _e( 'Link Target:', 'wptb' ); ?></label></td>
+				<td>
+				<label for="wptb_link_target_blank"><input type="radio" id="wptb_link_target_blank" name="wptblinktarget" value="blank" <?php if ($wptbOptions['link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>/> _blank</label>		
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="wptb_link_target_self"><input type="radio" id="wptb_link_target_self" name="wptblinktarget" value="self" <?php if ($wptbOptions['link_target'] == "self") { _e('checked="checked"', "wptb"); }?> /> _self</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="wptb_link_target_parent"><input type="radio" id="wptb_link_target_parent" name="wptblinktarget" value="parent" <?php if ($wptbOptions['link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>/> _parent</label>	
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="wptb_link_target_top"><input type="radio" id="wptb_link_target_top" name="wptblinktarget" value="top" <?php if ($wptbOptions['link_target'] == "top") { _e('checked="checked"', "wptb"); }?>/> _top</label>	
+				<p></p>
+						<p class="sub"><em><?php _e( 'Select how you want the link to open: '); ?></p>
+						<p><?php _e(" _blank - 	Opens the linked document in a new window or tab (this is default)") ?></p>
+						<p><?php _e(" _self	-	Opens the linked document in the same frame as it was clicked") ?></p>
+						<p><?php _e(" _parent-	Opens the linked document in the parent frame") ?></p>
+						<p><?php _e(" _top	-	Opens the linked document in the full body of the windowtext to align.") ?></em></p>
+				</td>
+			</tr>	
+			<tr valign="top">
 				<td width="50"><?php _e( 'Enable image:', 'wptb' ); ?></label></td>
 				<td width="50">
 					<label for="wptb_enable_image"><input type="radio" id="wptb_enable_image" name="wptbenableimage" value="true" <?php if ($wptbOptions['enable_image'] == "true") { _e('checked="checked"', "wptb"); }?> /> Yes</label>&nbsp;&nbsp;&nbsp;&nbsp;<label for="wptbenableimage_no"><input type="radio" id="wptbenableimage_no" name="wptbenableimage" value="false" <?php if ($wptbOptions['enable_image'] == "false") { _e('checked="checked"', "wptb"); }?>/> No</label>
@@ -732,6 +804,7 @@ function wptb_enqueue_scripts() {
 		wp_enqueue_style('thickbox');
 
 	}
+
 }
 
 
@@ -741,19 +814,25 @@ function wptb_reveal_topbar() {
 		
 	$wptbOptions = get_option('wptbAdminOptions');
 	if ($wptbOptions['enable_topbar'] == "false") { return; }
+	if ($wptbOptions['topbar_pos'] == "footer") { $slide = "Up";}
+	else { $slide = "Down";}
+
 
 	 ?>
 
 <script type="text/javascript">
+
+
 	jQuery(document).ready(function() {
 		jQuery('#wptbheadline').hide();
-		jQuery('#wptbheadline').delay(<?php echo $wptbOptions['delay_time']; ?>);
+		jQuery('#wptbheadline').delay(<?php echo $wptbOptions['delay_time'];?>);
 		jQuery('#wptbheadline').css("visibility","visible");
-		jQuery('#wptbheadline').slideDown(<?php echo $wptbOptions['slide_time']; ?>).fadeIn(1000);
-		jQuery('#wptbheadline').show("slow");
-    }); 
-
+		jQuery('#wptbheadline').slideDown(<?php echo $wptbOptions['slide_time'];?>).fadeIn(1000);
+		jQuery('#wptbheadline').show("slow");    
+	}); 
+	
 </script>
+
 
 <?php }
 
@@ -788,7 +867,8 @@ if (isset($wtpb_plugin)) {
 
 //Actions and Filters, on all pages
 if (isset($wtpb_plugin)) {
-	add_action('wp_head', array(&$wtpb_plugin, 'wptb_addHeaderCode'), 1);
+	add_action('wp_head', 	array(&$wtpb_plugin, 'wptb_addHeaderCode'), 15);
+	add_action('wp_footer', array(&$wtpb_plugin, 'wptb_addFooterCode'), 15);
 	add_action('wp_footer', 'wptb_reveal_topbar', 15);	
 }
 
