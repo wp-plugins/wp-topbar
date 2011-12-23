@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: rfgoetz
 Donate link: N/A
-Tags: topbar, header bar,beforesite, heads up, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
+Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.3
 Stable tag: 1.2.2
@@ -11,6 +11,9 @@ Creates a TopBar that will be shown at the top of your website.  Customizable an
 == Description ==
 
 Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
+
+Version 1.5 adds additional Link option (target), option to put TopBar at the footer, and new DIV-level CSS (to allow you to have a Fixed position TopBar). Also moved TopBar to the Body instead of the Header. With this update, it may change how your TopBar looks if you were using a previous version. So test it carefully on your beta site!
+
 
 Version 1.4 adds additional CSS options (margin).  With this update, it may change how your TopBar looks if you were using a previous version.  So test it carefully on your beta site!   Version 1.4 works with WordPress 3.3.
 
@@ -25,6 +28,7 @@ Three new features with version 1.2:
 Various options allow you to:
 <ol>
 	<li>Enable/disable the TopBar without disabling the plugin.</li>
+	<li>Place the TopBar Above the Header or Below the Footer</li>
 	<li>Enter the amount of time (in milliseconds) for the TopBar to appear. Enter 0 for no delay.</li>
 	<li>Enter the amount of time (in milliseconds) for the TopBar to take to slide down on the page. Enter 0 for no delay.</li>
 	<li>Enter the height of the border. Default is 3px.</li>
@@ -47,12 +51,14 @@ Enter custom CSS for the:
 <ol>
 	<li>The Bar</li>
 	<li>The Message</li>
+	<li>The Entire TopBar</li>
 </ol>
 Has separate fields for the:
 <ol>
 	<li>Message</li>
 	<li>Link Text</li>
 	<li>Link</li>
+	<li>Link Target</li>
 	<li>Background Image</li>
 </ol>
 
@@ -73,18 +79,15 @@ I've included a sample image for you to try on your website:  wp-topbar_sample_i
 
 Use "#topbar"
 
-= What if I don't want to slide the page down when the TopBar appears? = 
+= What if I fix the TopBar to the top or bottom of the page? = 
 
-You can try adding this to your CSS (thanks to douglaskarr).  It replaces the top part of your webpage with the TopBar: 
+Use this CSS to fix the TopBar to the bottom of the page: 
+	position:fixed; bottom: 0; padding: 0; margin: 0; width: 100%; z-index: 99999;
 
-"#topbar {
-position:fixed;
-top: 0;
-padding: 0;
-margin: 0;
-width: 100%;
-z-index: 99999;
-}"
+Or this to fix the TopBar to the top of the page (adjust the top value to be the height of your TopBar):
+	position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;
+
+Note that by putting your TopBar in a Fixed Position, you will overlay the content of your website by the TopBar.
 
 = How dow I uninstall? = 
 
@@ -95,8 +98,9 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
-= 1.4 =
-This version provides even more control over how the TopBar is placed. Test it carefully on your beta site before upgrading.
+= 1.5 = 
+
+This version provides even more control over how the TopBar is placed. Test, Test Test it carefully on your beta site before upgrading.
 
 
 
@@ -107,9 +111,18 @@ This version provides even more control over how the TopBar is placed. Test it c
 3. Preview section.
 4. Options section.
 5. Custom CSS Options section.
+6. The Color Selection section.
 6. TopBar Text, Image & Link Options section - plus the uninstall option.
 
 == Changelog ==
+
+= 1.5 - 12/23/2011 = 
+
+Moved TopBar to the Body instead of the Header and fixed missing close DIV.  That MAY break your site -- test carefully.
+Adds additional Link option (target) which allows you to change how the link opens.
+Added option to put TopBar at the footer. (Thanks, candace88, for the idea!)
+Added and new DIV-level CSS. 
+
 
 = 1.4 - 12/10/2011 = 
 
