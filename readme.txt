@@ -4,7 +4,7 @@ Donate link: N/A
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.3
-Stable tag: 1.2.2
+Stable tag: 1.2.2 
 
 Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image, and link.  Live preview!
 
