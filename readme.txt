@@ -107,11 +107,17 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 == Screenshots ==
 
 1. This is how it will look on your website.
+
 2. This is the full options page.
+
 3. Preview section.
+
 4. Options section.
+
 5. Custom CSS Options section.
+
 6. The Color Selection section.
+
 7. TopBar Text, Image & Link Options section - plus the uninstall option.
 
 == Changelog ==
@@ -119,15 +125,20 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 = 1.5 - 12/23/2011 = 
 
 Moved TopBar to the Body instead of the Header and fixed missing close DIV.  That MAY break your site -- test carefully.
+
 Adds additional Link option (target) which allows you to change how the link opens.
+
 Added option to put TopBar at the footer. (Thanks, candace88, for the idea!)
+
 Added and new DIV-level CSS. 
 
 
 = 1.4 - 12/10/2011 = 
 
 Added options to change the margin of the TopBar.
+
 Cleaned up the code.
+
 Validated it works with 3.3.
 
 = 1.3 - 12/05/2011 = 
