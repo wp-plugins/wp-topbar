@@ -112,7 +112,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 4. Options section.
 5. Custom CSS Options section.
 6. The Color Selection section.
-6. TopBar Text, Image & Link Options section - plus the uninstall option.
+7. TopBar Text, Image & Link Options section - plus the uninstall option.
 
 == Changelog ==
 
