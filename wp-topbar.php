@@ -3,7 +3,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 2.0
+Version: 2.1
 Author: Bob Goetz
 Author URI: http://wordpress.org/extend/plugins/profile/rfgoetz
 
@@ -27,7 +27,7 @@ if (!class_exists("wptb")) {
 	class wptb {
 		var $adminOptionsName = "wptbAdminOptions";
 		var $wptb_debug = 0;
-		var $wptb_version_number = '2.0';
+		var $wptb_version_number = '2.1';
 
 
 		function wptb() { //constructor	
@@ -144,7 +144,6 @@ if (!class_exists("wptb")) {
 
 			$thePostID = $wp_query->post->ID;
 			
-			
 		// if invert_include is "yes", then use the exclude showing the Topbar on the inlcude_pages 
 			if ( $wptbOptions['invert_include'] == "yes" ) {
 				if ( in_array( $thePostID, explode( ',', $wptbOptions['include_pages'] ) ) )
@@ -180,9 +179,16 @@ if (!class_exists("wptb")) {
 
 			$thePostID = $wp_query->post->ID;	
 
-			if ( ! in_array( $thePostID, explode( ',', $wptbOptions['include_pages'] ) ) && ! in_array( 0, explode( ',', $wptbOptions['include_pages'] ) ) )
-					{ return; }
-							
+		// if invert_include is "yes", then use the exclude showing the Topbar on the inlcude_pages 
+			if ( $wptbOptions['invert_include'] == "yes" ) {
+				if ( in_array( $thePostID, explode( ',', $wptbOptions['include_pages'] ) ) )
+						{ return; }			
+			}
+			else {
+				if ( ! in_array( $thePostID, explode( ',', $wptbOptions['include_pages'] ) ) && ! in_array( 0, explode( ',', $wptbOptions['include_pages'] ) ) )
+						{ return; }			
+			}
+			
 			echo '<div id="topbar" style="',$wptbOptions['div_css'],'">';
 		
 				$vis = "visibility:hidden;";
