@@ -518,9 +518,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', end
 Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Includes Live Preview to see your TopBar.  Recent changes include:
 <p><em>
 <ol TYPE="I">
-<li>Version 2.0 adds the ability to make the TopBar disappear after a set amount of time (See Display Time in Main options) and the ability to exclude pages from showing the Topbar.  </li>
-<li><p>Version 1.5 adds additional Link option (target), option to put TopBar at the footer, and new DIV-level CSS.  Also moved TopBar to the Body instead of the Header. <strong>With this update, it may change how your TopBar looks if you were using a previous version.</strong></p></li>
-<li><p>Version 1.4 adds additional CSS options (margin).</li> 
+<li>Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.</li>
+<li>Version 2.0 adds the ability to make the TopBar disappear after a set amount of time (See Display Time in Main options) and the ability to exclude pages from showing the Topbar.</li>
+<li>Version 1.5 adds additional Link option (target), option to put TopBar at the footer, and new DIV-level CSS.  Also moved TopBar to the Body instead of the Header. <strong>With this update, it may change how your TopBar looks if you were using a previous version.</strong></li>
+<li>Version 1.4 adds additional CSS options (margin).</li> 
 </ol>
 </em>
 <hr>

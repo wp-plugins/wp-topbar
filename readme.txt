@@ -119,6 +119,10 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 2.1 = 
+
+Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.
+
 = 2.0 = 
 
 More options added -- should not change how your TopBar works since the new defaults are set to be how the TopBar previously operated.
