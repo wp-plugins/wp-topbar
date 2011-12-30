@@ -6,11 +6,11 @@ Requires at least: 3.2.1
 Tested up to: 3.3
 Stable tag: 1.2.2 
 
-Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image, and link.  Live preview!
+Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, and link.  Live preview!
 
 == Description ==
 
-Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
+Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
 
 Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.
 
