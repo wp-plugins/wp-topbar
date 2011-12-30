@@ -146,7 +146,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 2.1 - 12/30/2011 = 
 
-1. FIXED: TopBar Excludes for footer pages.
+1. FIXED: TopBar excludes PageIDs now work when TopBar is on footer pages.
 
 = 2.0 - 12/26/2011 = 
 
