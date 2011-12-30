@@ -12,6 +12,8 @@ Creates a TopBar that will be shown at the top of your website.  Customizable an
 
 Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
 
+Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.
+
 Version 2.0 adds additional CSS options (Display Time) that allows you to make the TopBar disappear and the ability to exclude pages from showing the Topbar.
 
 Version 1.5 adds additional Link option (target), option to put TopBar at the footer, and new DIV-level CSS (to allow you to have a Fixed position TopBar). Also moved TopBar to the Body instead of the Header. With this update, it may change how your TopBar looks if you were using a previous version. So test it carefully on your beta site!
@@ -137,6 +139,10 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 6. TopBar Text, Image & Link Options section - plus the uninstall option.
 
 == Changelog ==
+
+= 2.1 - 12/30/2011 = 
+
+1. FIXED: TopBar Excludes for footer pages.
 
 = 2.0 - 12/26/2011 = 
 
