@@ -6,7 +6,7 @@ Requires at least: 3.2.1
 Tested up to: 3.3
 Stable tag: 1.2.2 
 
-Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, and link.  Live preview!
+Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, link & more! 
 
 == Description ==
 
