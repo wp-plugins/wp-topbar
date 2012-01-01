@@ -156,7 +156,7 @@ if (!class_exists("wptb")) {
 			
 			echo '<div id="topbar" style="',$wptbOptions['div_css'],'">';
 
-				$vis = "visibility:hidden !important;";
+				$vis = "visibility:hidden;";
  
 				$this->wptb_displayTopBar($vis,$wptbOptions);
 		
@@ -191,7 +191,7 @@ if (!class_exists("wptb")) {
 			
 			echo '<div id="topbar" style="',$wptbOptions['div_css'],'">';
 		
-				$vis = "visibility:hidden !important;";
+				$vis = "visibility:hidden;";
  
 				$this->wptb_displayTopBar($vis,$wptbOptions);
 		
