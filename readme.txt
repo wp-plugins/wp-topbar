@@ -3,7 +3,7 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
-Tested up to: 3.3
+Tested up to: 3.3.1
 Stable tag: 1.2.2 
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, link & more! 
@@ -11,6 +11,8 @@ Creates a TopBar that will be shown at the top (or bottom) of your website.  Cus
 == Description ==
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
+
+Version 3.0 adds the ability to set a start/end time for the TopBar to show.   It was re-worked to be smaller and faster.
 
 Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.
 
@@ -119,6 +121,10 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 3.0 = 
+
+Version 3.0 adds the ability to set a start/end time for the TopBar to show.  It was re-worked to be smaller and faster.
+
 = 2.1 = 
 
 Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.
@@ -144,6 +150,13 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+= 3.0 - 3/17/2012 = 
+
+1. NEW: Added start/end times to limit when the TopBar shows.
+2. FIXED: Updated deprecated functions
+3. FIXED: Tightened code and made the code smaller 
+4. FIXED: enqueues javascript, if necessary
+
 = 2.1 - 12/30/2011 = 
 
 1. FIXED: TopBar excludes PageIDs now work when TopBar is on footer pages.
@@ -151,37 +164,27 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 = 2.0 - 12/26/2011 = 
 
 1. NEW:Added option to make the TopBar disappear after a set amount of time.
-
 2. NEW:Added copy buttons to copy code samples.
-
 3. NEW:Added option to invert the Include Pages list to make it actually exclude pages.
-
 4. FIXED:Cleaned up code to make it tighter.
 
 = 1.5 - 12/23/2011 = 
 
 1. FIXED: Moved TopBar to the Body instead of the Header and fixed missing close DIV.  That MAY break your site -- test carefully.
-
 2. NEW:Adds additional Link option (target) which allows you to change how the link opens.
-
 3. NEW:Added option to put TopBar at the footer. (Thanks, candace88, for the idea!)
-
 4. NEW:Added and new DIV-level CSS. 
 
 = 1.4 - 12/10/2011 = 
 
 1. NEW:Added options to change the margin of the TopBar.
-
 2. FIXED:Cleaned up the code.
-
 3. Validated it works with 3.3.
 
 = 1.3 - 12/05/2011 = 
 
 1. NEW:Added easier navigation buttons.  Added more space to the CSS section.
-
 2. NEW:Added code to allow you to use quotes in your text.
-
 3. NEW:Added id="topbar" to the output.
 
 = 1.2.1 - 10/08/2011 =
