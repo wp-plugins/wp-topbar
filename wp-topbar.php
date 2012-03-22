@@ -3,7 +3,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 3.01
+Version: 3.02
 Author: Bob Goetz
 Author URI: http://wordpress.org/extend/plugins/profile/rfgoetz
 
@@ -99,12 +99,19 @@ class wptb {
 	
 			wp_register_script( 'wptb_zeroclip', plugins_url('/lib/zeroclipboard/ZeroClipboard.js', __FILE__), array('jquery') );
 			wp_enqueue_script('wptb_zeroclip');
-			wp_register_script( 'wptb_datepicker', plugins_url('/lib/anytimec.js', __FILE__), array('jquery') );
+
+			wp_register_script( 'wptb_datepicker_ui', plugins_url('/lib/jquery-ui-1.8.16.custom.min.js', __FILE__), array('jquery') );
+			wp_enqueue_script('wptb_datepicker_ui');
+			wp_register_script( 'wptb_datepicker_slider', plugins_url('/lib/jquery-ui-sliderAccess.js', __FILE__), array('jquery') );
+			wp_enqueue_script('wptb_datepicker_slider');
+			wp_register_script( 'wptb_datepicker', plugins_url('/lib/jquery-ui-timepicker-addon.js', __FILE__), array('jquery') );
 			wp_enqueue_script('wptb_datepicker');
-			wp_register_style( 'wptb_datepicker_css', plugins_url('/lib/anytimec.css', __FILE__) );
+
+
+			wp_register_style( 'wptb_datepicker_ui_css', plugins_url('/lib/jquery-ui-1.8.16.custom.css', __FILE__) );
+			wp_enqueue_style('wptb_datepicker_ui_css');
+			wp_register_style( 'wptb_datepicker_css', plugins_url('/lib/jquery-ui-timepicker-addon.css', __FILE__) );
 			wp_enqueue_style('wptb_datepicker_css');
-			wp_register_script( 'wptb_datepicker_tmz', plugins_url('/lib/anytimetz.js', __FILE__), array('wptb_datepicker') );
-			wp_enqueue_script('wptb_datepicker_tmz');
 		}
 	
 	} // End of function wptb_enqueue_admin_scripts
@@ -178,7 +185,7 @@ class wptb {
 		
 	function wtpb_check_for_plugin_upgrade($wptb_echo_on) { 
 	
-		$wptb_this_version_number = '3.01';
+		$wptb_this_version_number = '3.02';
 	
 		$wptbOptions = get_option('wptbAdminOptions');
 		$wptb_debug=get_transient( 'wptb_debug' );	
