@@ -6,28 +6,13 @@ Admin Page
 */
 
 
-//=========================================================================			
-//	Convert Date/Time to UTC - assumes offset is embedded as (+0800) or (-0100)
-//=========================================================================			
-
-function wptb_convert_time($wptb_time_value) {
-
-	$wptb_time_offset=trim(substr($wptb_time_value,stripos($wptb_time_value,'(')+1),')'); //find offset
-	$wptb_time_offset_numeric_in_secs=(substr($wptb_time_offset,1,2)*60*60)+substr($wptb_time_offset,3,2);
-	if (substr($wptb_time_offset,0,1) == '-' ) $wptb_time_offset_numeric_in_secs = -$wptb_time_offset_numeric_in_secs;
-				
-	return strtotime(substr($wptb_time_value,0,stripos($wptb_time_value,'(')-1)) + $wptb_time_offset_numeric_in_secs;
-				
-} // End of function wptb_convert_time
-
-	
 //=========================================================================		
 //Returns an array of admin options, but sets default values if none are loaded.
 //=========================================================================		
 
 function wptb_get_Plugin_Options() {
 
-	$wptb_version_number = '3.0';
+	$wptb_version_number = '3.02';
 	
 	$wptb_debug=get_transient( 'wptb_debug' );	
 				
@@ -101,7 +86,7 @@ function wptb_get_Plugin_Options() {
 			else
 				echo '<br><code>WP-TopBar Debug Mode: End Time is in the past</code>';
 		}
-		if (wptb_check_time($wptb_current_time, $wptbSetOptions['start_time_utc'],$wptbSetOptions['end_time_utc']))
+		if (wptb::wptb_check_time($wptb_current_time, $wptbSetOptions['start_time_utc'],$wptbSetOptions['end_time_utc']))
 			if ($wptbSetOptions['enable_topbar'] == 'false') 
 				echo '<br><code>WP-TopBar Debug Mode: TopBar will <strong>NOT</strong> display because it is not enabled, even though the time settings would allow it</code>';
 			else
@@ -198,14 +183,14 @@ function wptb_options_page() {
 		if (isset($_POST['wptbstarttime'])) {
 					
 				$wptbOptions['start_time'] = $_POST['wptbstarttime'];
-				$wptbOptions['start_time_utc'] = wptb_convert_time($_POST['wptbstarttime']);
+				$wptbOptions['start_time_utc'] = $_POST['wptbstarttime'];
 		}
 
 
 		if (isset($_POST['wptbendtime'])) {
 
 			$wptbOptions['end_time'] = $_POST['wptbendtime'];
-			$wptbOptions['end_time_utc'] = wptb_convert_time($_POST['wptbendtime']);
+			$wptbOptions['end_time_utc'] = $_POST['wptbendtime'];
 		}
 		if (isset($_POST['wptbfontsize'])) {
 		
@@ -425,13 +410,13 @@ function wptb_options_page() {
 		<div class=wrap>
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 		<h2><img src="<?php _e( plugins_url('/images/banner-772x250.png', __FILE__), 'wptb' ); ?>" height="50" alt="TopBar Banner"/>
-		<a >WP-TopBar - Version <?php echo $wptbOptions['wptb_version']; ?></a></h1>
+		<a >WP-TopBar - Version 3.02</a></h1>
 		<div class="postbox">
 		<br>
 		Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Includes Live Preview to see your TopBar.  Recent changes include:
 		<p><em>
 		<ol TYPE="I">
-		<li>Version 3.0 adds the ability to set a start/end time for the TopBar to show.</li>
+		<li>Version 3.02 adds the ability to set a start/end time for the TopBar to show.</li>
 		<li>Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.</li>
 		<li>Version 2.0 adds the ability to make the TopBar disappear after a set amount of time (See Display Time in Main options) and the ability to exclude pages from showing the Topbar.</li>
 		</ol>
@@ -535,7 +520,7 @@ function wptb_options_page() {
 					<tr valign="top">
 						<td width="150">Starting Time:</label></td>
 						<td>
-							<input type="text" id="wptbstarttimebtn" name="wptbstarttime" size="30" value="<?php echo $wptbOptions['start_time']; ?>"></label><p class="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" id="wptbstarttimebtnClear">Set Start Time to Zero</p>									  
+							<div class="wptb-date-picker-container"> <input type="text" id="wptbstarttimebtn" name="wptbstarttime" size="30" value="<?php echo $wptbOptions['start_time']; ?>"></label></div><p class="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" id="wptbstarttimebtnClear">Set Start Time to Zero</p>									  
 							<div id="wptb_start_time"></div>				    
 						</td>
 						<td>
