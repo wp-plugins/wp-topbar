@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.3.1
-Stable tag: 3.02
+Stable tag: 3.03
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, link & more! 
 
@@ -12,25 +12,14 @@ Creates a TopBar that will be shown at the top (or bottom) of your website.  Cus
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
 
+Version 3.03 adds the ability to allow the user to close the TopBar.
+
 Version 3.02 adds the ability to set a start/end time for the TopBar to show.   It was re-worked to be smaller and faster.
 
 Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.
 
 Version 2.0 adds additional CSS options (Display Time) that allows you to make the TopBar disappear and the ability to exclude pages from showing the Topbar.
 
-Version 1.5 adds additional Link option (target), option to put TopBar at the footer, and new DIV-level CSS (to allow you to have a Fixed position TopBar). Also moved TopBar to the Body instead of the Header. With this update, it may change how your TopBar looks if you were using a previous version. So test it carefully on your beta site!
-
-
-Version 1.4 adds additional CSS options (margin).  With this update, it may change how your TopBar looks if you were using a previous version.  So test it carefully on your beta site!   Version 1.4 works with WordPress 3.3.
-
-Version 1.3 adds navigation buttons and allows for more control over the custom CSS.
-
-Three new features with version 1.2:
-<ol>
-	<li>Set a background image, instead of a background color.  With a toggle to turn that on or off.  I've included a sample image for you to try on your website:  wp-topbar_sample_image.jpg.</li>
-	<li>Set custom CSS for the message and the link text</li>
-	<li>Set how to align the text:  left, center or right</li>
-</ol>
 Various options allow you to:
 <ol>
 	<li>Enable/disable the TopBar without disabling the plugin.</li>
@@ -121,6 +110,10 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 3.03 = 
+
+Version 3.03 allows users to close the TopBar
+
 = 3.02 = 
 
 Version 3.02 changed date/time picker to a GPL version to conform to Wordpress licensing
@@ -153,10 +146,15 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 2. Preview section.
 3. Options section.
 4. Custom CSS Options section.
-5. The Color Selection section.
-6. TopBar Text, Image & Link Options section - plus the uninstall option.
+5. The Color Selection and TopBar Text, Image & Link Options sections
+6. The Close Button section - plus the uninstall option.
 
 == Changelog ==
+
+= 3.03 - 3/29/2012 = 
+
+1. NEW: Allow users to close the TopBar
+2. FIXED: Moved HTML out of HEAD tags and into the BODY tags
 
 = 3.02 - 3/22/2012 = 
 
