@@ -12,7 +12,7 @@ Admin Page
 
 function wptb_get_Plugin_Options() {
 
-	$wptb_version_number = '3.02';
+	$wptb_version_number = '3.03';
 	
 	$wptb_debug=get_transient( 'wptb_debug' );	
 				
@@ -39,6 +39,10 @@ function wptb_get_Plugin_Options() {
 		'padding_bottom' => '8',
 		'margin_top' => '0',
 		'margin_bottom' => '0',
+		'respect_cookie' => 'ignore',
+		'allow_close' => 'no',
+		'close_button_image' => plugins_url('/images/close.png', __FILE__),
+		'close_button_css' => 'padding:0px; float:right;',
 		'link_target' => 'blank',
 		'bar_link' => 'http://wordpress.org/extend/plugins/wp-topbar/',
 		'bar_text' => 'Get your own TopBar ',
@@ -46,8 +50,8 @@ function wptb_get_Plugin_Options() {
 		'text_align' => 'center',
 		'bar_image' => '',
 		'enable_image' => 'false',
-		'custom_css_bar' => 'background:rgb(221,211,255);',
-		'div_css' => '');
+		'custom_css_bar' => 'background:white;',
+		'div_css' => 'position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;');
 
 	$wptbOptions = get_option('wptbAdminOptions');
 
@@ -104,6 +108,24 @@ function wptb_get_Plugin_Options() {
 			  	echo '<br><code>WP-TopBar Debug Mode:&nbsp&nbsp[',$i,']: ',$value,'</code>';
 			}
 		echo '<br><code>WP-TopBar Debug Mode: --------------------------------------</code>';
+
+		$wptb_cookie = "wptopbar_".COOKIEHASH;
+
+		echo "<br><code>WP-TopBar Debug Mode: Respect Cookie: ".$wptbOptions['respect_cookie']."</code>";
+		echo "<br><code>WP-TopBar Debug Mode: Show Close Button: ".$wptbOptions['allow_close']."</code>"; 
+		echo "<br><code>WP-TopBar Debug Mode: Cookie Name: ".$wptb_cookie."</code>";
+		if (isset($_COOKIE[$wptb_cookie]) && ($wptbOptions['respect_cookie'] = "always"))
+			echo "<br><code>WP-TopBar Debug Mode: Cookie Value: ". $_COOKIE[$wptb_cookie]."</code>"; 
+		else
+			echo "<br><code>WP-TopBar Debug Mode: Cookie not found</code>";
+		
+		if  ( ($wptbOptions['respect_cookie'] == 'always') AND  ( $_COOKIE[$wptb_cookie] == "1") ) {
+			echo "<br><code>WP-TopBar Debug Mode: TopBar will not show</code>";
+
+		}
+		
+		
+	
 	}
 
 	return $wptbSetOptions;
@@ -239,7 +261,7 @@ function wptb_options_page() {
 		}						
 		if (isset($_POST['wptblinkurl'])) {
 			$wptbOptions['bar_link'] = esc_url($_POST['wptblinkurl']);
-		}	
+		}			
 		if (isset($_POST['wptbbartext'])) {
 			$wptbOptions['bar_text'] = $_POST['wptbbartext'];
 		}
@@ -263,6 +285,18 @@ function wptb_options_page() {
 		}
 		if (isset($_POST['wptbdivcss'])) {
 			$wptbOptions['div_css'] = trim(str_replace('"',"'",stripslashes_deep($_POST['wptbdivcss'])));
+		}
+		if (isset($_POST['wptballowclose'])) {
+			$wptbOptions['allow_close'] = $_POST['wptballowclose'];
+		}
+		if (isset($_POST['wptbrespectcookie'])) {
+			$wptbOptions['respect_cookie'] = $_POST['wptbrespectcookie'];
+		}
+		if (isset($_POST['wptbcloseimage'])) {
+			$wptbOptions['close_button_image'] = esc_url($_POST['wptbcloseimage']);
+		}	
+		if (isset($_POST['wptbclosecss'])) {
+			$wptbOptions['close_button_css']  = trim(str_replace('"',"'",stripslashes_deep($_POST['wptbclosecss'])));
 		}
 		if (isset($_POST['wptblinktarget'])) {
 			$wptbOptions['link_target'] = $_POST['wptblinktarget'];
@@ -405,20 +439,25 @@ function wptb_options_page() {
 	background: -ms-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
 	background: linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', endColorstr='#1e69de',GradientType=0 );";
+	
+	$wptb_cookie = "wptopbar_".COOKIEHASH;
+	if  ( ($wptbOptions['respect_cookie'] == 'always') AND  ( $_COOKIE[$wptb_cookie] == "1") ) 
+		 _e( '<div class="error"><strong>You have a cookie that will prevent the TopBar from showing.  To show the TopBar, clear your cookies or select the "Always Show TopBar" option in the Main Options.</strong></div>', 'wptb' ); 
+
 	?>  
 	<a name="Top">
 		<div class=wrap>
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 		<h2><img src="<?php _e( plugins_url('/images/banner-772x250.png', __FILE__), 'wptb' ); ?>" height="50" alt="TopBar Banner"/>
-		<a >WP-TopBar - Version 3.02</a></h1>
+		<a >WP-TopBar - Version 3.03</a></h1>
 		<div class="postbox">
 		<br>
 		Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Includes Live Preview to see your TopBar.  Recent changes include:
 		<p><em>
 		<ol TYPE="I">
+		<li>Version 3.03 adds the ability to for user to close the TopBar.</li>
 		<li>Version 3.02 adds the ability to set a start/end time for the TopBar to show.</li>
 		<li>Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.</li>
-		<li>Version 2.0 adds the ability to make the TopBar disappear after a set amount of time (See Display Time in Main options) and the ability to exclude pages from showing the Topbar.</li>
 		</ol>
 		</em>
 		<hr>
@@ -434,6 +473,8 @@ function wptb_options_page() {
 		&nbsp;&nbsp;
 		<a class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" href="#TopbarText">TopBar Text</a>
 		&nbsp;&nbsp;
+		<a class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" href="#CloseButton">Close Button</a>
+		&nbsp;&nbsp;
 		<a class="button" style="<?php _e( $wptb_delete_style , 'wptb' ); ?>" href="#Uninstall">Delete Settings</a>
 		<a class="button" style="<?php _e( $wptb_clear_style , 'wptb' ); ?>" href="http://wordpress.org/extend/plugins/wp-topbar/" target="_blank" >Plugin Home Page</a>
 		<a id="wptbdonate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J" target="_blank"><img style="height:29px; vertical-align:middle;" src="<?php  echo plugins_url('/images/donate.gif', __FILE__)?>" /></a>
@@ -446,8 +487,12 @@ function wptb_options_page() {
 		<div class="inside">
 			<p class="sub">This is how the TopBar will appear on the website.
 			<em>Based on your Start/End time settings below, the TopBar will <?php if (!wptb::wptb_check_time(gettimeofday(true),$wptbOptions['start_time_utc'],$wptbOptions['end_time_utc'])) echo "<strong>not</strong>"; ?> display (based on the current time.)</em>
+
+
+	  	<?php if  ( ($wptbOptions['respect_cookie'] == 'always') AND  ( $_COOKIE[$wptb_cookie] == "1") ) 
+			echo "<strong><em><br>You have a cookie that will prevent the TopBar from showing.  To show the TopBar, clear your cookies or select the 'Always Show TopBar' in the Main Options.</em></strong>"; ?>
 			<br>To test the TopBar on your site, you can set the Page IDs (in Main Options) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
-			<br> The fist black line below represents the top of the screen.  The second black line represents the bottom of the TopBar.</p>
+			<br> The first black line below represents the top of the screen.  The second black line represents the bottom of the TopBar.</p>
 			<div class="table">
 				<table class="form-table">
 					<tr valign="top">
@@ -496,7 +541,7 @@ function wptb_options_page() {
 							<input type="text" name="wptbdelayintime" id="delayintime" size="30" value="<?php echo $wptbOptions['delay_time']; ?>" >
 						</td>
 						<td>
-								<p class="sub"><em>Enter the amount of time (in milliseconds) for the tobar to delay before appearing.  Enter 0 for no delay.</em></p>
+								<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to delay before appearing.  Enter 0 for no delay.</em></p>
 						</td>
 					</tr>
 					<tr valign="top">
@@ -814,7 +859,7 @@ function wptb_options_page() {
 					<th scope="row">Image URL:</th>
 					<td><label for="wptbupload_image">
 					<input id="wptbupload_image" type="text" size="85" name="wptbbarimage" value="<?php echo $wptbOptions['bar_image']; ?>" />
-					<input class="button" id="wptbupload_image_button" type="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" value="Upload Image" />
+					<input class="browse_upload button" id="wptbupload_image_button" type="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" value="Upload Image" />
 					<br /><em>Enter an URL or upload an image for the TopBar.</em)
 					</label></td>
 				</tr>
@@ -834,7 +879,77 @@ function wptb_options_page() {
 		<div class="clear"></div>	
 		</div>
 	</div> <!-- end of TopbarText Settings -->
-				
+
+	<div class="postbox">
+										
+	<h3><a name="CloseButton">Close Button</a></h3>
+										
+	<div class="inside">
+		<p class="sub"><em>These are the settings to allow the user to close the TopBar.</em></p>
+		
+		<div class="table">
+			<table class="form-table">	
+				<tr valign="top">
+						<td width="150">Allow TopBar to be closed by user:</label></td>
+						<td>
+						<label for="wptb_allow_close_yes"><input type="radio" id="allow_close_yes" name="wptballowclose" value="yes" <?php if ($wptbOptions['allow_close'] == "yes") { _e('checked="checked"', "wptb"); }?>/> Yes</label>		
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="wptb_allow_close_no"><input type="radio" id="allow_close_no" name="wptballowclose" value="no" <?php if ($wptbOptions['allow_close'] == "no") { _e('checked="checked"', "wptb"); }?> /> No</label>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td>
+								<p class="sub"><em>Allows the user to close the TopBar.  Default is No.</em></p>
+						</td>
+				</tr>					
+				<tr valign="top">
+					<td width="150">When TopBar is Closed by the User:</label></td>
+					<td>
+					<label for="wptb_respect_cookie_ignore"><input type="radio" id="respect_cookie_ignore" name="wptbrespectcookie" value="ignore" <?php if ($wptbOptions['respect_cookie'] == "ignore") { _e('checked="checked"', "wptb"); }?>/> Always Show TopBar</label>		
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_respect_cookie_use"><input type="radio" id="respect_cookie_use" name="wptbrespectcookie" value="always" <?php if ($wptbOptions['respect_cookie'] == "always") { _e('checked="checked"', "wptb"); }?> /> Hide TopBar if Closed by User</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					</td>
+					<td>
+							<p class="sub"><em>Select how you want to handle when use closes TopBar:  Always Show the TopBar or Hide the TopBar if closed by the user.  If you chose the latter, a cookie is created if the user closes the TopBar.  The presence of that cookie on subsequent page views prevents the cookie from loading.  To remove the cookies, select the Always option. Default is to Always Show the TopBar.</em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td width="150">Enter the CSS for the Close Button:</label></td>
+					<td>
+					<textarea name="wptbclosecss" id="clsoecss" rows="2" cols="100"><?php echo $wptbOptions['close_button_css']; ?></textarea>
+					</td>
+					<td>
+						<p class="sub"><em>Default is "padding:0px; float:right;"</em></p>
+					</td>
+				</tr>	
+		
+				<tr valign="top">
+					<th scope="row">Close Button Image URL:</th>
+					<td><label for="wptbupload_closebutton">
+					<input id="wptbupload_closebutton" type="text" size="85" name="wptbcloseimage" value="<?php echo $wptbOptions['close_button_image']; ?>" />
+					<input class="browse_upload button" name="wptbcloseimage" id="wptbupload_closebutton_button" type="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" value="Upload Image" />
+					
+					</td><td><p class="sub"><em>Enter a URL or upload an image for the close button on the TopBar.</em></p>
+					</label></td>
+				</tr>
+			</table>
+		</div>
+		<table>
+		<tr>
+			<td style="valign:top; width:500px;"><p class="submit">
+				<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
+			</td>
+			<td style="valign:top;">
+				<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
+			</td>
+		</tr>
+		</table>
+		
+		<div class="clear"></div>	
+		</div>
+	</div> <!-- end of Close Button Settings -->
+
+					
 	<div class="postbox">
 	<h3><a name="Uninstall">Delete Settings</a></h3>
 	<div class="inside">
