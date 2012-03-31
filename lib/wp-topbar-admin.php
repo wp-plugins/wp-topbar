@@ -12,7 +12,7 @@ Admin Page
 
 function wptb_get_Plugin_Options() {
 
-	$wptb_version_number = '3.03';
+	$wptb_version_number = '3.04';
 	
 	$wptb_debug=get_transient( 'wptb_debug' );	
 				
@@ -449,13 +449,13 @@ function wptb_options_page() {
 		<div class=wrap>
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 		<h2><img src="<?php _e( plugins_url('/images/banner-772x250.png', __FILE__), 'wptb' ); ?>" height="50" alt="TopBar Banner"/>
-		<a >WP-TopBar - Version 3.03</a></h1>
+		<a >WP-TopBar - Version 3.04</a></h1>
 		<div class="postbox">
 		<br>
 		Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Includes Live Preview to see your TopBar.  Recent changes include:
 		<p><em>
 		<ol TYPE="I">
-		<li>Version 3.03 adds the ability to for user to close the TopBar.</li>
+		<li>Version 3.04 adds the ability to for user to close the TopBar.</li>
 		<li>Version 3.02 adds the ability to set a start/end time for the TopBar to show.</li>
 		<li>Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.</li>
 		</ol>
