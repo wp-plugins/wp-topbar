@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.3.1
-Stable tag: 3.03
+Stable tag: 3.04
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, link & more! 
 
@@ -12,7 +12,7 @@ Creates a TopBar that will be shown at the top (or bottom) of your website.  Cus
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
 
-Version 3.03 adds the ability to allow the user to close the TopBar.
+Version 3.04 adds the ability to allow the user to close the TopBar.
 
 Version 3.02 adds the ability to set a start/end time for the TopBar to show.   It was re-worked to be smaller and faster.
 
@@ -110,6 +110,9 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 3.04 = 
+
+Version 3.04 fixes corrupts SVN files
 = 3.03 = 
 
 Version 3.03 allows users to close the TopBar
@@ -150,6 +153,10 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 6. The Close Button section - plus the uninstall option.
 
 == Changelog ==
+
+= 3.04 - 3/30/2012 = 
+
+1. FIXED: Corrupt SVN files
 
 = 3.03 - 3/29/2012 = 
 
