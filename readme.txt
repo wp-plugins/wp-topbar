@@ -113,6 +113,7 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 = 3.04 = 
 
 Version 3.04 fixes corrupts SVN files
+
 = 3.03 = 
 
 Version 3.03 allows users to close the TopBar
@@ -156,7 +157,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 3.04 - 3/30/2012 = 
 
-1. FIXED: Corrupt SVN files
+1. FIXED: Corrupt SVN files.
 
 = 3.03 - 3/29/2012 = 
 
