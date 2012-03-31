@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 3.03
+Version: 3.04
 Author: Bob Goetz
 Author URI: http://wordpress.org/extend/plugins/profile/rfgoetz
 
@@ -61,9 +61,7 @@ class wptb {
 		//=========================================================================	
 			
 			add_action( 'init', array( __CLASS__, 'wptb_enqueue_jquery' ) );
-			add_action('wp_footer', array( __CLASS__, 'wptb_add_TopBar_Header_html' ), 15);
-			add_action('wp_footer', array( __CLASS__, 'wptb_add_TopBar_Footer_html' ), 15);
-			add_action('wp_footer', array( __CLASS__, 'wptb_add_TopBar_js' ), 15);	
+			add_action('wp_footer', array( __CLASS__, 'wptb_inject_TopBar_html_js' ), 15);
 		}
 		
 	}
@@ -88,8 +86,8 @@ class wptb {
 	function wptb_enqueue_admin_scripts() {
 		
 		if (isset($_GET['page']) && $_GET['page'] == 'wp-topbar.php') {  // only load these on the admin page
-			wp_register_script( 'wptb_topbar_js', plugins_url('/lib/wp-topbar.js', __FILE__), array('jquery') );
-			wp_enqueue_script('wptb_topbar_js');
+			wp_register_script( 'wptb_topbar_admin_js', plugins_url('/lib/wp-topbar-admin.js', __FILE__), array('jquery') );
+			wp_enqueue_script('wptb_topbar_admin_js');
 	
 	  		wp_enqueue_script( 'farbtastic' );
 			wp_enqueue_script( 'media-upload' );
@@ -189,7 +187,7 @@ class wptb {
 		
 	function wtpb_check_for_plugin_upgrade($wptb_echo_on) { 
 	
-		$wptb_this_version_number = '3.03';
+		$wptb_this_version_number = '3.04';
 	
 		$wptbOptions = get_option('wptbAdminOptions');
 		$wptb_debug=get_transient( 'wptb_debug' );	
@@ -218,8 +216,9 @@ class wptb {
 					
 					// For v 3.03 force div_css to old default for existing users
 					
-					if ($wptbOptions['div_css'] == '') $wptbOptions['div_css'] = 'visibility:hidden;'; 
-										
+					if ($wptbOptions['wptb_version'] < '3.03') {
+						if ($wptbOptions['div_css'] == '') $wptbOptions['div_css'] = 'visibility:hidden;'; 
+					}									
 					$wptbOptions['wptb_version'] = $wptb_this_version_number;
 					update_option('wptbAdminOptions', $wptbOptions);
 				}
@@ -266,62 +265,18 @@ class wptb {
 	}  // end function wptb_display_TopBar
 		
 	
-	
-	
 	//=========================================================================		
-	//Puts the Top Bar above the Header, if location is header and topbar is enbabled
+	//Adds the TopBar HTML and Javascript to the output
 	//=========================================================================		
 	
-	function wptb_add_TopBar_Header_html() {
+	function wptb_inject_TopBar_html_js() {
 	
 		$wptbOptions = get_option('wptbAdminOptions');
 	
-		if (($wptbOptions['enable_topbar'] == 'false') || ($wptbOptions['topbar_pos'] == 'footer')){ return; }
+		if ( $wptbOptions['enable_topbar'] == 'false' ) { return; }
+		if (!self::wptb_check_time(current_time('timestamp', 1), $wptbOptions['start_time_utc'],$wptbOptions['end_time_utc'])) { return; } // time check
 		
-	// use javascript to force to just before body tag
-		
-		echo "<script type='text/javascript'>
-
-		jQuery(document).ready(function() {
-
-		jQuery('body').prepend('";
-
-		
-		self::wptb_add_TopBar_common_html();
-		
-		echo "');} );</script>";
-
-	
-	}  // end function wptb_add_TopBar_Header_html
-	
-	
-	
-	//=========================================================================		
-	//Puts the Top Bar below the Footer, if location is footer and topbar is enbabled
-	//=========================================================================		
-	
-	function wptb_add_TopBar_Footer_html() {
-	
-		$wptbOptions = get_option('wptbAdminOptions');
-		
-		if (($wptbOptions['enable_topbar'] == 'false') || ($wptbOptions['topbar_pos'] == 'header')){ return; }
-		
-		self::wptb_add_TopBar_common_html();
-	
-	}  // end function wptb_add_TopBar_Footer_html
-			
-			
-	//=========================================================================		
-	//Adds the TopBar common html
-	//=========================================================================		
-	
-	function wptb_add_TopBar_common_html() {
-	
-		$wptbOptions = get_option('wptbAdminOptions');
-		if (!self::wptb_check_time(current_time('timestamp', 1), $wptbOptions['start_time_utc'],$wptbOptions['end_time_utc'])) {return;} // time check
-	
 		global $wp_query;
-	
 		$thePostID = $wp_query->post->ID;
 		
 	// if invert_include is 'yes', then exclude showing the Topbar using inlcude_pages values
@@ -333,32 +288,28 @@ class wptb {
 			if ( ! in_array( $thePostID, explode( ',', $wptbOptions['include_pages'] ) ) && ! in_array( 0, explode( ',', $wptbOptions['include_pages'] ) ) )
 					{ return; }			
 		}
-		
+
+	// use javascript to force the HTML to just before body tag if the topbar is at the top of the page
+		if ( $wptbOptions['topbar_pos'] == 'header' ) { 	
+			echo "<script type='text/javascript'>
+				  jQuery(document).ready(function() {
+			      jQuery('body').prepend('";
+		}
+				
 		echo '<div id="topbar" style="',$wptbOptions['div_css'],'">';
 		
 		self::wptb_display_TopBar('visibility:hidden;',$wptbOptions);
 	
 		echo '</div>';
-
-	}  // end function wptb_add_TopBar_common_html
-	
-	
-	//=========================================================================			
-	//Puts javascript in the footer
-	//=========================================================================		
-	
-	function wptb_add_TopBar_js() {
-		$wptbOptions = get_option('wptbAdminOptions');
+				
+		if ( $wptbOptions['topbar_pos'] == 'header' )
+			echo "');} );
+			";
 		
 		$wptb_cookie = "wptopbar_".COOKIEHASH;
-		
-		if ($wptbOptions['enable_topbar'] == 'false') { return; }  // if TopBar is not enabled, then exit function
-		
-		if (!self::wptb_check_time(current_time('timestamp', 1), $wptbOptions['start_time_utc'],$wptbOptions['end_time_utc'])) { return; } // check time
-		
-		echo '<script type="text/javascript">';
+				
 		if  ($wptbOptions['respect_cookie'] == 'ignore')   // destroy cookie
-			echo 'document.cookie="'	.$wptb_cookie.'"'."+'=;expires=Thu, 01-Jan-70 00:00:01 GMT;';";
+			echo 'document.cookie="'.$wptb_cookie.'"'."+'=;expires=Thu, 01-Jan-70 00:00:01 GMT;';";
 		
 		if ($wptbOptions['allow_close'] == 'yes') { 
 
@@ -378,7 +329,6 @@ class wptb {
 					  document.cookie="'.$wptb_cookie.'"+"="+escape(1)+";expires="+expDate.toUTCString();';
 			}
 			echo '};';
-
 		}
 		
 		echo 'jQuery(document).ready(function() {',"jQuery('#wptbheadline').hide().delay(",$wptbOptions['delay_time'],").css('visibility','visible').slideDown(",$wptbOptions['slide_time'],").fadeIn(1000).show('slow');";
@@ -388,7 +338,7 @@ class wptb {
 		} 		
 		echo '});</script>';
 
-	} // End of function wptb_add_TopBar_js
+	}  // end function wptb_inject_TopBar_html_js
 		 	
 	
 	//=========================================================================			
