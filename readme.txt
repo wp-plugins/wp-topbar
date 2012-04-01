@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.3.1
-Stable tag: 3.04
+Stable tag: 3.05
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, link & more! 
 
@@ -12,13 +12,13 @@ Creates a TopBar that will be shown at the top (or bottom) of your website.  Cus
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
 
+Version 3.05 has an easier to use admin page.
+
 Version 3.04 adds the ability to allow the user to close the TopBar.
 
 Version 3.02 adds the ability to set a start/end time for the TopBar to show.   It was re-worked to be smaller and faster.
 
 Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.
-
-Version 2.0 adds additional CSS options (Display Time) that allows you to make the TopBar disappear and the ability to exclude pages from showing the Topbar.
 
 Various options allow you to:
 <ol>
@@ -72,6 +72,12 @@ I've included a sample image for you to try on your website:  wp-topbar_sample_i
 
 == Frequently Asked Questions ==
 
+= How do the new cookies (in version 3.04+) work behind the scenes? = 
+
+If you allow the user to close the TopBar, then the plugin checks to see if you have enabled cookies.   If they are not enabled, it deletes any existing cookies.   If they are enabled, it looks to see if a cookie has been created.  A cookie is only created if the TopBar has been previously closed by the user.  If it finds a cookie, it prevents the TopBar from showing.
+
+If you change the Cookie Value to something new, the TopBar will show up again.  This is useful if you want to force the TopBar to show on new content.  Make sure to select something you haven't used before.  A good idea is to increment the value by one every time you want to force the TopBar to show.
+
 = What CSS ID's are available? =
 
 Use "#topbar"
@@ -85,7 +91,6 @@ Or this to fix the TopBar to the top of the page (adjust the top value to be the
 	position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;
 
 Note that by putting your TopBar in a Fixed Position, you will overlay the content of your website by the TopBar.
-
 
 = How to Find the Page ID = 
 
@@ -109,6 +114,10 @@ Click "OK" on the warning box.
 Go to your Plugins page and delete the plugin or delete all the files in your `/wp-content/plugins/wp-topbar` directory 
 
 == Upgrade Notice ==
+
+= 3.05 = 
+
+Version 3.05 has a new admin page and fixes a few errors.  
 
 = 3.04 = 
 
@@ -147,13 +156,20 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 == Screenshots ==
 
 1. This is how it will look on your website.
-2. Preview section.
-3. Options section.
-4. Custom CSS Options section.
-5. The Color Selection and TopBar Text, Image & Link Options sections
-6. The Close Button section - plus the uninstall option.
+2. Main Options.
+3. ToolBar Text & Image Options.
+4. Custom CSS Options.
+5. Color Selection Options.
+6. Close Button Options.
+7. Delete Settings Option.
+
 
 == Changelog ==
+
+= 3.05 - 3/31/2012 = 
+
+1. FIXED: javascript error if "footer" is chosen as placement of TopBar
+2. NEW: Redesigned admin page
 
 = 3.04 - 3/30/2012 = 
 

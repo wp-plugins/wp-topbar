@@ -8,13 +8,17 @@ Admin Page
 
 //=========================================================================		
 //Returns an array of admin options, but sets default values if none are loaded.
+//
+// Parameter $wptb_echo_on is used for debugging:  
+//		True=check for debuging flag, 0=don't check for debugging flag
 //=========================================================================		
 
-function wptb_get_Plugin_Options() {
+function wptb_get_Plugin_Options($wptb_echo_on) {
 
-	$wptb_version_number = '3.04';
+	$wptb_version_number = '3.05';
 	
-	$wptb_debug=get_transient( 'wptb_debug' );	
+	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
+	else $wptb_debug = false;			
 				
 	$wptbSetOptions = array(
 		'wptb_version' => $wptb_version_number,
@@ -40,9 +44,11 @@ function wptb_get_Plugin_Options() {
 		'margin_top' => '0',
 		'margin_bottom' => '0',
 		'respect_cookie' => 'ignore',
+		'cookie_value' => '1',
+		'past_cookie_values' => array('1'),
 		'allow_close' => 'no',
-		'close_button_image' => plugins_url('/images/close.png', __FILE__),
-		'close_button_css' => 'padding:0px; float:right;',
+		'close_button_image' => str_ireplace( 'https://','http://',plugins_url('/images/close.png', __FILE__) ),
+		'close_button_css' => 'float:right;',
 		'link_target' => 'blank',
 		'bar_link' => 'http://wordpress.org/extend/plugins/wp-topbar/',
 		'bar_text' => 'Get your own TopBar ',
@@ -50,7 +56,7 @@ function wptb_get_Plugin_Options() {
 		'text_align' => 'center',
 		'bar_image' => '',
 		'enable_image' => 'false',
-		'custom_css_bar' => 'background:white;',
+		'custom_css_bar' => '',
 		'div_css' => 'position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;');
 
 	$wptbOptions = get_option('wptbAdminOptions');
@@ -58,11 +64,10 @@ function wptb_get_Plugin_Options() {
 	if (!empty($wptbOptions)) {
 		foreach ($wptbOptions as $key => $option)
 			$wptbSetOptions[$key] = $option;
-		wptb::wtpb_check_for_plugin_upgrade(1);	// call this in case the user did not use WP to upgrade/install plugin	
+		wptb::wtpb_check_for_plugin_upgrade($wptb_echo_on);	// call this in case the user did not use WP to upgrade/install plugin	
 	}
 	else 
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: <strong>No</strong> "wptbAdminOptions" in WP Options table, taking defaults</code>';
-
 
 	if($wptb_debug){
 		$wptb_current_time=current_time('timestamp', 1);
@@ -101,6 +106,28 @@ function wptb_get_Plugin_Options() {
 			else
 				echo '<br><code>WP-TopBar Debug Mode: TopBar will <strong>NOT</strong> display due to time settings even though it is enabled</code>';
 		
+		$wptb_cookie = "wptopbar_".COOKIEHASH;
+
+		echo "<br><code>WP-TopBar Debug Mode: Cookie Name: ".$wptb_cookie."</code>";
+		if (isset($_COOKIE[$wptb_cookie]) && ($wptbOptions['respect_cookie'] = "always"))
+			echo "<br><code>WP-TopBar Debug Mode: Cookie Value: ". $_COOKIE[$wptb_cookie]."</code>"; 
+		else
+			echo "<br><code>WP-TopBar Debug Mode: Cookie not found</code>";
+		
+		if  ( ($wptbOptions['respect_cookie'] == 'always' ) AND  ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value'] ) ) {
+			echo "<br><code>WP-TopBar Debug Mode: TopBar will not show</code>";
+
+		}	
+		
+		// check for iPhone, iPad or iPod -- they can't use flash 
+		
+		$browser = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+		
+		if (!(stripos($browser,'iPod')) && !(stripos($browser,'iPhone')) && !(stripos($browser,'iPad'))) 
+			if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Not an iPhone/iPad/iPod Device</code>';
+		else 
+			if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: An iPhone/iPad/iPod Device</code>';
+
 		echo '<br><code>WP-TopBar Debug Mode: Filename:',plugin_dir_path(__FILE__),'</code>';
 		echo '<br><code>WP-TopBar Debug Mode: --------------------------------------</code>';
 		echo '<br><code>WP-TopBar Debug Mode: Using these "wptbAdminOptions" Values:</code>';
@@ -108,23 +135,6 @@ function wptb_get_Plugin_Options() {
 			  	echo '<br><code>WP-TopBar Debug Mode:&nbsp&nbsp[',$i,']: ',$value,'</code>';
 			}
 		echo '<br><code>WP-TopBar Debug Mode: --------------------------------------</code>';
-
-		$wptb_cookie = "wptopbar_".COOKIEHASH;
-
-		echo "<br><code>WP-TopBar Debug Mode: Respect Cookie: ".$wptbOptions['respect_cookie']."</code>";
-		echo "<br><code>WP-TopBar Debug Mode: Show Close Button: ".$wptbOptions['allow_close']."</code>"; 
-		echo "<br><code>WP-TopBar Debug Mode: Cookie Name: ".$wptb_cookie."</code>";
-		if (isset($_COOKIE[$wptb_cookie]) && ($wptbOptions['respect_cookie'] = "always"))
-			echo "<br><code>WP-TopBar Debug Mode: Cookie Value: ". $_COOKIE[$wptb_cookie]."</code>"; 
-		else
-			echo "<br><code>WP-TopBar Debug Mode: Cookie not found</code>";
-		
-		if  ( ($wptbOptions['respect_cookie'] == 'always') AND  ( $_COOKIE[$wptb_cookie] == "1") ) {
-			echo "<br><code>WP-TopBar Debug Mode: TopBar will not show</code>";
-
-		}
-		
-		
 	
 	}
 
@@ -132,18 +142,180 @@ function wptb_get_Plugin_Options() {
 }  // end function wptb_get_Plugin_Options
 
 
+//=========================================================================			
+// Options Page
+//=========================================================================			
+
+
 function wptb_options_page() {
+
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+	
+	// $wptb_common_style is used by all buttons except the Copy & Special buttons
+		
+	$wptb_common_style = "padding:7.5px 15px;
+		-webkit-border-radius:23px;
+		-moz-border-radius:23px;
+		border-radius:23px;
+		-webkit-box-shadow:rgba(0,0,0,1) 0 1px 0;
+		-moz-box-shadow:rgba(0,0,0,1) 0 1px 0;
+		box-shadow:rgba(0,0,0,1) 0 1px 0;
+		text-shadow:rgba(0,0,0,.4) 0 1px 0;
+		font-size:16px;
+		font-family:'Lucida Grande', Helvetica, Arial, Sans-Serif;
+		text-decoration:none;
+		vertical-align:middle;";
+			
+	$wptb_button_style = 'border-top:1px solid #96d1f8;
+		background:#65a9d7;
+		background:-webkit-gradient(linear, left top, left bottom, from(#215375), to(#65a9d7));
+		background:-webkit-linear-gradient(top, #215375, #65a9d7);
+		background:-moz-linear-gradient(top, #215375, #65a9d7);
+		background:-ms-linear-gradient(top, #215375, #65a9d7);
+		background:-o-linear-gradient(top, #215375, #65a9d7);
+		color:white;'.$wptb_common_style; 
+	
+	$wptb_clear_style = 'border-top:1px solid #96d1f8;
+		background:#FFFF90;
+		color:black;'.$wptb_common_style; 
+		
+	$wptb_cssgradient_style='border-top: 1px solid #c5f797;
+	   background: #92d665;
+	   background: -webkit-gradient(linear, left top, left bottom, from(#699c3e), to(#92d665));
+	   background: -webkit-linear-gradient(top, #699c3e, #92d665);
+	   background: -moz-linear-gradient(top, #699c3e, #92d665);
+	   background: -ms-linear-gradient(top, #699c3e, #92d665);
+	   background: -o-linear-gradient(top, #699c3e, #92d665);
+	   color: white;'.$wptb_common_style.'font-size:12px;'; 
+	
+	$wptb_submit_style = 'border-top:1px solid #97f7c1;
+		background:#65d67f;
+		background:-webkit-gradient(linear, left top, left bottom, from(#217342), to(#65d67f));
+		background:-webkit-linear-gradient(top, #217342, #65d67f);
+		background:-moz-linear-gradient(top, #217342, #65d67f);
+		background:-ms-linear-gradient(top, #217342, #65d67f);
+		background:-o-linear-gradient(top, #217342, #65d67f);
+		color: white;'.$wptb_common_style;  
+	
+	$wptb_delete_style = 'border-top:1px solid #f59898;
+		background:#d46565;
+		background:-webkit-gradient(linear, left top, left bottom, from(#732121), to(#d46565));
+		background:-webkit-linear-gradient(top, #732121, #d46565);
+		background:-moz-linear-gradient(top, #732121, #d46565);
+		background:-ms-linear-gradient(top, #732121, #d46565);
+		background:-o-linear-gradient(top, #732121, #d46565);
+		color:#f2f2f2;'.$wptb_common_style;
+	
+	$wptb_special_button_style = "border-top: 1px solid #d7ddcb;
+		   background: #ebf3df;
+		   color: black;
+		   margin-left:auto;
+		   margin-right:auto;
+		   width:130px;
+		   font-size: 10px;
+		   font-family: 'Lucida Grande', Helvetica, Arial, Sans-Serif;
+		   text-decoration: none;
+		   vertical-align: middle;";
+
+//	first time through, check for updated settings
+
+	wptb_update_settings();	
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
 
-	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: ', date('D, d M Y H:i:s (e)',get_transient( 'wptb_debug' )),'</code>';
-	
+	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: ', date('D, d M Y H:i:s (e)',get_transient( 'wptb_debug' )),'</code>';	
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Loading Options</code>';
-	$wptbOptions = wptb_get_Plugin_Options();
-	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Updating Options</code>';
+	
+	$wptbOptions = wptb_get_Plugin_Options(false);
+	
+	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Completed Updating Options</code>';
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Version ',$wptbOptions['wptb_version'],'</code>';
 
-								
+//  output the top of the page
+
+	wptb_display_common_info();
+
+//  now build the right tab to display
+
+    if ( isset ( $_GET['tab'] ) )
+        $tab = $_GET['tab'];
+    else
+        $tab = 'main';
+
+	wptb_options_tabs($tab);
+
+    switch ( $tab ) :
+        case 'main' :
+            wptb_main_options();
+            break;
+        case 'customcss' :
+            wptb_customcss_options();
+            break;
+        case 'colorselection' :
+            wptb_colorselection_options();
+            break;
+        case 'topbartext' :
+            wptb_topbartext_options();
+            break;
+        case 'closebutton' :
+            wptb_closebutton_options();
+            break;
+        case 'delete' :
+            wptb_delete_options();
+            break;
+        case 'faq' :
+            wptb_faq_page();
+            break;
+      endswitch;
+
+}  // end function wptb_options_page
+
+//=========================================================================			
+// Build the tabs on top of the Admin page 
+//=========================================================================			
+
+
+function wptb_options_tabs( $current = 'main' ) {
+    $tabs = array( 'main' => 'Main&nbspOptions',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'customcss' => 'Custom&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'delete' => 'Delete&nbspSettings', 'faq' => 'FAQ' );
+    $links = array();
+    foreach( $tabs as $tab => $name ) {
+    	if ( $tab == "faq" ) {
+    		$css="ui-widget-content"; 
+    		$font="18px;";
+    	}
+    	else {
+    		$css="ui-state-default"; 
+    		$font="20px;"; 
+    	}
+        if ( $tab == $current ) 
+            $links[] = "<a class='".$css." ui-corner-top ui-tabs-selected ui-state-active ui-state-hover' style='text-decoration:none; padding: 0 10px 0 10px;' href='?page=wp-topbar.php&tab=$tab'>$name</a>";
+        else 
+            $links[] = "<a class='".$css." ui-corner-top' style='font-size:".$font." font-weight:normal; padding: 0 10px 0 10px; text-decoration:none' href='?page=wp-topbar.php&tab=$tab'>$name</a>";
+        
+    }
+    echo '<h2>';
+	foreach ($links as $i => $value) {
+        echo $value;
+		if ( $i == "5") echo "<br>";
+	}
+        
+// add plugin home page link       
+    echo "<a class='ui-widget-content ui-corner-top' style='font-size:18px; font-weight:normal; padding: 0 10px 0 10px; text-decoration:none'  href='http://wordpress.org/extend/plugins/wp-topbar/' target='_blank'>Plugin Homepage</a>";
+    echo '</h2>';
+
+}  // end function wptb_options_tabs
+
+
+//=========================================================================			
+// Update Settings 
+//=========================================================================			
+
+function wptb_update_settings() {	
+
+	$wptb_debug=get_transient( 'wptb_debug' );	
+	$wptbOptions = wptb_get_Plugin_Options(true);
+							
 	if (isset($_POST['update_wptbSettings'])) { 
 		if (isset($_POST['wptbenabletopbar'])) {
 			$wptbOptions['enable_topbar'] = $_POST['wptbenabletopbar'];
@@ -207,8 +379,6 @@ function wptb_options_page() {
 				$wptbOptions['start_time'] = $_POST['wptbstarttime'];
 				$wptbOptions['start_time_utc'] = $_POST['wptbstarttime'];
 		}
-
-
 		if (isset($_POST['wptbendtime'])) {
 
 			$wptbOptions['end_time'] = $_POST['wptbendtime'];
@@ -292,6 +462,33 @@ function wptb_options_page() {
 		if (isset($_POST['wptbrespectcookie'])) {
 			$wptbOptions['respect_cookie'] = $_POST['wptbrespectcookie'];
 		}
+		if (isset($_POST['wptbcookievalue'])) {
+		
+			$wptbOldCookieValue = $wptbOptions['cookie_value'];
+			
+			$wptbOptions['cookie_value'] = $_POST['wptbcookievalue'];
+			
+			$wptbNewCookieValue = $wptbOptions['cookie_value'];
+
+			if (! ($wptbNewCookieValue == $wptbOldCookieValue ) ) {
+
+				$wptbPastValues = $wptbOptions['past_cookie_values'];
+
+				if ( !( is_array( $wptbPastValues ) ) )
+					$wptbPastValues = array('');
+				else
+					if ( count( $wptbPastValues ) >= 10 )
+						array_shift( $wptbPastValues );
+				
+				$wptbPastValues[]=$wptbNewCookieValue;	
+				
+				$wptbOptions['past_cookie_values']=	$wptbPastValues;	
+			}
+
+
+
+
+		}
 		if (isset($_POST['wptbcloseimage'])) {
 			$wptbOptions['close_button_image'] = esc_url($_POST['wptbcloseimage']);
 		}	
@@ -304,193 +501,71 @@ function wptb_options_page() {
 		if (isset($_POST['wptbtopbarpos'])) {
 			$wptbOptions['topbar_pos'] = $_POST['wptbtopbarpos'];
 		}
-		
+	
 		update_option('wptbAdminOptions', $wptbOptions);
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Settings Updated</code>';
 		echo '<div class="updated"><p><strong>Settings Updated.</strong></p></div>';
-		$wptbOptions = wptb_get_Plugin_Options();
-
-
+		$wptbOptions = wptb_get_Plugin_Options(false);
 	}  // end of update_wptbSettings condition
 	
 	if (isset($_POST['delete_wptbSettings'])) { 
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Delete Settings</code>';
 		delete_option('wptbAdminOptions');
-		$wptbOptions = wptb_get_Plugin_Options();
+		$wptbOptions = wptb_get_Plugin_Options(false);
 		echo '<div class="updated"><p><strong>Settings Deleted.</strong></p></div>';
 	} // end of delete_wptbSettings condition
 	
+}	// End of wptb_update_settings
+
+
+
+//=========================================================================			
+// Display Top Of Admin Page
+//=========================================================================			
+
+
+function wptb_display_common_info() {
+
+	$wptb_debug=get_transient( 'wptb_debug' );	
+	$wptbOptions = wptb_get_Plugin_Options(false);
+
 	if ($wptbOptions['start_time_utc'] > $wptbOptions['end_time_utc'] && $wptbOptions['end_time_utc'] != 0 ) {
 		echo '<div class="error"><strong>End Time is before Start Time - TopBar will not display.</strong></div>';
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: End Time Before Start Time Error</code>';
 	}
 
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Displaying Options Page</code>';
-
-	// $wptb_common_style is used by all buttons except the Copy & Special buttons
-		
-	$wptb_common_style = "padding:7.5px 15px;
-		-webkit-border-radius:23px;
-		-moz-border-radius:23px;
-		border-radius:23px;
-		-webkit-box-shadow:rgba(0,0,0,1) 0 1px 0;
-		-moz-box-shadow:rgba(0,0,0,1) 0 1px 0;
-		box-shadow:rgba(0,0,0,1) 0 1px 0;
-		text-shadow:rgba(0,0,0,.4) 0 1px 0;
-		font-size:16px;
-		font-family:'Lucida Grande', Helvetica, Arial, Sans-Serif;
-		text-decoration:none;
-		vertical-align:middle;";
-			
-	$wptb_button_style = 'border-top:1px solid #96d1f8;
-		background:#65a9d7;
-		background:-webkit-gradient(linear, left top, left bottom, from(#215375), to(#65a9d7));
-		background:-webkit-linear-gradient(top, #215375, #65a9d7);
-		background:-moz-linear-gradient(top, #215375, #65a9d7);
-		background:-ms-linear-gradient(top, #215375, #65a9d7);
-		background:-o-linear-gradient(top, #215375, #65a9d7);
-		color:white;'.$wptb_common_style; 
-	
-	$wptb_clear_style = 'border-top:1px solid #96d1f8;
-		background:#FFFF90;
-		color:black;'.$wptb_common_style; 
-		
-	$wptb_cssgradient_style='border-top: 1px solid #c5f797;
-	   background: #92d665;
-	   background: -webkit-gradient(linear, left top, left bottom, from(#699c3e), to(#92d665));
-	   background: -webkit-linear-gradient(top, #699c3e, #92d665);
-	   background: -moz-linear-gradient(top, #699c3e, #92d665);
-	   background: -ms-linear-gradient(top, #699c3e, #92d665);
-	   background: -o-linear-gradient(top, #699c3e, #92d665);
-	   color: white;'.$wptb_common_style; 
-	
-	$wptb_submit_style = 'border-top:1px solid #97f7c1;
-		background:#65d67f;
-		background:-webkit-gradient(linear, left top, left bottom, from(#217342), to(#65d67f));
-		background:-webkit-linear-gradient(top, #217342, #65d67f);
-		background:-moz-linear-gradient(top, #217342, #65d67f);
-		background:-ms-linear-gradient(top, #217342, #65d67f);
-		background:-o-linear-gradient(top, #217342, #65d67f);
-		color: white;'.$wptb_common_style;  
-	
-	$wptb_delete_style = 'border-top:1px solid #f59898;
-		background:#d46565;
-		background:-webkit-gradient(linear, left top, left bottom, from(#732121), to(#d46565));
-		background:-webkit-linear-gradient(top, #732121, #d46565);
-		background:-moz-linear-gradient(top, #732121, #d46565);
-		background:-ms-linear-gradient(top, #732121, #d46565);
-		background:-o-linear-gradient(top, #732121, #d46565);
-		color:#f2f2f2;'.$wptb_common_style;
-	
-	$wptb_special_button_style = "border-top: 1px solid #d7ddcb;
-		   background: #ebf3df;
-		   color: black;
-		   margin-left:auto;
-		   margin-right:auto;
-		   width:130px;
-		   font-size: 10px;
-		   font-family: 'Lucida Grande', Helvetica, Arial, Sans-Serif;
-		   text-decoration: none;
-		   vertical-align: middle;";
-	// check for iPhone, iPad or iPod -- they can't use flash so the Copy button is hidden
-	
-	$browser = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-	
-	if (!(stripos($browser,'iPod')) && !(stripos($browser,'iPhone')) && !(stripos($browser,'iPad'))) {
-		
-		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Not an iPhone/iPad/iPod Device</code>';
-		$wptb_copy_style = "border-top: 1px solid #ea97f7;
-		   background: #d065d6;
-		   background: -webkit-gradient(linear, left top, left bottom, from(#9c3e9c), to(#d065d6));
-		   background: -webkit-linear-gradient(top, #9c3e9c, #d065d6);
-		   background: -moz-linear-gradient(top, #9c3e9c, #d065d6);
-		   background: -ms-linear-gradient(top, #9c3e9c, #d065d6);
-		   background: -o-linear-gradient(top, #9c3e9c, #d065d6);
-		   padding: 3px 6px;
-		   -webkit-border-radius: 13px;
-		   -moz-border-radius: 13px;
-		   border-radius: 13px;
-		   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
-		   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
-		   box-shadow: rgba(0,0,0,1) 0 1px 0;
-		   text-shadow: rgba(0,0,0,.4) 0 1px 0;
-		   color: white;
-		   font-size: 10px;
-		   font-family: 'Lucida Grande', Helvetica, Arial, Sans-Serif;
-		   text-decoration: none;
-		   vertical-align: middle;";
-	   }
-	else {
-		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: An iPhone/iPad/iPod Device</code>';
-	    $wptb_copy_style = 'visibility:hidden';
-	}
-	// following variables are used to store the sample code that can be copied via ZeroClipboard
-									
-	$div_css_sample_top='position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;';
-	$div_css_sample_bot='position:fixed; bottom: 0; padding:0; margin:0; width: 100%; z-index: 99999;';							
-	
-	$css_sample1='text-transform:lowercase;';
-	$css_sample2="text-transform:uppercase;font-family:'georgia';padding-right:10px;";
-	$css_sample3="background: rgb(109,179,242);
-	background: -moz-linear-gradient(top,  rgba(109,179,242,1) 0%, rgba(84,163,238,1) 50%, rgba(54,144,240,1) 51%, rgba(30,105,222,1) 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(109,179,242,1)), color-stop(50%,rgba(84,163,238,1)), color-stop(51%,rgba(54,144,240,1)), color-stop(100%,rgba(30,105,222,1)));
-	background: -webkit-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
-	background: -o-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
-	background: -ms-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
-	background: linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', endColorstr='#1e69de',GradientType=0 );";
-	
+		   
 	$wptb_cookie = "wptopbar_".COOKIEHASH;
-	if  ( ($wptbOptions['respect_cookie'] == 'always') AND  ( $_COOKIE[$wptb_cookie] == "1") ) 
-		 _e( '<div class="error"><strong>You have a cookie that will prevent the TopBar from showing.  To show the TopBar, clear your cookies or select the "Always Show TopBar" option in the Main Options.</strong></div>', 'wptb' ); 
-
+	if  ( ($wptbOptions['respect_cookie'] == 'always' ) AND  ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value'] ) ) 
+		 _e( "<div class='error'><strong>You have a cookie with this browser that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the Close Button Options.</strong></div>", 'wptb' ); 
 	?>  
-	<a name="Top">
+
+	<a name="Top"></a>
 		<div class=wrap>
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 		<h2><img src="<?php _e( plugins_url('/images/banner-772x250.png', __FILE__), 'wptb' ); ?>" height="50" alt="TopBar Banner"/>
-		<a >WP-TopBar - Version 3.04</a></h1>
+		WP-TopBar - Version 3.05</h2>
 		<div class="postbox">
 		<br>
-		Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.  Includes Live Preview to see your TopBar.  Recent changes include:
-		<p><em>
-		<ol TYPE="I">
-		<li>Version 3.04 adds the ability to for user to close the TopBar.</li>
-		<li>Version 3.02 adds the ability to set a start/end time for the TopBar to show.</li>
-		<li>Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.</li>
-		</ol>
-		</em>
+		Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.
+		<br><br>
+		Please <a id="wptbdonate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J" target="_blank"><img style="height:20px; vertical-align:middle;" src="<?php  echo plugins_url('/images/donate.gif', __FILE__)?>" /></a>
+if you find this plugin useful.
+
 		<hr>
-		Please <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J" target="_blank">donate</a> if you find this plugin useful.
-		<hr>
-		<p></p>
-		<center>
-		<a class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" href="#MainOptions">Main Options</a>
-		&nbsp;&nbsp;
-		<a class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" href="#CustomCss">Custom CSS</a>
-		&nbsp;&nbsp;
-		<a class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" href="#ColorSelection">Color Selection</a>
-		&nbsp;&nbsp;
-		<a class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" href="#TopbarText">TopBar Text</a>
-		&nbsp;&nbsp;
-		<a class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" href="#CloseButton">Close Button</a>
-		&nbsp;&nbsp;
-		<a class="button" style="<?php _e( $wptb_delete_style , 'wptb' ); ?>" href="#Uninstall">Delete Settings</a>
-		<a class="button" style="<?php _e( $wptb_clear_style , 'wptb' ); ?>" href="http://wordpress.org/extend/plugins/wp-topbar/" target="_blank" >Plugin Home Page</a>
-		<a id="wptbdonate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J" target="_blank"><img style="height:29px; vertical-align:middle;" src="<?php  echo plugins_url('/images/donate.gif', __FILE__)?>" /></a>
-		</center>
-		<p></p>
+
 		</div>
-		<div class="postbox">
+				<div class="postbox">
 		<?php if ($wptbOptions['enable_topbar'] == "false") { _e( '<div class="error"><strong>TopBar is not enabled.</strong></div>', 'wptb' ); } ?>
-		<h3>Live Preview</h3>
+		<h3>Live Preview - <em><p style="font-weight:normal;">Based on your Start/End time settings in the Main Options,<?php if ($wptbOptions['enable_topbar'] == "false") { _e( ' when enabled,', 'wptb' ); } ?> the TopBar will <?php if (!wptb::wptb_check_time(gettimeofday(true),$wptbOptions['start_time_utc'],$wptbOptions['end_time_utc'])) echo "<strong>not</strong>"; ?> display (based on the current time.)
+		<br><?php if  ( ($wptbOptions['respect_cookie'] == 'always' ) AND ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value'] ) ) 
+		echo "<br>You have a cookie that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the Close Button Options."; ?>
+		</p>
+		</em></h3>
+
 		<div class="inside">
 			<p class="sub">This is how the TopBar will appear on the website.
-			<em>Based on your Start/End time settings below, the TopBar will <?php if (!wptb::wptb_check_time(gettimeofday(true),$wptbOptions['start_time_utc'],$wptbOptions['end_time_utc'])) echo "<strong>not</strong>"; ?> display (based on the current time.)</em>
-
-
-	  	<?php if  ( ($wptbOptions['respect_cookie'] == 'always') AND  ( $_COOKIE[$wptb_cookie] == "1") ) 
-			echo "<strong><em><br>You have a cookie that will prevent the TopBar from showing.  To show the TopBar, clear your cookies or select the 'Always Show TopBar' in the Main Options.</em></strong>"; ?>
 			<br>To test the TopBar on your site, you can set the Page IDs (in Main Options) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
 			<br> The first black line below represents the top of the screen.  The second black line represents the bottom of the TopBar.</p>
 			<div class="table">
@@ -508,302 +583,424 @@ function wptb_options_page() {
 			<div class="clear"></div>	
 			</div>
 		</div>
-		
-		<div class="postbox">
-		<h3><a name="MainOptions">Main Options</a></h3>
-		<div class="inside">
-			<div class="table">
-				<table class="form-table">		
-					<tr valign="top">
-						<td width="150">Enable TopBar:</label></td>
-						<td>
-							<label for="wptb_enable_topbar"><input type="radio" id="wptb_enable_topbar" name="wptbenabletopbar" value="true" <?php if ($wptbOptions['enable_topbar'] == "true") { _e('checked="checked"', "wptb"); }?> /> Yes</label>&nbsp;&nbsp;&nbsp;&nbsp;<label for="wptbenabletopbar_no"><input type="radio" id="wptbenabletopbar_no" name="wptbenabletopbar" value="false" <?php if ($wptbOptions['enable_topbar'] == "false") { _e('checked="checked"', "wptb"); }?>/> No</label>				
-						</td>
-						<td>
-							<p class="sub"><em>This allows you to turn off the TopBar without disabling the plugin.</em></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<td width="150">TopBar Location:</label></td>
-						<td>
-						<label for="wptb_topbar_pos_header"><input type="radio" id="wptb_topbar_pos_header" name="wptbtopbarpos" value="header" <?php if ($wptbOptions['topbar_pos'] == "header") { _e('checked="checked"', "wptb"); }?>/> Above Header</label>		
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<label for="wptb_topbar_pos_footer"><input type="radio" id="wptb_topbar_pos_footer" name="wptbtopbarpos" value="footer" <?php if ($wptbOptions['topbar_pos'] == "footer") { _e('checked="checked"', "wptb"); }?> /> Below Footer</label>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						</td>
-						<td>
-								<p class="sub"><em>Select where you want to TopBar to be located. Default is Above Header.</em></p>
-						</td>
-					</tr>	
-					<tr valign="top">
-						<td width="150">Start Delay:</label></td>
-						<td>
-							<input type="text" name="wptbdelayintime" id="delayintime" size="30" value="<?php echo $wptbOptions['delay_time']; ?>" >
-						</td>
-						<td>
-								<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to delay before appearing.  Enter 0 for no delay.</em></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<td width="150">Slide Time:</label></td>
-						<td>
-							<input type="text" name="wptbslidetime" id="slidetime" size="30" value="<?php echo $wptbOptions['slide_time']; ?>" >
-						</td>
-						<td>
-								<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to take to slide down on the page.  Enter 0 for no delay.</em></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<td width="150">Display Time:</label></td>
-						<td>
-							<input type="text" name="wptbdisplaytime" id="displaytime" size="30" value="<?php echo $wptbOptions['display_time']; ?>" >
-						</td>
-						<td>
-								<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to show n on the page.  Enter 0 for the TopBar to not disappear.</em></p>
-						</td>
-					</tr>							
-					<tr valign="top">
-						<td width="150">Starting Time:</label></td>
-						<td>
-							<div class="wptb-date-picker-container"> <input type="text" id="wptbstarttimebtn" name="wptbstarttime" size="30" value="<?php echo $wptbOptions['start_time']; ?>"></label></div><p class="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" id="wptbstarttimebtnClear">Set Start Time to Zero</p>									  
-							<div id="wptb_start_time"></div>				    
-						</td>
-						<td>
-								<p class="sub"><em>Pick the time for the TopBar to start showing.  Default is zero.</em></p>
-						</td>
-					</tr>							
-					<tr valign="top">
-						<td width="150">Ending Time:</label></td>
-						<td>
-							<input type="text" id="wptbendtimebtn" name="wptbendtime" size="30" value="<?php echo $wptbOptions['end_time']; ?>"></label>	<p class="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" id="wptbtimebtnClear">&nbspSet End Time to Zero</p>							  
-							<div id="wptb_end_time"></div>				    
-						</td>
-						<td>
-								<p class="sub"><em>Pick the time for the TopBar to stop showing.  Of course, it must be after the start time. Select 0 for the TopBar to never disappear.</em></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<td width="150">Bottom border height (px):</label></td>
-						<td>
-							<input type="text" name="wptbbottomborderheight" id="bottomborderheight" size="5" value="<?php echo $wptbOptions['bottom_border_height']; ?>" >
-						</td>
-						<td>
-								<p class="sub"><em>Enter the height of the bottom of the border.  Default is 3px.</em></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<td width="150">Top padding (px):</label></td>
-						<td>
-							<input type="text" name="wptbpaddingtop" id="paddingtop" size="5" value="<?php echo $wptbOptions['padding_top']; ?>" >
-						</td>
-						<td>
-								<p class="sub"><em>Enter the top padding.  Default is 8px.</em></p>
-						</td>
-					</tr>			
-					<tr valign="top">
-						<td width="150">Bottom padding (px):</label></td>
-						<td>
-							<input type="text" name="wptbpaddingbottom" id="paddingbottom" size="5" value="<?php echo $wptbOptions['padding_bottom']; ?>" >
-						</td>
-						<td>
-								<p class="sub"><em>Enter the bottom padding.  Default is 8px.</em></p>
-						</td>
-					</tr>		
-					<tr valign="top">
-						<td width="150">Top margin (px):</label></td>
-						<td>
-							<input type="text" name="wptbmargintop" id="margintop" size="5" value="<?php echo $wptbOptions['margin_top']; ?>" >
-						</td>
-						<td>
-								<p class="sub"><em>Enter the top margin.  Default is 0px.</em></p>
-						</td>
-					</tr>			
-					<tr valign="top">
-						<td width="150">Bottom margin (px):</label></td>
-						<td>
-							<input type="text" name="wptbmarginbottom" id="marginbottom" size="5" value="<?php echo $wptbOptions['margin_bottom']; ?>" >
-						</td>
-						<td>
-								<p class="sub"><em>Enter the bottom margin.  Default is 0px.</em></p>
-						</td>
-					</tr>				
-					<tr valign="top">
-						<td width="150">Font size (px):</label></td>
-						<td>
-							<input type="text" name="wptbfontsize" id="fontsize" size="5" value="<?php echo $wptbOptions['font_size']; ?>" >
-						</td>
-						<td>
-								<p class="sub"><em>Enter the font size.  Default is 14px.</em></p>
-						</td>
-					</tr>	
-					<tr valign="top">
-						<td width="150">Text alignment:</label></td>
-						<td>
-						<label for="wptb_text_align_left"><input type="radio" id="wptb_text_align_left" name="wptbtextalign" value="left" <?php if ($wptbOptions['text_align'] == "left") { _e('checked="checked"', "wptb"); }?>/> Left</label>		
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<label for="wptb_text_align"><input type="radio" id="wptb_text_align" name="wptbtextalign" value="center" <?php if ($wptbOptions['text_align'] == "center") { _e('checked="checked"', "wptb"); }?> /> Center</label>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<label for="wptb_text_align_right"><input type="radio" id="wptb_text_align_right" name="wptbtextalign" value="right" <?php if ($wptbOptions['text_align'] == "right") { _e('checked="checked"', "wptb"); }?>/> Right</label>	
-						</td>
-						<td>
-								<p class="sub"><em>Select how you want the text to align. Default is center. When using right -- try adding padding via the Custom CSS box. e.g. padding-right:10px;</em></p>
-						</td>
-					</tr>	
-					<tr valign="top">
-						<td width="150">Include Page IDs:</label></td>
-						<td>
-							<input type="text" name="wptbincludepages" id="includepages" size="30" value="<?php echo $wptbOptions['include_pages']; ?>" >
-						</td>
-						<td>
-							<p class="sub"><em>Enter the IDs of the pages and posts that you want the TopBar to appear on, separated by commas. The TopBar will only be shown on those pages. Leave blank or enter 0 to show the TopBar on all pages.  e.g. 1,9,39,10</em></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<td></td>
-						<td>Exclude these pages instead?</label><p>
-							<label for="wptb_invert_include_yes"><input type="radio" id="wptb_invert_include_yes" name="wptbinvertinclude" value="yes" <?php if ($wptbOptions['invert_include'] == "yes") { _e('checked="checked"', "wptb"); }?>/> Yes</label>		
-							&nbsp;&nbsp;&nbsp;&nbsp;
-							<label for="wptb_invert_include_no"><input type="radio" id="wptb_invert_include_no" name="wptbinvertinclude" value="no" <?php if ($wptbOptions['invert_include'] == "no") { _e('checked="checked"', "wptb"); }?> /> No</label>
-							<p>
-						<td>
-							<p class="sub"><em>Select Yes if you want to exclude the Page IDs enter above.  This will cause the TopBar to <strong>not</strong> be shown on those specific Page IDs.  Default is No.</em></p>
-						</td>
-					</tr>		
-				</table>
-			</div>
-			<table>
-			<tr>
-				<td style="valign:top; width:500px;"><p class="submit">
-					<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
-				</td>
-				<td style="valign:top;">
-					<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
-				</td>
-			</tr>
-			</table>	<div class="clear"></div>	
-			</div>
-		</div> <!-- end of Main Options -->
-		
-		<div class="postbox">
-		<h3><a name="CustomCss">Custom CSS</a></h3>
-		<div class="inside">
-			<em><p class="sub">Enter any custom CSS.  This allows you to add padding, font styles & more.  Be really careful here -- this could break your website!  Test this with multiple browsers to make sure it works across them all. Double-quotes are automatically replaced with single quotes.<p><strong>Don't forget the trailing semi-colon.</strong></p>
-			Create a custom CSS gradient at colorzilla.com:
-			<a class="button" style="<?php _e( $wptb_cssgradient_style , 'wptb' ); ?>" href="http://www.colorzilla.com/gradient-editor/" target="_blank">http://www.colorzilla.com/gradient-editor/</a>	
-			<p class="sub">Examples:<p></p>
-			</em>	
-			<table>
-				<tr>
-					<td style="vertical-align:top" onmouseOver="wptb_copy_to_Clibboard(this,'<?php _e( addslashes($css_sample1) , 'wptb' ); ?>')"><input type="button" value="Copy to Clipboard" style="<?php _e( $wptb_copy_style, 'wptb' ); ?>"/></td><td style="vertical-align:top">1.</td><td style="vertical-align:top"><code><?php _e( $css_sample1 , 'wptb' ); ?></code></td>
-				</tr>
-				<tr>
-					<td style="vertical-align:top" onmouseOver="wptb_copy_to_Clibboard(this,'<?php _e( addslashes($css_sample2) , 'wptb' ); ?>')"><input type="button" value="Copy to Clipboard" style="<?php _e( $wptb_copy_style, 'wptb' ); ?>"/></td><td style="vertical-align:top">2.</td><td style="vertical-align:top"><code><?php _e( $css_sample2 , 'wptb' ); ?></code></td>
-				</tr>
-				<tr>
-					<td style="vertical-align:top" onmouseOver="wptb_copy_to_Clibboard(this,'<?php _e( bin2hex($css_sample3) , 'wptb' ); ?>', 1)"><input type="button" value="Copy to Clipboard" style="<?php _e( $wptb_copy_style, 'wptb' ); ?>"/></td><td style="vertical-align:top">3.</td><td style="vertical-align:top"><code><?php _e( $css_sample3 , 'wptb' ); ?></code></td>
-				</tr>
-				</table>	
-			<div class="table">
-				<table class="form-table">		
-					<tr valign="top">
-						<td width="150">For the Bar:</label></td>
-						<td>
-							<textarea name="wptbcustomcssbar" id="customcssbar" rows="10" cols="100"><?php echo $wptbOptions['custom_css_bar']; ?></textarea>
-						</td>
-					</tr>
-					<tr valign="top">
-						<td width="150">For the Text Message:</label></td>
-						<td>
-							<textarea name="wptbcustomcsstext" id="customcsstext" rows="10" cols="100"><?php echo $wptbOptions['custom_css_text']; ?></textarea>
-						</td>
-					</tr>	
-					<tr valign="top">
-						<td width="150">For the entire TopBar:<br>(i.e. at the TopBar's DIV)</label></td>
-						<td><p>Try this CSS to fix the TopBar to the top of the page:<p>				
-						<input type="button" value="Copy to Clipboard" style="<?php _e( $wptb_copy_style, 'wptb' ); ?>" onmouseOver="wptb_copy_to_Clibboard(this,'<?php _e( addslashes($div_css_sample_top) , 'wptb' ); ?>')" />&nbsp&nbsp&nbsp<code><?php _e( $div_css_sample_top , 'wptb' ); ?></code>
-						<p>Or this to fix the TopBar to the bottom of the page:<p>
-						<input type="button" value="Copy to Clipboard" style="<?php _e( $wptb_copy_style, 'wptb' ); ?>" onmouseOver="wptb_copy_to_Clibboard(this,'<?php _e( addslashes($div_css_sample_bot) , 'wptb' ); ?>')" />&nbsp&nbsp&nbsp<code><?php _e( $div_css_sample_bot , 'wptb' ); ?></code>
-		
-						<p><strong>Note that by putting your TopBar in a Fixed position, you will overlay the content of your website by the TopBar.</strong></p>
-						<textarea name="wptbdivcss" id="divcss" rows="2" cols="100"><?php echo $wptbOptions['div_css']; ?></textarea>
-						</td>
-					</tr>	
-				</table>
-			</div>
-			<table>
-			<tr>
-				<td style="valign:top; width:500px;"><p class="submit">
-					<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
-				</td>
-				<td style="valign:top;">
-					<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
-				</td>
-			</tr>
-			</table>
-			<div class="clear"></div>	
-			</div>
-		</div> <!-- end of CSS Settings -->
-		
-		<div class="postbox">
-											
-		<h3><a name="ColorSelection">Color Selection</a></h3>
-		
-		<div class="inside">
-			<p class="sub"><em>Click the color box to select the color to use.  Bar color is NOT used if Image is enabled (in the next section.)</em></p>
-			<div class="table">
-				<table class="form-table">			
-					<tr valign="top">
-						<td width="200">Color of the Bar:</label></td>
-						<td>
-						  <label for="barcolor"><input type="text" id="barcolor" name="wptbbarcolor" value="<?php echo $wptbOptions['bar_color']; ?>"></label>
-					      <div id="wptb_colorpicker_bar"></div>		
-						</td>
-					</tr>
-					<tr valign="top">
-						<td width="200">Color of the bottom border of the Bar:</label></td>
-						<td>
-					      <label for="bottomcolor"><input type="text" id="bottomcolor" name="wptbbottomcolor" value="<?php echo $wptbOptions['bottom_color']; ?>"></label>
-					      <div id="wptb_colorpicker_bottom"></div>			
-						</td>
-					</tr>
-					<tr valign="top">
-						<td width="200">Color of the Message:</label></td>
-						<td>
-						    <label for="textcolor"><input type="text" id="textcolor" name="wptbtextcolor" value="<?php echo $wptbOptions['text_color']; ?>"></label>
-						    <div id="wptb_colorpicker_text"></div>				    
-						</td>
-					</tr>
-					<tr valign="top">
-						<td width="200">Color of the Link:</label></td>
-						<td>
-						    <label for="linkcolor"><input type="text" id="linkcolor" name="wptblinkcolor" value="<?php echo $wptbOptions['link_color']; ?>"></label>
-						    <div id="wptb_link_color"></div>				    
-						</td>
-					</tr>
-				</table>
-			</div>
-			<table>
-			<tr>
-				<td style="valign:top; width:500px;"><p class="submit">
-					<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
-				</td>
-				<td style="valign:top;">
-					<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
-				</td>
-			</tr>
-			</table>
-			<div class="clear"></div>	
-			</div>
-		</div> <!-- end of ColorSelection Settings -->
+		<?php
+}	// End of wptb_display_common_info
 	
-	<script type="text/javascript">			 
-	  jQuery(document).ready(function() {
-				   			
-		//set path for ZeroClipboard
-		ZeroClipboard.setMoviePath('<?php _e( plugins_url('/zeroclipboard/ZeroClipboard.swf', __FILE__), 'wptb' ); ?>');
-	})
-	</script>
+
+//=========================================================================			
+// Main Options
+//=========================================================================			
+
+		
+function wptb_main_options() {
+
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+	$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+
+	$wptbOptions = wptb_get_Plugin_Options(false);
+
+	?>
+
+	<script type='text/javascript'>
+		jQuery(document).ready(function() {
 	
+		jQuery('#wptbstarttimebtn').datetimepicker();
+		jQuery('#wptbendtimebtn').datetimepicker();
+	
+		jQuery('#wptbstarttimebtnClear').click( function(e) {jQuery('#wptbstarttimebtn').val('0').change(); } );
+		jQuery('#wptbtimebtnClear').click( function(e) {jQuery('#wptbendtimebtn').val('0').change(); } );
+				
+	});
+ 	</script>
+ 	
+ 	
+ 	<div class="postbox">
+	<h3><a name="MainOptions">Main Options</a></h3>
+	<div class="inside">
+		<div class="table">
+			<table class="form-table">		
+				<tr valign="top">
+					<td width="150">Enable TopBar:</label></td>
+					<td>
+						<label for="wptb_enable_topbar"><input type="radio" id="wptb_enable_topbar" name="wptbenabletopbar" value="true" <?php if ($wptbOptions['enable_topbar'] == "true") { _e('checked="checked"', "wptb"); }?> /> Yes</label>&nbsp;&nbsp;&nbsp;&nbsp;<label for="wptbenabletopbar_no"><input type="radio" id="wptbenabletopbar_no" name="wptbenabletopbar" value="false" <?php if ($wptbOptions['enable_topbar'] == "false") { _e('checked="checked"', "wptb"); }?>/> No</label>				
+					</td>
+					<td>
+						<p class="sub"><em>This allows you to turn off the TopBar without disabling the plugin.</em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td width="150">TopBar Location:</label></td>
+					<td>
+					<label for="wptb_topbar_pos_header"><input type="radio" id="wptb_topbar_pos_header" name="wptbtopbarpos" value="header" <?php if ($wptbOptions['topbar_pos'] == "header") { _e('checked="checked"', "wptb"); }?>/> Above Header</label>		
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_topbar_pos_footer"><input type="radio" id="wptb_topbar_pos_footer" name="wptbtopbarpos" value="footer" <?php if ($wptbOptions['topbar_pos'] == "footer") { _e('checked="checked"', "wptb"); }?> /> Below Footer</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					</td>
+					<td>
+							<p class="sub"><em>Select where you want to TopBar to be located. Default is Above Header.</em></p>
+					</td>
+				</tr>	
+				<tr valign="top">
+					<td width="150">Start Delay:</label></td>
+					<td>
+						<input type="text" name="wptbdelayintime" id="delayintime" size="30" value="<?php echo $wptbOptions['delay_time']; ?>" >
+					</td>
+					<td>
+							<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to delay before appearing.  Enter 0 for no delay.</em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td width="150">Slide Time:</label></td>
+					<td>
+						<input type="text" name="wptbslidetime" id="slidetime" size="30" value="<?php echo $wptbOptions['slide_time']; ?>" >
+					</td>
+					<td>
+							<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to take to slide down on the page.  Enter 0 for no delay.</em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td width="150">Display Time:</label></td>
+					<td>
+						<input type="text" name="wptbdisplaytime" id="displaytime" size="30" value="<?php echo $wptbOptions['display_time']; ?>" >
+					</td>
+					<td>
+							<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to remain on the page.  Enter 0 for the TopBar to not disappear.</em></p>
+					</td>
+				</tr>							
+				<tr valign="top">
+					<td width="150">Starting Time:</label></td>
+					<td>
+						<div class="wptb-date-picker-container"> <input type="text" id="wptbstarttimebtn" name="wptbstarttime" size="30" value="<?php echo $wptbOptions['start_time']; ?>"></label></div><p class="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" id="wptbstarttimebtnClear">Set Start Time to Zero</p>									  
+						<div id="wptb_start_time"></div>				    
+					</td>
+					<td>
+							<p class="sub"><em>Pick the date/time for the TopBar to start showing.  Default is zero.</em></p>
+					</td>
+				</tr>							
+				<tr valign="top">
+					<td width="150">Ending Time:</label></td>
+					<td>
+						<input type="text" id="wptbendtimebtn" name="wptbendtime" size="30" value="<?php echo $wptbOptions['end_time']; ?>"></label>	<p class="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" id="wptbtimebtnClear">&nbspSet End Time to Zero</p>							  
+						<div id="wptb_end_time"></div>				    
+					</td>
+					<td>
+							<p class="sub"><em>Pick the date/time for the TopBar to stop showing.  Of course, it must be after the start time. Select 0 for the TopBar to never disappear.</em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td width="150">Bottom border height (px):</label></td>
+					<td>
+						<input type="text" name="wptbbottomborderheight" id="bottomborderheight" size="5" value="<?php echo $wptbOptions['bottom_border_height']; ?>" >
+					</td>
+					<td>
+							<p class="sub"><em>Enter the height of the bottom of the border.  Default is 3px.</em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td width="150">Top padding (px):</label></td>
+					<td>
+						<input type="text" name="wptbpaddingtop" id="paddingtop" size="5" value="<?php echo $wptbOptions['padding_top']; ?>" >
+					</td>
+					<td>
+							<p class="sub"><em>Enter the top padding.  Default is 8px.</em></p>
+					</td>
+				</tr>			
+				<tr valign="top">
+					<td width="150">Bottom padding (px):</label></td>
+					<td>
+						<input type="text" name="wptbpaddingbottom" id="paddingbottom" size="5" value="<?php echo $wptbOptions['padding_bottom']; ?>" >
+					</td>
+					<td>
+							<p class="sub"><em>Enter the bottom padding.  Default is 8px.</em></p>
+					</td>
+				</tr>		
+				<tr valign="top">
+					<td width="150">Top margin (px):</label></td>
+					<td>
+						<input type="text" name="wptbmargintop" id="margintop" size="5" value="<?php echo $wptbOptions['margin_top']; ?>" >
+					</td>
+					<td>
+							<p class="sub"><em>Enter the top margin.  Default is 0px.</em></p>
+					</td>
+				</tr>			
+				<tr valign="top">
+					<td width="150">Bottom margin (px):</label></td>
+					<td>
+						<input type="text" name="wptbmarginbottom" id="marginbottom" size="5" value="<?php echo $wptbOptions['margin_bottom']; ?>" >
+					</td>
+					<td>
+							<p class="sub"><em>Enter the bottom margin.  Default is 0px.</em></p>
+					</td>
+				</tr>				
+				<tr valign="top">
+					<td width="150">Font size (px):</label></td>
+					<td>
+						<input type="text" name="wptbfontsize" id="fontsize" size="5" value="<?php echo $wptbOptions['font_size']; ?>" >
+					</td>
+					<td>
+							<p class="sub"><em>Enter the font size.  Default is 14px.</em></p>
+					</td>
+				</tr>	
+				<tr valign="top">
+					<td width="150">Text alignment:</label></td>
+					<td>
+					<label for="wptb_text_align_left"><input type="radio" id="wptb_text_align_left" name="wptbtextalign" value="left" <?php if ($wptbOptions['text_align'] == "left") { _e('checked="checked"', "wptb"); }?>/> Left</label>		
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_text_align"><input type="radio" id="wptb_text_align" name="wptbtextalign" value="center" <?php if ($wptbOptions['text_align'] == "center") { _e('checked="checked"', "wptb"); }?> /> Center</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_text_align_right"><input type="radio" id="wptb_text_align_right" name="wptbtextalign" value="right" <?php if ($wptbOptions['text_align'] == "right") { _e('checked="checked"', "wptb"); }?>/> Right</label>	
+					</td>
+					<td>
+							<p class="sub"><em>Select how you want the text to align. Default is center. When using right -- try adding padding via the Custom CSS tab. e.g. padding-right:10px;</em></p>
+					</td>
+				</tr>	
+				<tr valign="top">
+					<td width="150">Include Page IDs:</label></td>
+					<td>
+						<input type="text" name="wptbincludepages" id="includepages" size="30" value="<?php echo $wptbOptions['include_pages']; ?>" >
+					</td>
+					<td>
+						<p class="sub"><em>Enter the IDs of the pages and posts that you want the TopBar to appear on, separated by commas. The TopBar will only be shown on those pages. Leave blank or enter 0 to show the TopBar on all pages.  e.g. 1,9,39,10</em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td></td>
+					<td>Exclude these pages instead?</label><p>
+						<label for="wptb_invert_include_yes"><input type="radio" id="wptb_invert_include_yes" name="wptbinvertinclude" value="yes" <?php if ($wptbOptions['invert_include'] == "yes") { _e('checked="checked"', "wptb"); }?>/> Yes</label>		
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="wptb_invert_include_no"><input type="radio" id="wptb_invert_include_no" name="wptbinvertinclude" value="no" <?php if ($wptbOptions['invert_include'] == "no") { _e('checked="checked"', "wptb"); }?> /> No</label>
+						<p>
+					<td>
+						<p class="sub"><em>Select Yes if you want to exclude the Page IDs enter above.  This will cause the TopBar to <strong>not</strong> be shown on those specific Page IDs.  Default is No.</em></p>
+					</td>
+				</tr>		
+			</table>
+		</div>
+		<table>
+		<tr>
+			<td style="valign:top; width:500px;"><p class="submit">
+				<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
+			</td>
+			<td style="valign:top;">
+				<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
+			</td>
+		</tr>
+		</table>	<div class="clear"></div>	
+		</div>
+	</div> <!-- end of Main Options -->
+	
+	<?
+}	// End of wptb_main_options
+
+
+//=========================================================================			
+// Custom CSS Options
+//=========================================================================			
+
+
+
+
+function wptb_customcss_options() {
+
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+
+	$wptbOptions = wptb_get_Plugin_Options(false);
+
+	// following variables are used to store the sample code that can be copied via ZeroClipboard
+									
+	$div_css_sample_top='position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;';
+	$div_css_sample_bot='position:fixed; bottom: 0; padding:0; margin:0; width: 100%; z-index: 99999;';							
+	
+	$css_sample1='text-transform:lowercase;';
+	$css_sample2="text-transform:uppercase;font-family:'georgia';padding-right:10px;";
+	$css_sample3="background: rgb(109,179,242);
+	background: -moz-linear-gradient(top,  rgba(109,179,242,1) 0%, rgba(84,163,238,1) 50%, rgba(54,144,240,1) 51%, rgba(30,105,222,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(109,179,242,1)), color-stop(50%,rgba(84,163,238,1)), color-stop(51%,rgba(54,144,240,1)), color-stop(100%,rgba(30,105,222,1)));
+	background: -webkit-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
+	background: -o-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
+	background: linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', endColorstr='#1e69de',GradientType=0 );";
+
+	?>
+	
+	<div class="postbox">
+	<h3><a name="CustomCss">Custom CSS</a></h3>
+	<div class="inside">
+		<em><p class="sub">Enter any custom CSS.  This allows you to add padding, font styles & more.  Be really careful here -- this could break your website!  Test this with multiple browsers to make sure it works across them all. Double-quotes are automatically replaced with single quotes.<p><strong>Don't forget the trailing semi-colon.</strong></p>
+		Create a custom CSS gradient at colorzilla.com:
+		<a class="button" style="<?php _e( $wptb_cssgradient_style , 'wptb' ); ?>" href="http://www.colorzilla.com/gradient-editor/" target="_blank">http://www.colorzilla.com/gradient-editor/</a>	
+		<p class="sub"><br>Examples:<p></p>
+		</em>	
+		<table>
+			<tr>
+				<td style="vertical-align:top">1.</td><td style="vertical-align:top"><code><?php _e( $css_sample1 , 'wptb' ); ?></code></td>
+			</tr>
+			<tr>
+				<td style="vertical-align:top">2.</td><td style="vertical-align:top"><code><?php _e( $css_sample2 , 'wptb' ); ?></code></td>
+			</tr>
+			<tr>
+				<td style="vertical-align:top">3.</td><td style="vertical-align:top"><code><?php _e( $css_sample3 , 'wptb' ); ?></code></td>
+			</tr>
+			</table>	
+		<div class="table">
+			<table class="form-table">		
+				<tr valign="top">
+					<td width="150">For the Bar:</label></td>
+					<td>
+						<textarea name="wptbcustomcssbar" id="customcssbar" rows="10" cols="100"><?php echo $wptbOptions['custom_css_bar']; ?></textarea>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td width="150">For the Text Message:</label></td>
+					<td>
+						<textarea name="wptbcustomcsstext" id="customcsstext" rows="10" cols="100"><?php echo $wptbOptions['custom_css_text']; ?></textarea>
+					</td>
+				</tr>	
+				<tr valign="top">
+					<td width="150">For the entire TopBar:<br>(i.e. at the TopBar's DIV)</label></td>
+					<td><p>Try this CSS to fix the TopBar to the top of the page:<p>				
+					<code><?php _e( $div_css_sample_top , 'wptb' ); ?></code>
+					<p>Or this to fix the TopBar to the bottom of the page:<p>
+					<code><?php _e( $div_css_sample_bot , 'wptb' ); ?></code>
+	
+					<p><strong>Note that by putting your TopBar in a Fixed position, you will overlay the content of your website by the TopBar.</strong></p>
+					<textarea name="wptbdivcss" id="divcss" rows="2" cols="100"><?php echo $wptbOptions['div_css']; ?></textarea>
+					</td>
+				</tr>	
+			</table>
+		</div>
+		<table>
+		<tr>
+			<td style="valign:top; width:500px;"><p class="submit">
+				<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
+			</td>
+			<td style="valign:top;">
+				<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
+			</td>
+		</tr>
+		</table
+		
+		<div class="clear"></div>	
+		</div>
+	</div> <!-- end of CSS Settings -->
+	
+	<?php
+}	// End of wptb_customcss_options
+
+
+//=========================================================================			
+// Color Selection Options
+//=========================================================================			
+
+function wptb_colorselection_options() {
+
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+
+	$wptbOptions = wptb_get_Plugin_Options(false);
+	
+	?>
+	
+	<script type='text/javascript'>
+	jQuery(document).ready(function() {
+
+	jQuery('#wptb_colorpicker_bar').hide();
+	jQuery('#wptb_colorpicker_bar').farbtastic('#barcolor');
+	jQuery('#barcolor').click(function(){jQuery('#wptb_colorpicker_bar').slideDown()});
+	jQuery('#barcolor').blur(function(){jQuery('#wptb_colorpicker_bar').slideUp()});
+
+	jQuery('#wptb_colorpicker_text').hide();
+	jQuery('#wptb_colorpicker_text').farbtastic('#textcolor');
+	jQuery('#textcolor').click(function(){jQuery('#wptb_colorpicker_text').slideDown()});
+	jQuery('#textcolor').blur(function(){jQuery('#wptb_colorpicker_text').slideUp()});
+
+	jQuery('#wptb_colorpicker_bottom').hide();
+	jQuery('#wptb_colorpicker_bottom').farbtastic('#bottomcolor');
+	jQuery('#bottomcolor').click(function(){jQuery('#wptb_colorpicker_bottom').slideDown()});
+	jQuery('#bottomcolor').blur(function(){jQuery('#wptb_colorpicker_bottom').slideUp()});
+	
+	jQuery('#wptb_link_color').hide();
+	jQuery('#wptb_link_color').farbtastic('#linkcolor');
+	jQuery('#linkcolor').click(function(){jQuery('#wptb_link_color').slideDown()});
+	jQuery('#linkcolor').blur(function(){jQuery('#wptb_link_color').slideUp()});	
+	
+	});
+ 	</script>
+	
+	
+	<div class="postbox">
+										
+	<h3><a name="ColorSelection">Color Selection</a></h3>
+	
+	<div class="inside">
+		<p class="sub"><em>Click the color box to select the color to use.  Bar color is NOT used if Image is enabled (that is set on the <a href='?page=wp-topbar.php&tab=topbartext'>TopBar Text and Image</a> tab.)</em></p>
+		<div class="table">
+			<table class="form-table">			
+				<tr valign="top">
+					<td width="200">Color of the Bar:</label></td>
+					<td>
+				      <input type="text" id="barcolor" name="wptbbarcolor" value="<?php echo $wptbOptions['bar_color']; ?>">
+				      <div id="wptb_colorpicker_bar"></div>		
+					</td>
+				</tr>
+				<tr valign="top">
+					<td width="200">Color of the bottom border of the Bar:</label></td>
+					<td>
+				      <input type="text" id="bottomcolor" name="wptbbottomcolor" value="<?php echo $wptbOptions['bottom_color']; ?>">
+				      <div id="wptb_colorpicker_bottom"></div>			
+					</td>
+				</tr>
+				<tr valign="top">
+					<td width="200">Color of the Message:</label></td>
+					<td>
+					    <input type="text" id="textcolor" name="wptbtextcolor" value="<?php echo $wptbOptions['text_color']; ?>">
+					    <div id="wptb_colorpicker_text"></div>				    
+					</td>
+				</tr>
+				<tr valign="top">
+					<td width="200">Color of the Link:</label></td>
+					<td>
+					    <input type="text" id="linkcolor" name="wptblinkcolor" value="<?php echo $wptbOptions['link_color']; ?>">
+					    <div id="wptb_link_color"></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<table>
+		<tr>
+			<td style="valign:top; width:500px;"><p class="submit">
+				<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
+			</td>
+			<td style="valign:top;">
+				<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
+			</td>
+		</tr>
+		</table>
+		<div class="clear"></div>	
+		</div>
+	</div> <!-- end of ColorSelection Settings -->
+	
+	<?php
+
+}	// End of wptb_colorselection_options
+
+//=========================================================================			
+// TopBar Text Options
+//=========================================================================			
+
+
+function wptb_topbartext_options() {
+	
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+
+	$wptbOptions = wptb_get_Plugin_Options(false);
+
+
+	?>
+
 	<div class="postbox">
 										
 	<h3><a name="TopbarText">TopBar Text, Image and Link</a></h3>
@@ -879,13 +1076,33 @@ function wptb_options_page() {
 		<div class="clear"></div>	
 		</div>
 	</div> <!-- end of TopbarText Settings -->
+	
+	<?php 	
+}	// End of wptb_topbartext_options
 
+
+//=========================================================================			
+// Close Button Options
+//=========================================================================			
+
+
+function wptb_closebutton_options() {
+
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+
+	$wptbOptions = wptb_get_Plugin_Options(false);
+
+
+	?>
+		
 	<div class="postbox">
 										
 	<h3><a name="CloseButton">Close Button</a></h3>
 										
 	<div class="inside">
-		<p class="sub"><em>These are the settings to allow the user to close the TopBar.</em></p>
+		<p class="sub"><em>These are the settings to allow the user to close the TopBar.
+		<br><br>This plugin can use a cookie to remember if the user closed the TopBar.   If you enable cookies, then a cookie is created if the user closes the TopBar.  If the value stored in the cookie matches the Cookie Value (below), then the TopBar will not be shown on subsequent page views.  If you disable the use of cookies, then the plugin will delete the users cookies the next time the page is loaded.</em></p>
 		
 		<div class="table">
 			<table class="form-table">	
@@ -902,24 +1119,41 @@ function wptb_options_page() {
 						</td>
 				</tr>					
 				<tr valign="top">
-					<td width="150">When TopBar is Closed by the User:</label></td>
+					<td width="150">Enable Cookies:</label></td>
 					<td>
-					<label for="wptb_respect_cookie_ignore"><input type="radio" id="respect_cookie_ignore" name="wptbrespectcookie" value="ignore" <?php if ($wptbOptions['respect_cookie'] == "ignore") { _e('checked="checked"', "wptb"); }?>/> Always Show TopBar</label>		
+					<label for="wptb_respect_cookie_use"><input type="radio" id="respect_cookie_use" name="wptbrespectcookie" value="always" <?php if ($wptbOptions['respect_cookie'] == "always") { _e('checked="checked"', "wptb"); }?> /> Yes</label>
 					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_respect_cookie_use"><input type="radio" id="respect_cookie_use" name="wptbrespectcookie" value="always" <?php if ($wptbOptions['respect_cookie'] == "always") { _e('checked="checked"', "wptb"); }?> /> Hide TopBar if Closed by User</label>
+					<label for="wptb_respect_cookie_ignore"><input type="radio" id="respect_cookie_ignore" name="wptbrespectcookie" value="ignore" <?php if ($wptbOptions['respect_cookie'] == "ignore") { _e('checked="checked"', "wptb"); }?>/> No</label>		
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					</td>
 					<td>
-							<p class="sub"><em>Select how you want to handle when use closes TopBar:  Always Show the TopBar or Hide the TopBar if closed by the user.  If you chose the latter, a cookie is created if the user closes the TopBar.  The presence of that cookie on subsequent page views prevents the cookie from loading.  To remove the cookies, select the Always option. Default is to Always Show the TopBar.</em></p>
+							<p class="sub"><em>Enable use of cookies to control TopBar behavior.  Default is No.</em></p>
 					</td>
 				</tr>
+				<tr valign="top">
+					<td width="150">Cookie Value:</label></td>
+					<td>
+						<input type="text" name="wptbcookievalue" id="cookievalue" size="10" value="<?php echo stripslashes_deep($wptbOptions['cookie_value']); ?>" >
+					<?php	  $wptbPastValues = $wptbOptions['past_cookie_values'];
+						if ( count ( $wptbPastValues ) > 0 ) {
+							echo "<p>Your past ".count ( $wptbPastValues )." previous cookie value(s) are:";
+							foreach ($wptbPastValues as $i => $value) {
+			  					echo '<br>[',$i+1,']: <code>',$value.'</code>';
+							}
+					    }
+					?>
+					</td>
+					<td>
+							<p class="sub"><em>Change this value to force the cookie to reshow.  See <a href='?page=wp-topbar.php&tab=faq'>FAQ</a>.  Default is 1.</em></p>
+					</td>
+				</tr>				
 				<tr valign="top">
 					<td width="150">Enter the CSS for the Close Button:</label></td>
 					<td>
 					<textarea name="wptbclosecss" id="clsoecss" rows="2" cols="100"><?php echo $wptbOptions['close_button_css']; ?></textarea>
 					</td>
 					<td>
-						<p class="sub"><em>Default is "padding:0px; float:right;"</em></p>
+						<p class="sub"><em>Default is "float:right;"</em></p>
 					</td>
 				</tr>	
 		
@@ -948,7 +1182,22 @@ function wptb_options_page() {
 		<div class="clear"></div>	
 		</div>
 	</div> <!-- end of Close Button Settings -->
+	
+	<?php 
+}	// End of wptb_closebutton_options
 
+
+
+//=========================================================================			
+// Delete Options
+//=========================================================================			
+
+function wptb_delete_options() {
+
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+
+	?>
 					
 	<div class="postbox">
 	<h3><a name="Uninstall">Delete Settings</a></h3>
@@ -971,6 +1220,83 @@ function wptb_options_page() {
 	</div> <!-- end of Delete Settings -->
    </form>
  </div>	 
+ 
  <?php
-}	// End of wptb_options_page
+ 
+}	// End of wptb_delete_options
+
+//=========================================================================			
+// FAQ
+//=========================================================================			
+
+function wptb_faq_page() {
+
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+
+	?>
+					
+	<div class="postbox">
+	<h3><a name="FAQ">WP-TopBAR FAQ</a></h3>
+	<div class="inside">		
+	
+	
+	<ol type="square">
+
+<li><strong>How do the new cookies (in version 3.04+) work behind the scenes?</strong></li>
+<p>
+If you allow the user to close the TopBar, then the plugin checks to see if you have enabled cookies.   If they are not enabled, it deletes any existing cookies.   If they are enabled, it looks to see if a cookie has been created.  A cookie is only created if the TopBar has been previously closed by the user.  If it finds a cookie and the cookie value matches the Cookie Value setting, it prevents the TopBar from showing.
+<p>
+If you change the Cookie Value to something new, the TopBar will show up again.  This is useful if you want to force the TopBar to show on new content.  Make sure to select something you haven't used before.  A good idea is to increment the value by one every time you want to force the TopBar to show.
+<p>
+<li><strong>What CSS ID's are available?</strong></li>
+<p>
+Use <code>#topbar</code>
+<p>
+<li><strong>What if I fix the TopBar to the top or bottom of the page?</strong></li>
+<p>
+Use this CSS to fix the TopBar to the bottom of the page: 
+<p>	<code>position:fixed; bottom: 0; padding: 0; margin: 0; width: 100%; z-index: 99999;</code>
+<p>
+Or this to fix the TopBar to the top of the page (adjust the top value to be the height of your TopBar):
+<p>	<code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code>
+<p>
+Note that by putting your TopBar in a Fixed Position, you will overlay the content of your website by the TopBar.
+<p>
+<li><strong>How to Find the Page ID</strong></li>
+<p>
+You can find the Page ID in the Edit Post or Edit Page URL. For example, the page ID for the following example is “1234.”
+<p>
+<code>http://example.wordpress.com/wp-admin/page.php?action=edit&post=1234</code>
+<p>
+<li><strong>How do I test the TopBar?</strong></li>
+<p>
+To test the TopBar on your site, you can set the Page IDs (in General Options) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
+<br>
+<li><strong>Why does my TopBar look odd on Internet Explorer?</strong></li> 
+<p>
+IE does not (yet) implement gradients like other browsers.  So, make sure you test your TopBar on all the major browswers.
+<br>
+<li><strong>How dow I uninstall?</strong></li> 
+<p> <ul>
+<li>Scroll to the delete section or click the Delete Settings button at the top of the page.</li>
+<li>Hit the Delete Settings Button.</li>
+<li>Click "OK" on the warning box.</li>
+<li>Go to your Plugins page and delete the plugin or delete all the files in your `/wp-content/plugins/wp-topbar` directory</li> 		
+</ul>
+<p>
+	</ol>
+
+<div class="clear"></div>	
+	</div> 
+	</div> <!-- end of FAQ -->
+   </form>
+ </div>	 
+ 
+ <?php
+ 
+}	// End of wptb_faq_page
+
+
+
 ?>
