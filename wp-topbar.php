@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 3.05
+Version: 3.06
 Author: Bob Goetz
 Author URI: http://wordpress.org/extend/plugins/profile/rfgoetz
 
@@ -182,7 +182,7 @@ class wptb {
 		
 	function wtpb_check_for_plugin_upgrade($wptb_echo_on) { 
 	
-		$wptb_this_version_number = '3.05';
+		$wptb_this_version_number = '3.06';
 	
 		$wptbOptions = get_option('wptbAdminOptions');
 		$wptb_debug=get_transient( 'wptb_debug' );	
@@ -253,10 +253,21 @@ class wptb {
 			echo "{$wptbOptions['custom_css_text']}";
 		echo 'href="',$wptbOptions['bar_link'],'" target="_',$wptbOptions['link_target'],'">';
 		echo stripslashes_deep($wptbOptions['bar_link_text']),'</a>'; 
+		if ( ($wptbOptions['social_icon1'] == 'on') && ($wptbOptions['social_icon1_image'] !== '') )
+			echo '<a href="'.$wptbOptions['social_icon1_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon1_image'].'" style="'.$wptbOptions['social_icon1_css'].'"/></a>';
+		if ( ($wptbOptions['social_icon2'] == 'on') && ($wptbOptions['social_icon2_image'] !== '') )
+			echo '<a href="'.$wptbOptions['social_icon2_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon2_image'].'" style="'.$wptbOptions['social_icon2_css'].'"/></a>';
+		if ( ($wptbOptions['social_icon3'] == 'on') && ($wptbOptions['social_icon3_image'] !== '') )
+			echo '<a href="'.$wptbOptions['social_icon3_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon3_image'].'" style="'.$wptbOptions['social_icon3_css'].'"/></a>';
+		if ( ($wptbOptions['social_icon4'] == 'on') && ($wptbOptions['social_icon4_image'] !== '') )
+			echo '<a href="'.$wptbOptions['social_icon4_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon4_image'].'" style="'.$wptbOptions['social_icon4_css'].'"/></a>';
+		
+		
 		if ($wptbOptions['allow_close'] == 'yes') {
 			echo '<span style="">';
-			echo '<img align="middle" border="0" onClick="close_wptobar()" src="'.$wptbOptions['close_button_image'].'" style="cursor:hand;cursor:pointer;'.$wptbOptions['close_button_css'].'"/></span></p>';
+			echo '<img align="middle" border="0" onClick="close_wptobar()" src="'.$wptbOptions['close_button_image'].'" style="cursor:hand;cursor:pointer;'.$wptbOptions['close_button_css'].'"/></span>';
 		}		
+		echo '</p>';
 	}  // end function wptb_display_TopBar
 		
 	
@@ -287,9 +298,13 @@ class wptb {
 
 	// use javascript to force the HTML to just before body tag if the topbar is at the top of the page
 		if ( $wptbOptions['topbar_pos'] == 'header' ) { 	
-			echo "<script type='text/javascript'>
-				  jQuery(document).ready(function() {
-			      jQuery('body').prepend('";
+			echo '
+';
+			echo "<script type='text/javascript'>";
+			echo '
+';
+			echo "jQuery(document).ready(function() {";
+			echo "jQuery('body').prepend('";
 		}
 				
 		echo '<div id="topbar" style="',$wptbOptions['div_css'],'">';
@@ -301,43 +316,56 @@ class wptb {
 				
 		if ( $wptbOptions['topbar_pos'] == 'header' )
 			echo "');} );
-			";
+";
 		
 		$wptb_cookie = "wptopbar_".COOKIEHASH;
 		
-		if ( $wptbOptions['topbar_pos'] == 'footer' ) 	
+		if ( $wptbOptions['topbar_pos'] == 'footer' ) {	
+				echo '
+';
 				echo "<script type='text/javascript'>";
 
+		}
 				
-		if  ($wptbOptions['respect_cookie'] == 'ignore')   // destroy cookie
+		if  ($wptbOptions['respect_cookie'] == 'ignore')  { // destroy cookie
+			echo '
+';
 			echo 'document.cookie="'.$wptb_cookie.'"'."+'=;expires=Thu, 01-Jan-70 00:00:01 GMT;';";
-		
+		}
 		if ($wptbOptions['allow_close'] == 'yes') { 
 
 			if  ( ($wptbOptions['respect_cookie'] == 'always') AND  ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value']) ) {
+				echo '
+';
 				echo 'document.getElementById("wptbheadline").style.visibility = "hidden";';
-				echo '</script>';
+				echo '
+';				echo '</script>';
 				return;  
 			}
 			
 			echo '
-			function close_wptobar() { document.getElementById("wptbheadline").style.visibility = "hidden";';
+';
+			echo 'function close_wptobar() { document.getElementById("wptbheadline").style.visibility = "hidden";';
 			if  ($wptbOptions['respect_cookie'] == 'always') { 
 				
-				echo 'var now= new Date();
-					  var expDate = new Date();
-					  expDate.setTime(now.getTime() + 3600000*24*30);	
-					  document.cookie="'.$wptb_cookie.'"+"="+escape('.$wptbOptions['cookie_value'].')+";expires="+expDate.toUTCString();';
+				echo 'var now= new Date();';
+				echo 'var expDate = new Date();';
+				echo 'expDate.setTime(now.getTime() + 3600000*24*30);';
+				echo 'document.cookie="'.$wptb_cookie.'"+"="+escape('.$wptbOptions['cookie_value'].')+";expires="+expDate.toUTCString();';
 			}
-			echo '};';
+			echo ' };';	
 		}
 		
+		echo '
+';
 		echo 'jQuery(document).ready(function() {',"jQuery('#wptbheadline').hide().delay(",$wptbOptions['delay_time'],").css('visibility','visible').slideDown(",$wptbOptions['slide_time'],").fadeIn(1000).show('slow');";
 	
 		if (($wptbOptions['display_time']+0) != 0) {
 			echo "jQuery('#wptbheadline').delay(",$wptbOptions['display_time'],').slideUp(',$wptbOptions['slide_time'],').fadeOut(1000).hide();';
 		} 		
-		echo '});</script>';
+		echo '});
+';
+		echo '</script>';
 
 	}  // end function wptb_inject_TopBar_html_js
 		 	

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.3.1
-Stable tag: 3.05
+Stable tag: 3.06
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, link & more! 
 
@@ -12,13 +12,13 @@ Creates a TopBar that will be shown at the top (or bottom) of your website.  Cus
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
 
+Version 3.06 adds the ability to add Social Icons to the TopBar and adds a Debug page.
+
 Version 3.05 has an easier to use admin page.
 
 Version 3.04 adds the ability to allow the user to close the TopBar.
 
 Version 3.02 adds the ability to set a start/end time for the TopBar to show.   It was re-worked to be smaller and faster.
-
-Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.
 
 Various options allow you to:
 <ol>
@@ -27,6 +27,8 @@ Various options allow you to:
 	<li>Enter the amount of time (in milliseconds) for the TopBar to appear. Enter 0 for no delay.</li>
 	<li>Enter the amount of time (in milliseconds) for the TopBar to take to slide down on the page. Enter 0 for no delay.</li>
 	<li>Enter the amount of time (in milliseconds) for the TopBar to stay on the page.  Enter 0 for the TopBar to not disappear.</li>
+	<li>Pick the date/time for the TopBar to start showing.</li>
+	<li>Pick the date/time for the TopBar to stop showing. Of course, it must be after the start time. Select 0 for the TopBar to never disappear.</li>
 	<li>Enter the height of the border. Default is 3px.</li>
 	<li>Enter the top padding. Default is 8px.</li>
 	<li>Enter the bottom padding. Default is 8px.</li>
@@ -37,19 +39,6 @@ Various options allow you to:
 	<li>Enter the IDs of the pages and posts that you want the TopBar to appear on, separated by commas. The TopBar will only be shown on those pages. Leave blank or enter 0 to show the TopBar on all pages. e.g. 1,9,39,10</li>
 	<li>Option to invert the Include Pages to actually be Exclude Pages</li>
 </ol>
-Set the color of the:
-<ol>
-	<li>The Bar</li>
-	<li>The bottom border of the Bar</li>
-	<li>The Message</li>
-	<li>The Link</li>
-</ol>
-Enter custom CSS for the:
-<ol>
-	<li>The Bar</li>
-	<li>The Message</li>
-	<li>The Entire TopBar</li>
-</ol>
 Has separate fields for the:
 <ol>
 	<li>Message</li>
@@ -58,6 +47,21 @@ Has separate fields for the:
 	<li>Link Target</li>
 	<li>Background Image</li>
 </ol>
+Enter custom CSS for the:
+<ol>
+	<li>The Bar</li>
+	<li>The Message</li>
+	<li>The Entire TopBar</li>
+</ol>
+Set the color of the:
+<ol>
+	<li>The Bar</li>
+	<li>The bottom border of the Bar</li>
+	<li>The Message</li>
+	<li>The Link</li>
+</ol>
+Add a Close Button
+Add up to four Social Icon buttons
 
 == Installation ==
 
@@ -71,6 +75,11 @@ This section describes how to install the plugin and get it working.
 I've included a sample image for you to try on your website:  wp-topbar_sample_image.jpg.
 
 == Frequently Asked Questions ==
+
+= My TopBar is not working. What should I do? =
+Check for any messages under the Live Preview heading on the Admin Page. It will tell you if you have cookies or time settings that will prevent the TopBar from loading.
+
+You may have CSS settings that prevent the TopBar from loading. If you entered any setting that are not valid, the TopBar will not load. Try deleting the settings and then re-entering your CSS until you find the one that is causing the issue.
 
 = How do the new cookies (in version 3.04+) work behind the scenes? = 
 
@@ -100,7 +109,7 @@ http://example.wordpress.com/wp-admin/page.php?action=edit&post=1234
 
 = How do I test the TopBar? = 
 
-To test the TopBar on your site, you can set the Page IDs (in General Options) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
+To test the TopBar on your site, you can set the Page IDs (in Main Options) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
 
 = Why does my TopBar look odd on Internet Explorer? = 
 
@@ -108,12 +117,16 @@ IE does not (yet) implement gradients like other browsers.  So, make sure you te
 
 = How dow I uninstall? = 
 
-Scroll to the delete section or click the Delete Settings button at the top of the page.
+Go to the Delete Settings tab and then click the Delete Settings button at the top of the page.
 Hit the Delete Settings Button. 
 Click "OK" on the warning box.
 Go to your Plugins page and delete the plugin or delete all the files in your `/wp-content/plugins/wp-topbar` directory 
 
 == Upgrade Notice ==
+
+= 3.06 = 
+
+Version 3.06 adds the ability to add Social Icons to the TopBar.  
 
 = 3.05 = 
 
@@ -161,10 +174,17 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 4. Custom CSS Options.
 5. Color Selection Options.
 6. Close Button Options.
-7. Delete Settings Option.
+7. Social Buttons Options
+8. Debug Page
+9. Delete Settings Option.
 
 
 == Changelog ==
+
+= 3.06 - 4/04/2012 = 
+
+1. NEW: Version 3.06 adds the ability to add Social Icons to the TopBar.  
+2. NEW: Added Debug page
 
 = 3.05 - 3/31/2012 = 
 
@@ -239,5 +259,5 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 1.0 - 9/25/2011 =
 
-Initial public version
+Initial version
 

@@ -15,7 +15,7 @@ Admin Page
 
 function wptb_get_Plugin_Options($wptb_echo_on) {
 
-	$wptb_version_number = '3.05';
+	$wptb_version_number = '3.06';
 	
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			
@@ -48,7 +48,7 @@ function wptb_get_Plugin_Options($wptb_echo_on) {
 		'past_cookie_values' => array('1'),
 		'allow_close' => 'no',
 		'close_button_image' => str_ireplace( 'https://','http://',plugins_url('/images/close.png', __FILE__) ),
-		'close_button_css' => 'float:right;',
+		'close_button_css' => 'vertical-align:text-bottom;float:right;',
 		'link_target' => 'blank',
 		'bar_link' => 'http://wordpress.org/extend/plugins/wp-topbar/',
 		'bar_text' => 'Get your own TopBar ',
@@ -57,6 +57,26 @@ function wptb_get_Plugin_Options($wptb_echo_on) {
 		'bar_image' => '',
 		'enable_image' => 'false',
 		'custom_css_bar' => '',
+		'social_icon1' => 'off',
+		'social_icon2' => 'off', 
+		'social_icon3' => 'off',
+		'social_icon4' => 'off',
+		'social_icon1_image' => str_ireplace( 'https://','http://',plugins_url('/icons/png/twitter.png', __FILE__) ),
+		'social_icon2_image' => str_ireplace( 'https://','http://',plugins_url('/icons/png/facebook.png', __FILE__) ),
+		'social_icon3_image' => str_ireplace( 'https://','http://',plugins_url('/icons/png/google.png', __FILE__) ),
+		'social_icon4_image' => '',
+		'social_icon1_link' => 'http://twitter.com/#!/wordpress',
+		'social_icon2_link' => 'http://www.facebook.com/WordPress', 
+		'social_icon3_link' => 'http://plus.google.com/s/wordpress',
+		'social_icon4_link' => '',
+		'social_icon1_css' => 'height:23px; vertical-align:text-bottom;',
+		'social_icon2_css' => 'height:23px; vertical-align:text-bottom;',
+		'social_icon3_css' => 'height:23px; vertical-align:text-bottom;',
+		'social_icon4_css' => '',
+		'social_icon1_link_target' => 'blank',
+		'social_icon2_link_target' => 'blank',
+		'social_icon3_link_target' => 'blank',
+		'social_icon4_link_target' => 'blank',
 		'div_css' => 'position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;');
 
 	$wptbOptions = get_option('wptbAdminOptions');
@@ -249,8 +269,8 @@ function wptb_options_page() {
         case 'main' :
             wptb_main_options();
             break;
-        case 'customcss' :
-            wptb_customcss_options();
+        case 'topbarcss' :
+            wptb_topbarcss_options();
             break;
         case 'colorselection' :
             wptb_colorselection_options();
@@ -267,7 +287,13 @@ function wptb_options_page() {
         case 'faq' :
             wptb_faq_page();
             break;
-      endswitch;
+        case 'socialbuttons' :
+            wptb_socialbutton_options();
+            break;
+        case 'debug' :
+            wptb_debug_options();
+            break;
+        endswitch;
 
 }  // end function wptb_options_page
 
@@ -277,7 +303,7 @@ function wptb_options_page() {
 
 
 function wptb_options_tabs( $current = 'main' ) {
-    $tabs = array( 'main' => 'Main&nbspOptions',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'customcss' => 'Custom&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'delete' => 'Delete&nbspSettings', 'faq' => 'FAQ' );
+    $tabs = array( 'main' => 'Main&nbspOptions',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','debug' => 'Debug', 'delete' => 'Delete&nbspSettings', 'faq' => 'FAQ' );
     $links = array();
     foreach( $tabs as $tab => $name ) {
     	if ( $tab == "faq" ) {
@@ -297,7 +323,7 @@ function wptb_options_tabs( $current = 'main' ) {
     echo '<h2>';
 	foreach ($links as $i => $value) {
         echo $value;
-		if ( $i == "5") echo "<br>";
+		if ( $i == "3") echo "<br>";
 	}
         
 // add plugin home page link       
@@ -484,10 +510,6 @@ function wptb_update_settings() {
 				
 				$wptbOptions['past_cookie_values']=	$wptbPastValues;	
 			}
-
-
-
-
 		}
 		if (isset($_POST['wptbcloseimage'])) {
 			$wptbOptions['close_button_image'] = esc_url($_POST['wptbcloseimage']);
@@ -501,7 +523,84 @@ function wptb_update_settings() {
 		if (isset($_POST['wptbtopbarpos'])) {
 			$wptbOptions['topbar_pos'] = $_POST['wptbtopbarpos'];
 		}
-	
+		
+		// need to check the make sure we are the right tab to correctly handle the toggle buttons
+		
+		if ( $_GET['tab'] == 'socialbuttons') {
+			if (isset($_POST['wptbsocialicon1'])) 
+				$wptbOptions['social_icon1'] = 'on';
+			else
+				$wptbOptions['social_icon1'] = 'off';
+
+			if (isset($_POST['wptbsocialicon2'])) 
+				$wptbOptions['social_icon2'] = 'on';
+			else
+				$wptbOptions['social_icon2'] = 'off';
+
+			if (isset($_POST['wptbsocialicon3'])) 
+				$wptbOptions['social_icon3'] = 'on';
+			else
+				$wptbOptions['social_icon3'] = 'off';
+
+			if (isset($_POST['wptbsocialicon4'])) 
+				$wptbOptions['social_icon4'] = 'on';
+			else
+				$wptbOptions['social_icon4'] = 'off';
+		}
+			
+		if (isset($_POST['wptbsocialicon1image'])) {
+			$wptbOptions['social_icon1_image'] = $_POST['wptbsocialicon1image'];
+		}
+		if (isset($_POST['wptbsocialicon2image'])) {
+			$wptbOptions['social_icon2_image'] = $_POST['wptbsocialicon2image'];
+		}
+		if (isset($_POST['wptbsocialicon3image'])) {
+			$wptbOptions['social_icon3_image'] = $_POST['wptbsocialicon3image'];
+		}
+		if (isset($_POST['wptbsocialicon4image'])) {
+			$wptbOptions['social_icon4_image'] = $_POST['wptbsocialicon4image'];
+		}
+		if (isset($_POST['wptbsocialicon1link'])) {
+			$wptbOptions['social_icon1_link'] = $_POST['wptbsocialicon1link'];
+		}
+		if (isset($_POST['wptbsocialicon2link'])) {
+			$wptbOptions['social_icon2_link'] = $_POST['wptbsocialicon2link'];
+		}
+		if (isset($_POST['wptbsocialicon3link'])) {
+			$wptbOptions['social_icon3_link'] = $_POST['wptbsocialicon3link'];
+		}
+		if (isset($_POST['wptbsocialicon4link'])) {
+			$wptbOptions['social_icon4_link'] = $_POST['wptbsocialicon4link'];
+		}
+		if (isset($_POST['wptbsocialicon1css'])) {
+			$wptbOptions['social_icon1_css'] = trim(str_replace('"',"'",stripslashes_deep($_POST['wptbsocialicon1css'])));
+		}			
+		if (isset($_POST['wptbsocialicon2css'])) {
+			$wptbOptions['social_icon2_css'] = trim(str_replace('"',"'",stripslashes_deep($_POST['wptbsocialicon2css'])));
+		}			
+		if (isset($_POST['wptbsocialicon3css'])) {
+			$wptbOptions['social_icon3_css'] = trim(str_replace('"',"'",stripslashes_deep($_POST['wptbsocialicon3css'])));
+		}			
+		if (isset($_POST['wptbsocialicon4css'])) {
+			$wptbOptions['social_icon4_css'] = trim(str_replace('"',"'",stripslashes_deep($_POST['wptbsocialicon4css'])));
+		}			
+		if (isset($_POST['wptbicon1linktarget'])) {
+			$wptbOptions['social_icon1_link_target'] = trim(str_replace('"',"'",stripslashes_deep($_POST['wptbicon1linktarget'])));
+		}			
+		if (isset($_POST['wptbicon2linktarget'])) {
+			$wptbOptions['social_icon2_link_target'] = trim(str_replace('"',"'",stripslashes_deep($_POST['wptbicon2linktarget'])));
+		}			
+		if (isset($_POST['wptbicon3linktarget'])) {
+			$wptbOptions['social_icon3_link_target'] = trim(str_replace('"',"'",stripslashes_deep($_POST['wptbicon3linktarget'])));
+		}			
+		if (isset($_POST['wptbicon4linktarget'])) {
+			$wptbOptions['social_icon4_link_target'] = trim(str_replace('"',"'",stripslashes_deep($_POST['wptbicon4linktarget'])));
+		}			
+		
+		
+
+		
+
 		update_option('wptbAdminOptions', $wptbOptions);
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Settings Updated</code>';
 		echo '<div class="updated"><p><strong>Settings Updated.</strong></p></div>';
@@ -525,10 +624,10 @@ function wptb_update_settings() {
 
 
 function wptb_display_common_info() {
-
+		
 	$wptb_debug=get_transient( 'wptb_debug' );	
 	$wptbOptions = wptb_get_Plugin_Options(false);
-
+		
 	if ($wptbOptions['start_time_utc'] > $wptbOptions['end_time_utc'] && $wptbOptions['end_time_utc'] != 0 ) {
 		echo '<div class="error"><strong>End Time is before Start Time - TopBar will not display.</strong></div>';
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: End Time Before Start Time Error</code>';
@@ -538,14 +637,14 @@ function wptb_display_common_info() {
 		   
 	$wptb_cookie = "wptopbar_".COOKIEHASH;
 	if  ( ($wptbOptions['respect_cookie'] == 'always' ) AND  ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value'] ) ) 
-		 _e( "<div class='error'><strong>You have a cookie with this browser that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the Close Button Options.</strong></div>", 'wptb' ); 
+		 _e( "<div class='error'><strong>You have a cookie with this browser that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the Close Button tab.</strong></div>", 'wptb' ); 
 	?>  
 
 	<a name="Top"></a>
 		<div class=wrap>
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 		<h2><img src="<?php _e( plugins_url('/images/banner-772x250.png', __FILE__), 'wptb' ); ?>" height="50" alt="TopBar Banner"/>
-		WP-TopBar - Version 3.05</h2>
+		WP-TopBar - Version 3.06</h2>
 		<div class="postbox">
 		<br>
 		Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.
@@ -558,9 +657,14 @@ if you find this plugin useful.
 		</div>
 				<div class="postbox">
 		<?php if ($wptbOptions['enable_topbar'] == "false") { _e( '<div class="error"><strong>TopBar is not enabled.</strong></div>', 'wptb' ); } ?>
-		<h3>Live Preview - <em><p style="font-weight:normal;">Based on your Start/End time settings in the Main Options,<?php if ($wptbOptions['enable_topbar'] == "false") { _e( ' when enabled,', 'wptb' ); } ?> the TopBar will <?php if (!wptb::wptb_check_time(gettimeofday(true),$wptbOptions['start_time_utc'],$wptbOptions['end_time_utc'])) echo "<strong>not</strong>"; ?> display (based on the current time.)
-		<br><?php if  ( ($wptbOptions['respect_cookie'] == 'always' ) AND ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value'] ) ) 
-		echo "<br>You have a cookie that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the Close Button Options."; ?>
+		<h3>Live Preview<em><p style="font-weight:normal;">Time check: Based on your Start/End time settings in the Main Options,<?php if ($wptbOptions['enable_topbar'] == "false") { _e( ' when enabled,', 'wptb' ); } ?> the TopBar will <?php if (!wptb::wptb_check_time(gettimeofday(true),$wptbOptions['start_time_utc'],$wptbOptions['end_time_utc'])) echo "<strong>not</strong>"; ?> display (based on the current time.)
+		<br><?php if ( $wptbOptions['respect_cookie'] == 'ignore' ) 
+					echo "<br>Cookie check: The plugin is not checking for the presence of cookies.";
+				  else
+						if ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value'] )  
+							echo "<br>Cookie check: The plugin is  checking for the presence of cookies. You have a cookie that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the Close Button tab."; 
+						else 
+							echo "<br>Cookie check: The plugin is  checking for the presence of cookies. You do not have a cookie that will prevent the TopBar from showing.";?>
 		</p>
 		</em></h3>
 
@@ -637,7 +741,7 @@ function wptb_main_options() {
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					</td>
 					<td>
-							<p class="sub"><em>Select where you want to TopBar to be located. Default is Above Header.</em></p>
+							<p class="sub"><em>Select where you want to TopBar to be located. Default is <code>Above Header</code></em></p>
 					</td>
 				</tr>	
 				<tr valign="top">
@@ -674,7 +778,7 @@ function wptb_main_options() {
 						<div id="wptb_start_time"></div>				    
 					</td>
 					<td>
-							<p class="sub"><em>Pick the date/time for the TopBar to start showing.  Default is zero.</em></p>
+							<p class="sub"><em>Pick the date/time for the TopBar to start showing.  Default is <code>zero</code>.</em></p>
 					</td>
 				</tr>							
 				<tr valign="top">
@@ -693,7 +797,7 @@ function wptb_main_options() {
 						<input type="text" name="wptbbottomborderheight" id="bottomborderheight" size="5" value="<?php echo $wptbOptions['bottom_border_height']; ?>" >
 					</td>
 					<td>
-							<p class="sub"><em>Enter the height of the bottom of the border.  Default is 3px.</em></p>
+							<p class="sub"><em>Enter the height of the bottom of the border.  Default is <code>3px</code></em></p>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -702,7 +806,7 @@ function wptb_main_options() {
 						<input type="text" name="wptbpaddingtop" id="paddingtop" size="5" value="<?php echo $wptbOptions['padding_top']; ?>" >
 					</td>
 					<td>
-							<p class="sub"><em>Enter the top padding.  Default is 8px.</em></p>
+							<p class="sub"><em>Enter the top padding.  Default is <code>8px</code></em></p>
 					</td>
 				</tr>			
 				<tr valign="top">
@@ -711,7 +815,7 @@ function wptb_main_options() {
 						<input type="text" name="wptbpaddingbottom" id="paddingbottom" size="5" value="<?php echo $wptbOptions['padding_bottom']; ?>" >
 					</td>
 					<td>
-							<p class="sub"><em>Enter the bottom padding.  Default is 8px.</em></p>
+							<p class="sub"><em>Enter the bottom padding.  Default is <code>8px</code></em></p>
 					</td>
 				</tr>		
 				<tr valign="top">
@@ -720,7 +824,7 @@ function wptb_main_options() {
 						<input type="text" name="wptbmargintop" id="margintop" size="5" value="<?php echo $wptbOptions['margin_top']; ?>" >
 					</td>
 					<td>
-							<p class="sub"><em>Enter the top margin.  Default is 0px.</em></p>
+							<p class="sub"><em>Enter the top margin.  Default is <code>0px</code></em></p>
 					</td>
 				</tr>			
 				<tr valign="top">
@@ -729,7 +833,7 @@ function wptb_main_options() {
 						<input type="text" name="wptbmarginbottom" id="marginbottom" size="5" value="<?php echo $wptbOptions['margin_bottom']; ?>" >
 					</td>
 					<td>
-							<p class="sub"><em>Enter the bottom margin.  Default is 0px.</em></p>
+							<p class="sub"><em>Enter the bottom margin.  Default is <code>0px</code></em></p>
 					</td>
 				</tr>				
 				<tr valign="top">
@@ -738,7 +842,7 @@ function wptb_main_options() {
 						<input type="text" name="wptbfontsize" id="fontsize" size="5" value="<?php echo $wptbOptions['font_size']; ?>" >
 					</td>
 					<td>
-							<p class="sub"><em>Enter the font size.  Default is 14px.</em></p>
+							<p class="sub"><em>Enter the font size.  Default is <code>14px</code></em></p>
 					</td>
 				</tr>	
 				<tr valign="top">
@@ -751,7 +855,7 @@ function wptb_main_options() {
 					<label for="wptb_text_align_right"><input type="radio" id="wptb_text_align_right" name="wptbtextalign" value="right" <?php if ($wptbOptions['text_align'] == "right") { _e('checked="checked"', "wptb"); }?>/> Right</label>	
 					</td>
 					<td>
-							<p class="sub"><em>Select how you want the text to align. Default is center. When using right -- try adding padding via the Custom CSS tab. e.g. padding-right:10px;</em></p>
+							<p class="sub"><em>Select how you want the text to align. Default is <code>center</code> When using right -- try adding padding via the TopBar CSS tab. e.g. </em><code>padding-right:10px;</code></p>
 					</td>
 				</tr>	
 				<tr valign="top">
@@ -771,7 +875,7 @@ function wptb_main_options() {
 						<label for="wptb_invert_include_no"><input type="radio" id="wptb_invert_include_no" name="wptbinvertinclude" value="no" <?php if ($wptbOptions['invert_include'] == "no") { _e('checked="checked"', "wptb"); }?> /> No</label>
 						<p>
 					<td>
-						<p class="sub"><em>Select Yes if you want to exclude the Page IDs enter above.  This will cause the TopBar to <strong>not</strong> be shown on those specific Page IDs.  Default is No.</em></p>
+						<p class="sub"><em>Select Yes if you want to exclude the Page IDs enter above.  This will cause the TopBar to <strong>not</strong> be shown on those specific Page IDs.  Default is <code>No</code></em></p>
 					</td>
 				</tr>		
 			</table>
@@ -794,13 +898,13 @@ function wptb_main_options() {
 
 
 //=========================================================================			
-// Custom CSS Options
+// TopBar CSS Options
 //=========================================================================			
 
 
 
 
-function wptb_customcss_options() {
+function wptb_topbarcss_options() {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
 			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
@@ -826,9 +930,9 @@ function wptb_customcss_options() {
 	?>
 	
 	<div class="postbox">
-	<h3><a name="CustomCss">Custom CSS</a></h3>
+	<h3><a name="topbarcss">TopBar CSS</a></h3>
 	<div class="inside">
-		<em><p class="sub">Enter any custom CSS.  This allows you to add padding, font styles & more.  Be really careful here -- this could break your website!  Test this with multiple browsers to make sure it works across them all. Double-quotes are automatically replaced with single quotes.<p><strong>Don't forget the trailing semi-colon.</strong></p>
+		<em><p class="sub">Enter any custom CSS for the TopBar.  This allows you to add padding, font styles & more.  Be really careful here -- this could break your website!  Test this with multiple browsers to make sure it works across them all. Double-quotes are automatically replaced with single quotes.<p><strong>Don't forget the trailing semi-colon.</strong></p>
 		Create a custom CSS gradient at colorzilla.com:
 		<a class="button" style="<?php _e( $wptb_cssgradient_style , 'wptb' ); ?>" href="http://www.colorzilla.com/gradient-editor/" target="_blank">http://www.colorzilla.com/gradient-editor/</a>	
 		<p class="sub"><br>Examples:<p></p>
@@ -887,7 +991,7 @@ function wptb_customcss_options() {
 	</div> <!-- end of CSS Settings -->
 	
 	<?php
-}	// End of wptb_customcss_options
+}	// End of wptb_topbarcss_options
 
 
 //=========================================================================			
@@ -1003,7 +1107,7 @@ function wptb_topbartext_options() {
 
 	<div class="postbox">
 										
-	<h3><a name="TopbarText">TopBar Text, Image and Link</a></h3>
+	<h3><a name="TopBarText">TopBar Text, Image and Link</a></h3>
 										
 	<div class="inside">
 		<p class="sub"><em>These are the text, image and links to be used in the TopBar. The image is placed first (if any), then the text (if any) is overlaid on it.  Scale the image to fix your website.  If you enable the image (by selecting "Yes"), then the image will be used and the bar color will be ignored.</em></p>
@@ -1075,10 +1179,187 @@ function wptb_topbartext_options() {
 		
 		<div class="clear"></div>	
 		</div>
-	</div> <!-- end of TopbarText Settings -->
+	</div> <!-- end of TopBarText Settings -->
 	
 	<?php 	
 }	// End of wptb_topbartext_options
+
+
+
+//=========================================================================			
+// Social Button Options
+//=========================================================================			
+
+
+function wptb_socialbutton_options() {
+
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+
+	$wptbOptions = wptb_get_Plugin_Options(false);
+
+
+	?>
+		
+	<div class="postbox">
+										
+	<h3><a name="SocialButtons">Social Button Settings</a></h3>
+										
+	<div class="inside">
+		<p class="sub"><em>These are the settings for settings the Social Buttons.
+		<br><br>You have four buttons that you can add to the TopBar.  Each allows you to set the image, link and CSS.  The CSS is applied the the <code>&lt img &gt</code> tag.
+		<br>
+		<br><em>Link Target Options:
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; _blank - 	Opens the linked document in a new window or tab (this is default)
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; _self	-	Opens the linked document in the same frame as it was clicked
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; _parent -	Opens the linked document in the parent frame
+		<br>&nbsp;&nbsp;&nbsp;&nbsp; _top	-	Opens the linked document in the full body of the windowtext to align.</em></p>
+		<br>
+		
+		<div class="table">
+			<table class="form-table">	
+				<tr valign="top">
+					<th scope="row">Social Icons:</th>
+				</tr>
+				<tr>
+				<td valign="top"> 
+				&nbsp;&nbsp;&nbsp;&nbsp;Social Icon 1:<br>	
+					<?php if ( ! ($wptbOptions['social_icon1_image'] == "") )  _e('<img style="float:right; margin: 0 0 15px 15px;" src="'.$wptbOptions['social_icon1_image'].'"/>', 'wptb' ); ?>
+				</td>
+				<td valign="top" style="border-top-style:solid !important; border-width:1px !important; border-top-color:black !important;">
+					<label for="wptb_social_icon1"><input type="checkbox" id="wptb_social_icon1" name="wptbsocialicon1" value="on" <?php if ($wptbOptions['social_icon1'] == "on") { _e('checked="checked"', "wptb"); }?>/> Enable</label>	
+				<br>Social Icon 1 URL:&nbsp;&nbsp;&nbsp;&nbsp;
+					<input id="wptbupload_social_icon1" type="text" size="85" name="wptbsocialicon1image" value="<?php echo $wptbOptions['social_icon1_image']; ?>" />
+					<input class="browse_upload button" id="wptbupload_social_icon2_button" type="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" value="Upload Image" />
+				<br>Social Icon 1 Link:&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="text" name="wptbsocialicon1link" id="link" size="100" value="<?php echo stripslashes_deep($wptbOptions['social_icon1_link']); ?>" >
+				<br>Social Icon 1 Link Target:&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon1_link_target_blank"><input type="radio" id="wptb_icon1_link_target_blank" name="wptbicon1linktarget" value="blank" <?php if ($wptbOptions['social_icon1_link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>/> _blank</label>		
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon1_link_target_self"><input type="radio" id="wptb_icon1_link_target_self" name="wptbicon1linktarget" value="self" <?php if ($wptbOptions['social_icon1_link_target'] == "self") { _e('checked="checked"', "wptb"); }?> /> _self</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon1_link_target_parent"><input type="radio" id="wptb_icon1_link_target_parent" name="wptbicon1linktarget" value="parent" <?php if ($wptbOptions['social_icon1_link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>/> _parent</label>	
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon1_link_target_top"><input type="radio" id="wptb_icon1_link_target_top" name="wptbicon1linktarget" value="top" <?php if ($wptbOptions['social_icon1_link_target'] == "top") { _e('checked="checked"', "wptb"); }?>/> _top</label>	
+				<br>Social Icon 1 CSS:&nbsp;&nbsp;&nbsp;&nbsp;
+					<textarea name="wptbsocialicon1css" id="wptb_socialicon1_css" rows="2" cols="100"><?php echo $wptbOptions['social_icon1_css']; ?></textarea>
+				<br>
+					<?php if ( ! ($wptbOptions['social_icon1_image'] == "") ) {
+						list($width, $height, $type, $attr) = getimagesize($wptbOptions['social_icon1_image']);
+						echo "Image size: ".$width." px (w) x ".$height." px (h).";
+					}
+					?>
+					</td>
+				</tr>
+				<tr>
+				<td valign="top">
+				&nbsp;&nbsp;&nbsp;&nbsp;Social Icon 2:<br>	
+					<?php if ( ! ($wptbOptions['social_icon2_image'] == "") )  _e('<img style="float:right; margin: 0 0 15px 15px;" src="'.$wptbOptions['social_icon2_image'].'"/>', 'wptb' ); ?>
+				</td>
+				<td valign="top" style="border-top-style:solid !important; border-width:1px !important; border-top-color:black !important;">
+					<label for="wptb_social_icon2"><input type="checkbox" id="wptb_social_icon2" name="wptbsocialicon2" value="on" <?php if ($wptbOptions['social_icon2'] == "on") { _e('checked="checked"', "wptb"); }?>/> Enable</label>	
+				<br>Social Icon 2 URL:&nbsp;&nbsp;&nbsp;&nbsp;
+					<input id="wptbupload_social_icon2" type="text" size="85" name="wptbsocialicon2image" value="<?php echo $wptbOptions['social_icon2_image']; ?>" />
+					<input class="browse_upload button" id="wptbupload_social_icon2_button" type="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" value="Upload Image" />
+				<br>Social Icon 2 Link:&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="text" name="wptbsocialicon2link" id="link" size="100" value="<?php echo stripslashes_deep($wptbOptions['social_icon2_link']); ?>" >
+				<br>Social Icon 2 Link Target:&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon2_link_target_blank"><input type="radio" id="wptb_icon2_link_target_blank" name="wptbicon2linktarget" value="blank" <?php if ($wptbOptions['social_icon2_link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>/> _blank</label>		
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon2_link_target_self"><input type="radio" id="wptb_icon2_link_target_self" name="wptbicon2linktarget" value="self" <?php if ($wptbOptions['social_icon2_link_target'] == "self") { _e('checked="checked"', "wptb"); }?> /> _self</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon2_link_target_parent"><input type="radio" id="wptb_icon2_link_target_parent" name="wptbicon2linktarget" value="parent" <?php if ($wptbOptions['social_icon2_link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>/> _parent</label>	
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon2_link_target_top"><input type="radio" id="wptb_icon2_link_target_top" name="wptbicon2linktarget" value="top" <?php if ($wptbOptions['social_icon2_link_target'] == "top") { _e('checked="checked"', "wptb"); }?>/> _top</label>
+				<br>Social Icon 2 CSS:&nbsp;&nbsp;&nbsp;&nbsp;
+					<textarea name="wptbsocialicon2css" id="wptb_socialicon2_css" rows="2" cols="100"><?php echo $wptbOptions['social_icon2_css']; ?></textarea>
+				<br>
+					<?php if ( ! ($wptbOptions['social_icon2_image'] == "") ) {
+						list($width, $height, $type, $attr) = getimagesize($wptbOptions['social_icon2_image']);
+						echo "Image size: ".$width." px (w) x ".$height." px (h).";
+					}
+					?>
+					</td>
+				</tr>
+				<tr>
+				<td valign="top">
+				&nbsp;&nbsp;&nbsp;&nbsp;Social Icon 3:<br>	
+					<?php if ( ! ($wptbOptions['social_icon3_image'] == "") )  _e('<img style="float:right; margin: 0 0 15px 15px;" src="'.$wptbOptions['social_icon3_image'].'"/>', 'wptb' ); ?>
+				</td>
+				<td valign="top" style="border-top-style:solid !important; border-width:1px !important; border-top-color:black !important;">
+					<label for="wptb_social_icon3"><input type="checkbox" id="wptb_social_icon3" name="wptbsocialicon3" value="on" <?php if ($wptbOptions['social_icon3'] == "on") { _e('checked="checked"', "wptb"); }?>/> Enable</label>	
+				<br>Social Icon 3 URL:&nbsp;&nbsp;&nbsp;&nbsp;
+					<input id="wptbupload_social_icon3" type="text" size="85" name="wptbsocialicon3image" value="<?php echo $wptbOptions['social_icon3_image']; ?>" />
+					<input class="browse_upload button" id="wptbupload_social_icon3_button" type="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" value="Upload Image" />
+				<br>Social Icon 3 Link:&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="text" name="wptbsocialicon3link" id="link" size="100" value="<?php echo stripslashes_deep($wptbOptions['social_icon3_link']); ?>" >
+				<br>Social Icon 3 Link Target:&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon3_link_target_blank"><input type="radio" id="wptb_icon3_link_target_blank" name="wptbicon3linktarget" value="blank" <?php if ($wptbOptions['social_icon3_link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>/> _blank</label>		
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon3_link_target_self"><input type="radio" id="wptb_icon3_link_target_self" name="wptbicon3linktarget" value="self" <?php if ($wptbOptions['social_icon3_link_target'] == "self") { _e('checked="checked"', "wptb"); }?> /> _self</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon3_link_target_parent"><input type="radio" id="wptb_icon3_link_target_parent" name="wptbicon3linktarget" value="parent" <?php if ($wptbOptions['social_icon3_link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>/> _parent</label>	
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon3_link_target_top"><input type="radio" id="wptb_icon3_link_target_top" name="wptbicon3linktarget" value="top" <?php if ($wptbOptions['social_icon3_link_target'] == "top") { _e('checked="checked"', "wptb"); }?>/> _top</label>									
+				<br>Social Icon 3 CSS:&nbsp;&nbsp;&nbsp;&nbsp;
+					<textarea name="wptbsocialicon3css" id="wptb_socialicon3_css" rows="2" cols="100"><?php echo $wptbOptions['social_icon3_css']; ?></textarea>
+				<br>
+					<?php if ( ! ($wptbOptions['social_icon3_image'] == "") ) {
+						list($width, $height, $type, $attr) = getimagesize($wptbOptions['social_icon3_image']);
+						echo "Image size: ".$width." px (w) x ".$height." px (h).";
+					}
+					?>
+					</td>
+				</tr>
+				<tr>
+				<td valign="top">
+				&nbsp;&nbsp;&nbsp;&nbsp;Social Icon 4:<br>	
+					<?php if ( ! ($wptbOptions['social_icon4_image'] == "") )  _e('<img style="float:right; margin: 0 0 15px 15px;" src="'.$wptbOptions['social_icon4_image'].'"/>', 'wptb' ); ?>
+				</td>
+				<td valign="top" style="border-top-style:solid !important; border-width:1px !important; border-top-color:black !important;">
+					<label for="wptb_social_icon4"><input type="checkbox" id="wptb_social_icon4" name="wptbsocialicon4" value="on" <?php if ($wptbOptions['social_icon4'] == "on") { _e('checked="checked"', "wptb"); }?>/> Enable</label>	
+				<br>Social Icon 4 URL:&nbsp;&nbsp;&nbsp;&nbsp;
+					<input id="wptbupload_social_icon4" type="text" size="85" name="wptbsocialicon4image" value="<?php echo $wptbOptions['social_icon4_image']; ?>" />
+					<input class="browse_upload button" id="wptbupload_social_icon4_button" type="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" value="Upload Image" />
+				<br>Social Icon 4 Link:&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="text" name="wptbsocialicon4link" id="link" size="100" value="<?php echo stripslashes_deep($wptbOptions['social_icon4_link']); ?>" >
+				<br>Social Icon 4 CSS:&nbsp;&nbsp;&nbsp;&nbsp;
+					<textarea name="wptbsocialicon4css" id="wptb_socialicon4_css" rows="2" cols="100"><?php echo $wptbOptions['social_icon4_css']; ?></textarea>
+				<br>Social Icon 4 Link Target:&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon4_link_target_blank"><input type="radio" id="wptb_icon4_link_target_blank" name="wptbicon4linktarget" value="blank" <?php if ($wptbOptions['social_icon4_link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>/> _blank</label>		
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon4_link_target_self"><input type="radio" id="wptb_icon4_link_target_self" name="wptbicon4linktarget" value="self" <?php if ($wptbOptions['social_icon4_link_target'] == "self") { _e('checked="checked"', "wptb"); }?> /> _self</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon4_link_target_parent"><input type="radio" id="wptb_icon4_link_target_parent" name="wptbicon4linktarget" value="parent" <?php if ($wptbOptions['social_icon4_link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>/> _parent</label>	
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="wptb_icon4_link_target_top"><input type="radio" id="wptb_icon4_link_target_top" name="wptbicon4linktarget" value="top" <?php if ($wptbOptions['social_icon4_link_target'] == "top") { _e('checked="checked"', "wptb"); }?>/> _top</label>					
+				<br>
+					<?php if ( ! ($wptbOptions['social_icon4_image'] == "") ) {
+						list($width, $height, $type, $attr) = getimagesize($wptbOptions['social_icon4_image']);
+						echo "Image size: ".$width." px (w) x ".$height." px (h).";
+					}
+					?>
+					</td>
+				</tr>			
+			</table>
+		</div>
+		<table>
+		<tr>
+			<td style="valign:top; width:500px;"><p class="submit">
+				<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
+			</td>
+			<td style="valign:top;">
+				<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
+			</td>
+		</tr>
+		</table>
+		
+		<div class="clear"></div>	
+		</div>
+	</div> <!-- end of Social Button Settings -->
+	
+	<?php 	
+}	// End of wptb_socialbutton_options
 
 
 //=========================================================================			
@@ -1115,7 +1396,7 @@ function wptb_closebutton_options() {
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						</td>
 						<td>
-								<p class="sub"><em>Allows the user to close the TopBar.  Default is No.</em></p>
+								<p class="sub"><em>Allows the user to close the TopBar.  Default is <code>No</code></em></p>
 						</td>
 				</tr>					
 				<tr valign="top">
@@ -1127,7 +1408,7 @@ function wptb_closebutton_options() {
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					</td>
 					<td>
-							<p class="sub"><em>Enable use of cookies to control TopBar behavior.  Default is No.</em></p>
+							<p class="sub"><em>Enable use of cookies to control TopBar behavior.  Default is <code>No</code></em></p>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -1144,7 +1425,7 @@ function wptb_closebutton_options() {
 					?>
 					</td>
 					<td>
-							<p class="sub"><em>Change this value to force the cookie to reshow.  See <a href='?page=wp-topbar.php&tab=faq'>FAQ</a>.  Default is 1.</em></p>
+							<p class="sub"><em>Change this value to force the cookie to reshow.  See <a href='?page=wp-topbar.php&tab=faq'>FAQ</a>.  Default is <code>1</code></em></p>
 					</td>
 				</tr>				
 				<tr valign="top">
@@ -1153,7 +1434,7 @@ function wptb_closebutton_options() {
 					<textarea name="wptbclosecss" id="clsoecss" rows="2" cols="100"><?php echo $wptbOptions['close_button_css']; ?></textarea>
 					</td>
 					<td>
-						<p class="sub"><em>Default is "float:right;"</em></p>
+						<p class="sub"><em>Default is <code>vertical-align:text-bottom;float:right;</code></em></p>
 					</td>
 				</tr>	
 		
@@ -1223,7 +1504,77 @@ function wptb_delete_options() {
  
  <?php
  
-}	// End of wptb_delete_options
+}	// End of wptb_delete_options//=========================================================================			
+// Delete Options
+//=========================================================================			
+
+function wptb_debug_options() {
+
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+
+	$wptbOptions = wptb_get_Plugin_Options(false);
+	$wptb_cookie = "wptopbar_".COOKIEHASH;
+
+	
+	?>
+					
+	<div class="postbox">
+	<h3><a name="Debug">Debug Settings</a></h3>
+	<div class="inside">
+		<ul>
+			<li><strong>Status:</strong>
+			<br>
+			<?php if ($wptbOptions['enable_topbar'] == "false") { _e( 'The TopBar is not enabled.  Enable it in the <a href="?page=wp-topbar.php&tab=main">Main Options tab</a>.<br>', 'wptb' ); } ?>
+Based on your Start/End time settings in the <a href="?page=wp-topbar.php&tab=main">Main Options tab</a>,<?php if ($wptbOptions['enable_topbar'] == "false") { _e( ' when enabled,', 'wptb' ); } ?> the TopBar will <?php if (!wptb::wptb_check_time(gettimeofday(true),$wptbOptions['start_time_utc'],$wptbOptions['end_time_utc'])) echo "<strong>not</strong>"; ?> display (based on the current time.)
+		<br><?php if ( $wptbOptions['respect_cookie'] == 'ignore' ) 
+					echo "<br>The plugin is not checking for the presence of cookies.  That is not preventing the TopBar from showing.";
+				  else
+						if ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value'] )  
+							echo "<br>The plugin is  checking for the presence of cookies. You have a cookie that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the <a href='?page=wp-topbar.php&tab=main'>Close Button tab</a>."; 
+						else 
+							echo "The plugin is  checking for the presence of cookies. You do not have a cookie that will prevent the TopBar from showing.";?>
+		</p>
+</li>
+<strong>Debug Helpers:</strong>
+
+			<li>You can append <code>&debug</code> after the wp-topbar URL to turn on debugging messages. i.e. <code>admin.php?page=wp-topbar.php&debug</code> . These messages can help you see if you have a parameter that will cause the TopBar to break.</li>
+			<li><code>&debug</code> will turn on an internal timer that will display debug messages for about one minute.  The timer is reset for every page refresh that has <code>&debug</code>.  If you have debuging turned on (in your wp-config.php), then the error messages will also be sent to the default wordpress logfile for any page views of your website. i.e. <code>define('WP_DEBUG', true);</code> and <code>define('WP_DEBUG_LOG', true);</code></li>
+			<li>To turn off the debug messages, remove the <code>&debug</code> from the URL and wait about one minute.</li>
+		</ul>
+		<table>
+		<tr>
+		<td valign="top" style="valign:top; width:100%; border-top-style:solid !important; border-width:1px !important; border-color:black !important;">
+		<p>Below is the actual code that will be generated by the plugin.  Look closely to determine if any of your custom HTML or CSS values are causing issues with the TopBar.
+		<?php if ( $wptbOptions['topbar_pos'] == 'header' )
+		echo "<br>Since you are putting the TopBar in the Header, the Plugin adds the following Javascript<code>&ltscript type='text/javascript'&gtjQuery(document).ready(function() {jQuery('body').prepend(…)});</code> to prepend the HTML to the top of the Body."; ?>
+		</td>
+		</tr>
+		<tr>
+		<td valign="top" style="valign:top; width:100%; border-style:solid !important; border-width:1px !important; border-color:black !important;">
+		<?php if ($wptbOptions['enable_topbar'] == "false") { _e( '<strong>The TopBar is not enabled.  Therefore no HTML will be generated. Enable it in the <a href="?page=wp-topbar.php&tab=main">Main Options tab</a>.</strong><br>', 'wptb' ); }
+		else {_e ('	<textarea rows="10" cols="150">', wptb);wptb::wptb_inject_TopBar_html_js();_e('</textarea>', wptb);} ?>
+		</td>
+		<br>
+		</tr>
+		<table>
+		<tr>
+			<td style="valign:top; width:500px;">	
+			</td>
+			<td style="valign:top;">
+				<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
+			</td>
+		</tr>
+		</table>
+		<div class="clear"></div>	
+	</div> 
+	</div> <!-- end of Delete Settings -->
+   </form>
+ </div>	 
+ 
+ <?php
+ 
+}	// End of wptb_debug_options
 
 //=========================================================================			
 // FAQ
@@ -1233,21 +1584,31 @@ function wptb_faq_page() {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
 			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+	$wptbOptions = wptb_get_Plugin_Options(false);
 
 	?>
 					
 	<div class="postbox">
-	<h3><a name="FAQ">WP-TopBAR FAQ</a></h3>
+	<h3><a name="FAQ">WP-TopBar FAQ</a></h3>
 	<div class="inside">		
 	
 	
 	<ol type="square">
 
+<li><strong>My TopBar is not working.  What should I do?</strong></li>
+<p>Use the <a href="?page=wp-topbar.php&tab=debug">Debug tab</a> to see how the TopBar is being generated.</p>
+<p>Check for any messages under the Live Preview heading on the Admin Page.  It will tell you if you have cookies or time settings that will prevent the TopBar from loading.
+<p>You may have CSS settings that prevent the TopBar from loading.  If you entered any setting that are not valid, the TopBar will not load. Try deleting the settings and then re-entering your CSS until you find the one that is causing the issue.  Again, the <a href="?page=wp-topbar.php&tab=debug">Debug tab</a> can help you discover any issues.
+<p>
 <li><strong>How do the new cookies (in version 3.04+) work behind the scenes?</strong></li>
 <p>
 If you allow the user to close the TopBar, then the plugin checks to see if you have enabled cookies.   If they are not enabled, it deletes any existing cookies.   If they are enabled, it looks to see if a cookie has been created.  A cookie is only created if the TopBar has been previously closed by the user.  If it finds a cookie and the cookie value matches the Cookie Value setting, it prevents the TopBar from showing.
 <p>
 If you change the Cookie Value to something new, the TopBar will show up again.  This is useful if you want to force the TopBar to show on new content.  Make sure to select something you haven't used before.  A good idea is to increment the value by one every time you want to force the TopBar to show.
+<p>
+<li><strong>What Social Button Icons are provided?</strong></li>
+<p>
+Look in this directory (<code><?PHP echo str_ireplace( 'https://','http://',plugins_url('/icon/', __FILE__) ) ?></code>) and you'll find two folders,  one with PNG files and one with PSD files.  Thanks to <a href="http://ElegantThemes.com" target="_blank">ElegantThemes.com</a> for providing the icon files!
 <p>
 <li><strong>What CSS ID's are available?</strong></li>
 <p>
@@ -1271,7 +1632,7 @@ You can find the Page ID in the Edit Post or Edit Page URL. For example, the pag
 <p>
 <li><strong>How do I test the TopBar?</strong></li>
 <p>
-To test the TopBar on your site, you can set the Page IDs (in General Options) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
+To test the TopBar on your site, you can set the Page IDs (in Main Options) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
 <br>
 <li><strong>Why does my TopBar look odd on Internet Explorer?</strong></li> 
 <p>
@@ -1279,7 +1640,7 @@ IE does not (yet) implement gradients like other browsers.  So, make sure you te
 <br>
 <li><strong>How dow I uninstall?</strong></li> 
 <p> <ul>
-<li>Scroll to the delete section or click the Delete Settings button at the top of the page.</li>
+<li>Go to the Delete Settings tab and then click the Delete Settings button at the top of the page.</li>
 <li>Hit the Delete Settings Button.</li>
 <li>Click "OK" on the warning box.</li>
 <li>Go to your Plugins page and delete the plugin or delete all the files in your `/wp-content/plugins/wp-topbar` directory</li> 		
