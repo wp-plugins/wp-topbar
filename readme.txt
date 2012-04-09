@@ -4,13 +4,15 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.3.1
-Stable tag: 3.06
+Stable tag: 3.07
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, link & more! 
 
 == Description ==
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
+
+Version 3.07 changes how the way jQuery is called to better support more installations.
 
 Version 3.06 adds the ability to add Social Icons to the TopBar and adds a Debug page.
 
@@ -61,7 +63,9 @@ Set the color of the:
 	<li>The Link</li>
 </ol>
 Add a Close Button
+
 Add up to four Social Icon buttons
+
 
 == Installation ==
 
@@ -80,6 +84,8 @@ I've included a sample image for you to try on your website:  wp-topbar_sample_i
 Check for any messages under the Live Preview heading on the Admin Page. It will tell you if you have cookies or time settings that will prevent the TopBar from loading.
 
 You may have CSS settings that prevent the TopBar from loading. If you entered any setting that are not valid, the TopBar will not load. Try deleting the settings and then re-entering your CSS until you find the one that is causing the issue.
+
+You can also use the Debug page to see if you can see an error.
 
 = How do the new cookies (in version 3.04+) work behind the scenes? = 
 
@@ -123,6 +129,10 @@ Click "OK" on the warning box.
 Go to your Plugins page and delete the plugin or delete all the files in your `/wp-content/plugins/wp-topbar` directory 
 
 == Upgrade Notice ==
+
+= 3.07 = 
+
+Version 3.07 changes how the way jQuery is called to better support more installations.
 
 = 3.06 = 
 
@@ -180,6 +190,10 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+= 3.07 - 4/05/2012 = 
+
+1. FIXED: Version 3.07 changes how jQuery is enqueued to better support more themes.
 
 = 3.06 - 4/04/2012 = 
 

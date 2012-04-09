@@ -15,7 +15,7 @@ Admin Page
 
 function wptb_get_Plugin_Options($wptb_echo_on) {
 
-	$wptb_version_number = '3.06';
+	$wptb_version_number = '3.07';
 	
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			
@@ -644,7 +644,7 @@ function wptb_display_common_info() {
 		<div class=wrap>
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 		<h2><img src="<?php _e( plugins_url('/images/banner-772x250.png', __FILE__), 'wptb' ); ?>" height="50" alt="TopBar Banner"/>
-		WP-TopBar - Version 3.06</h2>
+		WP-TopBar - Version 3.07</h2>
 		<div class="postbox">
 		<br>
 		Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.
@@ -1531,7 +1531,7 @@ Based on your Start/End time settings in the <a href="?page=wp-topbar.php&tab=ma
 					echo "<br>The plugin is not checking for the presence of cookies.  That is not preventing the TopBar from showing.";
 				  else
 						if ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value'] )  
-							echo "<br>The plugin is  checking for the presence of cookies. You have a cookie that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the <a href='?page=wp-topbar.php&tab=main'>Close Button tab</a>."; 
+							echo "<br>The plugin is  checking for the presence of cookies. You have a cookie that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies or you can change the Cookie Value or disable cookies in the <a href='?page=wp-topbar.php&tab=closebutton'>Close Button tab</a>."; 
 						else 
 							echo "The plugin is  checking for the presence of cookies. You do not have a cookie that will prevent the TopBar from showing.";?>
 		</p>
@@ -1604,7 +1604,7 @@ function wptb_faq_page() {
 <p>
 If you allow the user to close the TopBar, then the plugin checks to see if you have enabled cookies.   If they are not enabled, it deletes any existing cookies.   If they are enabled, it looks to see if a cookie has been created.  A cookie is only created if the TopBar has been previously closed by the user.  If it finds a cookie and the cookie value matches the Cookie Value setting, it prevents the TopBar from showing.
 <p>
-If you change the Cookie Value to something new, the TopBar will show up again.  This is useful if you want to force the TopBar to show on new content.  Make sure to select something you haven't used before.  A good idea is to increment the value by one every time you want to force the TopBar to show.
+If you change the Cookie Value to something new (<a href="?page=wp-topbar.php&tab=closebutton">on the Close Button tab</a>), the TopBar will show up again.  This is useful if you want to force the TopBar to show on new content.  Make sure to select something you haven't used before.  A good idea is to increment the value by one every time you want to force the TopBar to show.
 <p>
 <li><strong>What Social Button Icons are provided?</strong></li>
 <p>

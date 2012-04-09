@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 3.06
+Version: 3.07
 Author: Bob Goetz
 Author URI: http://wordpress.org/extend/plugins/profile/rfgoetz
 
@@ -60,8 +60,8 @@ class wptb {
 		//Actions and Filters, on all non-admin pages - these display the topbar
 		//=========================================================================	
 			
-			add_action( 'init', array( __CLASS__, 'wptb_enqueue_jquery' ) );
-			add_action('wp_footer', array( __CLASS__, 'wptb_inject_TopBar_html_js' ), 15);
+			add_action( 'wp_enqueue_scripts', array( __CLASS__, 'wptb_enqueue_jquery' ) );
+			add_action('wp_footer', array( __CLASS__, 'wptb_inject_TopBar_html_js' ), 9999999);
 		}
 		
 	}
@@ -72,9 +72,7 @@ class wptb {
 	//=========================================================================	
 	
 	function wptb_enqueue_jquery() {
-		
-		wp_enqueue_script('jquery'); 
-		
+    		wp_enqueue_script('jquery');     
 		
 	} // End of function wptb_enqueue_jquery
 
@@ -182,7 +180,7 @@ class wptb {
 		
 	function wtpb_check_for_plugin_upgrade($wptb_echo_on) { 
 	
-		$wptb_this_version_number = '3.06';
+		$wptb_this_version_number = '3.07';
 	
 		$wptbOptions = get_option('wptbAdminOptions');
 		$wptb_debug=get_transient( 'wptb_debug' );	
@@ -235,7 +233,7 @@ class wptb {
 	
 	function wptb_display_TopBar($wptb_visibility, $wptbOptions) {
 		
-		echo '<p id="wptbheadline" style="',$wptb_visibility,';';
+		echo '<p id="wptbheadline" style="',$wptb_visibility;
 		if ($wptbOptions['enable_image'] == 'false') 
 			echo "background: {$wptbOptions['bar_color']};";
 		else 
