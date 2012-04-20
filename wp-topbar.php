@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 3.07
+Version: 3.08
 Author: Bob Goetz
 Author URI: http://wordpress.org/extend/plugins/profile/rfgoetz
 
@@ -180,7 +180,7 @@ class wptb {
 		
 	function wtpb_check_for_plugin_upgrade($wptb_echo_on) { 
 	
-		$wptb_this_version_number = '3.07';
+		$wptb_this_version_number = '3.08';
 	
 		$wptbOptions = get_option('wptbAdminOptions');
 		$wptb_debug=get_transient( 'wptb_debug' );	
@@ -229,9 +229,18 @@ class wptb {
 
 	//=========================================================================		
 	// Common code to display the TopBar. Used on the Admin page and to display on the website
+	// 
+	// Parm $wptbaddslashes:
+	//	True = then call addslashes to the string  
 	//=========================================================================		
 	
-	function wptb_display_TopBar($wptb_visibility, $wptbOptions) {
+	function wptb_display_TopBar($wptb_visibility, $wptbOptions, $wptbaddslashes) {
+	
+		if ( ($wptbaddslashes) ) {
+			$wtpbtextfields = array( '1' => 'custom_css_bar',  '2' => 'bar_text',  '3' => 'custom_css_text', '4' => 'bar_link_text','5' => 'social_icon1_css', '6' => 'social_icon2_css','7' => 'social_icon3_css', '8' => 'social_icon4_css', '9' => 'close_button_css', '10' => 'div_css' );
+		  	foreach( $wtpbtextfields as $number => $field ) 
+				$wptbOptions[$field] 	 = addslashes($wptbOptions[$field]);
+		}
 		
 		echo '<p id="wptbheadline" style="',$wptb_visibility;
 		if ($wptbOptions['enable_image'] == 'false') 
@@ -245,12 +254,12 @@ class wptb {
 		echo 'border-bottom-color:',$wptbOptions['bottom_color'],';','border-bottom-style: solid;';
 		echo 'border-bottom-width: ',$wptbOptions['bottom_border_height'],'px;';
 		if ($wptbOptions['custom_css_bar'] != '') 
-				echo addslashes($wptbOptions['custom_css_bar']);
-		echo '">',stripslashes_deep($wptbOptions['bar_text']),'<a style="color:',$wptbOptions['link_color'],';" ';
+				echo $wptbOptions['custom_css_bar'];
+		echo '">',$wptbOptions['bar_text'],'<a style="color:',$wptbOptions['link_color'],';" ';
 		if ($wptbOptions['custom_css_text'] != '')
 			echo "{$wptbOptions['custom_css_text']}";
 		echo 'href="',$wptbOptions['bar_link'],'" target="_',$wptbOptions['link_target'],'">';
-		echo stripslashes_deep($wptbOptions['bar_link_text']),'</a>'; 
+		echo $wptbOptions['bar_link_text'],'</a>'; 
 		if ( ($wptbOptions['social_icon1'] == 'on') && ($wptbOptions['social_icon1_image'] !== '') )
 			echo '<a href="'.$wptbOptions['social_icon1_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon1_image'].'" style="'.$wptbOptions['social_icon1_css'].'"/></a>';
 		if ( ($wptbOptions['social_icon2'] == 'on') && ($wptbOptions['social_icon2_image'] !== '') )
@@ -259,8 +268,6 @@ class wptb {
 			echo '<a href="'.$wptbOptions['social_icon3_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon3_image'].'" style="'.$wptbOptions['social_icon3_css'].'"/></a>';
 		if ( ($wptbOptions['social_icon4'] == 'on') && ($wptbOptions['social_icon4_image'] !== '') )
 			echo '<a href="'.$wptbOptions['social_icon4_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon4_image'].'" style="'.$wptbOptions['social_icon4_css'].'"/></a>';
-		
-		
 		if ($wptbOptions['allow_close'] == 'yes') {
 			echo '<span style="">';
 			echo '<img align="middle" border="0" onClick="close_wptobar()" src="'.$wptbOptions['close_button_image'].'" style="cursor:hand;cursor:pointer;'.$wptbOptions['close_button_css'].'"/></span>';
@@ -307,7 +314,7 @@ class wptb {
 				
 		echo '<div id="topbar" style="',$wptbOptions['div_css'],'">';
 
-		self::wptb_display_TopBar('visibility:hidden;',$wptbOptions);
+		self::wptb_display_TopBar('visibility:hidden;',$wptbOptions, true);
 	
 		echo '</div>';
 	

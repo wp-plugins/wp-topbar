@@ -4,13 +4,15 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.3.1
-Stable tag: 3.07
+Stable tag: 3.08
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, link & more! 
 
 == Description ==
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
+
+Version 3.08 changes how the TopBar handles special characters in the CSS/text user defined input fields.
 
 Version 3.07 changes how the way jQuery is called to better support more installations.
 
@@ -19,8 +21,6 @@ Version 3.06 adds the ability to add Social Icons to the TopBar and adds a Debug
 Version 3.05 has an easier to use admin page.
 
 Version 3.04 adds the ability to allow the user to close the TopBar.
-
-Version 3.02 adds the ability to set a start/end time for the TopBar to show.   It was re-worked to be smaller and faster.
 
 Various options allow you to:
 <ol>
@@ -130,6 +130,10 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 3.08 = 
+
+Version 3.08 changes how special characters are handles in the user defined CSS/text fields.
+
 = 3.07 = 
 
 Version 3.07 changes how the way jQuery is called to better support more installations.
@@ -190,6 +194,10 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+= 3.08 - 4/18/2012 = 
+
+1. FIXED: Added more discrete handling of special characters if Magic Quotes is turned on in PHP.  So now can handle quote marks.
 
 = 3.07 - 4/05/2012 = 
 
