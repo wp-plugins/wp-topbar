@@ -3,14 +3,16 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
-Tested up to: 3.3.1
-Stable tag: 3.08
+Tested up to: 3.3.2
+Stable tag: 3.09
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, link & more! 
 
 == Description ==
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
+
+Version 3.09 fixed for use with multisite (network) and added submenus to the Admin bar.
 
 Version 3.08 changes how the TopBar handles special characters in the CSS/text user defined input fields.
 
@@ -130,6 +132,10 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 3.09 = 
+
+Version 3.09 fixed for use with multisite (network) and added submenus to the Admin bar.
+
 = 3.08 = 
 
 Version 3.08 changes how special characters are handles in the user defined CSS/text fields.
@@ -194,6 +200,11 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+= 3.09 - 4/26/2012 = 
+
+1. NEW: Added submenus to the Admin bar.
+2. FIXED: Code to support multisite (network) installs.
 
 = 3.08 - 4/18/2012 = 
 

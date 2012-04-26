@@ -15,7 +15,7 @@ Admin Page
 
 function wptb_get_Plugin_Options($wptb_echo_on) {
 
-	$wptb_version_number = '3.08';
+	$wptb_version_number = '3.09';
 	
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			
@@ -57,6 +57,7 @@ function wptb_get_Plugin_Options($wptb_echo_on) {
 		'bar_image' => '',
 		'enable_image' => 'false',
 		'custom_css_bar' => '',
+		'custom_css_text' => '',
 		'social_icon1' => 'off',
 		'social_icon2' => 'off', 
 		'social_icon3' => 'off',
@@ -607,9 +608,9 @@ function wptb_update_settings() {
 
 	  	foreach( $wtpbtextfields as $number => $field ) {
 			if (get_magic_quotes_gpc())
-				$wptbOptions[$field] 	 = trim(str_replace('"',"'",stripslashes($wptbOptions[$field])));
+				$wptbOptions[$field] 	 = (str_replace('"',"'",stripslashes($wptbOptions[$field])));
 			else
-				$wptbOptions[$field] 	 = trim(str_replace('"',"'",$wptbOptions[$field]));
+				$wptbOptions[$field] 	 = (str_replace('"',"'",$wptbOptions[$field]));
 
 	    }
 		
@@ -657,7 +658,7 @@ function wptb_display_common_info() {
 		<div class=wrap>
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 		<h2><img src="<?php _e( plugins_url('/images/banner-772x250.png', __FILE__), 'wptb' ); ?>" height="50" alt="TopBar Banner"/>
-		WP-TopBar - Version 3.08</h2>
+		WP-TopBar - Version 3.09</h2>
 		<div class="postbox">
 		<br>
 		Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.

@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 3.08
+Version: 3.09
 Author: Bob Goetz
 Author URI: http://wordpress.org/extend/plugins/profile/rfgoetz
 
@@ -151,12 +151,17 @@ class wptb {
 	
 	
 	//=========================================================================			
-	// Initialize the admin panel
+	// Initialize the admin panel, add main option menu and submenus
 	//=========================================================================			
 		
 	function wptb_options_panel() { //create custom top-level menu 
-		add_menu_page( 'WP TopBar', 'WP TopBar', 'manage_options', 'wp-topbar.php', 'wptb_options_page', plugins_url('/images/icon.png', __FILE__)); 
-	
+		add_menu_page( 'WP TopBar', 'WP TopBar', 'manage_options', 'wp-topbar.php', 'wptb_options_page', plugins_url('/images/icon.png', __FILE__)); 	
+		
+		$tabs = array( 'main' => 'Main Options',  'topbartext' => 'TopBar Text & Image',  'topbarcss' => 'TopBar CSS', 'colorselection' => 'Color Selection','closebutton' => 'Close Button', 'socialbuttons' => 'Social Buttons','debug' => 'Debug', 'faq' => 'FAQ', 'delete' => 'Delete Settings' );
+
+	    foreach( $tabs as $menu => $title ) {            
+         	add_submenu_page( 'wp-topbar.php', 'wp-topbar-'.$menu, $title,  'manage_options', 'wp-topbar.php&tab='.$menu, wptb_options_page );
+        }
 	} // End of function wptb_options_panel 	
 	
 	
@@ -180,7 +185,7 @@ class wptb {
 		
 	function wtpb_check_for_plugin_upgrade($wptb_echo_on) { 
 	
-		$wptb_this_version_number = '3.08';
+		$wptb_this_version_number = '3.09';
 	
 		$wptbOptions = get_option('wptbAdminOptions');
 		$wptb_debug=get_transient( 'wptb_debug' );	
