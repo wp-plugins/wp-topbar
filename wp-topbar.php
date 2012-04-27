@@ -160,7 +160,7 @@ class wptb {
 		$tabs = array( 'main' => 'Main Options',  'topbartext' => 'TopBar Text & Image',  'topbarcss' => 'TopBar CSS', 'colorselection' => 'Color Selection','closebutton' => 'Close Button', 'socialbuttons' => 'Social Buttons','debug' => 'Debug', 'faq' => 'FAQ', 'delete' => 'Delete Settings' );
 
 	    foreach( $tabs as $menu => $title ) {            
-         	add_submenu_page( 'wp-topbar.php', 'wp-topbar-'.$menu, $title,  'manage_options', 'wp-topbar.php&tab='.$menu, wptb_options_page );
+         	add_submenu_page( 'wp-topbar.php', 'wp-topbar-'.$menu, $title,  'manage_options', 'wp-topbar.php&tab='.$menu, 'wptb_options_page' );
         }
 	} // End of function wptb_options_panel 	
 	
