@@ -160,7 +160,7 @@ class wptb {
 		$tabs = array( 'main' => 'Main Options',  'topbartext' => 'TopBar Text & Image',  'topbarcss' => 'TopBar CSS', 'colorselection' => 'Color Selection','closebutton' => 'Close Button', 'socialbuttons' => 'Social Buttons','debug' => 'Debug', 'faq' => 'FAQ', 'delete' => 'Delete Settings' );
 
 	    foreach( $tabs as $menu => $title ) {            
-         	add_submenu_page( 'wp-topbar.php', 'wp-topbar-'.$menu, $title,  'manage_options', 'wp-topbar.php&tab='.$menu, wptb_options_page );
+         	add_submenu_page( 'wp-topbar.php', 'wp-topbar-'.$menu, $title,  'manage_options', 'wp-topbar.php&tab='.$menu, 'wptb_options_page' );
         }
 	} // End of function wptb_options_panel 	
 	
@@ -243,8 +243,10 @@ class wptb {
 	
 		if ( ($wptbaddslashes) ) {
 			$wtpbtextfields = array( '1' => 'custom_css_bar',  '2' => 'bar_text',  '3' => 'custom_css_text', '4' => 'bar_link_text','5' => 'social_icon1_css', '6' => 'social_icon2_css','7' => 'social_icon3_css', '8' => 'social_icon4_css', '9' => 'close_button_css', '10' => 'div_css' );
-		  	foreach( $wtpbtextfields as $number => $field ) 
-				$wptbOptions[$field] 	 = addslashes($wptbOptions[$field]);
+		  	foreach( $wtpbtextfields as $number => $field ) {				
+		  		if ( isset($wptbOptions[$field]) )	 
+		  			$wptbOptions[$field] = addslashes($wptbOptions[$field]);
+			}
 		}
 		
 		echo '<p id="wptbheadline" style="',$wptb_visibility;
@@ -288,6 +290,8 @@ class wptb {
 	function wptb_inject_TopBar_html_js() {
 	
 		$wptbOptions = get_option('wptbAdminOptions');
+	
+		if (! isset( $wptbOptions['enable_topbar'] ) ) {return; }
 	
 		if ( $wptbOptions['enable_topbar'] == 'false' ) { return; }
 		
