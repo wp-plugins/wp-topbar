@@ -3,8 +3,8 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
-Tested up to: 3.3.2
-Stable tag: 3.09
+Tested up to: 3.4
+Stable tag: 3.10
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, link & more! 
 
@@ -12,7 +12,9 @@ Creates a TopBar that will be shown at the top (or bottom) of your website.  Cus
 
 Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
 
-Version 3.09 fixed for use with multisite (network) and added submenus to the Admin bar.
+Version 3.10 supports Wordpress 3.4 and adds the capability to restrict the TopBar from showing by category.  You can also excplicity manage how it shows up on the Home Page.  For ease of use, the Control logic was moved to its own options page.
+
+Version 3.09 fixed to work with multisite (network) and added submenus to the Admin bar.
 
 Version 3.08 changes how the TopBar handles special characters in the CSS/text user defined input fields.
 
@@ -20,9 +22,6 @@ Version 3.07 changes how the way jQuery is called to better support more install
 
 Version 3.06 adds the ability to add Social Icons to the TopBar and adds a Debug page.
 
-Version 3.05 has an easier to use admin page.
-
-Version 3.04 adds the ability to allow the user to close the TopBar.
 
 Various options allow you to:
 <ol>
@@ -89,7 +88,18 @@ You may have CSS settings that prevent the TopBar from loading. If you entered a
 
 You can also use the Debug page to see if you can see an error.
 
-= How do the new cookies (in version 3.04+) work behind the scenes? = 
+= How do the new Include/Exclude login (in version 3.10) work behind the scenes? = 
+
+You have four choices to handle include (or exclude) the TopBar from showing:
+ Page ID - this only checks the current page's ID against the list you entered.
+ Category ID - this only checks the current category IDs against the list you entered.  The criteria is satisified if any of the page's category IDs match what you entered.  We only check the default "category" taxonomy.
+ Both - both the Page ID and Category criteria must match for the TopBar to show
+ Either - either the Page ID or Category criteria need to match for the TopBar to show
+ 
+The default is to check by PageId.
+
+
+= How do the new cookies (in version 3.04) work behind the scenes? = 
 
 If you allow the user to close the TopBar, then the plugin checks to see if you have enabled cookies.   If they are not enabled, it deletes any existing cookies.   If they are enabled, it looks to see if a cookie has been created.  A cookie is only created if the TopBar has been previously closed by the user.  If it finds a cookie, it prevents the TopBar from showing.
 
@@ -117,7 +127,7 @@ http://example.wordpress.com/wp-admin/page.php?action=edit&post=1234
 
 = How do I test the TopBar? = 
 
-To test the TopBar on your site, you can set the Page IDs (in Main Options) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
+To test the TopBar on your site, you can set the Page IDs (in Main Options) to a single page (and not your home page) and select Include/Exclude Logic to be "Page IDs". Then go to that Page to see how the TopBar is working.
 
 = Why does my TopBar look odd on Internet Explorer? = 
 
@@ -131,6 +141,10 @@ Click "OK" on the warning box.
 Go to your Plugins page and delete the plugin or delete all the files in your `/wp-content/plugins/wp-topbar` directory 
 
 == Upgrade Notice ==
+
+= 3.10 = 
+
+Version 3.10 supports Wordpress 3.4 and adds the capability to restrict the TopBar from showing by category.   You can also excplicity manage how it shows up on the Home Page.   Moved Control logic to its own options page.
 
 = 3.09 = 
 
@@ -201,6 +215,16 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+
+= 3.10 - 6/05/2012 = 
+
+1. VALIDATED: Version 3.10 supports Wordpress 3.4
+2. FIXED: Removed PSD icons files to make plugin smaller to install
+3. NEW: Adds the capability to restrict the TopBar from showing by category
+4. NEW: You can also excplicity manage how it shows up on the Home Page
+5. NEW: Moved Page ID and new Category ID/Home Page control logic to its own options page
+6. CHANGED:  The labels and descriptions on the options page for selecting the Page ID include/exclude logic. 
+ 
 = 3.09 - 4/26/2012 = 
 
 1. NEW: Added submenus to the Admin bar.
@@ -270,7 +294,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 1. NEW:Added options to change the margin of the TopBar.
 2. FIXED:Cleaned up the code.
-3. Validated it works with 3.3.
+3. VALIDATED: Version 1.4 supports Wordpress 3.3
 
 = 1.3 - 12/05/2011 = 
 

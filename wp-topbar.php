@@ -4,12 +4,12 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 3.09
+Version: 3.10
 Author: Bob Goetz
-Author URI: http://wordpress.org/extend/plugins/profile/rfgoetz
+Author URI: http://zwebify.com/wordpress-plugins/
 
 */
-/*  Copyright 2012  Bob Goetz  (email : rfgoetz at google's mail . com)
+/*  Copyright 2012  Bob Goetz  (email : bob @ zwebifiy . dot . com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -157,7 +157,7 @@ class wptb {
 	function wptb_options_panel() { //create custom top-level menu 
 		add_menu_page( 'WP TopBar', 'WP TopBar', 'manage_options', 'wp-topbar.php', 'wptb_options_page', plugins_url('/images/icon.png', __FILE__)); 	
 		
-		$tabs = array( 'main' => 'Main Options',  'topbartext' => 'TopBar Text & Image',  'topbarcss' => 'TopBar CSS', 'colorselection' => 'Color Selection','closebutton' => 'Close Button', 'socialbuttons' => 'Social Buttons','debug' => 'Debug', 'faq' => 'FAQ', 'delete' => 'Delete Settings' );
+		$tabs = array( 'main' => 'Main Options',  'control' => 'Control',  'topbarcss' => 'TopBar CSS', 'colorselection' => 'Color Selection','closebutton' => 'Close Button', 'socialbuttons' => 'Social Buttons','debug' => 'Debug', 'faq' => 'FAQ', 'delete' => 'Delete Settings' );
 
 	    foreach( $tabs as $menu => $title ) {            
          	add_submenu_page( 'wp-topbar.php', 'wp-topbar-'.$menu, $title,  'manage_options', 'wp-topbar.php&tab='.$menu, 'wptb_options_page' );
@@ -185,7 +185,7 @@ class wptb {
 		
 	function wtpb_check_for_plugin_upgrade($wptb_echo_on) { 
 	
-		$wptb_this_version_number = '3.09';
+		$wptb_this_version_number = '3.10';
 	
 		$wptbOptions = get_option('wptbAdminOptions');
 		$wptb_debug=get_transient( 'wptb_debug' );	
@@ -242,8 +242,8 @@ class wptb {
 	function wptb_display_TopBar($wptb_visibility, $wptbOptions, $wptbaddslashes) {
 	
 		if ( ($wptbaddslashes) ) {
-			$wtpbtextfields = array( '1' => 'custom_css_bar',  '2' => 'bar_text',  '3' => 'custom_css_text', '4' => 'bar_link_text','5' => 'social_icon1_css', '6' => 'social_icon2_css','7' => 'social_icon3_css', '8' => 'social_icon4_css', '9' => 'close_button_css', '10' => 'div_css' );
-		  	foreach( $wtpbtextfields as $number => $field ) {				
+			$wptbtextfields = array( '1' => 'custom_css_bar',  '2' => 'bar_text',  '3' => 'custom_css_text', '4' => 'bar_link_text','5' => 'social_icon1_css', '6' => 'social_icon2_css','7' => 'social_icon3_css', '8' => 'social_icon4_css', '9' => 'close_button_css', '10' => 'div_css' );
+		  	foreach( $wptbtextfields as $number => $field ) {				
 		  		if ( isset($wptbOptions[$field]) )	 
 		  			$wptbOptions[$field] = addslashes($wptbOptions[$field]);
 			}
@@ -291,23 +291,70 @@ class wptb {
 	
 		$wptbOptions = get_option('wptbAdminOptions');
 	
-		if (! isset( $wptbOptions['enable_topbar'] ) ) {return; }
+		if (! isset( $wptbOptions['enable_topbar'] ) ) { return; }
 	
 		if ( $wptbOptions['enable_topbar'] == 'false' ) { return; }
 		
 		if (!self::wptb_check_time(current_time('timestamp', 1), $wptbOptions['start_time_utc'],$wptbOptions['end_time_utc'])) { return; } // time check
-		
+				
 		global $wp_query;
 		$thePostID = $wp_query->post->ID;
+
+		if ( is_home() && ( $wptbOptions['show_homepage'] == "never" ) ) { return; }		
+
+		if ( ! ( is_home() && ( $wptbOptions['show_homepage'] == "always" ) ) ) {	
+			if ( $wptbOptions['include_pages'] == 0 )
+				$page_id_found = true;
+			else {
+				$page_id_found = false;
+				if ( $wptbOptions['include_logic'] != 'cat_only' ) {   //skip this logic if we are only checking categories
+					if ( in_array( $thePostID, explode( ',', $wptbOptions['include_pages'] ) ) )
+						 $page_id_found = true;
+					if ( $wptbOptions['invert_include'] == 'yes' )
+						 $page_id_found = ! $page_id_found;	
+				}
+			}
+	
+			if ( $wptbOptions['include_categories'] == 0 )
+				$category_id_found = true; 
+			else {
+				$category_id_found = false;
+				if ( $wptbOptions['include_logic'] != 'page_only' ) {   //skip this logic if we are only checking pages
+					foreach((get_the_category($thePostID)) as $category) {
+						if ( in_array( $category->cat_ID, explode( ',', $wptbOptions['include_categories'] ) ) ) {
+							  $category_id_found = true;
+							  break;
+						}
+					}
+					if ( $wptbOptions['invert_categories'] == 'yes' )
+						 $category_id_found = ! $category_id_found;
+				}
+			}
+			// check the logic the user selected if not on debug page
+					
+			if ( ! ( isset( $_GET['page'] ) && $_GET['page'] == 'wp-topbar.php') ) 
+				switch ( $wptbOptions['include_logic'] ) {
+					
+				case 'page_only':
 		
-	// if invert_include is 'yes', then exclude showing the Topbar using inlcude_pages values
-		if ( $wptbOptions['invert_include'] == 'yes' ) {
-			if ( in_array( $thePostID, explode( ',', $wptbOptions['include_pages'] ) ) )
-					{ return; }			
-		}
-		else {
-			if ( ! in_array( $thePostID, explode( ',', $wptbOptions['include_pages'] ) ) && ! in_array( 0, explode( ',', $wptbOptions['include_pages'] ) ) )
-					{ return; }			
+					if ( ! $page_id_found ) {return;}		
+					break;
+					
+				case 'cat_only':
+				
+					if ( ! $category_id_found ) {return;}
+					break;
+					
+				case 'boolean_and':
+					
+					if ( ( ! $page_id_found ) || ( ! $category_id_found ) ) {return;}			
+					break;
+					
+				case 'boolean_or':
+						
+					if ( ( ! $page_id_found ) && ( ! $category_id_found ) ) {return;}
+					
+				}
 		}
 
 	// use javascript to force the HTML to just before body tag if the topbar is at the top of the page

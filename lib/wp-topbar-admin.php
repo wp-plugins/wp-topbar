@@ -5,6 +5,17 @@ Plugin Name: WP-TopBar
 Admin Page
 */
 
+//=========================================================================		
+//
+//  Future Enhancements:
+//   -- multiple topbars?
+//
+//
+//
+//
+//=========================================================================		
+
+
 
 //=========================================================================		
 //Returns an array of admin options, but sets default values if none are loaded.
@@ -15,7 +26,7 @@ Admin Page
 
 function wptb_get_Plugin_Options($wptb_echo_on) {
 
-	$wptb_version_number = '3.09';
+	$wptb_version_number = '3.10';
 	
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			
@@ -31,6 +42,10 @@ function wptb_get_Plugin_Options($wptb_echo_on) {
 		'bottom_border_height' => '3', 
 		'include_pages' => '0',
 		'invert_include' => 'no',
+		'include_categories' => '0',
+		'invert_categories' => 'no',
+		'include_logic' => 'page_only',
+		'show_homepage' => 'conditionally',
 		'delay_time' => '5000',
 		'slide_time' => '200',
 		'display_time' => '0',
@@ -62,9 +77,9 @@ function wptb_get_Plugin_Options($wptb_echo_on) {
 		'social_icon2' => 'off', 
 		'social_icon3' => 'off',
 		'social_icon4' => 'off',
-		'social_icon1_image' => str_ireplace( 'https://','http://',plugins_url('/icons/png/twitter.png', __FILE__) ),
-		'social_icon2_image' => str_ireplace( 'https://','http://',plugins_url('/icons/png/facebook.png', __FILE__) ),
-		'social_icon3_image' => str_ireplace( 'https://','http://',plugins_url('/icons/png/google.png', __FILE__) ),
+		'social_icon1_image' => str_ireplace( 'https://','http://',plugins_url('/icons/PNG/twitter.png', __FILE__) ),
+		'social_icon2_image' => str_ireplace( 'https://','http://',plugins_url('/icons/PNG/facebook.png', __FILE__) ),
+		'social_icon3_image' => str_ireplace( 'https://','http://',plugins_url('/icons/PNG/google.png', __FILE__) ),
 		'social_icon4_image' => '',
 		'social_icon1_link' => 'http://twitter.com/#!/wordpress',
 		'social_icon2_link' => 'http://www.facebook.com/WordPress', 
@@ -126,6 +141,22 @@ function wptb_get_Plugin_Options($wptb_echo_on) {
 				echo '<br><code>WP-TopBar Debug Mode: TopBar will <strong>NOT</strong> display due to time settings and because it is not enabled</code>';
 			else
 				echo '<br><code>WP-TopBar Debug Mode: TopBar will <strong>NOT</strong> display due to time settings even though it is enabled</code>';
+		
+		switch ( $wptbOptions['show_homepage'] ) {
+					
+				case 'always':
+					echo '<br><code>WP-TopBar Debug Mode: TopBar will <strong>ALWAYS</strong> display on the Home Page (if the TopBar is enabled)</code>';
+					break;
+					
+				case 'never':
+					echo '<br><code>WP-TopBar Debug Mode: TopBar will <strong>NEVER</strong> display on the Home Page (if the TopBar is enabled)</code>';
+					break;
+
+				case 'conditionally':
+					echo '<br><code>WP-TopBar Debug Mode: TopBar will <strong>check</strong> Page/Category criteria to determine if it should display on the Home Page (if the TopBar is enabled)</code>';
+				
+		}
+		
 		
 		$wptb_cookie = "wptopbar_".COOKIEHASH;
 
@@ -270,6 +301,9 @@ function wptb_options_page() {
         case 'main' :
             wptb_main_options();
             break;
+        case 'control' :
+            wptb_control_options();
+            break;
         case 'topbarcss' :
             wptb_topbarcss_options();
             break;
@@ -304,7 +338,7 @@ function wptb_options_page() {
 
 
 function wptb_options_tabs( $current = 'main' ) {
-    $tabs = array( 'main' => 'Main&nbspOptions',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','debug' => 'Debug', 'delete' => 'Delete&nbspSettings', 'faq' => 'FAQ' );
+    $tabs = array( 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','debug' => 'Debug', 'delete' => 'Delete&nbspSettings', 'faq' => 'FAQ' );
     $links = array();
     foreach( $tabs as $tab => $name ) {
     	if ( $tab == "faq" ) {
@@ -324,7 +358,7 @@ function wptb_options_tabs( $current = 'main' ) {
     echo '<h2>';
 	foreach ($links as $i => $value) {
         echo $value;
-		if ( $i == "3") echo "<br>";
+		if ( $i == "4") echo "<br>";
 	}
         
 // add plugin home page link       
@@ -365,6 +399,18 @@ function wptb_update_settings() {
 		if (isset($_POST['wptbinvertinclude'])) {
 			$wptbOptions['invert_include'] = $_POST['wptbinvertinclude'];
 		}
+		if (isset($_POST['wptbincludecategories'])) {
+			$wptbOptions['include_categories'] = $_POST['wptbincludecategories'];
+		}
+		if (isset($_POST['wptbinvertcategories'])) {
+			$wptbOptions['invert_categories'] = $_POST['wptbinvertcategories'];
+		}
+		if (isset($_POST['wptbincludelogic'])) {
+			$wptbOptions['include_logic'] = $_POST['wptbincludelogic'];
+		}		
+		if (isset($_POST['wptbshowhomepage'])) {
+			$wptbOptions['show_homepage'] = $_POST['wptbshowhomepage'];
+		}	
 		if (isset($_POST['wptbbottomborderheight'])) {
 		
 			if (!is_numeric($_POST['wptbbottomborderheight'])) {
@@ -658,7 +704,7 @@ function wptb_display_common_info() {
 		<div class=wrap>
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 		<h2><img src="<?php _e( plugins_url('/images/banner-772x250.png', __FILE__), 'wptb' ); ?>" height="50" alt="TopBar Banner"/>
-		WP-TopBar - Version 3.09</h2>
+		WP-TopBar - Version 3.10</h2>
 		<div class="postbox">
 		<br>
 		Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, and link.
@@ -671,20 +717,61 @@ if you find this plugin useful.
 		</div>
 				<div class="postbox">
 		<?php if ($wptbOptions['enable_topbar'] == "false") { _e( '<div class="error"><strong>TopBar is not enabled.</strong></div>', 'wptb' ); } ?>
-		<h3>Live Preview<em><p style="font-weight:normal;">Time check: Based on your Start/End time settings in the Main Options,<?php if ($wptbOptions['enable_topbar'] == "false") { _e( ' when enabled,', 'wptb' ); } ?> the TopBar will <?php if (!wptb::wptb_check_time(gettimeofday(true),$wptbOptions['start_time_utc'],$wptbOptions['end_time_utc'])) echo "<strong>not</strong>"; ?> display (based on the current time.)
+		<h3>Check<em><p style="font-weight:normal;">Time check: Based on your Start/End time settings in the Main Options,<?php if ($wptbOptions['enable_topbar'] == "false") { _e( ' when enabled,', 'wptb' ); } ?> the TopBar will <?php if (!wptb::wptb_check_time(gettimeofday(true),$wptbOptions['start_time_utc'],$wptbOptions['end_time_utc'])) echo "<strong>not</strong>"; ?> display (based on the current time.)
 		<br><?php if ( $wptbOptions['respect_cookie'] == 'ignore' ) 
 					echo "<br>Cookie check: The plugin is not checking for the presence of cookies.";
 				  else
 						if ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value'] )  
-							echo "<br>Cookie check: The plugin is  checking for the presence of cookies. You have a cookie that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the Close Button tab."; 
+							echo "<br>Cookie check: The TopBar is  checking for the presence of cookies. You have a cookie that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the Close Button tab."; 
 						else 
-							echo "<br>Cookie check: The plugin is  checking for the presence of cookies. You do not have a cookie that will prevent the TopBar from showing.";?>
+							echo "<br>Cookie check: The TopBar is  checking for the presence of cookies. You do not have a cookie that will prevent the TopBar from showing.";?>
+		<br><?php switch ( $wptbOptions['show_homepage'] ) {
+				
+				case 'always':
+					echo '<br>Home Page check: TopBar will <strong>ALWAYS</strong> display on the Home Page (if the TopBar is enabled)';
+					break;
+					
+				case 'never':
+					echo '<br>Home Page check: TopBar will <strong>NEVER</strong> display on the Home Page (if the TopBar is enabled)';
+					break;
+
+				case 'conditionally':
+					echo '<br>Home Page check: TopBar will <strong>check</strong> Page/Category criteria to determine if it should display on the Home Page (if the TopBar is enabled)';
+		}
+		?>
+		<br><?php
+		switch ( $wptbOptions['include_logic'] ) {
+					
+				case 'page_only':
+		
+					echo '<br>Control check: TopBar is only checking for Page IDs (if any are entered and the TopBar is enabled)';
+					break;
+					
+				case 'cat_only':
+				
+					echo '<br>Control check: TopBar is only checking for Categories IDs (if any are entered and the TopBar is enabled)';
+					break;
+					
+				case 'boolean_and':
+					
+					echo '<br>Control check: TopBar is checking that Page IDs <strong>AND</strong> Category IDs (if any are entered and the TopBar is enabled)';
+					break;
+					
+				case 'boolean_or':
+						
+					echo '<br>Control check: TopBar is checking that Page IDs <strong>OR</strong> Category IDs (if any are entered and the TopBar is enabled)';
+					
+		}
+
+		
+		?>
+
 		</p>
 		</em></h3>
-
+		<h3>Live Preview</h3>
 		<div class="inside">
-			<p class="sub">This is how the TopBar will appear on the website.
-			<br>To test the TopBar on your site, you can set the Page IDs (in Main Options) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
+			<p class="sub"><strong>This is how the TopBar will appear on the website.</strong>
+			<br>To test the TopBar on your site, you can set the Page IDs (on the <a href="?page=wp-topbar.php&tab=control">Control tab</a>) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
 			<br> The first black line below represents the top of the screen.  The second black line represents the bottom of the TopBar.</p>
 			<div class="table">
 				<table class="form-table">
@@ -871,27 +958,7 @@ function wptb_main_options() {
 					<td>
 							<p class="sub"><em>Select how you want the text to align. Default is <code>center</code> When using right -- try adding padding via the TopBar CSS tab. e.g. </em><code>padding-right:10px;</code></p>
 					</td>
-				</tr>	
-				<tr valign="top">
-					<td width="150">Include Page IDs:</label></td>
-					<td>
-						<input type="text" name="wptbincludepages" id="includepages" size="30" value="<?php echo $wptbOptions['include_pages']; ?>" >
-					</td>
-					<td>
-						<p class="sub"><em>Enter the IDs of the pages and posts that you want the TopBar to appear on, separated by commas. The TopBar will only be shown on those pages. Leave blank or enter 0 to show the TopBar on all pages.  e.g. 1,9,39,10</em></p>
-					</td>
 				</tr>
-				<tr valign="top">
-					<td></td>
-					<td>Exclude these pages instead?</label><p>
-						<label for="wptb_invert_include_yes"><input type="radio" id="wptb_invert_include_yes" name="wptbinvertinclude" value="yes" <?php if ($wptbOptions['invert_include'] == "yes") { _e('checked="checked"', "wptb"); }?>/> Yes</label>		
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<label for="wptb_invert_include_no"><input type="radio" id="wptb_invert_include_no" name="wptbinvertinclude" value="no" <?php if ($wptbOptions['invert_include'] == "no") { _e('checked="checked"', "wptb"); }?> /> No</label>
-						<p>
-					<td>
-						<p class="sub"><em>Select Yes if you want to exclude the Page IDs enter above.  This will cause the TopBar to <strong>not</strong> be shown on those specific Page IDs.  Default is <code>No</code></em></p>
-					</td>
-				</tr>		
 			</table>
 		</div>
 		<table>
@@ -909,6 +976,140 @@ function wptb_main_options() {
 	
 	<?
 }	// End of wptb_main_options
+
+//=========================================================================			
+// Main Options
+//=========================================================================			
+
+		
+function wptb_control_options() {
+
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+	$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+
+	$wptbOptions = wptb_get_Plugin_Options(false);
+
+	?>
+
+	<script type='text/javascript'>
+		jQuery(document).ready(function() {
+	
+		jQuery('#wptbstarttimebtn').datetimepicker();
+		jQuery('#wptbendtimebtn').datetimepicker();
+	
+		jQuery('#wptbstarttimebtnClear').click( function(e) {jQuery('#wptbstarttimebtn').val('0').change(); } );
+		jQuery('#wptbtimebtnClear').click( function(e) {jQuery('#wptbendtimebtn').val('0').change(); } );
+				
+	});
+ 	</script>
+
+		 	
+ 	
+ 	<div class="postbox">
+	<h3><a name=ControlOptions">Control Options</a></h3>
+	<div class="inside">
+			<p class="sub"><em>These are the options that allow you to control which pages your TopBar will be shown on.</em></p>
+
+		<div class="table">
+			<table class="form-table">		
+				<tr valign="top">
+					<td>Show TopBar on<br>Home Page:</label><p>
+					<td>
+						<br>
+						<label for="wptb_home_page_always"><input type="radio" id="wptb_home_page_always" name="wptbshowhomepage" value="always" <?php if ($wptbOptions['show_homepage'] == "always") { _e('checked="checked"', "wptb"); }?>/> A. Always</label>		
+						<br>
+						<label for="wptb_show_homepage_never"><input type="radio" id="wptb_home_page_never" name="wptbshowhomepage" value="never" <?php if ($wptbOptions['show_homepage'] == "never") { _e('checked="checked"', "wptb"); }?> /> B. Never</label>
+						<br>
+						<label for="wptb_home_page_conditionally"><input type="radio" id="wptb_home_page_conditionally" name="wptbshowhomepage" value="conditionally" <?php if ($wptbOptions['show_homepage'] == "conditionally") { _e('checked="checked"', "wptb"); }?> /> C. Conditionally</label>
+					</td>
+					<td>
+						<p class="sub"><em>Select how you want the TopBar to show on the Home page.  Default is to <code>conditionally</code> show the TopBar on the Home Page</em>
+						<br>A. <strong>Always</strong> shows the TopBar on the Home Page regardless of any other criteria entered on this page.
+						<br>B. <strong>Never</strong> shows the TopBar on the Home Page regardless of any other criteria entered on this page.
+						<br>C. <strong>Only</strong> shows the TopBar on the Home Page if the page matches the Page ID and/or Category criteria entered on this page.
+						</p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td width="150">Page IDs:</label></td>
+					<td>
+						<input type="text" name="wptbincludepages" id="includepages" size="30" value="<?php echo $wptbOptions['include_pages']; ?>" >
+					</td>
+					<td>
+						<p class="sub"><em>Enter the IDs of the pages and posts that you want the TopBar to appear on, separated by commas. The TopBar will only be shown on those pages by using the <code>Page ID Criteria</code> option you select below. Leave blank or enter 0 to show the TopBar on all pages.  e.g. 1,9,39,10</em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td>Page ID Criteria:</td>
+					<td><p>
+						<label for="wptb_invert_include_no"><input type="radio" id="wptb_invert_include_no" name="wptbinvertinclude" value="no" <?php if ($wptbOptions['invert_include'] == "no") { _e('checked="checked"', "wptb"); }?> /> Include</label>
+						<label for="wptb_invert_include_yes"><input type="radio" id="wptb_invert_include_yes" name="wptbinvertinclude" value="yes" <?php if ($wptbOptions['invert_include'] == "yes") { _e('checked="checked"', "wptb"); }?>/> Exclude</label>		
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<p>
+					<td>
+						<p class="sub"><em>Select how you want to process the Page IDs entered above.  Default is <code>Include</code><br><code>Include</code> will have the TopBar show on those Page IDs<br><code>Exclude</code> will have the TopBar to not show up on those specific Page IDs.  </em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td width="150">Category IDs:</label></td>
+					<td>
+						<input type="text" name="wptbincludecategories" id="includecategories" size="30" value="<?php echo $wptbOptions['include_categories']; ?>" >
+					</td>
+					<td>
+						<p class="sub"><em>Enter the IDs of the categories that you want the TopBar to test for, separated by commas. The TopBar will only be shown on those categories in the default "category" taxonomy by using the <code>Categegory ID Criteria</code> option you select below. Leave blank or enter 0 to show the TopBar on all categories.  e.g. 9,10,2,12</em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td>Category ID Criteria:</label><p>
+</td>
+					<td><p>
+						<label for="wptb_invert_categories_no"><input type="radio" id="wptb_invert_categories_no" name="wptbinvertcategories" value="no" <?php if ($wptbOptions['invert_categories'] == "no") { _e('checked="checked"', "wptb"); }?> /> Include</label>
+						<label for="wptb_invert_categories_yes"><input type="radio" id="wptb_invert_categories_yes" name="wptbinvertcategories" value="yes" <?php if ($wptbOptions['invert_categories'] == "yes") { _e('checked="checked"', "wptb"); }?>/> Exclude</label>		
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<p>
+					<td>
+						<p class="sub"><em>Select how you want to process the Category IDs entered above.  Default is <code>Include</code><br><code>Include</code> will have the TopBar show on those Category IDs<br><code>Exclude</code> will have the TopBar to not show up on those specific Category IDs.  </em></p>
+					</td>
+				</tr>			
+				<tr valign="top">
+					<td>Selection Criteria Logic:</label><p>
+					<td>
+						<br>
+						<label for="wptb_include_logic_page_only"><input type="radio" id="wptb_include_logic_page_only" name="wptbincludelogic" value="page_only" <?php if ($wptbOptions['include_logic'] == "page_only") { _e('checked="checked"', "wptb"); }?>/> A. Page IDs only</label>		
+						<br>
+						<label for="wptb_include_logic_cat_only"><input type="radio" id="wptb_include_logic_cat_only" name="wptbincludelogic" value="cat_only" <?php if ($wptbOptions['include_logic'] == "cat_only") { _e('checked="checked"', "wptb"); }?> /> B. Category IDs</label>
+						<br>
+						<label for="wptb_include_logic_boolean_and"><input type="radio" id="wptb_include_logic_boolean_and" name="wptbincludelogic" value="boolean_and" <?php if ($wptbOptions['include_logic'] == "boolean_and") { _e('checked="checked"', "wptb"); }?> /> C. Both</label>
+						<br>
+						<label for="wptb_include_logic_boolean_or"><input type="radio" id="wptb_include_logic_boolean_or" name="wptbincludelogic" value="boolean_or" <?php if ($wptbOptions['include_logic'] == "boolean_or") { _e('checked="checked"', "wptb"); }?> /> D. Either</label>
+						<p>
+					</td>
+					<td>
+						<p class="sub"><em>Select how you want the TopBar to use the selection criteria you set above.  Default is to check only the <code>Page IDs</code></em>
+						<br>A. Checks only Page IDs (ignore Category ID criteria)
+						<br>B. Checks only Category IDs (ignore Page ID criteria)
+						<br>C. <strong>BOTH</strong> Page ID <strong>and</strong> Category ID must match the criteria above for the TopBar to show
+						<br>D. <strong>EITHER</strong> Page ID <strong>or</strong> Category ID must match the criteria above for the TopBar to show
+						</p>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<table>
+		<tr>
+			<td style="valign:top; width:500px;"><p class="submit">
+				<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
+			</td>
+			<td style="valign:top;">
+				<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
+			</td>
+		</tr>
+		</table>	<div class="clear"></div>	
+		</div>
+	</div> <!-- end of Main Options -->
+	
+	<?
+}	// End of wptb_logic_options
 
 
 //=========================================================================			
@@ -1518,8 +1719,10 @@ function wptb_delete_options() {
  
  <?php
  
-}	// End of wptb_delete_options//=========================================================================			
-// Delete Options
+}	// End of wptb_delete_options
+
+//=========================================================================			
+// Debug Options
 //=========================================================================			
 
 function wptb_debug_options() {
@@ -1557,7 +1760,7 @@ Based on your Start/End time settings in the <a href="?page=wp-topbar.php&tab=ma
 <strong>Debug Helpers:</strong>
 
 			<li>You can append <code>&debug</code> after the wp-topbar URL to turn on debugging messages. i.e. <code>admin.php?page=wp-topbar.php&debug</code> . These messages can help you see if you have a parameter that will cause the TopBar to break.</li>
-			<li><code>&debug</code> will turn on an internal timer that will display debug messages for about one minute.  The timer is reset for every page refresh that has <code>&debug</code>.  If you have debuging turned on (in your wp-config.php), then the error messages will also be sent to the default wordpress logfile for any page views of your website. i.e. <code>define('WP_DEBUG', true);</code> and <code>define('WP_DEBUG_LOG', true);</code></li>
+			<li><code>&debug</code> will turn on an internal timer that will display debug messages for about one minute.  The timer is reset for every page refresh that has <code>&debug</code>.  If you have debuging turned on (in your wp-config.php), then the error messages will also be sent to the default wordpress logfile for any non-admin page views of your website. i.e. <code>define('WP_DEBUG', true);</code> and <code>define('WP_DEBUG_LOG', true);</code></li>
 			<li>To turn off the debug messages, remove the <code>&debug</code> from the URL and wait about one minute.</li>
 		</ul>
 		<table>
@@ -1586,7 +1789,7 @@ Based on your Start/End time settings in the <a href="?page=wp-topbar.php&tab=ma
 		</table>
 		<div class="clear"></div>	
 	</div> 
-	</div> <!-- end of Delete Settings -->
+	</div> <!-- end of debug  -->
    </form>
  </div>	 
  
@@ -1618,6 +1821,8 @@ function wptb_faq_page() {
 <p>Check for any messages under the Live Preview heading on the Admin Page.  It will tell you if you have cookies or time settings that will prevent the TopBar from loading.
 <p>You may have CSS settings that prevent the TopBar from loading.  If you entered any setting that are not valid, the TopBar will not load. Try deleting the settings and then re-entering your CSS until you find the one that is causing the issue.  Again, the <a href="?page=wp-topbar.php&tab=debug">Debug tab</a> can help you discover any issues.
 <p>
+<p>Finally, your Page IDs or Category selection may be preventing the TopBar from loading.  See how your settings are configured on the <a href="?page=wp-topbar.php&tab=control">Control tab</a>.
+<p>
 <li><strong>How do the new cookies (in version 3.04+) work behind the scenes?</strong></li>
 <p>
 If you allow the user to close the TopBar, then the plugin checks to see if you have enabled cookies.   If they are not enabled, it deletes any existing cookies.   If they are enabled, it looks to see if a cookie has been created.  A cookie is only created if the TopBar has been previously closed by the user.  If it finds a cookie and the cookie value matches the Cookie Value setting, it prevents the TopBar from showing.
@@ -1626,7 +1831,7 @@ If you change the Cookie Value to something new (<a href="?page=wp-topbar.php&ta
 <p>
 <li><strong>What Social Button Icons are provided?</strong></li>
 <p>
-Look in this directory (<code><?PHP echo str_ireplace( 'https://','http://',plugins_url('/icon/', __FILE__) ) ?></code>) and you'll find two folders,  one with PNG files and one with PSD files.  Thanks to <a href="http://ElegantThemes.com" target="_blank">ElegantThemes.com</a> for providing the icon files!
+Look in this directory (<code><?PHP echo str_ireplace( 'https://','http://',plugins_url('/icon/', __FILE__) ) ?></code>) and you'll find two folders,  one with PNG files and one with a selection of PSD files.  Thanks to <a href="http://ElegantThemes.com" target="_blank">ElegantThemes.com</a> for providing the icon files!
 <p>
 <li><strong>What CSS ID's are available?</strong></li>
 <p>
@@ -1650,7 +1855,7 @@ You can find the Page ID in the Edit Post or Edit Page URL. For example, the pag
 <p>
 <li><strong>How do I test the TopBar?</strong></li>
 <p>
-To test the TopBar on your site, you can set the Page IDs (in Main Options) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
+To test the TopBar on your site, you can set the Page IDs (in Main Options) to a single page (and not your home page) and select Include/Exclude Logic to be "Page IDs". Then go to that Page to see how the TopBar is working.
 <br>
 <li><strong>Why does my TopBar look odd on Internet Explorer?</strong></li> 
 <p>
