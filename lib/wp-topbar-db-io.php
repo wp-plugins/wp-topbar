@@ -932,7 +932,7 @@ function wptb_convert_to_database($wptbOptions, $wptb_echo_on) {
 
 	wptb_create_table($wptb_echo_on);	
 	$wptbOptions[ 'weighting_points' ] = 25;
-	$wptbOptions[ 'past_cookie_value' ] = $wptbOptions['cookie_value'];				
+	$wptbOptions[ 'past_cookie_values' ] = $wptbOptions['cookie_value'];				
 	wtpb_insert_row($wptbOptions, $wptb_echo_on);	
 	delete_option('wptbAdminOptions');
 }	// End of wptb_convert_to_database
