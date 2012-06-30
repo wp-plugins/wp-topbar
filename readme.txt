@@ -3,27 +3,27 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
-Tested up to: 3.4
-Stable tag: 3.10
+Tested up to: 3.4.1
+Stable tag: 4.00
 
-Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, link & more! 
+Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - Great for A/B testing! 
 
 == Description ==
 
-Creates a TopBar that will be shown at the top (or bottom) of your website.  Customizable and easy to change the color, text, image, and link.  Live preview to see your TopBar from the Options page.
+Create **MULTIPLE** (Yahoo!) TopBars that will be shown at the top (or bottom) of your website.  TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  We made this so customizable and easy to change the color, text, image, link that you can easily lose track of time getting your TopBars perfect!
 
-Version 3.10 supports Wordpress 3.4 and adds the capability to restrict the TopBar from showing by category.  You can also excplicity manage how it shows up on the Home Page.  For ease of use, the Control logic was moved to its own options page.
+**Superduper major re-write with Verson 4.0.**  Refactored all the functions to use its own database table instead of WordPress options.  This allows you to create an unlimited number of TopBars.  This version is leaner, faster, smarter.   Quick links are added throughout to make editing your TopBars a breeze.
 
-Version 3.09 fixed to work with multisite (network) and added submenus to the Admin bar.
+Want to see how this TopBar looks?   You can test how your TopBars show up to allow you to adjusting the selection factors on the fly.  You can even get a sampling of how 10 pageviews would render the TopBar -- *great for A/B testing*.
 
-Version 3.08 changes how the TopBar handles special characters in the CSS/text user defined input fields.
+Want to create a lot of TopBars -- you can copy the existing ones with just a few clicks.   Know SQL?  You can even export the TopBars in three different formats (JSON, CSV or SQL).    Sorry, **no support** is given if you import directly to the database.
 
-Version 3.07 changes how the way jQuery is called to better support more installations.
+With so many option pages, I only included a few screen images.  More images can be found on [Zwebify.com](http://zwebify.com/wordpress-plugins/)
 
-Version 3.06 adds the ability to add Social Icons to the TopBar and adds a Debug page.
+Hey! What happens if you were using a previous version of WP-TopBar?  We've got you covered!  Your old TopBar will be imported into the new database as the first TopBar.
 
+Here is a crazy-long list of options you have for each TopBar -- and this is not even complete!
 
-Various options allow you to:
 <ol>
 	<li>Enable/disable the TopBar without disabling the plugin.</li>
 	<li>Place the TopBar Above the Header or Below the Footer</li>
@@ -142,6 +142,10 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 4.00 = 
+
+Version 4.00 Converted to using database to store MULTIPLE (yahoo!) TopBars.  Refactored to be leaner, faster, and smarter.  Your old TopBar will be imported into the new database.
+
 = 3.10 = 
 
 Version 3.10 supports Wordpress 3.4 and adds the capability to restrict the TopBar from showing by category.   You can also excplicity manage how it shows up on the Home Page.   Moved Control logic to its own options page.
@@ -202,19 +206,18 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Screenshots ==
 
-1. This is how it will look on your website.
-2. Main Options.
-3. ToolBar Text & Image Options.
-4. Custom CSS Options.
-5. Color Selection Options.
-6. Close Button Options.
-7. Social Buttons Options
-8. Debug Page
-9. Delete Settings Option.
+1. This is how it will look on your website
+2. All TopBars Screen
+3. Test Priority Screen
+4. Export Options Screen
+5. Main Options Screen for a single TopBar
 
 
 == Changelog ==
 
+= 4.00 - 7/01/2012 = 
+
+1. NEW: Version 4.0 Converted to using database to store MULTIPLE (yahoo!) TopBars.  Refactored to be leaner, faster, and smarter.  Your old TopBar will be imported into the new database.
 
 = 3.10 - 6/05/2012 = 
 

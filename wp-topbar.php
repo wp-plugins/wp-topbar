@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 3.10
+Version: 4.00
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -42,7 +42,7 @@ class wptb {
 		    	
 		if (is_admin() )	 { // make sure we are on the admin page to minimize scripts loaded on the website
 			
-			require_once( dirname(__FILE__).'/lib/wp-topbar-admin.php');  //load admin page php
+			require_once( dirname(__FILE__).'/lib/wp-topbar-admin.php');  //load admins page php
 		
 		//Actions
 			add_action( 'init', array( __CLASS__, 'wptb_enqueue_admin_scripts' ) );
@@ -61,7 +61,7 @@ class wptb {
 		//=========================================================================	
 			
 			add_action( 'wp_enqueue_scripts', array( __CLASS__, 'wptb_enqueue_jquery' ) );
-			add_action('wp_footer', array( __CLASS__, 'wptb_inject_TopBar_html_js' ), 9999999);
+			add_action( 'wp_footer', array( __CLASS__, 'wptb_inject_TopBar_html_js' ), 9999999);
 		}
 		
 	}
@@ -157,10 +157,10 @@ class wptb {
 	function wptb_options_panel() { //create custom top-level menu 
 		add_menu_page( 'WP TopBar', 'WP TopBar', 'manage_options', 'wp-topbar.php', 'wptb_options_page', plugins_url('/images/icon.png', __FILE__)); 	
 		
-		$tabs = array( 'main' => 'Main Options',  'control' => 'Control',  'topbarcss' => 'TopBar CSS', 'colorselection' => 'Color Selection','closebutton' => 'Close Button', 'socialbuttons' => 'Social Buttons','debug' => 'Debug', 'faq' => 'FAQ', 'delete' => 'Delete Settings' );
+		$tabs = array( 'table' => 'All TopBars', 'testpriority' => 'Test Priority', 'export' => 'Export', 'mainfaq' => 'FAQ' );
 
 	    foreach( $tabs as $menu => $title ) {            
-         	add_submenu_page( 'wp-topbar.php', 'wp-topbar-'.$menu, $title,  'manage_options', 'wp-topbar.php&tab='.$menu, 'wptb_options_page' );
+         	add_submenu_page( 'wp-topbar.php', 'wp-topbar-'.$menu, $title,  'manage_options', 'wp-topbar.php&action='.$menu, 'wptb_options_page' );
         }
 	} // End of function wptb_options_panel 	
 	
@@ -171,65 +171,11 @@ class wptb {
 		
 	function wtpb_activate_plugin() { 
 	
-			self::wtpb_check_for_plugin_upgrade(false);	// do not echo out parameters if debugging
+//			self::wtpb_check_for_plugin_upgrade(false);	// do not echo out parameters if debugging
 	
 	} // End of function wtpb_activate_plugin 	
 	
 	
-	//=========================================================================			
-	// Run this when plugin is activiated or from options page to check
-	// if upgrade functions need to run.
-	// Parameter $wptb_echo_on is used for debugging:  
-	//		1=use echo function, 0=use error_log function
-	//=========================================================================			
-		
-	function wtpb_check_for_plugin_upgrade($wptb_echo_on) { 
-	
-		$wptb_this_version_number = '3.10';
-	
-		$wptbOptions = get_option('wptbAdminOptions');
-		$wptb_debug=get_transient( 'wptb_debug' );	
-		
-		if($wptb_debug) {
-			if($wptb_echo_on) {
-				echo '<br><code>WP-TopBar Debug Mode: in wtpb_check_for_plugin_upgrade</code>' ;
-				echo '<br><code>WP-TopBar Debug Mode: Version ',$wptb_this_version_number,'</code>';
-			}
-			else {
-				error_log( 'WP-TopBar Debug Mode: in wtpb_check_for_plugin_upgrade' );
-				error_Log( 'WP-TopBar Debug Mode: Version '.$wptb_this_version_number);
-			}
-		}		
-	
-		// code, if needed, to perform option table upgrades & updates version stored in database
-	
-			if (!empty($wptbOptions)) {
-				if ($wptbOptions['wptb_version'] != $wptb_this_version_number) {
-					if($wptb_debug) {
-						if($wptb_echo_on) 
-							echo '<br><code>WP-TopBar Debug Mode: Version Upgrade from ', $wptbOptions['wptb_version'] , ' to ',$wptb_this_version_number,'</code>';
-						else
-							error_Log ('WP-TopBar Debug Mode: Version Upgrade from ' . $wptbOptions['wptb_version'] . ' to '. $wptb_this_version_number);
-					}
-					
-					// For v 3.03 force div_css to old default for existing users
-					
-//					if ($wptbOptions['wptb_version'] < '3.03') {
-//						if ($wptbOptions['div_css'] == '') $wptbOptions['div_css'] = 'visibility:hidden;'; 
-//					}									
-					$wptbOptions['wptb_version'] = $wptb_this_version_number;
-					update_option('wptbAdminOptions', $wptbOptions);
-				}
-			}
-	
-		if($wptb_debug) {
-			if($wptb_echo_on) 
-				echo '<br><code>WP-TopBar Debug Mode: end of wtpb_check_for_plugin_upgrade</code>' ;
-			else
-				error_log( 'WP-TopBar Debug Mode: end of wtpb_check_for_plugin_upgrade' );
-		}
-		
-	} // End of function wtpb_check_for_plugin_upgrade 	
 
 
 	//=========================================================================		
@@ -281,21 +227,93 @@ class wptb {
 		}		
 		echo '</p>';
 	}  // end function wptb_display_TopBar
+				
+	//=========================================================================		
+	//
+	//Returns a random TopBar options,  sets default values if none are loaded.
+	//
+	//=========================================================================		
+	
 		
+	
+	function wptb_get_Random_TopBar($wptb_echo_on) {
+	
+		if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
+		else $wptb_debug = false;			
+	
+		if($wptb_debug)
+			echo '<br><code>WP-TopBar Debug Mode: Getting Random TopBar</code>';
+	
+		global $wpdb;
+		$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
+	
+		// always check to see if table has been created .. if not then create it and insert default row.
+		if( $wpdb->get_var("show tables like '".$wptb_table_name."'") != $wptb_table_name ) {
+			wptb_create_table($wptb_echo_on);				
+			$wptbOptions=wtpb_insert_default_row($wptb_debug);
+		}
+		else {
+			$sql="SELECT * FROM ".$wptb_table_name." 
+					WHERE  `enable_topbar` =  'true'
+	
+						AND COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0), 
+													COALESCE(STR_TO_DATE( `start_time_utc`,  '%m/%d/%Y %H:%i'     ), 0)),0) <= 0 
+						AND	COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  `end_time_utc` ,  '%m/%d/%Y %H:%i'       ), 0), 					
+													COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0)),0) <=0
+					ORDER BY ( `weighting_points` * RAND() ) DESC LIMIT 1
+					";
+				
+	
+	//		echo $sql;
+			$myrows = $wpdb->get_results( $sql, ARRAY_A );
+			if ( $wpdb->num_rows != 0 ) {
+				foreach ($myrows[0] as $key => $option)
+					$wptbOptions[$key] = $option;
+				echo '<!-- <meta name="wp-topbar" version="'.$wptbOptions['wptb_version'].'" showing bar_id="'.$wptbOptions['bar_id'].'" /> -->';
+			}
+			else
+				$wptbOptions=array();
+		}
+			
+		if($wptb_debug) wptb_debug_display_TopBar_Options($wptbOptions);
+		
+		return $wptbOptions;
+		
+	}	// End of wptb_get_Random_TopBar
 	
 	//=========================================================================		
 	//Adds the TopBar HTML and Javascript to the output
 	//=========================================================================		
-	
+		
 	function wptb_inject_TopBar_html_js() {
-	
+//		echo '<!-- <meta name="wp-topbar"  wptb_inject_TopBar_html_js /> -->';
+
+// check for options using the old method, if used - honor it.  otherwise get a TopBar from the database	
 		$wptbOptions = get_option('wptbAdminOptions');
 	
-		if (! isset( $wptbOptions['enable_topbar'] ) ) { return; }
-	
-		if ( $wptbOptions['enable_topbar'] == 'false' ) { return; }
+		if ( isset( $wptbOptions['enable_topbar'] ) ) {
+			echo '<!-- <meta name="wp-topbar" version="'.$wptbOptions['wptb_version'].'" (using options table) /> -->';
+
+			if ( $wptbOptions['enable_topbar'] == 'false' ) { return; }
 		
-		if (!self::wptb_check_time(current_time('timestamp', 1), $wptbOptions['start_time_utc'],$wptbOptions['end_time_utc'])) { return; } // time check
+		}
+		else {  
+			$wptbOptions=wptb::wptb_get_Random_TopBar(false);
+		}
+	
+		wptb::wptb_inject_specific_TopBar_html_js($wptbOptions);
+	
+	}  // end function wptb_inject_TopBar_html_js
+
+	//=========================================================================		
+	// Inject specific TopBar HTML-- used also on the admin (debug) pages
+	//=========================================================================		
+
+
+	function wptb_inject_specific_TopBar_html_js($wptbOptions) {
+//		echo '<!-- <meta name="wp-topbar"  wptb_inject_specific_TopBar_html_js /> -->';
+
+		if ( $wptbOptions['enable_topbar'] == 'false' ) { return; }
 				
 		global $wp_query;
 		$thePostID = $wp_query->post->ID;
@@ -429,22 +447,7 @@ class wptb {
 		echo '</script>';
 
 	}  // end function wptb_inject_TopBar_html_js
-		 	
-	
-	//=========================================================================			
-	//	Check start/end times to see if TopBar should load: 
-	//     Returns 1 = yes, 0 = no
-	//  Args:  current time, start time, end time
-	//=========================================================================			
-		
-	function wptb_check_time($wptb_time, $wptb_check_start, $wptb_check_end) {				
-		if ((($wptb_time - $wptb_check_start) >= 0) && 
-			((($wptb_check_end - $wptb_time)) >=0) || ($wptb_check_end == 0))
-				return 1;
-			else 
-				return 0;
-	} // End of function wptb_check_time
-		
+		 			
 }
 
 wptb::init();
