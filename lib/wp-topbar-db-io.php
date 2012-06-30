@@ -1038,7 +1038,7 @@ function wtpb_set_default_settings() {
 
 	return array(
 	 	'weighting_points'=> 25,				 	
-		'wptb_version' => '4.00beta',
+		'wptb_version' => '4.00',
 		'enable_topbar' => 'false',
 		'include_pages' => '0',
 		'invert_include' => 'no',
