@@ -932,6 +932,7 @@ function wptb_convert_to_database($wptbOptions, $wptb_echo_on) {
 
 	wptb_create_table($wptb_echo_on);	
 	$wptbOptions[ 'weighting_points' ] = 25;
+	$wptbOptions[ 'past_cookie_value' ] = $wptbOptions['cookie_value'];				
 	wtpb_insert_row($wptbOptions, $wptb_echo_on);	
 	delete_option('wptbAdminOptions');
 }	// End of wptb_convert_to_database
@@ -1055,7 +1056,7 @@ function wtpb_set_default_settings() {
 		'end_time_utc' => '0',
 		'respect_cookie' => 'ignore',
 		'cookie_value' => '1',
-		'past_cookie_values' => array('1'),
+		'past_cookie_values' => '1',
 		'allow_close' => 'no',
 		'topbar_pos' => 'header',
 		'text_color' => '#000000',
@@ -1574,18 +1575,15 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 		
 		$wptbNewCookieValue = $wptbOptions['cookie_value'];
 
+		$wptbPastValues = $wptbOptions['past_cookie_values'];
+
 		if (! ($wptbNewCookieValue == $wptbOldCookieValue ) ) {
 
-			$wptbPastValues = $wptbOptions['past_cookie_values'];
-
-			if ( !( is_array( $wptbPastValues ) ) )
-				$wptbPastValues = array('');
+			if ( $wptbPastValues == ""  )
+				$wptbPastValues = $wptbOptions['cookie_value'];				
 			else
-				if ( count( $wptbPastValues ) >= 10 )
-					array_shift( $wptbPastValues );
-			
-			$wptbPastValues[]=$wptbNewCookieValue;	
-			
+				$wptbPastValues .= ', '.$wptbOptions['cookie_value'];
+				
 			$wptbOptions['past_cookie_values']=	$wptbPastValues;	
 		}
 	}

@@ -60,13 +60,10 @@ function wptb_closebutton_options($wptbOptions) {
 					<td width="150">Cookie Value:</label></td>
 					<td>
 						<input type="text" name="wptbcookievalue" id="cookievalue" size="10" value="<?php echo stripslashes($wptbOptions['cookie_value']); ?>" >
-					<?php	  $wptbPastValues = $wptbOptions['past_cookie_values'];
-						if ( count ( $wptbPastValues ) > 0 ) {
-							echo "<p>Your past ".count ( $wptbPastValues )." previous cookie value(s) are:";
-							foreach ($wptbPastValues as $i => $value) {
-			  					echo '<br>[',$i+1,']: <code>',$value.'</code>';
-							}
-					    }
+					<?php	
+						if ( $wptbOptions['past_cookie_values'] != "" ) {
+							echo "<p>Your previous cookie value(s) are: ".$wptbOptions['past_cookie_values'];
+						}
 					?>
 					</td>
 					<td>
