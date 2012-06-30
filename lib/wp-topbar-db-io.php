@@ -1577,15 +1577,9 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 
 		$wptbPastValues = $wptbOptions['past_cookie_values'];
 
-		if (! ($wptbNewCookieValue == $wptbOldCookieValue ) ) {
+		if ( $wptbNewCookieValue != $wptbOldCookieValue ) 
+			$wptbOptions['past_cookie_values']=	$wptbOldCookieValue;	
 
-			if ( $wptbPastValues == ""  )
-				$wptbPastValues = $wptbOptions['cookie_value'];				
-			else
-				$wptbPastValues .= ', '.$wptbOptions['cookie_value'];
-				
-			$wptbOptions['past_cookie_values']=	$wptbPastValues;	
-		}
 	}
 	if (isset($_POST['wptbcloseimage'])) {
 		$wptbOptions['close_button_image'] = esc_url($_POST['wptbcloseimage']);

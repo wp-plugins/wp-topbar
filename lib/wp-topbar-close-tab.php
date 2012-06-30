@@ -62,7 +62,7 @@ function wptb_closebutton_options($wptbOptions) {
 						<input type="text" name="wptbcookievalue" id="cookievalue" size="10" value="<?php echo stripslashes($wptbOptions['cookie_value']); ?>" >
 					<?php	
 						if ( $wptbOptions['past_cookie_values'] != "" ) {
-							echo "<p>Your previous cookie value(s) are: ".$wptbOptions['past_cookie_values'];
+							echo "<p>Your previous cookie value was: ".$wptbOptions['past_cookie_values'];
 						}
 					?>
 					</td>
