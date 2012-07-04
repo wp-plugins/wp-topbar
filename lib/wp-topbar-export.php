@@ -13,18 +13,31 @@ function wptb_display_export_options() {
 	
 //	echo $_POST['wptbExportJSON'].'<BR>' ;
 //	echo $_POST['wptbExportCSV'].'<BR>' ;
+
+// siteurl broken in 3.4.1
+	
+	$url=get_option('siteurl');
+	$url=get_option('siteurl')."/wp-admin/?page=wp-topbar.php&amp;action=export&amp;noheader=true";
+
+	if ( is_ssl() AND (substr($url, 0, 5) != "https" ) AND ( substr($url, 0, 4) == "http" ) ) {
+		$url="https".substr($url,4);
+	}
+	
+//	$url.="/wp-admin/?page=wp-topbar.php&action=export&noheader=true";
+	
+	
 	?>
 	
 	<div class="wrap">
     <div id="icon-options-general" class="icon32"><br/></div>
     <h2>Export Options</h2>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
-  	      <p>Select the <strong>Export Options</strong> buttons to create either a CSV, SQL (insert) or JSON file for download.   Future versions will include an inport function.</p> 
+  	      <p>Select the <strong>Export Options</strong> buttons to create either a CSV, SQL (insert) or JSON file for download.   Future versions will include an inport functions.</p> 
         </div>
 		<div>
-		   <form method="post" action="<?php echo get_option('siteurl'); ?>/wp-admin/?page=wp-topbar.php&amp;action=export&amp;noheader=true"></form>
+		   <form method="post" action="<?php echo $url;?>"></form>
 		</div>
-	    <form method="post"    action="<?php echo get_option('siteurl'); ?>/wp-admin/?page=wp-topbar.php&amp;action=export&amp;noheader=true">
+	    <form method="post"    action="<?php echo $url;?>">
 	        <p class="submit">
 	            <input type="submit" name=wptbExportJSON class="button-primary" value="Export Options in JSON Format" />
 	            <input type="submit" name=wptbExportSQL class="button-primary"  value="Export Options in SQL Format" />

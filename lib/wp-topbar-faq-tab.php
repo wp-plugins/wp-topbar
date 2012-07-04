@@ -40,6 +40,17 @@ function wptb_faq_page($wptbOptions,$wptbShowLinks) {
 If you allow the user to close the TopBar, then the plugin checks to see if you have enabled cookies.   If they are not enabled, it deletes any existing cookies.   If they are enabled, it looks to see if a cookie has been created.  A cookie is only created if the TopBar has been previously closed by the user.  If it finds a cookie and the cookie value matches the Cookie Value setting, it prevents the TopBar from showing.
 <p>
 If you change the Cookie Value to something new (<a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=closebutton&barid='.$wptbOptions['bar_id'].'"'; ?>">on the Close Button tab</a>), the TopBar will show up again.  This is useful if you want to force the TopBar to show on new content.  Make sure to select something you haven't used before.  A good idea is to increment the value by one every time you want to force the TopBar to show.
+<p>With Version 4.00+, <strong>all</strong> TopBars must share the same cookie settings for this to work.  You can set the TopBars to be the same by using the new  <a <?php echo 'href="?page=wp-topbar.php&action=bulkclosebutton"'; ?>>Close Button tab</a> on the main page
+<p>
+<li><strong>How does the Priority field (in version 4.00+) work?</strong></li>
+<p>
+The Plugin randomly selects a valid TopBar to show using this field to skew how they are selected.  The TopBar multiplies a random number (between 0 and 1) with the TopBar's Priority value (which is a number between 1 to 100).  A higher number means this TopBar will be selected more frequently; a lower number means less frequently. 
+<p>
+<li><strong>How are TopBars selected to show?</strong></li>
+<p>
+See the Priority question above to see how they are selected.  The TopBar will select only those TopBars that are valid per the date/time criteria.  Once a TopBar is selected to show, it then goes through the Control Options.  That checks to see if the TopBar should be shown on the Home Page (or not) and which Page IDs or Category IDs the TopBar should show (or not).
+<p>
+The Final check is to see if the TopBar has cookie controls (see above).  If the user is allowed to close the TopBar and cookies are enabled, then we look for a cookie.  If one is found, and it matches the cookie value, then the TopBar is not shown.
 <p>
 <li><strong>What Social Button Icons are provided?</strong></li>
 <p>

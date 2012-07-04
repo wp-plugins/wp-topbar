@@ -59,7 +59,7 @@ function wptb_display_all_TopBars() {
 			'end_time' => 'End Time',
 			'show_it' => 'Time Check',
 			'enable_topbar' => 'Enabled?',
-			'bar_text' => 'Bar Text'
+			'text_line' => 'Bar and Link Text'
 		);
 	}
 	    /** ************************************************************************
@@ -90,7 +90,7 @@ function wptb_display_all_TopBars() {
 			case "bar_id":	
 					return	$item[$column_name];	
 					break;
-			case "bar_text": return stripslashes($item[$column_name]);
+			case "text_line": return stripslashes($item[$column_name]);
 			case "weighting_points": 
 				$width=$item[$column_name]+0;
 //				return $item[$column_name];
@@ -534,7 +534,7 @@ function wptb_display_all_TopBars() {
 	    $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'bar_id'; //If no sort, default to title
         $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
 		
-		$query = "SELECT *,  ((start_delta <= 0 ) AND (end_delta <=0 )) as show_it
+		$query = "SELECT *,  ((start_delta <= 0 ) AND (end_delta <=0 )) as show_it, concat(bar_text, '<br>',bar_link_text) as text_line
 				  		FROM (
 					
 			SELECT 	*,	COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0), 
@@ -1039,7 +1039,7 @@ function wtpb_set_default_settings() {
 
 	return array(
 	 	'weighting_points'=> 25,				 	
-		'wptb_version' => '4.00',
+		'wptb_version' => '4.01',
 		'enable_topbar' => 'false',
 		'include_pages' => '0',
 		'invert_include' => 'no',
@@ -1377,6 +1377,50 @@ function wptb_delete_settings($wptb_barid, $wptb_debug) {
 
 
 //=========================================================================			
+// Bulk Update CloseButton Settings 
+//=========================================================================			
+
+function wptb_bulkupdate_CloseButtonSettings() {
+
+	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Bulk Update Close Button Settings </code>';
+
+	global $wpdb;
+	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
+	
+	$sql="  ";
+
+	if (isset($_POST['wptballowclose'])) {
+		$sql .= "`allow_close` = '".$_POST['wptballowclose']."', ";
+	}
+	if (isset($_POST['wptbrespectcookie'])) {
+		$sql .= "`respect_cookie` = '".$_POST['wptbrespectcookie']."', ";
+	}
+	if (isset($_POST['wptbcookievalue'])) {
+		$sql .= "`cookie_value` = '".$_POST['wptbcookievalue']."', ";
+		$sql .= "`past_cookie_values` = '', ";	
+	}
+	if (isset($_POST['wptbcloseimage'])) {
+		$sql .= "`close_button_image` = '".esc_url($_POST['wptbcloseimage'])."', ";
+	}	
+	if (isset($_POST['wptbclosecss'])) {
+		$sql .= "`close_button_css` = '".$_POST['wptbclosecss']."', ";
+	}
+	
+	$sql=substr($sql,0,-2);
+
+	if ( $sql != "" ) {
+		$wpdb->query( 
+		$wpdb->prepare( 
+			"
+	         UPDATE ".$wptb_table_name." SET ".$sql
+	        )
+		);
+	}
+
+
+}	// End of wptb_bulkupdate_CloseButtonsettings
+
+//=========================================================================			
 // Update Settings 
 //=========================================================================			
 
@@ -1706,7 +1750,7 @@ function wtpb_check_for_plugin_upgrade($wptb_echo_on) {
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 
-	$wptb_this_version_number = '4.04';
+	$wptb_this_version_number = '4.01';
 
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			

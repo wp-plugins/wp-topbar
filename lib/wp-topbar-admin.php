@@ -145,7 +145,11 @@ function wptb_options_page() {
 		
 	}
 	
-	if ( isset (  $_POST['wptbExportJSON'] ) ) {			
+	if ( isset (  $_POST['update_wptbCloseButton'] ) ) {			
+		wptb_bulkupdate_CloseButtonSettings();
+		$action = 'table';
+	}
+	else if ( isset (  $_POST['wptbExportJSON'] ) ) {			
 		wptb_export_options_json();
 		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');
 	}
@@ -221,6 +225,11 @@ function wptb_options_page() {
 //            break;
 
 
+        case 'bulkclosebutton' :
+			wptb_display_admin_header();
+            wptb_options_tabs($action);
+			wptb_closebutton_bulk_options();
+			break;
         case 'testpriority' :
 			wptb_display_admin_header();
             wptb_options_tabs($action);

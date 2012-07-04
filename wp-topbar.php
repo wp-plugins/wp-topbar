@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 4.00
+Version: 4.01
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -66,7 +66,6 @@ class wptb {
 		
 	}
 
-
 	//=========================================================================			
 	// Enqueue jquery to get our javascripts to run -- just in case no other theme/plugin has
 	//=========================================================================	
@@ -75,7 +74,6 @@ class wptb {
     		wp_enqueue_script('jquery');     
 		
 	} // End of function wptb_enqueue_jquery
-
 
 	//=========================================================================			
 	// Enqueue Media Uploader, ZeroClipboard, Farbtastics for the color pickers, etc.
@@ -121,8 +119,6 @@ class wptb {
 	        isset( $_GET['debug'] ) && current_user_can( 'manage_options' ) ) {
 		        set_transient( 'wptb_debug', gettimeofday(true), 60 );
 	    }
-	   
-	    
 	} // End of function wptb_debug_check	
 
 
@@ -157,7 +153,7 @@ class wptb {
 	function wptb_options_panel() { //create custom top-level menu 
 		add_menu_page( 'WP TopBar', 'WP TopBar', 'manage_options', 'wp-topbar.php', 'wptb_options_page', plugins_url('/images/icon.png', __FILE__)); 	
 		
-		$tabs = array( 'table' => 'All TopBars', 'testpriority' => 'Test Priority', 'export' => 'Export', 'mainfaq' => 'FAQ' );
+		$tabs = array( 'table' => 'All TopBars', 'testpriority' => 'Test Priority', 'bulkclosebutton'=> 'Close Button', 'export' => 'Export', 'mainfaq' => 'FAQ' );
 
 	    foreach( $tabs as $menu => $title ) {            
          	add_submenu_page( 'wp-topbar.php', 'wp-topbar-'.$menu, $title,  'manage_options', 'wp-topbar.php&action='.$menu, 'wptb_options_page' );
@@ -175,143 +171,31 @@ class wptb {
 	
 	} // End of function wtpb_activate_plugin 	
 	
-	
 
-
-	//=========================================================================		
-	// Common code to display the TopBar. Used on the Admin page and to display on the website
-	// 
-	// Parm $wptbaddslashes:
-	//	True = then call addslashes to the string  
-	//=========================================================================		
-	
-	function wptb_display_TopBar($wptb_visibility, $wptbOptions, $wptbaddslashes) {
-	
-		if ( ($wptbaddslashes) ) {
-			$wptbtextfields = array( '1' => 'custom_css_bar',  '2' => 'bar_text',  '3' => 'custom_css_text', '4' => 'bar_link_text','5' => 'social_icon1_css', '6' => 'social_icon2_css','7' => 'social_icon3_css', '8' => 'social_icon4_css', '9' => 'close_button_css', '10' => 'div_css' );
-		  	foreach( $wptbtextfields as $number => $field ) {				
-		  		if ( isset($wptbOptions[$field]) )	 
-		  			$wptbOptions[$field] = addslashes($wptbOptions[$field]);
-			}
-		}
-		
-		echo '<p id="wptbheadline" style="',$wptb_visibility;
-		if ($wptbOptions['enable_image'] == 'false') 
-			echo "background: {$wptbOptions['bar_color']};";
-		else 
-		 	echo "background-image: url({$wptbOptions['bar_image']});	background-position:center;"; 
-		echo 'margin:  ',$wptbOptions['margin_top'],'px 0px ',$wptbOptions['margin_bottom'],'px;';
-		echo 'text-align:',$wptbOptions['text_align'],';','font-size: ',$wptbOptions['font_size'],'px; ';	
-		echo 'padding-top:',$wptbOptions['padding_top'],'px;','padding-bottom:',$wptbOptions['padding_bottom'],'px;'; 	
-		echo 'color:',$wptbOptions['text_color'],'; display:block;';
-		echo 'border-bottom-color:',$wptbOptions['bottom_color'],';','border-bottom-style: solid;';
-		echo 'border-bottom-width: ',$wptbOptions['bottom_border_height'],'px;';
-		if ($wptbOptions['custom_css_bar'] != '') 
-				echo $wptbOptions['custom_css_bar'];
-		echo '">',$wptbOptions['bar_text'],'<a style="color:',$wptbOptions['link_color'],';" ';
-		if ($wptbOptions['custom_css_text'] != '')
-			echo "{$wptbOptions['custom_css_text']}";
-		echo 'href="',$wptbOptions['bar_link'],'" target="_',$wptbOptions['link_target'],'">';
-		echo $wptbOptions['bar_link_text'],'</a>'; 
-		if ( ($wptbOptions['social_icon1'] == 'on') && ($wptbOptions['social_icon1_image'] !== '') )
-			echo '<a href="'.$wptbOptions['social_icon1_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon1_image'].'" style="'.$wptbOptions['social_icon1_css'].'"/></a>';
-		if ( ($wptbOptions['social_icon2'] == 'on') && ($wptbOptions['social_icon2_image'] !== '') )
-			echo '<a href="'.$wptbOptions['social_icon2_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon2_image'].'" style="'.$wptbOptions['social_icon2_css'].'"/></a>';
-		if ( ($wptbOptions['social_icon3'] == 'on') && ($wptbOptions['social_icon3_image'] !== '') )
-			echo '<a href="'.$wptbOptions['social_icon3_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon3_image'].'" style="'.$wptbOptions['social_icon3_css'].'"/></a>';
-		if ( ($wptbOptions['social_icon4'] == 'on') && ($wptbOptions['social_icon4_image'] !== '') )
-			echo '<a href="'.$wptbOptions['social_icon4_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon4_image'].'" style="'.$wptbOptions['social_icon4_css'].'"/></a>';
-		if ($wptbOptions['allow_close'] == 'yes') {
-			echo '<span style="">';
-			echo '<img align="middle" border="0" onClick="close_wptobar()" src="'.$wptbOptions['close_button_image'].'" style="cursor:hand;cursor:pointer;'.$wptbOptions['close_button_css'].'"/></span>';
-		}		
-		echo '</p>';
-	}  // end function wptb_display_TopBar
-				
-	//=========================================================================		
-	//
-	//Returns a random TopBar options,  sets default values if none are loaded.
-	//
-	//=========================================================================		
-	
-		
-	
-	function wptb_get_Random_TopBar($wptb_echo_on) {
-	
-		if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
-		else $wptb_debug = false;			
-	
-		if($wptb_debug)
-			echo '<br><code>WP-TopBar Debug Mode: Getting Random TopBar</code>';
-	
-		global $wpdb;
-		$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
-	
-		// always check to see if table has been created .. if not then create it and insert default row.
-		if( $wpdb->get_var("show tables like '".$wptb_table_name."'") != $wptb_table_name ) {
-			wptb_create_table($wptb_echo_on);				
-			$wptbOptions=wtpb_insert_default_row($wptb_debug);
-		}
-		else {
-			$sql="SELECT * FROM ".$wptb_table_name." 
-					WHERE  `enable_topbar` =  'true'
-	
-						AND COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0), 
-													COALESCE(STR_TO_DATE( `start_time_utc`,  '%m/%d/%Y %H:%i'     ), 0)),0) <= 0 
-						AND	COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  `end_time_utc` ,  '%m/%d/%Y %H:%i'       ), 0), 					
-													COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0)),0) <=0
-					ORDER BY ( `weighting_points` * RAND() ) DESC LIMIT 1
-					";
-				
-	
-	//		echo $sql;
-			$myrows = $wpdb->get_results( $sql, ARRAY_A );
-			if ( $wpdb->num_rows != 0 ) {
-				foreach ($myrows[0] as $key => $option)
-					$wptbOptions[$key] = $option;
-				echo '<!-- <meta name="wp-topbar" version="'.$wptbOptions['wptb_version'].'" showing bar_id="'.$wptbOptions['bar_id'].'" /> -->';
-			}
-			else
-				$wptbOptions=array();
-		}
-			
-		if($wptb_debug) wptb_debug_display_TopBar_Options($wptbOptions);
-		
-		return $wptbOptions;
-		
-	}	// End of wptb_get_Random_TopBar
-	
 	//=========================================================================		
 	//Adds the TopBar HTML and Javascript to the output
 	//=========================================================================		
 		
 	function wptb_inject_TopBar_html_js() {
-//		echo '<!-- <meta name="wp-topbar"  wptb_inject_TopBar_html_js /> -->';
 
-// check for options using the old method, if used - honor it.  otherwise get a TopBar from the database	
+		// check for options using the old method, if used - honor it.  otherwise get a TopBar from the database	
 		$wptbOptions = get_option('wptbAdminOptions');
-	
-		if ( isset( $wptbOptions['enable_topbar'] ) ) {
-			echo '<!-- <meta name="wp-topbar" version="'.$wptbOptions['wptb_version'].'" (using options table) /> -->';
 
-			if ( $wptbOptions['enable_topbar'] == 'false' ) { return; }
-		
-		}
-		else {  
+		if ( isset( $wptbOptions['enable_topbar'] ) ) 
+			echo '<!-- WP-TopBar Version="'.$wptbOptions['wptb_version'].'" (still using options table) -->';
+		else 
 			$wptbOptions=wptb::wptb_get_Random_TopBar(false);
-		}
 	
 		wptb::wptb_inject_specific_TopBar_html_js($wptbOptions);
 	
 	}  // end function wptb_inject_TopBar_html_js
 
+
 	//=========================================================================		
 	// Inject specific TopBar HTML-- used also on the admin (debug) pages
 	//=========================================================================		
 
-
 	function wptb_inject_specific_TopBar_html_js($wptbOptions) {
-//		echo '<!-- <meta name="wp-topbar"  wptb_inject_specific_TopBar_html_js /> -->';
 
 		if ( $wptbOptions['enable_topbar'] == 'false' ) { return; }
 				
@@ -375,6 +259,16 @@ class wptb {
 				}
 		}
 
+		$wptb_cookie = "wptopbar_".COOKIEHASH;
+		
+		if  ( ( $wptbOptions['allow_close'] == 'yes' ) AND 
+			  ( $wptbOptions['respect_cookie'] == 'always' ) AND 
+			  ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value']) ) {
+			echo '<!-- WP-TopBar Valid Cookie Present - not showing TopBar -->
+';
+			return;  
+		}
+
 	// use javascript to force the HTML to just before body tag if the topbar is at the top of the page
 		if ( $wptbOptions['topbar_pos'] == 'header' ) { 	
 			echo '
@@ -391,13 +285,10 @@ class wptb {
 		self::wptb_display_TopBar('visibility:hidden;',$wptbOptions, true);
 	
 		echo '</div>';
-	
 				
 		if ( $wptbOptions['topbar_pos'] == 'header' )
 			echo "');} );
 ";
-		
-		$wptb_cookie = "wptopbar_".COOKIEHASH;
 		
 		if ( $wptbOptions['topbar_pos'] == 'footer' ) {	
 				echo '
@@ -411,17 +302,7 @@ class wptb {
 ';
 			echo 'document.cookie="'.$wptb_cookie.'"'."+'=;expires=Thu, 01-Jan-70 00:00:01 GMT;';";
 		}
-		if ($wptbOptions['allow_close'] == 'yes') { 
-
-			if  ( ($wptbOptions['respect_cookie'] == 'always') AND  ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value']) ) {
-				echo '
-';
-				echo 'document.getElementById("wptbheadline").style.visibility = "hidden";';
-				echo '
-';				echo '</script>';
-				return;  
-			}
-			
+		if ($wptbOptions['allow_close'] == 'yes') {
 			echo '
 ';
 			echo 'function close_wptobar() { document.getElementById("wptbheadline").style.visibility = "hidden";';
@@ -446,8 +327,112 @@ class wptb {
 ';
 		echo '</script>';
 
-	}  // end function wptb_inject_TopBar_html_js
-		 			
+	}  // end function wptb_inject_TopBar_html_js	
+	
+	
+	//=========================================================================		
+	// Common code to display the TopBar. Used on the Admin page and to display on the website
+	// 
+	// Parm $wptbaddslashes:
+	//	True = then call addslashes to the string  
+	//=========================================================================		
+	
+	function wptb_display_TopBar($wptb_visibility, $wptbOptions, $wptbaddslashes) {
+	
+		if ( ($wptbaddslashes) ) {
+			$wptbtextfields = array( '1' => 'custom_css_bar',  '2' => 'bar_text',  '3' => 'custom_css_text', '4' => 'bar_link_text','5' => 'social_icon1_css', '6' => 'social_icon2_css','7' => 'social_icon3_css', '8' => 'social_icon4_css', '9' => 'close_button_css', '10' => 'div_css' );
+		  	foreach( $wptbtextfields as $number => $field ) {				
+		  		if ( isset($wptbOptions[$field]) )	 
+		  			$wptbOptions[$field] = addslashes($wptbOptions[$field]);
+			}
+		}
+		
+		if(function_exists('qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage')) {
+			$wptbOptions['bar_text'] = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage($wptbOptions['bar_text']);
+			$wptbOptions['bar_link_text'] = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage($wptbOptions['bar_link_text']);
+			$wptbOptions['bar_link'] = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage($wptbOptions['bar_link']);
+		}
+
+		echo '<p id="wptbheadline" style="',$wptb_visibility;
+		if ($wptbOptions['enable_image'] == 'false') 
+			echo "background: {$wptbOptions['bar_color']};";
+		else 
+		 	echo "background-image: url({$wptbOptions['bar_image']});	background-position:center;"; 
+		echo 'margin:  ',$wptbOptions['margin_top'],'px 0px ',$wptbOptions['margin_bottom'],'px;';
+		echo 'text-align:',$wptbOptions['text_align'],';','font-size: ',$wptbOptions['font_size'],'px; ';	
+		echo 'padding-top:',$wptbOptions['padding_top'],'px;','padding-bottom:',$wptbOptions['padding_bottom'],'px;'; 	
+		echo 'color:',$wptbOptions['text_color'],'; display:block;';
+		echo 'border-bottom-color:',$wptbOptions['bottom_color'],';','border-bottom-style: solid;';
+		echo 'border-bottom-width: ',$wptbOptions['bottom_border_height'],'px;';
+		if ($wptbOptions['custom_css_bar'] != '') 
+				echo $wptbOptions['custom_css_bar'];
+		echo '">',$wptbOptions['bar_text'],'<a style="color:',$wptbOptions['link_color'],';" ';
+		if ($wptbOptions['custom_css_text'] != '')
+			echo "{$wptbOptions['custom_css_text']}";
+		echo 'href="',$wptbOptions['bar_link'],'" target="_',$wptbOptions['link_target'],'">';
+		echo $wptbOptions['bar_link_text'],'</a>'; 
+		if ( ($wptbOptions['social_icon1'] == 'on') && ($wptbOptions['social_icon1_image'] !== '') )
+			echo '<a href="'.$wptbOptions['social_icon1_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon1_image'].'" style="'.$wptbOptions['social_icon1_css'].'"/></a>';
+		if ( ($wptbOptions['social_icon2'] == 'on') && ($wptbOptions['social_icon2_image'] !== '') )
+			echo '<a href="'.$wptbOptions['social_icon2_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon2_image'].'" style="'.$wptbOptions['social_icon2_css'].'"/></a>';
+		if ( ($wptbOptions['social_icon3'] == 'on') && ($wptbOptions['social_icon3_image'] !== '') )
+			echo '<a href="'.$wptbOptions['social_icon3_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon3_image'].'" style="'.$wptbOptions['social_icon3_css'].'"/></a>';
+		if ( ($wptbOptions['social_icon4'] == 'on') && ($wptbOptions['social_icon4_image'] !== '') )
+			echo '<a href="'.$wptbOptions['social_icon4_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon4_image'].'" style="'.$wptbOptions['social_icon4_css'].'"/></a>';
+		if ($wptbOptions['allow_close'] == 'yes') {
+			echo '<span style="">';
+			echo '<img align="middle" border="0" onClick="close_wptobar()" src="'.$wptbOptions['close_button_image'].'" style="cursor:hand;cursor:pointer;'.$wptbOptions['close_button_css'].'"/></span>';
+		}		
+		echo '</p>';
+	}  // end function wptb_display_TopBar
+				
+
+	//=========================================================================		
+	//Returns a random TopBar options,  sets enable_topbar to false if none are found
+	//=========================================================================		
+	
+	function wptb_get_Random_TopBar($wptb_echo_on) {
+	
+		if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
+		else $wptb_debug = false;			
+	
+		if($wptb_debug)
+			echo '<br><code>WP-TopBar Debug Mode: Getting Random TopBar</code>';
+	
+		global $wpdb;
+		$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
+	
+		$sql="SELECT * FROM ".$wptb_table_name." 
+				WHERE  `enable_topbar` =  'true'
+					AND COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0), 
+												COALESCE(STR_TO_DATE( `start_time_utc`,  '%m/%d/%Y %H:%i'     ), 0)),0) <= 0 
+					AND	COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  `end_time_utc` ,  '%m/%d/%Y %H:%i'       ), 0), 					
+												COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0)),0) <=0
+				ORDER BY ( `weighting_points` * RAND() ) DESC LIMIT 1
+				";		
+
+		$myrows = $wpdb->get_results( $sql, ARRAY_A );
+		if ( $wpdb->num_rows != 0 ) {
+			foreach ($myrows[0] as $key => $option)
+				$wptbOptions[$key] = $option;
+			echo '<!-- WP-TopBar Version="'.$wptbOptions['wptb_version'].'" | Showing Bar #="'.$wptbOptions['bar_id'].'" | Priority="'.$wptbOptions['weighting_points'].'" | Start Time (UTC)="'.$wptbOptions['start_time_utc'].'" | End Time (UTC)="'.$wptbOptions['end_time_utc'].'"-->
+';
+		}
+		else {
+			echo '<!-- WP-TopBar Version="4.01" not using options nor database" -->
+';
+			$wptbOptions=array();
+			$wptbOptions['enable_topbar'] = 'false';
+		}
+	
+			echo '<!-- WP-TopBar Show homepage="'.$wptbOptions['show_homepage'].'" | Control logic="'.$wptbOptions['include_logic'].'" | Include pages="'.$wptbOptions['include_pages'].'" (invert="'.$wptbOptions['invert_include'].'") | Include categories="'.$wptbOptions['include_categories'].'" (invert="'.$wptbOptions['invert_categories'].'") -->
+';
+	
+		if($wptb_debug) wptb_debug_display_TopBar_Options($wptbOptions);
+		
+		return $wptbOptions;
+		
+	}	// End of wptb_get_Random_TopBar
 }
 
 wptb::init();

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.4.1
-Stable tag: 4.00
+Stable tag: 4.01
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - Great for A/B testing! 
 
@@ -12,7 +12,7 @@ Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars 
 
 Create **MULTIPLE** (Yahoo!) TopBars that will be shown at the top (or bottom) of your website.  TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  We made this so customizable and easy to change the color, text, image, link that you can easily lose track of time getting your TopBars perfect!
 
-**Superduper major re-write with Verson 4.0.**  Refactored all the functions to use its own database table instead of WordPress options.  This allows you to create an unlimited number of TopBars.  This version is leaner, faster, smarter.   Quick links are added throughout to make editing your TopBars a breeze.
+**Superduper major re-write with Version 4.0.**  Refactored all the functions to use its own database table instead of WordPress options.  This allows you to create an unlimited number of TopBars.  This version is leaner, faster, smarter.   Quick links are added throughout to make editing your TopBars a breeze.
 
 Want to see how this TopBar looks?   You can test how your TopBars show up to allow you to adjusting the selection factors on the fly.  You can even get a sampling of how 10 pageviews would render the TopBar -- *great for A/B testing*.
 
@@ -67,6 +67,7 @@ Add a Close Button
 
 Add up to four Social Icon buttons
 
+Has explicit support for qTranslate -- translates the top bar text fields and link field.
 
 == Installation ==
 
@@ -92,7 +93,7 @@ You can also use the Debug page to see if you can see an error.
 
 You have four choices to handle include (or exclude) the TopBar from showing:
  Page ID - this only checks the current page's ID against the list you entered.
- Category ID - this only checks the current category IDs against the list you entered.  The criteria is satisified if any of the page's category IDs match what you entered.  We only check the default "category" taxonomy.
+ Category ID - this only checks the current category IDs against the list you entered.  The criteria is satisfied if any of the page's category IDs match what you entered.  We only check the default "category" taxonomy.
  Both - both the Page ID and Category criteria must match for the TopBar to show
  Either - either the Page ID or Category criteria need to match for the TopBar to show
  
@@ -104,6 +105,18 @@ The default is to check by PageId.
 If you allow the user to close the TopBar, then the plugin checks to see if you have enabled cookies.   If they are not enabled, it deletes any existing cookies.   If they are enabled, it looks to see if a cookie has been created.  A cookie is only created if the TopBar has been previously closed by the user.  If it finds a cookie, it prevents the TopBar from showing.
 
 If you change the Cookie Value to something new, the TopBar will show up again.  This is useful if you want to force the TopBar to show on new content.  Make sure to select something you haven't used before.  A good idea is to increment the value by one every time you want to force the TopBar to show.
+
+With Version 4.00+, all TopBars must share the same cookie settings for this to work. You can set the TopBars to be the same by using the new Close Button tab on the main page
+
+= How does the Priority field (in version 4.00+) work? =
+
+The Plugin randomly selects a valid TopBar to show using this field to skew how they are selected. The TopBar multiplies a random number (between 0 and 1) with the TopBar's Priority value (which is a number between 1 to 100). A higher number means this TopBar will be selected more frequently; a lower number means less frequently. 
+
+= How are TopBars selected to show? =
+
+See the Priority question above to see how they are selected. The TopBar will select only those TopBars that are valid per the date/time criteria. Once a TopBar is selected to show, it then goes through the Control Options. That checks to see if the TopBar should be shown on the Home Page (or not) and which Page IDs or Category IDs the TopBar should show (or not).
+
+The Final check is to see if the TopBar has cookie controls (see above). If the user is allowed to close the TopBar and cookies are enabled, then we look for a cookie. If one is found, and it matches the cookie value, then the TopBar is not shown.
 
 = What CSS ID's are available? =
 
@@ -142,13 +155,17 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 4.01 = 
+
+Version 4.01 add explicit support for the qtranslate plugin and a tab to bulk change all Close Button settings
+
 = 4.00 = 
 
 Version 4.00 Converted to using database to store MULTIPLE (yahoo!) TopBars.  Refactored to be leaner, faster, and smarter.  Your old TopBar will be imported into the new database.
 
 = 3.10 = 
 
-Version 3.10 supports Wordpress 3.4 and adds the capability to restrict the TopBar from showing by category.   You can also excplicity manage how it shows up on the Home Page.   Moved Control logic to its own options page.
+Version 3.10 supports Wordpress 3.4 and adds the capability to restrict the TopBar from showing by category.   You can also explicitly manage how it shows up on the Home Page.   Moved Control logic to its own options page.
 
 = 3.09 = 
 
@@ -214,6 +231,14 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+
+= 4.01 - 7/04/2012 =
+
+1, NEW: Adds explicit support for the qtranslate plugin
+2. FIX: No longer calls exception when the user has not set a default topbar
+3. ADDED: Tab on main page to allow you to bulk set the Close Button settings
+4. FIX: WordPress Export Functions -- workaround for core defect?
 
 = 4.00 - 7/01/2012 = 
 
