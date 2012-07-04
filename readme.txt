@@ -235,7 +235,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 4.01 - 7/04/2012 =
 
-1, NEW: Adds explicit support for the qtranslate plugin
+1. NEW: Adds explicit support for the qtranslate plugin
 2. FIX: No longer calls exception when the user has not set a default topbar
 3. ADDED: Tab on main page to allow you to bulk set the Close Button settings
 4. FIX: WordPress Export Functions -- workaround for core defect?
