@@ -417,6 +417,8 @@ class wptb {
 				$wptbOptions[$key] = $option;
 			echo '<!-- WP-TopBar Version="'.$wptbOptions['wptb_version'].'" | Showing Bar #="'.$wptbOptions['bar_id'].'" | Priority="'.$wptbOptions['weighting_points'].'" | Start Time (UTC)="'.$wptbOptions['start_time_utc'].'" | End Time (UTC)="'.$wptbOptions['end_time_utc'].'"-->
 ';
+			echo '<!-- WP-TopBar Show homepage="'.$wptbOptions['show_homepage'].'" | Control logic="'.$wptbOptions['include_logic'].'" | Include pages="'.$wptbOptions['include_pages'].'" (invert="'.$wptbOptions['invert_include'].'") | Include categories="'.$wptbOptions['include_categories'].'" (invert="'.$wptbOptions['invert_categories'].'") -->
+';
 		}
 		else {
 			echo '<!-- WP-TopBar Version="4.01" not using options nor database" -->
@@ -424,10 +426,7 @@ class wptb {
 			$wptbOptions=array();
 			$wptbOptions['enable_topbar'] = 'false';
 		}
-	
-			echo '<!-- WP-TopBar Show homepage="'.$wptbOptions['show_homepage'].'" | Control logic="'.$wptbOptions['include_logic'].'" | Include pages="'.$wptbOptions['include_pages'].'" (invert="'.$wptbOptions['invert_include'].'") | Include categories="'.$wptbOptions['include_categories'].'" (invert="'.$wptbOptions['invert_categories'].'") -->
-';
-	
+		
 		if($wptb_debug) wptb_debug_display_TopBar_Options($wptbOptions);
 		
 		return $wptbOptions;
