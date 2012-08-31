@@ -1039,7 +1039,7 @@ function wtpb_set_default_settings() {
 
 	return array(
 	 	'weighting_points'=> 25,				 	
-		'wptb_version' => '4.01',
+		'wptb_version' => '4.02',
 		'enable_topbar' => 'false',
 		'include_pages' => '0',
 		'invert_include' => 'no',
@@ -1750,7 +1750,7 @@ function wtpb_check_for_plugin_upgrade($wptb_echo_on) {
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 
-	$wptb_this_version_number = '4.01';
+	$wptb_this_version_number = '4.02';
 
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			
@@ -1766,9 +1766,7 @@ function wtpb_check_for_plugin_upgrade($wptb_echo_on) {
 				wtpb_insert_default_row($wptb_echo_on);
 			}
 	}
-		
-	$wptb_debug = get_transient( 'wptb_debug' );	
-	
+			
 	if($wptb_debug) {
 		if($wptb_echo_on) {
 			echo '<br><code>WP-TopBar Debug Mode: in wtpb_check_for_plugin_upgrade</code>' ;

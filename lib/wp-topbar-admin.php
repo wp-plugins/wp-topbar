@@ -20,6 +20,12 @@ Admin Page
 // Options Page
 //=========================================================================			
 
+function wptb_admin_notice() {
+		$wptbOptions = get_option('wptbAdminOptions');
+
+		if ( isset( $wptbOptions['enable_topbar'] ) ) 
+		echo '<div class="error"><p><strong>' . sprintf( 'WP TopBar settings need to be updated.  Please go to the <a href="%s">plugin admin page</a> to update the settings.', admin_url( '?page=wp-topbar.php' ) ) . '</strong></p></div>';
+}
 
 
 function wptb_options_page() {
@@ -513,7 +519,7 @@ function wptb_main_options($wptbOptions) {
 		</div>
 	</div> <!-- end of Main Options -->
 	
-	<?
+	<?php
 }	// End of wptb_main_options
 
 

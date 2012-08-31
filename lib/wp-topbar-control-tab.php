@@ -140,7 +140,7 @@ function wptb_control_options($wptbOptions) {
 		</div>
 	</div> <!-- end of Main Options -->
 	
-	<?
+	<?php
 }	// End of wptb_control_options
 
 

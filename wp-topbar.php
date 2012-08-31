@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 4.01
+Version: 4.02
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -34,7 +34,7 @@ class wptb {
 		//=========================================================================			
 		//Perform any onetime functions when plugin is activiated
 		//=========================================================================			
-		register_activation_hook( __FILE__,array( __CLASS__, 'wtpb_activate_plugin' ) );
+//		register_activation_hook( __FILE__,array( __CLASS__, 'wtpb_activate_plugin' ) );
 		
 		//=========================================================================			
 		//Actions and Filters, if on plugin admin page	
@@ -48,6 +48,8 @@ class wptb {
 			add_action( 'init', array( __CLASS__, 'wptb_enqueue_admin_scripts' ) );
 			add_action( 'init', array( __CLASS__, 'wptb_debug_check' ) );
 			add_action( 'admin_menu', array( __CLASS__, 'wptb_options_panel' ) ); 
+			add_action( 'admin_notices', 'wptb_admin_notice' );
+
 		
 		//Filters
 			add_filter( 'plugin_action_links_' . plugin_basename(__FILE__) , array( __CLASS__, 'wptb_plugin_action_links' ) );
@@ -421,7 +423,7 @@ class wptb {
 ';
 		}
 		else {
-			echo '<!-- WP-TopBar Version="4.01" not using options nor database" -->
+			echo '<!-- WP-TopBar Version="4.02" not using options nor database" -->
 ';
 			$wptbOptions=array();
 			$wptbOptions['enable_topbar'] = 'false';

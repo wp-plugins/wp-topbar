@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.4.1
-Stable tag: 4.01
+Stable tag: 4.02
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - Great for A/B testing! 
 
@@ -155,6 +155,10 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 4.02 = 
+
+Version 4.02 adds warning to update settings after upgrade and fixes a defect
+
 = 4.01 = 
 
 Version 4.01 add explicit support for the qtranslate plugin and a tab to bulk change all Close Button settings
@@ -203,7 +207,7 @@ Version 3.02 changed date/time picker to a GPL version to conform to Wordpress l
 
 Fixes bug in posting pages.
 
-= 3.0 = 
+= 3.00 = 
 
 Version 3.0 adds the ability to set a start/end time for the TopBar to show.  It was re-worked to be smaller and faster.
 
@@ -232,6 +236,12 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+
+
+= 4.02 - 8/31/2012 =
+
+1. NEW: Adds warning to update settings after upgrade
+2. FIXED:  missing php closing tags
 
 = 4.01 - 7/04/2012 =
 
