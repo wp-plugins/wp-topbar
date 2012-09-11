@@ -143,12 +143,19 @@ function wptb_options_page() {
  
 // process items that require a Bar_ID
 	if ( isset ( $_GET['barid'] ) ) {
-        $wptb_barid = $_GET['barid'];
-        
-        if (isset($_POST['update_wptbSettings']))  {
-			$wptbOptions=wptb_update_settings($wptb_barid, $wptb_debug);	
-			}
-		
+		$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+		if (!$wptb_barid_prefix) {				// there is a problem, bar_id is set, but no transient.  So force table reload action
+			$wptb_barid_prefix=rand(100000,899999);
+			set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+			$action = 'table';
+		}
+		else {
+		        $wptb_barid = ($_GET['barid'] - $wptb_barid_prefix);
+		        
+		        if (isset($_POST['update_wptbSettings']))
+					if (check_admin_referer('wptb_update_setting_nonce','wptbupdatesettingnonce'))	
+						$wptbOptions=wptb_update_settings($wptb_barid, $wptb_debug);			
+		}
 	}
 	
 	if ( isset (  $_POST['update_wptbCloseButton'] ) ) {			
@@ -191,18 +198,17 @@ function wptb_options_page() {
 
 	
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Version ',$wptbOptions['wptb_version'],'</code>';
+	if($wptb_debug) echo '<br><code>Action: ',$action,'</code>';
+	if($wptb_debug) echo '<br><code>BarID: ',$wptb_barid,'</code>';
+	if($wptb_debug) echo '<br><code>BarID Prefix: ',$wptb_barid_prefix,'</code>';
 
     switch ( $action ) :
         case 'enable' :
         case 'disable' :
 	        wptb_toggle_enabled($action,$wptb_barid,$wptbOptions,$wptb_debug);
-/*
-			wptb_display_admin_header();
-        	wptb_options_tabs($action);
-            wptb_display_all_TopBars();
-*/
             wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table'.$current_page);				
             break;
+
         case 'duplicate' :
   			// make sure “&noheader=true” is added to the page that called this to make WP wait before the it outputs any of the HTML.
   			// then the redirect will work!  Also, debug is forced off to ensure no output occurs before redirect
@@ -220,16 +226,6 @@ function wptb_options_page() {
         	wptb_options_tabs($action);
         	wptb_display_export_options();
         	break;
-        
-//        case 'exportcsv' :
-//			wptb_export_options_csv();
-//			wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');
-//          break;
-//        case 'exportjson' :
-//			wptb_export_options_json();
-//			wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');
-//            break;
-
 
         case 'bulkclosebutton' :
 			wptb_display_admin_header();
@@ -336,9 +332,15 @@ function wptb_main_options($wptbOptions) {
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
 	$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
 
+	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+
+
 	$wptb_debug=get_transient( 'wptb_debug' );	
 	if($wptb_debug)
 		echo '<br><code>WP-TopBar Debug Mode: In Main Options</code>';
+		echo '<br><code>BarID Prefix: '.$wptb_barid_prefix.'</code>';
 
 	?>
 
@@ -359,7 +361,8 @@ function wptb_main_options($wptbOptions) {
 	<h3><a name="MainOptions">Main Options</a></h3>
 	<div class="inside">
 		<div class="table">
-			<table class="form-table">		
+			<table class="form-table">
+				<input name="wptb_update_setting_nonce" type="hidden" value="<?php wp_create_nonce('wptb_update_setting_nonce'); ?>" />			
 				<tr valign="top">
 					<td width="150">Enable TopBar:</label></td>
 					<td>
@@ -375,7 +378,7 @@ function wptb_main_options($wptbOptions) {
 						<input type="text" name="wptbpriority" id="priority" size="30" value="<?php echo $wptbOptions['weighting_points']; ?>" >
 					</td>
 					<td>
-							<p class="sub"><em>Enter the relative priorty (1 to 100) for the TopBar to show.  A higher number means this TopBar will be selected more frequently; a lower number means less frequently.  (See the <a <?php echo 'href="?page=wp-topbar.php&action=faq&barid='.$wptbOptions['bar_id'].'"'; ?>">FAQ</a> for more details.) Default is <code>25</code>.</em></p>
+							<p class="sub"><em>Enter the relative priorty (1 to 100) for the TopBar to show.  A higher number means this TopBar will be selected more frequently; a lower number means less frequently.  (See the <a <?php echo 'href="?page=wp-topbar.php&action=faq&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'"'; ?>">FAQ</a> for more details.) Default is <code>25</code>.</em></p>
 					</td>
 				</tr>			
 				<tr valign="top">

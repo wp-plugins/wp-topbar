@@ -85,7 +85,6 @@ function wptb_display_all_TopBars() {
      **************************************************************************/
     function column_default($item, $column_name){
 
-
    	switch ( $column_name ) {
 			case "bar_id":	
 					return	$item[$column_name];	
@@ -143,6 +142,11 @@ function wptb_display_all_TopBars() {
      **************************************************************************/
     function column_bar_id($item){
         
+       	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+       	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+       	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+
+
         
 	    if ( isset ( $_GET['paged'] ) )
 	        $current_page = '&paged='.$_GET['paged'];
@@ -155,16 +159,16 @@ function wptb_display_all_TopBars() {
         //Build row actions
 
         if ( $item['enable_topbar'] == "false" ) {
-	        $actions = array('enable'    => sprintf('<a href="?page=%s&amp;action=%s&amp;barid=%s%s&amp;noheader=true">Enable</a>',$_REQUEST['page'],'enable',$item['bar_id'], $current_page));
+	        $actions = array('enable'    => sprintf('<a href="?page=%s&amp;action=%s&amp;barid=%s%s&amp;noheader=true">Enable</a>',$_REQUEST['page'],'enable',($item['bar_id']+$wptb_barid_prefix), $current_page));
         }
         else {
-	        $actions = array('disable'   => sprintf('<a href="?page=%s&amp;action=%s&amp;barid=%s%s&amp;noheader=true">Disable</a>',$_REQUEST['page'],'disable',$item['bar_id'], $current_page));	        
+	        $actions = array('disable'   => sprintf('<a href="?page=%s&amp;action=%s&amp;barid=%s%s&amp;noheader=true">Disable</a>',$_REQUEST['page'],'disable',($item['bar_id']+$wptb_barid_prefix), $current_page));	        
         }
         
-        $actions[] = sprintf('<a href="?page=%s&amp;action=%s&amp;barid=%s%s&amp;noheader=true">Duplicate</a>',$_REQUEST['page'],'duplicate',$item['bar_id'], $current_page);
+        $actions[] = sprintf('<a href="?page=%s&amp;action=%s&amp;barid=%s%s&amp;noheader=true">Duplicate</a>',$_REQUEST['page'],'duplicate',($item['bar_id']+$wptb_barid_prefix), $current_page);
 
         foreach( $tabs as $tab => $name ) {
-        	$actions[] = sprintf('<a href="?page=%s&amp;action=%s&amp;barid=%s%s">%s</a>',$_REQUEST['page'],$tab,$item['bar_id'], $current_page, $name);
+        	$actions[] = sprintf('<a href="?page=%s&amp;action=%s&amp;barid=%s%s">%s</a>',$_REQUEST['page'],$tab,($item['bar_id']+$wptb_barid_prefix), $current_page, $name);
         }
 
         return sprintf('%1$s %2$s',
@@ -659,6 +663,10 @@ function wptb_display_all_TopBars() {
 
 function wptb_test_topbar($number_to_show, $wptb_echo_on) {
 
+	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			
 
@@ -699,7 +707,7 @@ function wptb_test_topbar($number_to_show, $wptb_echo_on) {
 			echo "<td  width=125px>".$wptbOptions['bar_id'];
 
 			foreach( $tabs as $tab => $name ) {
-	        	echo '<a href="?page='.$_REQUEST['page'].'&amp;action='.$tab.'&amp;barid='.$wptbOptions['bar_id'].$current_page.'">'.$name.'</a>';
+	        	echo '<a href="?page='.$_REQUEST['page'].'&amp;action='.$tab.'&amp;barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).$current_page.'">'.$name.'</a>';
 	        	}
 //			echo '<a href="?page='.$_REQUEST['page'].'&amp;action='.$tab.'&amp;barid='.$item['bar_id'].$current_page.">'.$name.'</a>';
 			echo "</td>";
@@ -1039,7 +1047,7 @@ function wtpb_set_default_settings() {
 
 	return array(
 	 	'weighting_points'=> 25,				 	
-		'wptb_version' => '4.02',
+		'wptb_version' => '4.03',
 		'enable_topbar' => 'false',
 		'include_pages' => '0',
 		'invert_include' => 'no',
@@ -1640,7 +1648,7 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 	
 	// need to check the make sure we are the right tab to correctly handle the toggle buttons
 	
-	if ( $_GET['tab'] == 'socialbuttons') {
+	if ( $_GET['action'] == 'socialbuttons') {
 		if (isset($_POST['wptbsocialicon1'])) 
 			$wptbOptions['social_icon1'] = 'on';
 		else
@@ -1750,7 +1758,7 @@ function wtpb_check_for_plugin_upgrade($wptb_echo_on) {
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 
-	$wptb_this_version_number = '4.02';
+	$wptb_this_version_number = '4.03';
 
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			

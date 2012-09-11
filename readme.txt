@@ -3,8 +3,8 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
-Tested up to: 3.4.1
-Stable tag: 4.02
+Tested up to: 3.4.2
+Stable tag: 4.03
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - Great for A/B testing! 
 
@@ -155,6 +155,10 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 4.03 = 
+
+Version 4.03 supports WordPress 3.4.2, adds security features, and fixes a few bugs.
+
 = 4.02 = 
 
 Version 4.02 adds warning to update settings after upgrade and fixes a defect
@@ -236,7 +240,12 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+= 4.03 - 9/10/2012 =
 
+1. VALIDATED: Version 4.04 supports Wordpress 3.4.2
+2. NEW: Adds security features (nonces) to the admin pages (Thanks to Blake Entrekin)
+3. FIXED: how the CSS for the link is rendered
+4. FIXED: enable/disable social buttons work again
 
 = 4.02 - 8/31/2012 =
 

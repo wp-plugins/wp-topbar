@@ -60,19 +60,19 @@ function wptb_topbarcss_options($wptbOptions) {
 		<div class="table">
 			<table class="form-table">		
 				<tr valign="top">
-					<td width="150">For the Bar:</label></td>
+					<td width="150">A. For the Bar:<br>(i.e. for the &lt;p&gt; Tag on the TopBar)</label></td>
 					<td>
 						<textarea name="wptbcustomcssbar" id="customcssbar" rows="10" cols="100"><?php echo stripslashes($wptbOptions['custom_css_bar']); ?></textarea>
 					</td>
 				</tr>
 				<tr valign="top">
-					<td width="150">For the Text Message:</label></td>
+					<td width="150">B. For the Text Message:<br>(i.e. for the &lt;a&gt; Tag on the TopBar)</label></td>
 					<td>
 						<textarea name="wptbcustomcsstext" id="customcsstext" rows="10" cols="100"><?php echo stripslashes($wptbOptions['custom_css_text']); ?></textarea>
 					</td>
 				</tr>	
 				<tr valign="top">
-					<td width="150">For the entire TopBar:<br>(i.e. at the TopBar's DIV)</label></td>
+					<td width="150">C. For the entire TopBar:<br>(i.e. at the TopBar's &lt;DIV&gt;)</label></td>
 					<td><p>Try this CSS to fix the TopBar to the top of the page:<p>				
 					<code><?php _e( $div_css_sample_top , 'wptb' ); ?></code>
 					<p>Or this to fix the TopBar to the bottom of the page:<p>

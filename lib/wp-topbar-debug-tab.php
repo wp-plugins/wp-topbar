@@ -15,6 +15,11 @@ function wptb_debug_options($wptbOptions) {
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
 			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
 
+	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+
+
 	$wptb_debug=get_transient( 'wptb_debug' );	
 
 	if($wptb_debug)
@@ -30,7 +35,7 @@ function wptb_debug_options($wptbOptions) {
 		<ul>
 			<li><strong>Status:</strong>
 			<br>
-			<?php if ($wptbOptions['enable_topbar'] == "false") { _e( 'The TopBar is not enabled.  Enable it in the <a href="?page=wp-topbar.php&action=main&barid='.$wptbOptions['bar_id'].'">Main Options tab</a>.<br>', 'wptb' ); } ?>
+			<?php if ($wptbOptions['enable_topbar'] == "false") { _e( 'The TopBar is not enabled.  Enable it in the <a href="?page=wp-topbar.php&action=main&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'">Main Options tab</a>.<br>', 'wptb' ); } ?>
 Based on your Start/End time settings in the <a href="?page=wp-topbar.php&action=main&barid=<?php echo $wptbOptions['bar_id'];?>">Main Options tab</a>,<?php if ($wptbOptions['enable_topbar'] == "false") { _e( ' when enabled,', 'wptb' ); } ?> the TopBar will <?php if (!wptb_check_time($wptbOptions['bar_id'])) echo "<strong>not</strong>"; ?> display (based on the current time.)
 		<br><?php if ( $wptbOptions['respect_cookie'] == 'ignore' ) 
 					echo "<br>The plugin is not checking for the presence of cookies.  That is not preventing the TopBar from showing.";
@@ -61,7 +66,7 @@ Based on your Start/End time settings in the <a href="?page=wp-topbar.php&action
 		</tr>
 		<tr>
 		<td valign="top" style="valign:top; width:100%; border-style:solid !important; border-width:1px !important; border-color:black !important;">
-		<?php if ($wptbOptions['enable_topbar'] == "false") { _e( '<strong>The TopBar is not enabled.  Therefore no HTML will be generated. Enable it in the <a href="?page=wp-topbar.php&action=main&barid='.$wptbOptions['bar_id'].'">Main Options tab</a>.</strong><br>', 'wptb' ); }
+		<?php if ($wptbOptions['enable_topbar'] == "false") { _e( '<strong>The TopBar is not enabled.  Therefore no HTML will be generated. Enable it in the <a href="?page=wp-topbar.php&action=main&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'">Main Options tab</a>.</strong><br>', 'wptb' ); }
 		else {_e ('	<textarea rows="10" cols="150">', wptb);wptb::wptb_inject_specific_TopBar_html_js($wptbOptions);_e('</textarea>', wptb);} ?>
 		</td>
 		<br>

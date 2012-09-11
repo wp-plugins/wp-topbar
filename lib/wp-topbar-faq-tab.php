@@ -15,6 +15,11 @@ function wptb_faq_page($wptbOptions,$wptbShowLinks) {
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
 			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
 
+	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+
+	
 	$wptb_debug=get_transient( 'wptb_debug' );	
 
 	if($wptb_debug)
@@ -29,17 +34,17 @@ function wptb_faq_page($wptbOptions,$wptbShowLinks) {
 	<ol type="square">
 
 <li><strong>My TopBar is not working.  What should I do?</strong></li>
-<p>Use the <a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=debug&barid='.$wptbOptions['bar_id'].'"'; ?>>Debug tab</a> to see how the TopBar is being generated.</p>
+<p>Use the <a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=debug&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'"'; ?>>Debug tab</a> to see how the TopBar is being generated.</p>
 <p>Check for any messages under the Live Preview heading on the Admin Page.  It will tell you if you have cookies or time settings that will prevent the TopBar from loading.
-<p>You may have CSS settings that prevent the TopBar from loading.  If you entered any setting that are not valid, the TopBar will not load. Try deleting the settings and then re-entering your CSS until you find the one that is causing the issue.  Again, the <a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=debug&barid='.$wptbOptions['bar_id'].'"'; ?>>Debug tab</a> can help you discover any issues.
+<p>You may have CSS settings that prevent the TopBar from loading.  If you entered any setting that are not valid, the TopBar will not load. Try deleting the settings and then re-entering your CSS until you find the one that is causing the issue.  Again, the <a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=debug&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'"'; ?>>Debug tab</a> can help you discover any issues.
 <p>
-<p>Finally, your Page IDs or Category selection may be preventing the TopBar from loading.  See how your settings are configured on the <a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=control&barid='.$wptbOptions['bar_id'].'"'; ?>>Control tab</a>.
+<p>Finally, your Page IDs or Category selection may be preventing the TopBar from loading.  See how your settings are configured on the <a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=control&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'"'; ?>>Control tab</a>.
 <p>
 <li><strong>How do the new cookies (in version 3.04+) work behind the scenes?</strong></li>
 <p>
 If you allow the user to close the TopBar, then the plugin checks to see if you have enabled cookies.   If they are not enabled, it deletes any existing cookies.   If they are enabled, it looks to see if a cookie has been created.  A cookie is only created if the TopBar has been previously closed by the user.  If it finds a cookie and the cookie value matches the Cookie Value setting, it prevents the TopBar from showing.
 <p>
-If you change the Cookie Value to something new (<a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=closebutton&barid='.$wptbOptions['bar_id'].'"'; ?>">on the Close Button tab</a>), the TopBar will show up again.  This is useful if you want to force the TopBar to show on new content.  Make sure to select something you haven't used before.  A good idea is to increment the value by one every time you want to force the TopBar to show.
+If you change the Cookie Value to something new (<a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=closebutton&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'"'; ?>">on the Close Button tab</a>), the TopBar will show up again.  This is useful if you want to force the TopBar to show on new content.  Make sure to select something you haven't used before.  A good idea is to increment the value by one every time you want to force the TopBar to show.
 <p>With Version 4.00+, <strong>all</strong> TopBars must share the same cookie settings for this to work.  You can set the TopBars to be the same by using the new  <a <?php echo 'href="?page=wp-topbar.php&action=bulkclosebutton"'; ?>>Close Button tab</a> on the main page
 <p>
 <li><strong>How does the Priority field (in version 4.00+) work?</strong></li>

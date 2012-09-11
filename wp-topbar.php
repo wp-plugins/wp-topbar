@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 4.02
+Version: 4.03
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -367,10 +367,11 @@ class wptb {
 		echo 'border-bottom-color:',$wptbOptions['bottom_color'],';','border-bottom-style: solid;';
 		echo 'border-bottom-width: ',$wptbOptions['bottom_border_height'],'px;';
 		if ($wptbOptions['custom_css_bar'] != '') 
-				echo $wptbOptions['custom_css_bar'];
-		echo '">',$wptbOptions['bar_text'],'<a style="color:',$wptbOptions['link_color'],';" ';
+				echo $wptbOptions['custom_css_bar']," ";
+		echo '">',$wptbOptions['bar_text'],'<a style="color:',$wptbOptions['link_color'],'; ';
 		if ($wptbOptions['custom_css_text'] != '')
 			echo "{$wptbOptions['custom_css_text']}";
+		echo '" ';
 		echo 'href="',$wptbOptions['bar_link'],'" target="_',$wptbOptions['link_target'],'">';
 		echo $wptbOptions['bar_link_text'],'</a>'; 
 		if ( ($wptbOptions['social_icon1'] == 'on') && ($wptbOptions['social_icon1_image'] !== '') )
@@ -423,7 +424,7 @@ class wptb {
 ';
 		}
 		else {
-			echo '<!-- WP-TopBar Version="4.02" not using options nor database" -->
+			echo '<!-- WP-TopBar Version="4.03" not using options nor database" -->
 ';
 			$wptbOptions=array();
 			$wptbOptions['enable_topbar'] = 'false';

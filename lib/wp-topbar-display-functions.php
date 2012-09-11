@@ -82,6 +82,12 @@ function wptb_options_tabs( $current = 'table' ) {
 
 
 function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid ) {
+
+	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+
+
     $tabs = array( 'table'=> 'All TopBars', 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','debug' => 'Debug', 'delete' => 'Delete&nbspSettings', 'faq' => 'FAQ' );
     $links = array();
     
@@ -104,7 +110,7 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid ) {
     	if ( $tab == 'table' ) 
     		$wptb_barid_action="";
     	else
-			$wptb_barid_action="&barid=".$wptb_barid;
+			$wptb_barid_action="&barid=".($wptb_barid_prefix+$wptb_barid);
 
 
         if ( $tab == $current ) 
@@ -144,7 +150,7 @@ function wptb_display_admin_header() {
 		<div class=wrap>
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 		<h2><img src="<?php _e( plugins_url('/images/banner-772x250.png', __FILE__), 'wptb' ); ?>" height="50" alt="TopBar Banner"/>
-		WP-TopBar - Version 4.02</h2>
+		WP-TopBar - Version 4.03</h2>
 		<div class="postbox">
 		<br>
 		Creates TopBars that can be shown at the top of your website.  Version 4 is a massive, major, mondo upgrade that allows you to add multiple TopBars.  If all works well, previous users will have their existing options converted as their 1st TopBar.
@@ -155,7 +161,8 @@ if you find this plugin useful.
 		<hr>
 
 		</div>
-		
+		<?php wp_nonce_field('wptb_update_setting_nonce','wptbupdatesettingnonce'); ?> 	
+
 	<?php 
 	
 }  // end function wptb_display_admin_header
@@ -171,6 +178,10 @@ if you find this plugin useful.
 function wptb_display_common_info($wptbOptions) {
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
+	
+	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
 	
 	if($wptb_debug)
 			wptb_debug_display_TopBar_Options($wptbOptions);
@@ -244,7 +255,7 @@ function wptb_display_common_info($wptbOptions) {
 		<h3>Live Preview of TopBar #: <?php echo $wptbOptions['bar_id'];?></h3>
 		<div class="inside">
 			<p class="sub"><strong>This is how the TopBar will appear on the website.</strong>
-			<br>To test the TopBar on your site, you can set the Page IDs (on the <a href="?page=wp-topbar.php&action=control&barid=<?php echo $wptbOptions['bar_id']; ?>">Control tab</a>) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
+			<br>To test the TopBar on your site, you can set the Page IDs (on the <a href="?page=wp-topbar.php&action=control&barid=<?php echo ($wptbOptions['bar_id']+$wptb_barid_prefix); ?>">Control tab</a>) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
 			<br> The first black line below represents the top of the screen.  The second black line represents the bottom of the TopBar.</p>
 			<div class="table">
 				<table class="form-table">

@@ -144,6 +144,10 @@ function wptb_closebutton_options($wptbOptions) {
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
 			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
 
+	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+
 	$wptb_debug=get_transient( 'wptb_debug' );	
 	if($wptb_debug)
 		echo '<br><code>WP-TopBar Debug Mode: In Close Button Options</code>';
@@ -196,7 +200,7 @@ function wptb_closebutton_options($wptbOptions) {
 					?>
 					</td>
 					<td>
-							<p class="sub"><em>Change this value to force the cookie to reshow.  See <a href='?page=wp-topbar.php&action=faq&barid=<?php echo $wptbOptions['bar_id']; ?>'>FAQ</a>.  Default is <code>1</code></em></p>
+							<p class="sub"><em>Change this value to force the cookie to reshow.  See <a href='?page=wp-topbar.php&action=faq&barid=<?php echo ($wptb_barid_prefix+$wptbOptions['bar_id']); ?>'>FAQ</a>.  Default is <code>1</code></em></p>
 					</td>
 				</tr>				
 				<tr valign="top">
