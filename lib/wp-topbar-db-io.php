@@ -193,7 +193,7 @@ function wptb_display_all_TopBars() {
 		echo '<tr' . $row_class .  '>';
 		echo '<td>&nbsp</td>';
 		echo '<td style="border-top-style:none;" colspan="7">';
-		wptb::wptb_display_TopBar("",$item, false);
+		wptb::wptb_display_TopBar("",$item, false, "");
 		echo '<br><br>';
 		echo '</td>';
 		echo '</tr>';
@@ -563,6 +563,9 @@ function wptb_display_all_TopBars() {
 
 		else
 	        $current_page = $this->get_pagenum();
+	        
+	    if (! isset($current_page))
+			$current_page = 1;
         
         /**
          * REQUIRED for pagination. Let's check how many items are in our data array. 
@@ -707,13 +710,13 @@ function wptb_test_topbar($number_to_show, $wptb_echo_on) {
 			echo "<td  width=125px>".$wptbOptions['bar_id'];
 
 			foreach( $tabs as $tab => $name ) {
-	        	echo '<a href="?page='.$_REQUEST['page'].'&amp;action='.$tab.'&amp;barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).$current_page.'">'.$name.'</a>';
+	        	echo '<a href="?page='.$_REQUEST['page'].'&amp;action='.$tab.'&amp;barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'">'.$name.'</a>';
 	        	}
 //			echo '<a href="?page='.$_REQUEST['page'].'&amp;action='.$tab.'&amp;barid='.$item['bar_id'].$current_page.">'.$name.'</a>';
 			echo "</td>";
 			echo "<td width=50px>".$wptbOptions['weighting_points']."</td>";
 			echo '<td valign="top">';
-			wptb::wptb_display_TopBar("",$wptbOptions, false);
+			wptb::wptb_display_TopBar("",$wptbOptions, false, "");
 			echo '</td>';
 		}
 		else break;
@@ -907,9 +910,9 @@ function wptb_debug_display_TopBar_Options($wptbOptions) {
 	$browser = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 	
 	if (!(stripos($browser,'iPod')) && !(stripos($browser,'iPhone')) && !(stripos($browser,'iPad'))) 
-		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Not an iPhone/iPad/iPod Device</code>';
+		echo '<br><code>WP-TopBar Debug Mode: Not an iPhone/iPad/iPod Device</code>';
 	else 
-		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: An iPhone/iPad/iPod Device</code>';
+		echo '<br><code>WP-TopBar Debug Mode: An iPhone/iPad/iPod Device</code>';
 
 	echo '<br><code>WP-TopBar Debug Mode: Filename:',plugin_dir_path(__FILE__),'</code>';
 	echo '<br><code>WP-TopBar Debug Mode: --------------------------------------</code>';
@@ -940,7 +943,8 @@ function wptb_convert_to_database($wptbOptions, $wptb_echo_on) {
 
 	wptb_create_table($wptb_echo_on);	
 	$wptbOptions[ 'weighting_points' ] = 25;
-	$wptbOptions[ 'past_cookie_values' ] = $wptbOptions['cookie_value'];				
+	$wptbOptions[ 'past_cookie_values' ] = $wptbOptions['cookie_value'];
+					
 	wtpb_insert_row($wptbOptions, $wptb_echo_on);	
 	delete_option('wptbAdminOptions');
 }	// End of wptb_convert_to_database
@@ -1047,7 +1051,7 @@ function wtpb_set_default_settings() {
 
 	return array(
 	 	'weighting_points'=> 25,				 	
-		'wptb_version' => '4.03',
+		'wptb_version' => '4.10',
 		'enable_topbar' => 'false',
 		'include_pages' => '0',
 		'invert_include' => 'no',
@@ -1289,7 +1293,7 @@ function wptb_update_row($wptbOptions, $wptb_echo_on) {
 		'margin_top' => $wptbOptions[ 'margin_top' ],
 		'margin_bottom' => $wptbOptions[ 'margin_bottom' ],
 		'close_button_image' => $wptbOptions[ 'close_button_image' ],
-		'close_button_css' => $wptbOptions[ 'close_button_css' ],
+		'close_button_css' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'close_button_css' ])),
 		'link_target' => $wptbOptions[ 'link_target' ],
 		'bar_link' => $wptbOptions[ 'bar_link' ],
 		'bar_text' => $wptbOptions[ 'bar_text' ],
@@ -1297,9 +1301,9 @@ function wptb_update_row($wptbOptions, $wptb_echo_on) {
 		'text_align' => $wptbOptions[ 'text_align' ],
 		'bar_image' => $wptbOptions[ 'bar_image' ],
 		'enable_image' => $wptbOptions[ 'enable_image' ],
-		'custom_css_bar' => $wptbOptions[ 'custom_css_bar' ],
-		'custom_css_text' => $wptbOptions[ 'custom_css_text' ],
-		'div_css' => $wptbOptions[ 'div_css' ],
+		'custom_css_bar' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'custom_css_bar' ])),
+		'custom_css_text' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'custom_css_text' ])),
+		'div_css' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'div_css' ])),
 		'social_icon1' => $wptbOptions[ 'social_icon1' ],
 		'social_icon2' => $wptbOptions[ 'social_icon2' ], 
 		'social_icon3' => $wptbOptions[ 'social_icon3' ],
@@ -1312,10 +1316,10 @@ function wptb_update_row($wptbOptions, $wptb_echo_on) {
 		'social_icon2_link' => $wptbOptions[ 'social_icon2_link' ], 
 		'social_icon3_link' => $wptbOptions[ 'social_icon3_link' ],
 		'social_icon4_link' => $wptbOptions[ 'social_icon4_link' ],
-		'social_icon1_css' => $wptbOptions[ 'social_icon1_css' ],
-		'social_icon2_css' => $wptbOptions[ 'social_icon2_css' ],
-		'social_icon3_css' => $wptbOptions[ 'social_icon3_css' ],
-		'social_icon4_css' => $wptbOptions[ 'social_icon4_css' ],
+		'social_icon1_css' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'social_icon1_css' ])),
+		'social_icon2_css' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'social_icon2_css' ])),
+		'social_icon3_css' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'social_icon3_css' ])),
+		'social_icon4_css' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'social_icon4_css' ])),
 		'social_icon1_link_target' => $wptbOptions[ 'social_icon1_link_target' ],
 		'social_icon2_link_target' => $wptbOptions[ 'social_icon2_link_target' ],
 		'social_icon3_link_target' => $wptbOptions[ 'social_icon3_link_target' ],
@@ -1390,7 +1394,7 @@ function wptb_delete_settings($wptb_barid, $wptb_debug) {
 
 function wptb_bulkupdate_CloseButtonSettings() {
 
-	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Bulk Update Close Button Settings </code>';
+//	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Bulk Update Close Button Settings </code>';
 
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
@@ -1418,10 +1422,9 @@ function wptb_bulkupdate_CloseButtonSettings() {
 
 	if ( $sql != "" ) {
 		$wpdb->query( 
-		$wpdb->prepare( 
 			"
 	         UPDATE ".$wptb_table_name." SET ".$sql
-	        )
+	        
 		);
 	}
 
@@ -1758,7 +1761,7 @@ function wtpb_check_for_plugin_upgrade($wptb_echo_on) {
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 
-	$wptb_this_version_number = '4.03';
+	$wptb_this_version_number = '4.10';
 
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			
@@ -1787,18 +1790,18 @@ function wtpb_check_for_plugin_upgrade($wptb_echo_on) {
 	}		
 	
 	
-	$wptb_db_version=$wpdb->get_col( $wpdb->prepare( 
+	$wptb_db_version=$wpdb->get_col(  
 	"
 	SELECT      min(wptb_version)
 	FROM        ".$wptb_table_name."
 	"
-	) ); 
+	); 
 
 //	wptb_create_table($wptb_debug);
 
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: DB Version: ',$wptb_db_version[0],'</code>';
 	
-	if ( $wptb_this_version_number != $wptb_db_version[0]) {
+	if ( $wptb_db_version[0] != $wptb_this_version_number ) {
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Version Upgrade Needed</code>';
 
 		$wpdb->get_results( 

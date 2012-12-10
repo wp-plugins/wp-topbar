@@ -49,7 +49,7 @@ function wptb_options_page() {
 
 	// $wptb_common_style is used by all buttons except the Copy & Special buttons
 		
-	$wptb_common_style = "padding:7.5px 15px;
+	$wptb_common_style = "padding:2px 15px;
 		-webkit-border-radius:23px;
 		-moz-border-radius:23px;
 		border-radius:23px;
@@ -197,10 +197,10 @@ function wptb_options_page() {
 	}
 
 	
-	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Version ',$wptbOptions['wptb_version'],'</code>';
-	if($wptb_debug) echo '<br><code>Action: ',$action,'</code>';
-	if($wptb_debug) echo '<br><code>BarID: ',$wptb_barid,'</code>';
-	if($wptb_debug) echo '<br><code>BarID Prefix: ',$wptb_barid_prefix,'</code>';
+	if($wptb_debug && isset($wptbOptions['wptb_version'])) echo '<br><code>WP-TopBar Debug Mode: Version ',$wptbOptions['wptb_version'],'</code>';
+	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: WP-TopBar Debug Mode: Action: ',$action,'</code>';
+	if($wptb_debug && isset($wptb_barid)) echo '<br><code>WP-TopBar Debug Mode: BarID: ',$wptb_barid,'</code>';
+	if($wptb_debug && isset($wptb_barid_prefix)) echo '<br><code>WP-TopBar Debug Mode: BarID Prefix: ',$wptb_barid_prefix,'</code>';
 
     switch ( $action ) :
         case 'enable' :

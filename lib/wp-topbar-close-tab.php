@@ -30,26 +30,26 @@ function wptb_closebutton_bulk_options() {
 	$close_button_image = str_ireplace( 'https://','http://',plugins_url('/images/close.png', __FILE__) );
 	$close_button_css = 'vertical-align:text-bottom;float:right;'; 
 
-	$row_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM '.$wptb_table_name ) );
+	$row_count = $wpdb->get_var(  'SELECT COUNT(*) FROM '.$wptb_table_name );
 
-	$allow_close_max   = $wpdb->get_var( $wpdb->prepare( 'SELECT MAX(`allow_close`) FROM '.$wptb_table_name ) );
-	$allow_close_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `allow_close` = "'.$allow_close_max.'"' ) );
+	$allow_close_max   = $wpdb->get_var( ( 'SELECT MAX(`allow_close`) FROM '.$wptb_table_name ) );
+	$allow_close_count = $wpdb->get_var( ( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `allow_close` = "'.$allow_close_max.'"' ) );
 	if ( $allow_close_count == $row_count) $allow_close = $allow_close_max;
 
-	$respect_cookie_max   = $wpdb->get_var( $wpdb->prepare( 'SELECT MAX(`respect_cookie`) FROM '.$wptb_table_name ) );
-	$respect_cookie_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `respect_cookie` = "'.$respect_cookie_max.'"' ) );
+	$respect_cookie_max   = $wpdb->get_var( ( 'SELECT MAX(`respect_cookie`) FROM '.$wptb_table_name ) );
+	$respect_cookie_count = $wpdb->get_var( ( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `respect_cookie` = "'.$respect_cookie_max.'"' ) );
 	if ( $respect_cookie_count == $row_count) $respect_cookie = $respect_cookie_max;
 
-	$cookie_value_max   = $wpdb->get_var( $wpdb->prepare( 'SELECT MAX(`cookie_value`) FROM '.$wptb_table_name ) );
-	$cookie_value_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `cookie_value` = "'.$cookie_value_max.'"' ) );
+	$cookie_value_max   = $wpdb->get_var( ( 'SELECT MAX(`cookie_value`) FROM '.$wptb_table_name ) );
+	$cookie_value_count = $wpdb->get_var( ( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `cookie_value` = "'.$cookie_value_max.'"' ) );
 	if ( $cookie_value_count == $row_count) $cookie_value = $cookie_value_max;
 
-	$close_button_image_max   = $wpdb->get_var( $wpdb->prepare( 'SELECT MAX(`close_button_image`) FROM '.$wptb_table_name ) );
-	$close_button_image_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `close_button_image` = "'.$close_button_image_max.'"' ) );
+	$close_button_image_max   = $wpdb->get_var( ( 'SELECT MAX(`close_button_image`) FROM '.$wptb_table_name ) );
+	$close_button_image_count = $wpdb->get_var( ( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `close_button_image` = "'.$close_button_image_max.'"' ) );
 	if ( $close_button_image_count == $row_count) $close_button_image = $close_button_image_max;
 
-	$close_button_css_max   = $wpdb->get_var( $wpdb->prepare( 'SELECT MAX(`close_button_css`) FROM '.$wptb_table_name ) );
-	$close_button_css_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `close_button_css` = "'.$close_button_css_max.'"' ) );
+	$close_button_css_max   = $wpdb->get_var( ( 'SELECT MAX(`close_button_css`) FROM '.$wptb_table_name ) );
+	$close_button_css_count = $wpdb->get_var( ( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `close_button_css` = "'.$close_button_css_max.'"' ) );
 	if ( $close_button_css_count == $row_count) $close_button_css = $close_button_css_max;
 
 

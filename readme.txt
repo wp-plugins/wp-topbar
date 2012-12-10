@@ -3,14 +3,16 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
-Tested up to: 3.4.2
-Stable tag: 4.03
+Tested up to: 3.5
+Stable tag: 4.10
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - Great for A/B testing! 
 
 == Description ==
 
-Create **MULTIPLE** (Yahoo!) TopBars that will be shown at the top (or bottom) of your website.  TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  We made this so customizable and easy to change the color, text, image, link that you can easily lose track of time getting your TopBars perfect!
+Create **MULTIPLE** (Whohoo!) TopBars that will be shown at the top (or bottom) of your website.  TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  We made this so customizable and easy to change the color, text, image, link that you can easily lose track of time getting your TopBars perfect!
+
+Version 4.10+ now statically creates the TopBar to allow you to take advantage of caching plugins.
 
 **Superduper major re-write with Version 4.0.**  Refactored all the functions to use its own database table instead of WordPress options.  This allows you to create an unlimited number of TopBars.  This version is leaner, faster, smarter.   Quick links are added throughout to make editing your TopBars a breeze.
 
@@ -155,6 +157,10 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 4.10 = 
+
+Version 4.10 supports WordPress 3.5, fixes several defects, and now supports caching
+
 = 4.03 = 
 
 Version 4.03 supports WordPress 3.4.2, adds security features, and fixes a few bugs.
@@ -239,6 +245,12 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+= 4.10 - 12/10/2012 =
+
+1. VALIDATED: Version 4.10 supports WordPress 3.5
+2. FIXED: Several defects found in 3.5 testing
+3. NEW: Now supports caching plugins by generating HTML for all possible TopBars and using JavaScript to randomly select a TopBar
 
 = 4.03 - 9/10/2012 =
 

@@ -150,7 +150,7 @@ function wptb_display_admin_header() {
 		<div class=wrap>
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 		<h2><img src="<?php _e( plugins_url('/images/banner-772x250.png', __FILE__), 'wptb' ); ?>" height="50" alt="TopBar Banner"/>
-		WP-TopBar - Version 4.03</h2>
+		WP-TopBar - Version 4.10</h2>
 		<div class="postbox">
 		<br>
 		Creates TopBars that can be shown at the top of your website.  Version 4 is a massive, major, mondo upgrade that allows you to add multiple TopBars.  If all works well, previous users will have their existing options converted as their 1st TopBar.
@@ -192,9 +192,20 @@ function wptb_display_common_info($wptbOptions) {
 	}
 
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Displaying Common Info</code>';
+	
+	
+	if (($wptbOptions['topbar_pos'] == 'footer') && (strpos($wptbOptions['div_css'], "bottom") == false))
+		_e( "<div class='error'><strong>You have set the TopBar Location to Below the Footer (in the Main Options) but the CSS 'For the entire TopBar' (in TopBar CSS) may not be set correctly.<br>It should be something like <code>position:fixed; bottom: 0; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
+
+	if (($wptbOptions['topbar_pos'] == 'header') && (strpos($wptbOptions['div_css'], "top") == false))
+		_e( "<div class='error'><strong>You have set the TopBar Location to be Above the Header (in the Main Options) but the CSS 'For the entire TopBar' (in TopBar CSS) may not be set correctly.<br>It should be something like <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
+
+	
+	
 		   
 	$wptb_cookie = "wptopbar_".COOKIEHASH;
-	if  ( ($wptbOptions['respect_cookie'] == 'always' ) AND  ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value'] ) ) 
+	if  ( ($wptbOptions['respect_cookie'] == 'always' ) AND ( isset ($_COOKIE[$wptb_cookie])) ) 
+		if ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value']  ) 
 		 _e( "<div class='error'><strong>You have a cookie with this browser that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the Close Button tab.</strong></div>", 'wptb' ); 
 
 	?>
@@ -205,7 +216,7 @@ function wptb_display_common_info($wptbOptions) {
 		<br><?php if ( $wptbOptions['respect_cookie'] == 'ignore' ) 
 					echo "<br>Cookie check: The plugin is not checking for the presence of cookies.";
 				  else
-						if ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value'] )  
+						if  ( isset ($_COOKIE[$wptb_cookie]) AND ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value'] ) )
 							echo "<br>Cookie check: The TopBar is  checking for the presence of cookies. You have a cookie that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the Close Button tab."; 
 						else 
 							echo "<br>Cookie check: The TopBar is  checking for the presence of cookies. You do not have a cookie that will prevent the TopBar from showing.";?>
@@ -262,7 +273,7 @@ function wptb_display_common_info($wptbOptions) {
 					<tr valign="top">
 							<div>
 							<hr style="margin: 0px; height: 1px; padding: 0px; background-color: #000; color: #000;" />
-							<?php wptb::wptb_display_TopBar("",$wptbOptions, false); ?>
+							<?php wptb::wptb_display_TopBar("",$wptbOptions, false, ""); ?>
 							<hr style="margin: 0px; height: 1px; padding: 0px; background-color: #000; color: #000;" />
 							</div> 
 		 				</td>
