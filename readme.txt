@@ -3,8 +3,8 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
-Tested up to: 3.5
-Stable tag: 4.10
+Tested up to: 3.5.1
+Stable tag: 4.11
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - Great for A/B testing! 
 
@@ -157,6 +157,10 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 4.11 = 
+
+Version 4.11 supports WordPress 3.5.1, updates jQuery UI to latest version, and fixes minor bugs
+
 = 4.10 = 
 
 Version 4.10 supports WordPress 3.5, fixes several defects, and now supports caching
@@ -245,6 +249,14 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+
+= 4.11 - 01/26/2013 =
+
+1. UPDATED: jQuery UI to version 1.9.2
+2. FIXED: Streamlined JavaScript when only one TopBar is selected
+3. FIXED: Logic when no TopBars are selected
+
 
 = 4.10 - 12/10/2012 =
 

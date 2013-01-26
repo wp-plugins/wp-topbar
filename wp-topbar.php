@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 4.10
+Version: 4.11
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -94,14 +94,14 @@ class wptb {
 			wp_register_script( 'wptb_upload', plugins_url('/lib/wp-topbar-load-image.js', __FILE__), array('jquery','media-upload','thickbox') );
 			wp_enqueue_script( 'wptb_upload') ;
 	
-			wp_register_script( 'wptb_datepicker_ui', plugins_url('/lib/jquery-ui-1.8.16.custom.min.js', __FILE__), array('jquery') );
+			wp_register_script( 'wptb_datepicker_ui', plugins_url('/lib/jquery-ui-1.9.2.custom.min.js', __FILE__), array('jquery') );
 			wp_enqueue_script('wptb_datepicker_ui');
 			wp_register_script( 'wptb_datepicker_slider', plugins_url('/lib/jquery-ui-sliderAccess.js', __FILE__), array('jquery') );
 			wp_enqueue_script('wptb_datepicker_slider');
 			wp_register_script( 'wptb_datepicker', plugins_url('/lib/jquery-ui-timepicker-addon.js', __FILE__), array('jquery') );
 			wp_enqueue_script('wptb_datepicker');
 
-			wp_register_style( 'wptb_datepicker_ui_css', plugins_url('/lib/jquery-ui-1.8.16.custom.css', __FILE__) );
+			wp_register_style( 'wptb_datepicker_ui_css', plugins_url('/lib/jquery-ui-1.9.2.custom.min.css', __FILE__) );
 			wp_enqueue_style('wptb_datepicker_ui_css');
 			wp_register_style( 'wptb_datepicker_css', plugins_url('/lib/jquery-ui-timepicker-addon.css', __FILE__) );
 			wp_enqueue_style('wptb_datepicker_css');		}
@@ -460,7 +460,7 @@ class wptb {
 ';
 		}
 		else {
-			echo '<!-- WP-TopBar Version="4.10" not using options nor database" -->
+			echo '<!-- WP-TopBar Version="4.11" not using options nor database" -->
 ';
 			$wptbOptions=array();
 			$wptbOptions['enable_topbar'] = 'false';
@@ -494,7 +494,7 @@ class wptb {
 
 		$all_rows = $wpdb->get_results( $sql, ARRAY_A );
 		
-		echo '<!-- WP-TopBar 4.10 = Number of Rows Selected: '.$wpdb->num_rows.'-->
+		echo '<!-- WP-TopBar 4.11 = Number of Rows Selected: '.$wpdb->num_rows.'-->
 ';
 		$x=0;
 		$html_part_1_out = "
@@ -539,7 +539,11 @@ jQuery(document).ready(function() {
 				}
 			}
 			
-			$html_part_1_out .=  '
+			if ( $x == 1) 
+				$html_part_1_out .=  '
+	wptb_selected_row = 1;';
+			else 
+				$html_part_1_out .=  '
 	random_priority = 0;
 	random_priority = Math.floor(Math.random()*'.$max.'); 
 	total_points = 0;
@@ -564,12 +568,14 @@ jQuery(document).ready(function() {
 }
 );
 </script>
-";
-			echo $html_part_1_out;			
-			echo $html_part_2_out;
+";	
+			if ( $x > 0) {
+				echo $html_part_1_out;			
+				echo $html_part_2_out;
+			}
 		}
 		else {
-			echo '<!-- WP-TopBar Version="4.10" not using options nor database" -->
+			echo '<!-- WP-TopBar Version="4.11" not using options nor database" -->
 ';
 		}
 				
