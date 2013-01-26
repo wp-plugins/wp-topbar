@@ -253,10 +253,10 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 4.11 - 01/26/2013 =
 
-1. UPDATED: jQuery UI to version 1.9.2
-2. FIXED: Streamlined JavaScript when only one TopBar is selected
-3. FIXED: Logic when no TopBars are selected
-
+1. VALIDATED: Version 4.11 supports WordPress 3.5.1
+2. UPDATED: jQuery UI to version 1.9.2
+3. FIXED: Streamlined JavaScript when only one TopBar is selected
+4. FIXED: Logic when no TopBars are selected
 
 = 4.10 - 12/10/2012 =
 
