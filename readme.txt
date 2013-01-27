@@ -4,9 +4,9 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.5.1
-Stable tag: 4.11
+Stable tag: 4.12
 
-Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - Great for A/B testing! 
+Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
 == Description ==
 
@@ -114,6 +114,10 @@ With Version 4.00+, all TopBars must share the same cookie settings for this to 
 
 The Plugin randomly selects a valid TopBar to show using this field to skew how they are selected. The TopBar multiplies a random number (between 0 and 1) with the TopBar's Priority value (which is a number between 1 to 100). A higher number means this TopBar will be selected more frequently; a lower number means less frequently. 
 
+= How so I delete a TopBar? =
+
+On the All Tables view, select the TopBars via the Check Box and selete the "Delete" function from the Bulk Actions drop down list.
+
 = How are TopBars selected to show? =
 
 See the Priority question above to see how they are selected. The TopBar will select only those TopBars that are valid per the date/time criteria. Once a TopBar is selected to show, it then goes through the Control Options. That checks to see if the TopBar should be shown on the Home Page (or not) and which Page IDs or Category IDs the TopBar should show (or not).
@@ -156,6 +160,10 @@ Click "OK" on the warning box.
 Go to your Plugins page and delete the plugin or delete all the files in your `/wp-content/plugins/wp-topbar` directory 
 
 == Upgrade Notice ==
+
+= 4.12 = 
+
+Fixed issues that sometimes causes the plugin to not activate correctly
 
 = 4.11 = 
 
@@ -250,6 +258,11 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+= 4.12 - 01/28/2013 =
+
+1. FIXED: Issue that sometimes causes the plugin to not activate correctly.  Finally found it by using the Bitami Wordpress Stack [http://bitnami.org/stack/wordpress]
+2. FIXED: Plugin deletion messages
+3. CHANGED: Removed the option to delete a TopBar from Options pages. Use the All Tables view and Delete using the Bulk Actions drop down list
 
 = 4.11 - 01/26/2013 =
 

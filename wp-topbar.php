@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 4.11
+Version: 4.12
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -34,7 +34,7 @@ class wptb {
 		//=========================================================================			
 		//Perform any onetime functions when plugin is activiated
 		//=========================================================================			
-//		register_activation_hook( __FILE__,array( __CLASS__, 'wtpb_activate_plugin' ) );
+		register_activation_hook( __FILE__,array( __CLASS__, 'wtpb_activate_plugin' ) );
 		
 		//=========================================================================			
 		//Actions and Filters, if on plugin admin page	
@@ -460,7 +460,7 @@ class wptb {
 ';
 		}
 		else {
-			echo '<!-- WP-TopBar Version="4.11" not using options nor database" -->
+			echo '<!-- WP-TopBar Version="4.12" not using options nor database" -->
 ';
 			$wptbOptions=array();
 			$wptbOptions['enable_topbar'] = 'false';
@@ -494,7 +494,7 @@ class wptb {
 
 		$all_rows = $wpdb->get_results( $sql, ARRAY_A );
 		
-		echo '<!-- WP-TopBar 4.11 = Number of Rows Selected: '.$wpdb->num_rows.'-->
+		echo '<!-- WP-TopBar 4.12 = Number of Rows Selected: '.$wpdb->num_rows.'-->
 ';
 		$x=0;
 		$html_part_1_out = "
@@ -532,7 +532,7 @@ jQuery(document).ready(function() {
 ";
 	
 					$html_part_1_out .= '
-		wtpbPoints[ '.$x.' ] = '.$wptbOptions['weighting_points'].';';
+	wtpbPoints[ '.$x.' ] = '.$wptbOptions['weighting_points'].';';
 		
 					$x = $x + 1; 
 					$max = $max + intval( $wptbOptions['weighting_points'] );
@@ -575,7 +575,7 @@ jQuery(document).ready(function() {
 			}
 		}
 		else {
-			echo '<!-- WP-TopBar Version="4.11" not using options nor database" -->
+			echo '<!-- WP-TopBar Version="4.12" not using options nor database" -->
 ';
 		}
 				

@@ -1,9 +1,9 @@
 <?php 
 
 /*
-Plugin Name: WP-TopBar
-Social Options Tab
+Social Tab 
 */
+
 
 
 //=========================================================================			

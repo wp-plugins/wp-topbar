@@ -1,7 +1,6 @@
 <?php 
 
 /*
-Plugin Name: WP-TopBar
 Textbar Options Tab
 */
 
