@@ -274,7 +274,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 4.12 - 01/28/2013 =
 
-1. FIXED: Issue that sometimes causes the plugin to not activate correctly.  Finally found it by using the Bitnami Wordpress Stack [http://bitnami.org/stack/wordpress]
+1. FIXED: Issue that sometimes causes the plugin to not activate correctly.  Finally found it by using the Bitnami Wordpress Stack - http://bitnami.org/stack/wordpress
 2. FIXED: Plugin deletion messages
 3. CHANGED: Removed the option to delete a TopBar from Options pages. Use the All Tables view and Delete using the Bulk Actions drop down list
 
