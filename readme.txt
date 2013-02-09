@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.5.1
-Stable tag: 4.12
+Stable tag: 4.13
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
@@ -161,6 +161,11 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+
+= 4.13 = 
+
+Changed to use Wordpress' embedded jQuery UI & new Color Picker (on WP 3.5+), cleaned up CSS Options Page and other fixes
+
 = 4.12 = 
 
 Fixed issues that sometimes causes the plugin to not activate correctly
@@ -258,9 +263,18 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+= 4.13 - 02/9/2013 =
+
+1. CHANGED: Changed to use Wordpress' embedded jQueryUI
+2. CHANGED: Updated Color Picker from farbtastic to the new WordPress 3.5 Color Picker if using Wordpress 3.5+
+3. UPDATED: timepicker.js updated to version 1.2 (future proof for jQueryUI 1.10 compatability) - http://trentrichardson.com/examples/timepicker/
+4. CHANGED: CSS Options page changed to try to make it clearer how the various CSS options work
+5. CHANGED: Removed URL check on the TopBar link so that qtranslate will process the link correctly
+6. FIXED:   Minor display of error messages that check the div_css field
+
 = 4.12 - 01/28/2013 =
 
-1. FIXED: Issue that sometimes causes the plugin to not activate correctly.  Finally found it by using the Bitami Wordpress Stack [http://bitnami.org/stack/wordpress]
+1. FIXED: Issue that sometimes causes the plugin to not activate correctly.  Finally found it by using the Bitnami Wordpress Stack [http://bitnami.org/stack/wordpress]
 2. FIXED: Plugin deletion messages
 3. CHANGED: Removed the option to delete a TopBar from Options pages. Use the All Tables view and Delete using the Bulk Actions drop down list
 

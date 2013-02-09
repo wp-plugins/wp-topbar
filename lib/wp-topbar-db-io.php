@@ -1051,7 +1051,7 @@ function wtpb_set_default_settings() {
 
 	return array(
 	 	'weighting_points'=> 25,				 	
-		'wptb_version' => '4.12',
+		'wptb_version' => '4.13',
 		'enable_topbar' => 'false',
 		'include_pages' => '0',
 		'invert_include' => 'no',
@@ -1590,7 +1590,7 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 			$wptbOptions['margin_bottom'] = $_POST['wptbmarginbottom']+0;
 	}						
 	if (isset($_POST['wptblinkurl'])) {
-		$wptbOptions['bar_link'] = esc_url($_POST['wptblinkurl']);
+		$wptbOptions['bar_link'] = $_POST['wptblinkurl'];
 	}			
 	if (isset($_POST['wptbbartext'])) {
 		$wptbOptions['bar_text'] = $_POST['wptbbartext'];
@@ -1761,7 +1761,7 @@ function wtpb_check_for_plugin_upgrade($wptb_echo_on) {
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 
-	$wptb_this_version_number = '4.12';
+	$wptb_this_version_number = '4.13';
 
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			

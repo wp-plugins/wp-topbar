@@ -150,7 +150,7 @@ function wptb_display_admin_header() {
 		<div class=wrap>
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 		<h2><img src="<?php _e( plugins_url('/images/banner-772x250.png', __FILE__), 'wptb' ); ?>" height="50" alt="TopBar Banner"/>
-		WP-TopBar - Version 4.12</h2>
+		WP-TopBar - Version 4.13</h2>
 		<div class="postbox">
 		<br>
 		Creates TopBars that can be shown at the top of your website.  Version 4 is a massive, major, mondo upgrade that allows you to add multiple TopBars.  If all works well, version 1 to 3.x users will have their existing options converted as their 1st TopBar.
@@ -194,10 +194,10 @@ function wptb_display_common_info($wptbOptions) {
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Displaying Common Info</code>';
 	
 	
-	if (($wptbOptions['topbar_pos'] == 'footer') && (strpos($wptbOptions['div_css'], "bottom") == false))
+	if (($wptbOptions['topbar_pos'] == 'footer') && (strpos($wptbOptions['div_css'], "bottom") === false))
 		_e( "<div class='error'><strong>You have set the TopBar Location to Below the Footer (in the Main Options) but the CSS 'For the entire TopBar' (in TopBar CSS) may not be set correctly.<br>It should be something like <code>position:fixed; bottom: 0; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 
-	if (($wptbOptions['topbar_pos'] == 'header') && (strpos($wptbOptions['div_css'], "top") == false))
+	if (($wptbOptions['topbar_pos'] == 'header') && (strpos($wptbOptions['div_css'], "top") === false))
 		_e( "<div class='error'><strong>You have set the TopBar Location to be Above the Header (in the Main Options) but the CSS 'For the entire TopBar' (in TopBar CSS) may not be set correctly.<br>It should be something like <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 
 	

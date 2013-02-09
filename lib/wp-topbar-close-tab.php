@@ -61,7 +61,7 @@ function wptb_closebutton_bulk_options() {
 	<div class="inside">
 		<p class="sub"><em>These are the settings to allow you to reset all TopBars to use the same values for the Close Button.
 		<br><br>This plugin can use a cookie to remember if the user closed the TopBar.   If you enable cookies, then a cookie is created if the user closes the TopBar.  If the value stored in the cookie matches the Cookie Value (below), then the TopBar will not be shown on subsequent page views.  If you disable the use of cookies, then the plugin will delete the users cookies the next time the page is loaded.
-		<br><br>To be used effecively, <strong>ALL</strong> TopBars must use the same settings.</em></p>
+		<br><br>To have a consistent user experience, <strong>ALL</strong> TopBars need to use the same settings.</em></p>
 		
 		<div class="table">
 			<table class="form-table">	

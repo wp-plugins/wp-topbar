@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 4.12
+Version: 4.13
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -84,28 +84,48 @@ class wptb {
 	function wptb_enqueue_admin_scripts() {
 		
 		if (isset($_GET['page']) && $_GET['page'] == 'wp-topbar.php') {  // only load these on the admin page
-	  		wp_enqueue_script( 'farbtastic' );
 			wp_enqueue_script( 'media-upload' );
 			wp_enqueue_script( 'thickbox' );
 			
-			wp_enqueue_style( 'farbtastic' );
-			wp_enqueue_style('thickbox');
+			wp_enqueue_style( 'thickbox' );
 	
 			wp_register_script( 'wptb_upload', plugins_url('/lib/wp-topbar-load-image.js', __FILE__), array('jquery','media-upload','thickbox') );
-			wp_enqueue_script( 'wptb_upload') ;
-	
-			wp_register_script( 'wptb_datepicker_ui', plugins_url('/lib/jquery-ui-1.9.2.custom.min.js', __FILE__), array('jquery') );
-			wp_enqueue_script('wptb_datepicker_ui');
-			wp_register_script( 'wptb_datepicker_slider', plugins_url('/lib/jquery-ui-sliderAccess.js', __FILE__), array('jquery') );
-			wp_enqueue_script('wptb_datepicker_slider');
-			wp_register_script( 'wptb_datepicker', plugins_url('/lib/jquery-ui-timepicker-addon.js', __FILE__), array('jquery') );
-			wp_enqueue_script('wptb_datepicker');
+			wp_enqueue_script( 'wptb_upload' ) ;
 
-			wp_register_style( 'wptb_datepicker_ui_css', plugins_url('/lib/jquery-ui-1.9.2.custom.min.css', __FILE__) );
-			wp_enqueue_style('wptb_datepicker_ui_css');
-			wp_register_style( 'wptb_datepicker_css', plugins_url('/lib/jquery-ui-timepicker-addon.css', __FILE__) );
-			wp_enqueue_style('wptb_datepicker_css');		}
-	
+		// Use Wordpress' jQuery and jQuery UI	
+		//			wp_register_script( 'wptb_datepicker_ui', plugins_url('/lib/jquery-ui-1.9.2.custom.min.js', __FILE__), array('jquery') );
+		//			wp_enqueue_script('wptb_datepicker_ui');
+		
+			wp_enqueue_script( 'jquery' );
+			wp_enqueue_script( 'jquery-ui-core' );
+			wp_enqueue_script( 'jquery-ui-datepicker' );
+			wp_enqueue_script( 'jquery-ui-slider');
+						
+		//	wp_register_script( 'wptb_datepicker_slider', plugins_url('/lib/jquery-ui-sliderAccess.js', __FILE__), array('jquery') );
+		//	wp_enqueue_script(  'wptb_datepicker_slider' );
+			
+			wp_register_script( 'wptb_timepicker', plugins_url('/lib/jquery-ui-timepicker-addon.js', __FILE__), array('jquery') );
+			wp_enqueue_script(  'wptb_timepicker' );
+
+			wp_register_style( 'wptb_jquery_ui_css', plugins_url('/lib/jquery-ui-1.9.2.custom.min.css', __FILE__) );
+			wp_enqueue_style(  'wptb_jquery_ui_css' );
+			wp_register_style( 'wptb_timepicker_css', plugins_url('/lib/jquery-ui-timepicker-addon.css', __FILE__) );
+			wp_enqueue_style(  'wptb_timepicker_css' );		
+
+			global $wp_version;
+			if ( version_compare( $wp_version, "3.5", '>=' ) ) {
+				wp_enqueue_script( 'wp-color-picker' );
+				wp_enqueue_style( 'wp-color-picker' );
+			} 
+			else 
+			{
+				// <WP3.5
+				wp_enqueue_style( 'farbtastic' );
+				wp_enqueue_script( 'farbtastic' );
+			}
+
+		}
+				
 	} // End of function wptb_enqueue_admin_scripts
 	
 	
@@ -245,12 +265,12 @@ class wptb {
 	
 				echo '
 	';
-				echo 'document.cookie="'.$wptb_cookie.'"'."+'=;expires=Thu, 01-Jan-70 00:00:01 GMT;';";
+				echo '	document.cookie="'.$wptb_cookie.'"'."+'=;expires=Thu, 01-Jan-70 00:00:01 GMT;';";
 			}
 			if ($wptbOptions['allow_close'] == 'yes') {
 				echo '
 	';
-				echo 'function close_wptobar'.$wptbTopBarNumber.'() { document.getElementById("wptbheadline'.$wptbTopBarNumber.'").style.visibility = "hidden";';
+				echo '	function close_wptopbar'.$wptbTopBarNumber.'() { document.getElementById("wptbheadline'.$wptbTopBarNumber.'").style.visibility = "hidden";';
 				if  ($wptbOptions['respect_cookie'] == 'always') { 
 					$wptb_cookie = "wptopbar_".COOKIEHASH;
 					echo 'var now= new Date();';
@@ -352,9 +372,9 @@ class wptb {
 		
 				$wptb_cookie = "wptopbar_".COOKIEHASH;
 				
-				if  ( ( $wptbOptions['allow_close'] == 'yes' ) AND 
-					  ( $wptbOptions['respect_cookie'] == 'always' ) AND 
-					  ( isset ($_COOKIE[$wptb_cookie])) AND
+				if  ( ( $wptbOptions['allow_close'] == 'yes' ) && 
+					  ( $wptbOptions['respect_cookie'] == 'always' ) && 
+					  ( isset ($_COOKIE[$wptb_cookie])) &&
 					  ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value']) ) {
 					echo '<!-- WP-TopBar Valid Cookie Present - not showing TopBar -->
 		';
@@ -420,7 +440,7 @@ class wptb {
 			echo '<a href="'.$wptbOptions['social_icon4_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon4_image'].'" style="'.trim($wptbOptions['social_icon4_css']).'"/></a>';
 		if ($wptbOptions['allow_close'] == 'yes') {
 			echo '<span style="">';
-			echo '<img align="middle" border="0" onClick="close_wptobar()" src="'.$wptbOptions['close_button_image'].'" style="cursor:hand;cursor:pointer;'.$wptbOptions['close_button_css'].'"/></span>';
+			echo '<img align="middle" border="0" onClick="close_wptopbar'.$wptbTopBarNumber.'()" src="'.$wptbOptions['close_button_image'].'" style="cursor:hand;cursor:pointer;'.$wptbOptions['close_button_css'].'"/></span>';
 		}		
 		echo '</p>';
 	}  // end function wptb_display_TopBar
@@ -460,7 +480,7 @@ class wptb {
 ';
 		}
 		else {
-			echo '<!-- WP-TopBar Version="4.12" not using options nor database" -->
+			echo '<!-- WP-TopBar Version="4.13" not using options nor database" -->
 ';
 			$wptbOptions=array();
 			$wptbOptions['enable_topbar'] = 'false';
@@ -494,7 +514,7 @@ class wptb {
 
 		$all_rows = $wpdb->get_results( $sql, ARRAY_A );
 		
-		echo '<!-- WP-TopBar 4.12 = Number of Rows Selected: '.$wpdb->num_rows.'-->
+		echo '<!-- WP-TopBar 4.13 = Number of Rows Selected: '.$wpdb->num_rows.'-->
 ';
 		$x=0;
 		$html_part_1_out = "
@@ -508,7 +528,13 @@ jQuery(document).ready(function() {
 		$html_part_2_out = "
 	var wptbSelectRow = {
 ";
+		$html_cookie_out = "
+<script type='text/javascript'>
 
+";
+		$cookie_destroyed = false;
+		$output_cookie_html = false;
+		
 		if ( $wpdb->num_rows != 0 ) {
 
 			$x = 0;
@@ -517,12 +543,40 @@ jQuery(document).ready(function() {
 			    foreach ($one_row as $key => $option){
 					$wptbOptions[$key] = $option;
 				}
-				if ( wptb::wptb_inject_specific_TopBar_html_js($wptbOptions, false, $x + 1) ) {					
+				if ( wptb::wptb_inject_specific_TopBar_html_js($wptbOptions, false, $x + 1) ) {		
+				
+					if  ( !( $cookie_destroyed ) && $wptbOptions['respect_cookie'] == 'ignore')  { // destroy cookie
+						$cookie_destroyed = true;
+						$output_cookie_html = true;
+						$wptb_cookie = "wptopbar_".COOKIEHASH;
+						$html_cookie_out .= '	document.cookie="'.$wptb_cookie.'"'."+'=;expires=Thu, 01-Jan-70 00:00:01 GMT;';";			
+						$html_cookie_out .= '
+';
+					}
+					if ($wptbOptions['allow_close'] == 'yes') {
+						$output_cookie_html = true;
+
+						$html_cookie_out .= '
+';
+						$html_cookie_out .= '	function close_wptopbar'.($x+1).'() { document.getElementById("wptbheadline'.($x+1).'").style.visibility = "hidden";';
+						if  ($wptbOptions['respect_cookie'] == 'always') { 
+							$wptb_cookie = "wptopbar_".COOKIEHASH;
+							$html_cookie_out .= 'var now= new Date();';
+							$html_cookie_out .= 'var expDate = new Date('.(date('Y') + 1).', 12, 31 );';
+							$html_cookie_out .= 'document.cookie="'.$wptb_cookie.'"+"="+escape('.$wptbOptions['cookie_value'].')+";expires="+expDate.toUTCString();';
+						}
+						$html_cookie_out .= ' };';	
+					}
+					
+					echo '
+';
+				
+					
 					$html_part_2_out .= "		".($x + 1).": function() {jQuery(".'"#wptbheadline'.($x + 1).'").hide().delay('.$wptbOptions['delay_time'].').css("visibility","visible").slideDown('.$wptbOptions['slide_time'].').fadeIn(1000).show("slow");';
 	
 					if (($wptbOptions['display_time']+0) != 0) {
 						$html_part_2_out .= "
-	jQuery('#wptbheadline".($x + 1)."').delay(".$wptbOptions['display_time'].').slideUp('.$wptbOptions['slide_time'].').fadeOut(1000).hide();';
+	                   jQuery('#wptbheadline".($x + 1)."').delay(".$wptbOptions['display_time'].').slideUp('.$wptbOptions['slide_time'].').fadeOut(1000).hide();';
 					} 		
 					$html_part_2_out .=  "}";
 	//				$html_part_2_out .=  " alert(".($x+1).")}";
@@ -569,13 +623,21 @@ jQuery(document).ready(function() {
 );
 </script>
 ";	
+
+			$html_cookie_out .= "
+</script>
+";
+
 			if ( $x > 0) {
+				if ( $output_cookie_html )
+					echo $html_cookie_out;
+
 				echo $html_part_1_out;			
 				echo $html_part_2_out;
 			}
 		}
 		else {
-			echo '<!-- WP-TopBar Version="4.12" not using options nor database" -->
+			echo '<!-- WP-TopBar Version="4.13" not using options nor database" -->
 ';
 		}
 				
