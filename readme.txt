@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.5.1
-Stable tag: 4.13
+Stable tag: 4.14
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
@@ -162,6 +162,10 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 == Upgrade Notice ==
 
 
+= 4.14 = 
+
+Fixed issue where sometimes the html link would sometimes not display correctly
+
 = 4.13 = 
 
 Changed to use Wordpress' embedded jQuery UI & new Color Picker (on WP 3.5+), cleaned up CSS Options Page and other fixes
@@ -262,6 +266,12 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+= 4.14 - 03/08/2013 = 
+
+1. FIXED: Fixed issue where sometimes the html link would sometimes not display correctly
+2. CHANGED:  Added display of database charset/collation to help debug multi-lingual issues
+
 
 = 4.13 - 02/9/2013 =
 
