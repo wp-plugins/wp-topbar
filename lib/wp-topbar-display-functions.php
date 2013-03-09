@@ -142,6 +142,9 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid ) {
 
 function wptb_display_admin_header() {
 		
+		
+	global $WPTB_VERSION;
+		
 	$wptb_debug=get_transient( 'wptb_debug' );	
 		
 	?>  
@@ -150,7 +153,7 @@ function wptb_display_admin_header() {
 		<div class=wrap>
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 		<h2><img src="<?php _e( plugins_url('/images/banner-772x250.png', __FILE__), 'wptb' ); ?>" height="50" alt="TopBar Banner"/>
-		WP-TopBar - Version 4.13</h2>
+		WP-TopBar - Version <?php _e($WPTB_VERSION); ?></h2>
 		<div class="postbox">
 		<br>
 		Creates TopBars that can be shown at the top of your website.  Version 4 is a massive, major, mondo upgrade that allows you to add multiple TopBars.  If all works well, version 1 to 3.x users will have their existing options converted as their 1st TopBar.

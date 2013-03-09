@@ -26,12 +26,45 @@ function wptb_debug_options($wptbOptions) {
 
 	$wptb_cookie = "wptopbar_".COOKIEHASH;
 	
+	
+	global $wpdb;
+	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
+
+	$wptb_bar_text_encoding=$wpdb->get_col(  
+	"
+		SELECT 
+		  COLLATION_NAME
+		  FROM information_schema.COLUMNS
+		  where TABLE_NAME = '".$wptb_table_name."'
+		  	AND COLUMN_NAME = 'bar_text';
+		  	"
+	); 	
+	
+	$wptb_bar_link_text_encoding=$wpdb->get_col(  
+	"
+		SELECT 
+		  COLLATION_NAME
+		  FROM information_schema.COLUMNS
+		  where TABLE_NAME = '".$wptb_table_name."'
+		  	AND COLUMN_NAME = 'bar_link_text';
+		  	"
+	); 	
+	
 	?>
 					
 	<div class="postbox">
 	<h3><a name="Debug">Debug Settings</a></h3>
 	<div class="inside">
 		<ul>
+			<li><strong>Database/Column Check:</strong></br>
+<?php
+echo "Charset <small><i>(DB_CHARSET)</i></small>: <strong>".DB_CHARSET."</strong></br>";
+echo "Collation <small><i>(DB_COLLATE)</i></small>: <strong>".DB_COLLATE."</strong></br>";
+echo "bar_text encoding: <strong>".$wptb_bar_text_encoding[0]."</strong></br>";
+echo "bar_link_text encoding: <strong>".$wptb_bar_link_text_encoding[0]."</strong></br>";
+echo "</br>";
+?>
+			</li>
 			<li><strong>Status:</strong>
 			<br>
 			<?php if ($wptbOptions['enable_topbar'] == "false") { _e( 'The TopBar is not enabled.  Enable it in the <a href="?page=wp-topbar.php&action=main&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'">Main Options tab</a>.<br>', 'wptb' ); } ?>
@@ -47,8 +80,9 @@ Based on your Start/End time settings in the <a href="?page=wp-topbar.php&action
    				   		echo "<br>PHP Magic Quotes is ON.";
    				   else
    				   		echo "<br>PHP Magic Quotes is OFF.";  ?>
-		</p>
-</li>
+   			</p>
+			</li>
+
 <strong>Debug Helpers:</strong>
 
 			<li>You can append <code>&debug</code> after the wp-topbar URL to turn on debugging messages. i.e. <code>admin.php?page=wp-topbar.php&debug</code> . These messages can help you see if you have a parameter that will cause the TopBar to break.</li>

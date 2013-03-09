@@ -654,7 +654,53 @@ function wptb_display_all_TopBars() {
 
 } // end of wptb_display_all_TopBars
 
+//=========================================================================		
+//Returns a random TopBar options,  sets enable_topbar to false if none are found
+//=========================================================================		
 
+function wptb_get_Random_TopBar($wptb_echo_on) {
+
+	global $WPTB_VERSION;
+
+	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
+	else $wptb_debug = false;			
+
+	if($wptb_debug)
+		echo '<br><code>WP-TopBar Debug Mode: Getting Random TopBar</code>';
+
+	global $wpdb;
+	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
+
+	$sql="SELECT * FROM ".$wptb_table_name." 
+			WHERE  `enable_topbar` =  'true'
+				AND COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0), 
+											COALESCE(STR_TO_DATE( `start_time_utc`,  '%m/%d/%Y %H:%i'     ), 0)),0) <= 0 
+				AND	COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  `end_time_utc` ,  '%m/%d/%Y %H:%i'       ), 0), 					
+											COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0)),0) <=0
+			ORDER BY ( `weighting_points` * RAND() ) DESC LIMIT 1
+			";		
+
+	$myrows = $wpdb->get_results( $sql, ARRAY_A );
+	if ( $wpdb->num_rows != 0 ) {
+		foreach ($myrows[0] as $key => $option)
+			$wptbOptions[$key] = $option;
+		echo '<!-- WP-TopBar Version="'.$wptbOptions['wptb_version'].'" | Showing Bar #="'.$wptbOptions['bar_id'].'" | Priority="'.$wptbOptions['weighting_points'].'" | Start Time (UTC)="'.$wptbOptions['start_time_utc'].'" | End Time (UTC)="'.$wptbOptions['end_time_utc'].'"-->
+';
+		echo '<!-- WP-TopBar Show homepage="'.$wptbOptions['show_homepage'].'" | Control logic="'.$wptbOptions['include_logic'].'" | Include pages="'.$wptbOptions['include_pages'].'" (invert="'.$wptbOptions['invert_include'].'") | Include categories="'.$wptbOptions['include_categories'].'" (invert="'.$wptbOptions['invert_categories'].'") -->
+';
+	}
+	else {
+		echo '<!-- WP-TopBar_'.$WPTB_VERSION.' :: not using options nor database -->
+';
+		$wptbOptions=array();
+		$wptbOptions['enable_topbar'] = 'false';
+	}
+	
+	if($wptb_debug) wptb_debug_display_TopBar_Options($wptbOptions);
+	
+	return $wptbOptions;
+	
+}	// End of wptb_get_Random_TopBar
 
 //=========================================================================		
 // Tests how the TopBar will show
@@ -704,7 +750,7 @@ function wptb_test_topbar($number_to_show, $wptb_echo_on) {
 	$tabs = array( 'disable'=> '<br>Disable |<br>', 'main' => 'Main&nbspOptions |<br>',   'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage |<br>', 'topbarcss' => 'TopBar&nbspCSS |<br>', 'colorselection' => 'Color&nbspSelection' );    
 	$n=1;
 	while ( $n <= $number_to_show ) {
-		$wptbOptions=wptb::wptb_get_Random_TopBar(false);
+		$wptbOptions=wptb_get_Random_TopBar(false);
 		if (isset ( $wptbOptions ['bar_id'] ) ) {
 			echo "<tr>";
 			echo "<td  width=125px>".$wptbOptions['bar_id'];
@@ -1049,9 +1095,11 @@ function wptb_create_table($wptb_echo_on) {
 
 function wtpb_set_default_settings() {
 
+	global $WPTB_VERSION;
+
 	return array(
 	 	'weighting_points'=> 25,				 	
-		'wptb_version' => '4.13',
+		'wptb_version' => $WPTB_VERSION,
 		'enable_topbar' => 'false',
 		'include_pages' => '0',
 		'invert_include' => 'no',
@@ -1758,10 +1806,11 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 	
 function wtpb_check_for_plugin_upgrade($wptb_echo_on) { 
 
+	global $WPTB_VERSION;
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 
-	$wptb_this_version_number = '4.13';
+	$wptb_this_version_number = $WPTB_VERSION;
 
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			
