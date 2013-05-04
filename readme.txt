@@ -286,7 +286,6 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 2. CHANGED:  Added display of database charset/collation to help debug multi-lingual issues
 3. CHANGED: to use embedded version of jQuery DatePicker
 
-
 = 4.13 - 02/9/2013 =
 
 1. CHANGED: Changed to use Wordpress' embedded jQueryUI
