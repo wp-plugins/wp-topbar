@@ -93,6 +93,18 @@ You may have CSS settings that prevent the TopBar from loading. If you entered a
 
 You can also use the Debug page to see if you can see an error.
 
+= My TopBar does not support my local language = 
+
+The problem is with your table collation. You need to change the collation to utf8_general_ci.
+
+Run this query from your phpadmin to change the collation.
+
+ALTER TABLE 'DATABASEPREFIX'_topbar_data CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci
+
+Of course, make a backup of your table first!
+
+(Thanks to samhat for help on this one!)
+
 = How do the new Include/Exclude login (in version 3.10) work behind the scenes? = 
 
 You have four choices to handle include (or exclude) the TopBar from showing:
