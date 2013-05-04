@@ -288,9 +288,11 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 4.15 - 05/03/2013 = 
 
-1  ADDED: Added PHP code that can be added to the TopBar.  USE AT OWN RISK
+
+1. FADDED: Added PHP code that can be added to the TopBar.  USE AT OWN RISK
 2. ADDED: Added ability to select TopBars based on whether the user is logged in
 3. CHANGED: Now loads own version of JQueryUI (1.10.2) since the DatePicker was not consistently being loaded correctly
+
 
 = 4.14 - 03/08/2013 = 
 
