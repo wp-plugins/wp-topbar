@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
-Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
+Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.5.1
 Stable tag: 4.15
@@ -10,9 +10,9 @@ Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars 
 
 == Description ==
 
-New with Verison 4.15+ is the ability to add custom PHP to be executed when the TopBars are created.
-
 Create **MULTIPLE** (Whohoo!) TopBars that will be shown at the top (or bottom) of your website.  TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  We made this so customizable and easy to change the color, text, image, link that you can easily lose track of time getting your TopBars perfect!
+
+New with Verison 4.15+ is the ability to add custom PHP to be executed when the TopBars are created.  Of course, that can be super dangerous if you enter PHP code that is invalid -- you could break your website.  That option should only be used by **Advanced Swimmers** only.
 
 Version 4.10+ now statically creates the TopBar to allow you to take advantage of caching plugins.
 
@@ -24,54 +24,29 @@ Want to create a lot of TopBars -- you can copy the existing ones with just a fe
 
 With so many option pages, I only included a few screen images.  More images can be found on [Zwebify.com](http://zwebify.com/wordpress-plugins/)
 
-Hey! What happens if you were using a previous version of WP-TopBar?  We've got you covered!  Your old TopBar will be imported into the new database as the first TopBar.
-
 Here is a crazy-long list of options you have for each TopBar -- and this is not even complete!
 
 <ol>
 	<li>Enable/disable the TopBar without disabling the plugin.</li>
 	<li>Place the TopBar Above the Header or Below the Footer</li>
-	<li>Enter the amount of time (in milliseconds) for the TopBar to appear. Enter 0 for no delay.</li>
-	<li>Enter the amount of time (in milliseconds) for the TopBar to take to slide down on the page. Enter 0 for no delay.</li>
-	<li>Enter the amount of time (in milliseconds) for the TopBar to stay on the page.  Enter 0 for the TopBar to not disappear.</li>
+	<li>Amount of time (in milliseconds) for the TopBar to appear. Enter 0 for no delay.</li>
+	<li>Amount of time (in milliseconds) for the TopBar to take to slide down on the page. Enter 0 for no delay.</li>
+	<li>Amount of time (in milliseconds) for the TopBar to stay on the page.  Enter 0 for the TopBar to not disappear.</li>
 	<li>Pick the date/time for the TopBar to start showing.</li>
 	<li>Pick the date/time for the TopBar to stop showing. Of course, it must be after the start time. Select 0 for the TopBar to never disappear.</li>
-	<li>Enter the height of the border. Default is 3px.</li>
-	<li>Enter the top padding. Default is 8px.</li>
-	<li>Enter the bottom padding. Default is 8px.</li>
-	<li>Enter the top margin. Default is 0px.</li>
-	<li>Enter the bottom margin. Default is 0px.</li>	
-	<li>Enter the font size. Default is 14px.</li>
-	<li>Align the text: left, center or right.  Default is Center.</li>
-	<li>Enter the IDs of the pages and posts that you want the TopBar to appear on, separated by commas. The TopBar will only be shown on those pages. Leave blank or enter 0 to show the TopBar on all pages. e.g. 1,9,39,10</li>
-	<li>Option to invert the Include Pages to actually be Exclude Pages</li>
+	<li>Whether to show the TopBar for logged in users, not logged in users or all users.
+	<li>A lot of CSS options -- and even a way to enter your own CSS in</li>
+	<li>Retrict the Topbar to show on only certain pages (or to not show on those pages)</li>
+	<li>Retrict the Topbar to show on only certain categories (or to not show on those categories)</li>
+	<li>Add social buttons to the TopBar</li>
+	<li>Add a Close Button</li>
+	<li>Option to execute your own PHP code before (or after) the TopBar is created</li>
+	<li>Has explicit support for qTranslate -- translates the top bar text fields and link field.</li>
+	<li>You can have unlimited number of TopBars -- the plugin randomly selects one (based on individual weightings) to show </li>
+	<li>The TopBars are generated in such a way to support cacheing (e.g. W3 Total Cache, WP Super Cache)</li>
 </ol>
-Has separate fields for the:
-<ol>
-	<li>Message</li>
-	<li>Link Text</li>
-	<li>Link</li>
-	<li>Link Target</li>
-	<li>Background Image</li>
-</ol>
-Enter custom CSS for the:
-<ol>
-	<li>The Bar</li>
-	<li>The Message</li>
-	<li>The Entire TopBar</li>
-</ol>
-Set the color of the:
-<ol>
-	<li>The Bar</li>
-	<li>The bottom border of the Bar</li>
-	<li>The Message</li>
-	<li>The Link</li>
-</ol>
-Add a Close Button
 
-Add up to four Social Icon buttons
 
-Has explicit support for qTranslate -- translates the top bar text fields and link field.
 
 == Installation ==
 
@@ -288,7 +263,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 4.15 - 05/03/2013 = 
 
-1. ADDED:  Added PHP code that can be added to the TopBar.  USE AT OWN RISK
+1. ADDED:  Added PHP options that can be added to the TopBar.  USE AT OWN RISK
 2. ADDED:   Added ability to select TopBars based on whether the user is logged in
 3. CHANGED: Now loads own version of JQueryUI (1.10.2) since the DatePicker was not consistently being loaded correctly
 
