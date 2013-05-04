@@ -288,15 +288,16 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 4.15 - 05/03/2013 = 
 
-1  ADDED: Added PHP code that can be added to the TopBar.  USE AT OWN RISK
-2. ADDED: Added ability to select TopBars based on whether the user is logged in
+1. FADDED:  Added PHP code that can be added to the TopBar.  USE AT OWN RISK
+2. ADDED:   Added ability to select TopBars based on whether the user is logged in
 3. CHANGED: Now loads own version of JQueryUI (1.10.2) since the DatePicker was not consistently being loaded correctly
+
 
 = 4.14 - 03/08/2013 = 
 
-1. FIXED: Fixed issue where sometimes the html link would sometimes not display correctly
+1. FIXED:    Fixed issue where sometimes the html link would sometimes not display correctly
 2. CHANGED:  Added display of database charset/collation to help debug multi-lingual issues
-3. CHANGED: to use embedded version of jQuery DatePicker
+3. CHANGED:  To use embedded version of jQuery DatePicker
 
 = 4.13 - 02/9/2013 =
 
@@ -309,16 +310,16 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 4.12 - 01/28/2013 =
 
-1. FIXED: Issue that sometimes causes the plugin to not activate correctly.  Finally found it by using the Bitnami Wordpress Stack - http://bitnami.org/stack/wordpress
-2. FIXED: Plugin deletion messages
+1. FIXED:   Issue that sometimes causes the plugin to not activate correctly.  Finally found it by using the Bitnami Wordpress Stack - http://bitnami.org/stack/wordpress
+2. FIXED:   Plugin deletion messages
 3. CHANGED: Removed the option to delete a TopBar from Options pages. Use the All Tables view and Delete using the Bulk Actions drop down list
 
 = 4.11 - 01/26/2013 =
 
 1. VALIDATED: Version 4.11 supports WordPress 3.5.1
-2. UPDATED: jQuery UI to version 1.9.2
-3. FIXED: Streamlined JavaScript when only one TopBar is selected
-4. FIXED: Logic when no TopBars are selected
+2. UPDATED:   jQuery UI to version 1.9.2
+3. FIXED:     Streamlined JavaScript when only one TopBar is selected
+4. FIXED:     Logic when no TopBars are selected
 
 = 4.10 - 12/10/2012 =
 
