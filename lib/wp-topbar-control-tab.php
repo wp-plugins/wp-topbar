@@ -61,6 +61,27 @@ function wptb_control_options($wptbOptions) {
 						</p>
 					</td>
 				</tr>
+				<tr>
+					<td colspan="2"><hr></td>
+				</tr>
+				<tr valign="top">
+					<td>Logged In Users:</td>
+					<td>
+						<br>
+						<label for="wptbonlyloggedin_no"><input type="radio" id="wptbonlyloggedin_no" name="wptbonlyloggedin" value="no" <?php if ($wptbOptions['only_logged_in'] == "no") { _e('checked="checked"', "wptb"); }?>/> A. Not Logged In</label>		
+						<br>
+						<label for="wptbonlyloggedin_yes"><input type="radio" id="wptbonlyloggedin_yes" name="wptbonlyloggedin" value="yes" <?php if ($wptbOptions['only_logged_in'] == "yes") { _e('checked="checked"', "wptb"); }?> /> B. Logged In</label>
+						<br>
+						<label for="wptbonlyloggedin_both"><input type="radio" id="wptbonlyloggedin_both" name="wptbonlyloggedin" value="all" <?php if ( ($wptbOptions['only_logged_in'] == "all") || ($wptbOptions['only_logged_in'] == "")) { _e('checked="checked"', "wptb"); }?> /> C. Allways</label>
+					</td>
+					<td>
+						<p class="sub"><em>Select how you want the TopBar to show for users.  Default is to <code>Allways</code> show the TopBar, regardless if they are logged in</em>
+						<br>A. <strong>Not Logged In</strong> shows the TopBar only for users not logged in.
+						<br>B. <strong>Logged In</strong> shows the TopBar only for users logged in.
+						<br>C. <strong>Always</strong> shows the TopBar for all users, logged in or not.
+						</p>
+					</td>
+				</tr>
 				<tr valign="top">
 					<td width="150">Page IDs:</label></td>
 					<td>

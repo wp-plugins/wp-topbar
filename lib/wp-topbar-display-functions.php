@@ -88,7 +88,7 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid ) {
 
 //    $tabs = array( 'table'=> 'All TopBars', 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','debug' => 'Debug', 'delete' => 'Delete&nbspSettings', 'faq' => 'FAQ' );
 
-    $tabs = array( 'table'=> 'All TopBars', 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','debug' => 'Debug',  'faq' => 'FAQ' );
+    $tabs = array( 'table'=> 'All TopBars', 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','debug' => 'Debug', 'phptexttab' => 'PHP',  'faq' => 'FAQ' );
     $links = array();
     
 	if ( $current == 'table' ) $wptb_barid="";
@@ -123,7 +123,7 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid ) {
 	foreach ($links as $i => $value) {
         echo $value;
 		if ( $i == "4") echo "<br>";
-		if ( $i == "9") echo "<br>";
+		if ( $i == "10") echo "<br>";
 	}
         
 // add plugin home page link       

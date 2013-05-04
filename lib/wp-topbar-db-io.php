@@ -58,6 +58,7 @@ function wptb_display_all_TopBars() {
 			'end_time' => 'End Time',
 			'show_it' => 'Time Check',
 			'enable_topbar' => 'Enabled?',
+			'only_logged_in' => 'Logged In Users Only?',
 			'text_line' => 'Bar and Link Text'
 		);
 	}
@@ -89,6 +90,14 @@ function wptb_display_all_TopBars() {
 					return	$item[$column_name];	
 					break;
 			case "text_line": return stripslashes($item[$column_name]);
+			case "only_logged_in":
+				if ($item[$column_name] == "yes" ) 
+					return "Only Logged In";					
+				else if ($item[$column_name] == "no" ) 
+					return "Only NOT Logged In";	
+				else 
+					return "All Users";				
+				break;			
 			case "weighting_points": 
 				$width=$item[$column_name]+0;
 //				return $item[$column_name];
@@ -154,7 +163,7 @@ function wptb_display_all_TopBars() {
 	        
 //        $tabs = array( 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','debug' => 'Debug', 'delete' => 'Delete&nbspSettings' );    
 	        
-        $tabs = array( 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','debug' => 'Debug' );    
+        $tabs = array( 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','phptexttab' => 'PHP', 'debug' => 'Debug' );    
 
         //Build row actions
 
@@ -318,6 +327,7 @@ function wptb_display_all_TopBars() {
 		return $sortable = array(
 			'bar_id' => array('bar_id',true),
 			'enable_topbar' => array('enable_topbar',false),
+			'only_logged_in' => array('only_logged_in',false),
 			'weighting_points' => array('weighting_points',false),
 			'start_time' => array('start_time',false),
 			'end_time' => array('end_time', false),
@@ -1025,6 +1035,9 @@ function wptb_create_table($wptb_echo_on) {
 		invert_categories TEXT,
 		include_logic TEXT,
 		show_homepage VARCHAR(20),
+		only_logged_in VARCHAR(20),
+		php_text_prefix TEXT,
+		php_text_suffix TEXT,
 		delay_time INT,
 		slide_time INT,  
 		display_time INT,
@@ -1107,6 +1120,9 @@ function wtpb_set_default_settings() {
 		'invert_categories' => 'no',
 		'include_logic' => 'page_only',
 		'show_homepage' => 'conditionally',
+		'only_logged_in' => 'all',
+		'php_text_prefix' => '',
+		'php_text_suffix' => '',
 		'delay_time' => '5000',
 		'slide_time' => '200',
 		'display_time' => '0',
@@ -1224,6 +1240,9 @@ function wtpb_insert_row($wptbOptions, $wptb_echo_on) {
 		'invert_categories' => $wptbOptions[ 'invert_categories' ],
 		'include_logic' => $wptbOptions[ 'include_logic' ],
 		'show_homepage' => $wptbOptions[ 'show_homepage' ],
+		'only_logged_in' => $wptbOptions[ 'only_logged_in' ],
+		'php_text_prefix' => $wptbOptions[ 'php_text_prefix' ],
+		'php_text_suffix' => $wptbOptions[ 'php_text_suffix' ],
 		'delay_time' => $wptbOptions[ 'delay_time' ],
 		'slide_time' => $wptbOptions[ 'slide_time' ],
 		'display_time' => $wptbOptions[ 'display_time' ],
@@ -1318,6 +1337,9 @@ function wptb_update_row($wptbOptions, $wptb_echo_on) {
 		'invert_categories' => $wptbOptions[ 'invert_categories' ],
 		'include_logic' => $wptbOptions[ 'include_logic' ],
 		'show_homepage' => $wptbOptions[ 'show_homepage' ],
+		'only_logged_in' => $wptbOptions[ 'only_logged_in' ],
+		'php_text_prefix' => $wptbOptions[ 'php_text_prefix' ],
+		'php_text_suffix' => $wptbOptions[ 'php_text_suffix' ],
 		'delay_time' => $wptbOptions[ 'delay_time' ],
 		'slide_time' => $wptbOptions[ 'slide_time' ],
 		'display_time' => $wptbOptions[ 'display_time' ],
@@ -1545,6 +1567,15 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 	}		
 	if (isset($_POST['wptbshowhomepage'])) {
 		$wptbOptions['show_homepage'] = $_POST['wptbshowhomepage'];
+	}	
+	if (isset($_POST['wptbonlyloggedin'])) {
+		$wptbOptions['only_logged_in'] = $_POST['wptbonlyloggedin'];
+	}	
+	if (isset($_POST['wptbphptextprefix'])) {
+		$wptbOptions['php_text_prefix'] = $_POST['wptbphptextprefix'];
+	}		
+	if (isset($_POST['wptbphptextsuffix'])) {
+		$wptbOptions['php_text_suffix'] = $_POST['wptbphptextsuffix'];
 	}	
 	if (isset($_POST['wptbbottomborderheight'])) {
 	
@@ -1825,6 +1856,10 @@ function wtpb_check_for_plugin_upgrade($wptb_echo_on) {
 				wptb_create_table($wptb_echo_on);				
 				wtpb_insert_default_row($wptb_echo_on);
 			}
+			else
+				if( $wpdb->get_var("SHOW COLUMNS FROM `".$wptb_table_name."` LIKE 'php_text_suffix';") != 'php_text_suffix' ) {
+					wptb_create_table($wptb_echo_on);
+				}
 	}
 			
 	if($wptb_debug) {

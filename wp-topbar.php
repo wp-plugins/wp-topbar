@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 4.14
+Version: 4.15
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -25,7 +25,7 @@ Author URI: http://zwebify.com/wordpress-plugins/
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-$WPTB_VERSION = "4.14";
+$WPTB_VERSION = "4.15";
 
 
 if( ! class_exists( 'wptb' ) ):
@@ -93,16 +93,21 @@ class wptb {
 	
 			wp_register_script( 'wptb_upload',        plugins_url('/lib/wp-topbar-load-image.js', __FILE__), array('jquery','media-upload','thickbox') );
 			wp_enqueue_script(  'wptb_upload' ) ;
-
+			
 			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script( 'jquery-ui-core' );
-			wp_enqueue_script( 'jquery-ui-datepicker' );
-			wp_enqueue_script( 'jquery-ui-slider');
+			
+			
+			wp_register_script( 'wptb_jquery_ui_js',  plugins_url('/lib/jquery-ui-1.10.2.custom.min.js', __FILE__) );
+			wp_enqueue_script(  'wptb_jquery_ui_js');  
+			
+//			wp_enqueue_script( 'jquery-ui-core' );
+//			wp_enqueue_script( 'jquery-ui-datepicker' );
+//			wp_enqueue_script( 'jquery-ui-slider');
 						
 			wp_register_script( 'wptb_timepicker',    plugins_url('/lib/jquery-ui-timepicker-addon.js', __FILE__), array('jquery') );
 			wp_enqueue_script(  'wptb_timepicker' );
 
-			wp_register_style( 'wptb_jquery_ui_css',  plugins_url('/lib/jquery-ui-1.9.2.custom.min.css', __FILE__) );
+			wp_register_style( 'wptb_jquery_ui_css',  plugins_url('/lib/jquery-ui-1.10.2.custom.min.css', __FILE__) );
 			wp_enqueue_style(  'wptb_jquery_ui_css' );
 			wp_register_style( 'wptb_timepicker_css', plugins_url('/lib/jquery-ui-timepicker-addon.css', __FILE__) );
 			wp_enqueue_style(  'wptb_timepicker_css' );		
@@ -216,7 +221,6 @@ class wptb {
 
 		if ( wptb::wptb_check_options_to_show_row($wptbOptions) == false ) { return false; }
 			
-			
 	// use javascript to force the HTML to just before body tag if the topbar is at the top of the page
 		if ( $wptbOptions['topbar_pos'] == 'header' ) { 	
 			echo '
@@ -229,7 +233,8 @@ class wptb {
 		}
 				
 		echo '<div id="topbar'.$wptbTopBarNumber.'" style="'.trim($wptbOptions['div_css']).'">';
-
+		
+	
 		self::wptb_display_TopBar('visibility:hidden;',$wptbOptions, true, $wptbTopBarNumber);
 
 		echo '</div>';
@@ -303,8 +308,12 @@ class wptb {
 				}
 				
 				if ( is_home() && ( $wptbOptions['show_homepage'] == "never" ) ) { return false; }		
-		
+	
 				if ( ! ( is_home() && ( $wptbOptions['show_homepage'] == "always" ) ) ) {	
+
+					if (     is_user_logged_in()   && ( $wptbOptions['only_logged_in'] == "no"  )) { return false; } 
+					if (  ( !is_user_logged_in() ) && ( $wptbOptions['only_logged_in'] == "yes" )) { return false; } 
+
 					if ( $wptbOptions['include_pages'] == 0 )
 						$page_id_found = true;
 					else {
@@ -399,8 +408,8 @@ class wptb {
 			$wptbOptions['bar_link'] = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage($wptbOptions['bar_link']);
 		}
 
-		echo '<p id="wptbheadline'.$wptbTopBarNumber.'" ';
-		echo 'style="',$wptb_visibility;
+
+		echo '<p id="wptbheadline'.$wptbTopBarNumber.'" style="'.$wptb_visibility.';';
 		if ($wptbOptions['enable_image'] == 'false') 
 			echo "background: {$wptbOptions['bar_color']};";
 		else 
@@ -413,7 +422,11 @@ class wptb {
 		echo 'border-bottom-width: ',$wptbOptions['bottom_border_height'],'px;';
 		if ($wptbOptions['custom_css_bar'] != '') 
 				echo trim($wptbOptions['custom_css_bar'])." ";
-		echo '">',$wptbOptions['bar_text'],'<a style="color:',$wptbOptions['link_color'],'; ';
+		echo '">';
+		if ($wptbOptions['php_text_prefix'] != "" ) {
+			eval( stripslashes($wptbOptions['php_text_prefix'] ) );
+		}			
+		echo $wptbOptions['bar_text'],'<a style="color:',$wptbOptions['link_color'],'; ';
 		if ($wptbOptions['custom_css_text'] != '')
 			echo "{".trim($wptbOptions['custom_css_text'])."}";
 		echo '" ';
@@ -430,6 +443,9 @@ class wptb {
 		if ($wptbOptions['allow_close'] == 'yes') {
 			echo '<span style="">';
 			echo '<img align="middle" border="0" onClick="close_wptopbar'.$wptbTopBarNumber.'()" src="'.$wptbOptions['close_button_image'].'" style="cursor:hand;cursor:pointer;'.$wptbOptions['close_button_css'].'"/></span>';
+		}
+		if ($wptbOptions['php_text_suffix'] != "" ) {
+			eval( stripslashes($wptbOptions['php_text_suffix'] ) );
 		}		
 		echo '</p>';
 	}  // end function wptb_display_TopBar

@@ -65,6 +65,18 @@ echo "bar_link_text encoding: <strong>".$wptb_bar_link_text_encoding[0]."</stron
 echo "</br>";
 ?>
 			</li>
+			<li><strong>Time Check:</strong></br>
+<?php
+$wptb_current_time=current_time('timestamp', 1);
+echo 'Server Timezone:   ',date_default_timezone_get(),'</br>';
+echo 'Current Time:      ',date('m/d/Y H:i (e)',$wptb_current_time),'</br>';		
+if ($wptbOptions['start_time'] != 0) 		
+	echo 'Starting Time: ',$wptbOptions['start_time_utc'],' (UTC) - As entered: ',$wptbOptions['start_time'],'</br>';
+if ($wptbOptions['end_time'] != 0) 		
+	echo 'Ending Time:   ',$wptbOptions['end_time_utc'],  ' (UTC) - As entered: ',$wptbOptions['end_time'],'</br>';
+echo "</br>";
+?>
+			</li>
 			<li><strong>Status:</strong>
 			<br>
 			<?php if ($wptbOptions['enable_topbar'] == "false") { _e( 'The TopBar is not enabled.  Enable it in the <a href="?page=wp-topbar.php&action=main&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'">Main Options tab</a>.<br>', 'wptb' ); } ?>

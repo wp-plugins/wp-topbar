@@ -116,7 +116,7 @@ function wptb_closebutton_bulk_options() {
 					
 					</td><td><p class="sub"><em>Enter a URL or upload an image for the close button on the TopBar.</em></p>
 					</label></td>
-				</tr>
+				</tr>					
 			</table>
 		</div>
 		<table>
@@ -135,7 +135,7 @@ function wptb_closebutton_bulk_options() {
 	</div> <!-- end of Close Button Settings -->
 	
 	<?php 
-}	// End of wptb_closebutton_options
+}	// End of wptb_closebutton_bulk_options
 
 
 function wptb_closebutton_options($wptbOptions) {
@@ -164,6 +164,9 @@ function wptb_closebutton_options($wptbOptions) {
 		
 		<div class="table">
 			<table class="form-table">	
+				<tr>
+					<td colspan="2"><hr></td>
+				</tr>
 				<tr valign="top">
 						<td width="150">Allow TopBar to be closed by user:</label></td>
 						<td>

@@ -4,11 +4,13 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message
 Requires at least: 3.2.1
 Tested up to: 3.5.1
-Stable tag: 4.14
+Stable tag: 4.15
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
 == Description ==
+
+New with Verison 4.15+ is the ability to add custom PHP to be executed when the TopBars are created.
 
 Create **MULTIPLE** (Whohoo!) TopBars that will be shown at the top (or bottom) of your website.  TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  We made this so customizable and easy to change the color, text, image, link that you can easily lose track of time getting your TopBars perfect!
 
@@ -162,6 +164,10 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 == Upgrade Notice ==
 
 
+= 4.15 = 
+
+Now can add custom PHP to the TopBar.  Also now has the ability to select TopBars based on whether the user is logged in
+
 = 4.14 = 
 
 Fixed issue where sometimes the html link would sometimes not display correctly
@@ -267,10 +273,18 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+
+= 4.15 - 05/03/2013 = 
+
+1  ADDED: Added PHP code that can be added to the TopBar.  USE AT OWN RISK
+2. ADDED: Added ability to select TopBars based on whether the user is logged in
+3. CHANGED: To load own version of JQueryUI since the DatePicker was not consistently being loaded correctly
+
 = 4.14 - 03/08/2013 = 
 
 1. FIXED: Fixed issue where sometimes the html link would sometimes not display correctly
 2. CHANGED:  Added display of database charset/collation to help debug multi-lingual issues
+3. CHANGED: to use embedded version of jQuery DatePicker
 
 
 = 4.13 - 02/9/2013 =

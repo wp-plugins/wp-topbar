@@ -45,6 +45,7 @@ function wptb_options_page() {
 	require_once( dirname(__FILE__).'/wp-topbar-delete-tab.php');  //load delete pages php
 	require_once( dirname(__FILE__).'/wp-topbar-display-functions.php');  //load admin pages php
 	require_once( dirname(__FILE__).'/wp-topbar-faq-tab.php');  //load faq page php	
+	require_once( dirname(__FILE__).'/wp-topbar-php-tab.php');  //load php pages php
 
 	// $wptb_common_style is used by all buttons except the Copy & Special buttons
 		
@@ -271,6 +272,12 @@ function wptb_options_page() {
 			wptb_bar_edit_options_tabs($action,$wptb_barid);
         	wptb_display_common_info($wptbOptions);
             wptb_closebutton_options($wptbOptions);
+            break;
+        case 'phptexttab' :
+			wptb_display_admin_header();
+			wptb_bar_edit_options_tabs($action,$wptb_barid);
+        	wptb_display_common_info($wptbOptions);
+            wptb_php_options($wptbOptions);
             break;
         case 'delete' :
 			wptb_display_admin_header();
