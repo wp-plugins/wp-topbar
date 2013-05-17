@@ -264,7 +264,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 == Changelog ==
 
 
-= 4.16 - 05/03/2013 = 
+= 4.16 - 05/16/2013 = 
 
 1. FIXED:  SQL/CSV Export Function adjusted to account for new fields.
 
