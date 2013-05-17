@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.5.1
-Stable tag: 4.15
+Stable tag: 4.16
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
@@ -150,6 +150,9 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 4.16 = 
+
+Minor fix to SQL/CSV Export function
 
 = 4.15 = 
 
@@ -259,6 +262,11 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+
+= 4.16 - 05/03/2013 = 
+
+1. FIXED:  SQL/CSV Export Function adjusted to account for new fields.
 
 
 = 4.15 - 05/03/2013 = 

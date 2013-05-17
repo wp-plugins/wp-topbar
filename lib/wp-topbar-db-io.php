@@ -1094,7 +1094,7 @@ function wptb_create_table($wptb_echo_on) {
 		social_icon4_link_target VARCHAR(20),	
 		PRIMARY KEY  id (bar_id)
 		) ;";
-
+	
 	dbDelta($sql);	
 
 
@@ -1841,7 +1841,7 @@ function wtpb_check_for_plugin_upgrade($wptb_echo_on) {
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 
-	$wptb_this_version_number = $WPTB_VERSION;
+	$WPTB_DB_VERSION = "4.15";  // rev this only when this changes
 
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			
@@ -1857,19 +1857,23 @@ function wtpb_check_for_plugin_upgrade($wptb_echo_on) {
 				wtpb_insert_default_row($wptb_echo_on);
 			}
 			else
-				if( $wpdb->get_var("SHOW COLUMNS FROM `".$wptb_table_name."` LIKE 'php_text_suffix';") != 'php_text_suffix' ) {
+				// OK, they are using a DB, now check to see if needs to be updated				
+				$installed_ver = get_option( "wptb_db_version" );
+				if( $installed_ver != $WPTB_DB_VERSION ) {
 					wptb_create_table($wptb_echo_on);
 				}
 	}
+	
+	update_option( "wptb_db_version", $WPTB_DB_VERSION );
 			
 	if($wptb_debug) {
 		if($wptb_echo_on) {
 			echo '<br><code>WP-TopBar Debug Mode: in wtpb_check_for_plugin_upgrade</code>' ;
-			echo '<br><code>WP-TopBar Debug Mode: Plugin Version: ',$wptb_this_version_number,'</code>';
+			echo '<br><code>WP-TopBar Debug Mode: Plugin Version: ',$WPTB_VERSION,'</code>';
 		}
 		else {
 			error_log( 'WP-TopBar Debug Mode: in wtpb_check_for_plugin_upgrade' );
-			error_Log( 'WP-TopBar Debug Mode: Plugin Version: '.$wptb_this_version_number);
+			error_Log( 'WP-TopBar Debug Mode: Plugin Version: '.$WPTB_VERSION);
 		}
 	}		
 	
@@ -1885,12 +1889,12 @@ function wtpb_check_for_plugin_upgrade($wptb_echo_on) {
 
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: DB Version: ',$wptb_db_version[0],'</code>';
 	
-	if ( $wptb_db_version[0] != $wptb_this_version_number ) {
+	if ( $wptb_db_version[0] != $WPTB_VERSION ) {
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Version Upgrade Needed</code>';
 
 		$wpdb->get_results( 
 			"
-			UPDATE ".$wptb_table_name." SET wptb_version='".$wptb_this_version_number."';
+			UPDATE ".$wptb_table_name." SET wptb_version='".$WPTB_VERSION."';
 			"
 		);
 

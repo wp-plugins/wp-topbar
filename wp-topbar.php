@@ -4,12 +4,12 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Creates a TopBar that will be shown at the top of your website.  Customizable and easy to change the color, text, image and link.
-Version: 4.15
+Version: 4.16
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
 */
-/*  Copyright 2012  Bob Goetz  (email : bob @ zwebifiy . dot . com)
+/*  Copyright 2013  Bob Goetz  (email : bob @ zwebify . dot . com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -25,7 +25,7 @@ Author URI: http://zwebify.com/wordpress-plugins/
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-$WPTB_VERSION = "4.15";
+$WPTB_VERSION = "4.16";
 
 
 if( ! class_exists( 'wptb' ) ):

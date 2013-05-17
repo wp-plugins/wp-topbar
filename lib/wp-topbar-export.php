@@ -31,7 +31,11 @@ function wptb_display_export_options() {
     <div id="icon-options-general" class="icon32"><br/></div>
     <h2>Export Options</h2>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
-  	      <p>Select the <strong>Export Options</strong> buttons to create either a CSV, SQL (insert) or JSON file for download.   Future versions will include an inport functions.</p> 
+  	      <p>Select the <strong>Export Options</strong> buttons to create either a CSV, SQL (insert) or JSON file for download.   Future versions will include an inport functions.</br></br>
+  			Note: Any PHP text you have entered may cause the CSV export to break a single TopBar into multiple rows in the CSV file.
+  			</br>	      
+  	      
+  	      </p> 
         </div>
 		<div>
 		   <form method="post" action="<?php echo $url;?>"></form>
@@ -86,33 +90,41 @@ function wptb_export_options_csv() {
 	
 	$j=0;
 	while ( $j < $num_rows ) {	
+
+		$num_cols = sizeof($myrows[$j]);
+		$col_count = 0;
+
 		foreach ($myrows[$j] as $column_name => $column_value) {
 		
-		switch ( $column_name ) :
-			//format numeric columns
-			case 'bar_id':
-			case 'weighting_points':
-			case 'delay_time':
-			case 'slide_time': 
-			case 'display_time':
-			case 'bottom_border_height':
-			case 'font_size':
-			case 'padding_top':
-			case 'padding_bottom':
-			case 'margin_top':
-			case 'margin_bottom':
-					$csv_output .= $column_value.';';
-					break;
-			// treat last column differently		
-			case 'social_icon4_link_target':
-					$csv_output .= "'".$column_value."'\n";
-					break;
-			//format the remaining -- as text
-			default: 
-					$csv_output .= "'".$column_value."';";
-		endswitch;		
-		}
-		$j++;
+			$col_count++;
+			
+			switch ( $column_name ) :
+				//format numeric columns
+				case 'bar_id':
+				case 'weighting_points':
+				case 'delay_time':
+				case 'slide_time': 
+				case 'display_time':
+				case 'bottom_border_height':
+				case 'font_size':
+				case 'padding_top':
+				case 'padding_bottom':
+				case 'margin_top':
+				case 'margin_bottom':
+						$csv_output .= $column_value;
+						break;
+				//format the remaining -- as text
+				default: 
+						$csv_output .= "'".($column_value)."'";
+			endswitch;		
+
+			if ($col_count < $num_cols) 
+				$csv_output .= ';';
+			else 
+				$csv_output .= "\n";
+		
+			}
+			$j++;
 	}
 
 	$file = 'wp_topbar_export';
@@ -200,30 +212,40 @@ function wptb_export_options_sql() {
 	
 	$j=0;
 	while ( $j < $num_rows ) {	
+
+		$num_cols = sizeof($myrows[$j]);
+		$col_count = 0;
+
 		foreach ($myrows[$j] as $column_name => $column_value) {
 		
-		switch ( $column_name ) :
+			$col_count++;
 			
-			case 'bar_id': $sql_output .= 'INSERT INTO `'.$wptb_table_name.'` VALUES('.$column_value.',';
-				  break;
-			case 'weighting_points':
-			case 'delay_time':
-			case 'slide_time': 
-			case 'display_time':
-			case 'bottom_border_height':
-			case 'font_size':
-			case 'padding_top':
-			case 'padding_bottom':
-			case 'margin_top':
-			case 'margin_bottom':
-					$sql_output .= $column_value.',';
-					break;
-			case 'social_icon4_link_target':
-					$sql_output .= "'".$column_value."');\n";
-					break;
-			default: 
-					$sql_output .= "'".$column_value."',";
-		endswitch;		
+			switch ( $column_name ) :
+				
+				case 'bar_id': $sql_output .= 'INSERT INTO `'.$wptb_table_name.'` VALUES('.$column_value.',';
+					  break;
+				case 'weighting_points':
+				case 'delay_time':
+				case 'slide_time': 
+				case 'display_time':
+				case 'bottom_border_height':
+				case 'font_size':
+				case 'padding_top':
+				case 'padding_bottom':
+				case 'margin_top':
+				case 'margin_bottom':
+						$sql_output .= $column_value;
+						break;
+				default: 
+						$sql_output .= "'".$column_value."'";
+						break;
+			endswitch;		
+			
+			if ($col_count < $num_cols) 
+				$sql_output .= ',';
+			else 
+				$sql_output .= ");\n";
+	
 		}
 		$j++;
 	}
