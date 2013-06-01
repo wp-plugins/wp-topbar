@@ -64,29 +64,27 @@ function wptb_export_options_csv() {
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
 
-	// select one row from the database to setup for the get_col_info function
+	// select one row from the database to setup for the get_col_info function to display column names in one row
 	
 	$sql ="SELECT * FROM ".$wptb_table_name." LIMIT 1";
 	$mycols = $wpdb->query( $sql, ARRAY_A );
 	$mycols = $wpdb->get_col_info();
 
-	$csv_output = "";
+	$export_output = "";
 	
 	foreach ($mycols as $column_name => $column_value) {
-		$csv_output .= $column_value.";";
+		$export_output .= $column_value.";";
 	}
 	// trim the trailing end semicolon from the export
-	$csv_output = substr($csv_output, 0, -1);
+	$export_output = substr($export_output, 0, -1);
 
-	$csv_output .= "\n";
+	$export_output .= "\n";
 		
 	$sql ="SELECT * FROM ".$wptb_table_name." ORDER BY `bar_id`";
 
 	$myrows = $wpdb->get_results( $sql, ARRAY_A );
 	
 	$num_rows=$wpdb->num_rows;
-	
-	$csv_output = "";
 	
 	$j=0;
 	while ( $j < $num_rows ) {	
@@ -95,6 +93,7 @@ function wptb_export_options_csv() {
 		$col_count = 0;
 
 		foreach ($myrows[$j] as $column_name => $column_value) {
+		
 		
 			$col_count++;
 			
@@ -111,18 +110,17 @@ function wptb_export_options_csv() {
 				case 'padding_bottom':
 				case 'margin_top':
 				case 'margin_bottom':
-						$csv_output .= $column_value;
+						$export_output .= $column_value;
 						break;
 				//format the remaining -- as text
 				default: 
-						$csv_output .= "'".($column_value)."'";
+						$export_output .= "'".($column_value)."'";
 			endswitch;		
 
-			if ($col_count < $num_cols) 
-				$csv_output .= ';';
+			if ($col_count < $num_cols)
+				$export_output .= ';';
 			else 
-				$csv_output .= "\n";
-		
+				$export_output .= "\n";
 			}
 			$j++;
 	}
@@ -137,8 +135,8 @@ function wptb_export_options_csv() {
     header('Expires: 0');
     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
     header('Pragma: public');
-    header('Content-Length: ' . strlen( $csv_output ) );
-    echo $csv_output;
+    header('Content-Length: ' . strlen( $export_output ) );
+    echo $export_output;
 	return;
 
 }	// End of wptb_export_options_csv
@@ -202,13 +200,26 @@ function wptb_export_options_sql() {
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
 	
+	// select one row from the database to setup for the get_col_info function to display column names in one row
+	
+	$sql ="SELECT * FROM ".$wptb_table_name." LIMIT 1";
+	$mycols = $wpdb->query( $sql, ARRAY_A );
+	$mycols = $wpdb->get_col_info();
+
+	$export_output = "";
+	$insert_columns = "(";
+	
+	foreach ($mycols as $column_name => $column_value) {
+		$insert_columns .= $column_value.", ";
+	}
+	// trim the trailing end semicolon from the export
+	$insert_columns = substr($insert_columns, 0, -2).")";
+		
 	$sql ="SELECT * FROM ".$wptb_table_name." ORDER BY `bar_id`";
 
 	$myrows = $wpdb->get_results( $sql, ARRAY_A );
 	
 	$num_rows=$wpdb->num_rows;
-
-	$sql_output = '';
 	
 	$j=0;
 	while ( $j < $num_rows ) {	
@@ -222,7 +233,9 @@ function wptb_export_options_sql() {
 			
 			switch ( $column_name ) :
 				
-				case 'bar_id': $sql_output .= 'INSERT INTO `'.$wptb_table_name.'` VALUES('.$column_value.',';
+				case 'bar_id': $export_output .= 'INSERT INTO `'.$wptb_table_name.'`
+     '.$insert_columns.'
+     VALUES( '.$column_value;
 					  break;
 				case 'weighting_points':
 				case 'delay_time':
@@ -234,18 +247,19 @@ function wptb_export_options_sql() {
 				case 'padding_bottom':
 				case 'margin_top':
 				case 'margin_bottom':
-						$sql_output .= $column_value;
+						$export_output .= $column_value;
 						break;
 				default: 
-						$sql_output .= "'".$column_value."'";
+						$export_output .= "'".$column_value."'";
 						break;
 			endswitch;		
 			
 			if ($col_count < $num_cols) 
-				$sql_output .= ',';
+				$export_output .= ', ';
 			else 
-				$sql_output .= ");\n";
-	
+				$export_output .= ");
+
+";
 		}
 		$j++;
 	}
@@ -262,8 +276,8 @@ function wptb_export_options_sql() {
     header('Expires: 0');
     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
     header('Pragma: public');
-    header('Content-Length: ' . strlen( $sql_output ) );
-    echo $sql_output;
+    header('Content-Length: ' . strlen( $export_output ) );
+    echo $export_output;
 	return;
 
 }	// End of wptb_export_options_sql

@@ -32,9 +32,9 @@ function wptb_options_tabs( $current = 'table' ) {
     
     	
         if ( $tab == $current ) 
-            $links[] = "<a class='".$css." ui-corner-top ui-tabs-selected ui-state-active ui-state-hover' style='text-decoration:none; padding: 0 10px 0 10px;' href='?page=wp-topbar.php&action=".$tab."'>$name</a>";
+            $links[] = "<a class='wptb-".$tab." ".$css." ui-corner-top ui-tabs-selected ui-state-active ui-state-hover' style='text-decoration:none; padding: 0 10px 0 10px;' href='?page=wp-topbar.php&action=".$tab."'>$name</a>";
         else 
-            $links[] = "<a class='".$css." ui-corner-top' style='font-size:".$font." font-weight:normal; padding: 0 10px 0 10px; text-decoration:none' href='?page=wp-topbar.php&action=".$tab."'>$name</a>";
+            $links[] = "<a class='wptb-".$tab." ".$css." ui-corner-top' style='font-size:".$font." font-weight:normal; padding: 0 10px 0 10px; text-decoration:none' href='?page=wp-topbar.php&action=".$tab."'>$name</a>";
         
     }
     echo '<h2>';
@@ -114,9 +114,9 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid ) {
 
 
         if ( $tab == $current ) 
-            $links[] = "<a class='".$css." ui-corner-top ui-tabs-selected ui-state-active ui-state-hover' style='text-decoration:none; padding: 0 10px 0 10px;' href='?page=wp-topbar.php&action=".$tab.$wptb_barid_action."'>$name</a>";
+            $links[] = "<a class='wptb-".$tab." ".$css." ui-corner-top ui-tabs-selected ui-state-active ui-state-hover' style='text-decoration:none; padding: 0 10px 0 10px;' href='?page=wp-topbar.php&action=".$tab.$wptb_barid_action."'>$name</a>";
         else 
-            $links[] = "<a class='".$css." ui-corner-top' style='font-size:".$font." font-weight:normal; padding: 0 10px 0 10px; text-decoration:none' href='?page=wp-topbar.php&action=".$tab.$wptb_barid_action."'>$name</a>";
+            $links[] = "<a class='wptb-".$tab." ".$css." ui-corner-top' style='font-size:".$font." font-weight:normal; padding: 0 10px 0 10px; text-decoration:none' href='?page=wp-topbar.php&action=".$tab.$wptb_barid_action."'>$name</a>";
         
     }
     echo '<h2>';
@@ -156,13 +156,13 @@ function wptb_display_admin_header() {
 		WP-TopBar - Version <?php _e($WPTB_VERSION); ?></h2>
 		<div class="postbox">
 		<br>
-		Creates TopBars that can be shown at the top of your website.  Version 4 is a massive, major, mondo upgrade that allows you to add multiple TopBars.  If all works well, version 1 to 3.x users will have their existing options converted as their 1st TopBar.
+		Creates TopBars that can be shown at the top of your website.  Version 4 is a massive, major, mondo upgrade that allows you to add multiple TopBars.
 		<br><br>
 		Please <a id="wptbdonate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J" target="_blank"><img style="height:20px; vertical-align:middle;" src="<?php  echo plugins_url('/images/donate.gif', __FILE__)?>" /></a>
 if you find this plugin useful.
-
+		</br>
+		<p class="wptb-pointer"></p>
 		<hr>
-
 		</div>
 		<?php wp_nonce_field('wptb_update_setting_nonce','wptbupdatesettingnonce'); ?> 	
 
@@ -201,7 +201,7 @@ function wptb_display_common_info($wptbOptions) {
 		_e( "<div class='error'><strong>You have set the TopBar Location to Below the Footer (in the Main Options) but the CSS 'For the entire TopBar' (in TopBar CSS) may not be set correctly.<br>It should be something like <code>position:fixed; bottom: 0; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 
 	if (($wptbOptions['topbar_pos'] == 'header') && (strpos($wptbOptions['div_css'], "top") === false))
-		_e( "<div class='error'><strong>You have set the TopBar Location to be Above the Header (in the Main Options) but the CSS 'For the entire TopBar' (in TopBar CSS) may not be set correctly.<br>It should be something like <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
+		_e( "<div class='error'><strong>You have set the TopBar Location to be Above the Header (in the Main Options) but the CSS 'For the entire TopBar' (in TopBar CSS) may not be set correctly.<br>It should be something like <code>fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 
 	
 	

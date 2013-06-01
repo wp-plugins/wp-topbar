@@ -51,6 +51,10 @@ function wptb_closebutton_bulk_options() {
 	$close_button_css_count = $wpdb->get_var( ( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `close_button_css` = "'.$close_button_css_max.'"' ) );
 	if ( $close_button_css_count == $row_count) $close_button_css = $close_button_css_max;
 
+	if($wptb_debug)
+		echo '<br><code>WP-TopBar Debug Mode: Allow Close=['.$allow_close.'] / Respect Cookie=['.$respect_cookie.']</code>';
+
+
 
 	?>
 	
@@ -66,24 +70,25 @@ function wptb_closebutton_bulk_options() {
 		<div class="table">
 			<table class="form-table">	
 				<tr valign="top">
-						<td width="150">Allow TopBar to be closed by user:</label></td>
-						<td>
-						<label for="wptb_allow_close_yes"><input type="radio" id="allow_close_yes" name="wptballowclose" value="yes" <?php if ($allow_close == "yes") { _e('checked="checked"', "wptb"); }?>/> Yes</label>		
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<label for="wptb_allow_close_no"><input type="radio" id="allow_close_no" name="wptballowclose" value="no" <?php if ($allow_close == "no") { _e('checked="checked"', "wptb"); }?> /> No</label>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						</td>
-						<td>
-								<p class="sub"><em>Allows the user to close the TopBar.  Default is <code>No</code></em></p>
-						</td>
+					<td width="150">Allow TopBar to be closed by user:</label></td>
+					<td>
+					 	<p id="radio1" class="ui-button ui-button-wptbset">
+							<input type="radio" id="wptballowcloseb1" name="wptballowclose" class="ui-helper-hidden-accessible" value="yes" <?php if ($allow_close == "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptballowcloseb1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
+							<input type="radio" id="wptballowcloseb2" name="wptballowclose" class="ui-helper-hidden-accessible" value="no" <?php if ($allow_close == "no") { _e('checked="checked"', "wptb"); }?>><label for="wptballowcloseb2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
+						</p>						
+					</td>
+					<td>
+						<p class="sub"><em>Allows the user to close the TopBar.  Default is <code>No</code></em></p>
+					</td>
 				</tr>					
 				<tr valign="top">
 					<td width="150">Enable Cookies:</label></td>
-					<td>
-					<label for="wptb_respect_cookie_use"><input type="radio" id="respect_cookie_use" name="wptbrespectcookie" value="always" <?php if ($respect_cookie == "always") { _e('checked="checked"', "wptb"); }?> /> Yes</label>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_respect_cookie_ignore"><input type="radio" id="respect_cookie_ignore" name="wptbrespectcookie" value="ignore" <?php if ($respect_cookie == "ignore") { _e('checked="checked"', "wptb"); }?>/> No</label>		
-					&nbsp;&nbsp;&nbsp;&nbsp;
+					<td>						
+					 	<p id="radio2" class="ui-button ui-button-wptbset">
+							<input type="radio" id="wptbrespectcookieb1" name="wptbrespectcookie" class="ui-helper-hidden-accessible" value="always" <?php if ($respect_cookie == "always") { _e('checked="checked"', "wptb"); }?>><label for="wptbrespectcookieb1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
+							<input type="radio" id="wptbrespectcookieb2" name="wptbrespectcookie" class="ui-helper-hidden-accessible" value="ignore" <?php if ($respect_cookie == "ignore") { _e('checked="checked"', "wptb"); }?>><label for="wptbrespectcookieb2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
+						</p>					
+					
 					</td>
 					<td>
 							<p class="sub"><em>Enable use of cookies to control TopBar behavior.  Default is <code>No</code></em></p>
@@ -152,7 +157,7 @@ function wptb_closebutton_options($wptbOptions) {
 		echo '<br><code>WP-TopBar Debug Mode: In Close Button Options</code>';
 
 	?>
-		
+	
 	<div class="postbox">
 										
 	<h3><a name="CloseButton">Close Button</a></h3>
@@ -170,10 +175,10 @@ function wptb_closebutton_options($wptbOptions) {
 				<tr valign="top">
 						<td width="150">Allow TopBar to be closed by user:</label></td>
 						<td>
-						<label for="wptb_allow_close_yes"><input type="radio" id="allow_close_yes" name="wptballowclose" value="yes" <?php if ($wptbOptions['allow_close'] == "yes") { _e('checked="checked"', "wptb"); }?>/> Yes</label>		
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<label for="wptb_allow_close_no"><input type="radio" id="allow_close_no" name="wptballowclose" value="no" <?php if ($wptbOptions['allow_close'] == "no") { _e('checked="checked"', "wptb"); }?> /> No</label>
-						&nbsp;&nbsp;&nbsp;&nbsp;
+						 	<p id="radio3" class="ui-button ui-button-wptbset">
+								<input type="radio" id="wptballowclose1" name="wptballowclose" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['allow_close'] == "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptballowclose1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
+								<input type="radio" id="wptballowclose2" name="wptballowclose" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['allow_close'] == "no") { _e('checked="checked"', "wptb"); }?>><label for="wptballowclose2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
+							</p>						
 						</td>
 						<td>
 								<p class="sub"><em>Allows the user to close the TopBar.  Default is <code>No</code></em></p>
@@ -181,12 +186,12 @@ function wptb_closebutton_options($wptbOptions) {
 				</tr>					
 				<tr valign="top">
 					<td width="150">Enable Cookies:</label></td>
-					<td>
-					<label for="wptb_respect_cookie_use"><input type="radio" id="respect_cookie_use" name="wptbrespectcookie" value="always" <?php if ($wptbOptions['respect_cookie'] == "always") { _e('checked="checked"', "wptb"); }?> /> Yes</label>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_respect_cookie_ignore"><input type="radio" id="respect_cookie_ignore" name="wptbrespectcookie" value="ignore" <?php if ($wptbOptions['respect_cookie'] == "ignore") { _e('checked="checked"', "wptb"); }?>/> No</label>		
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					</td>
+						<td>
+						 	<p id="radio4" class="ui-button ui-button-wptbset">
+								<input type="radio" id="wptbrespectcookie1" name="wptbrespectcookie" class="ui-helper-hidden-accessible" value="always" <?php if ($wptbOptions['respect_cookie'] == "always") { _e('checked="checked"', "wptb"); }?>><label for="wptbrespectcookie1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
+								<input type="radio" id="wptbrespectcookie2" name="wptbrespectcookie" class="ui-helper-hidden-accessible" value="ignore" <?php if ($wptbOptions['respect_cookie'] == "ignore") { _e('checked="checked"', "wptb"); }?>><label for="wptbrespectcookie2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
+							</p>											
+						</td>
 					<td>
 							<p class="sub"><em>Enable use of cookies to control TopBar behavior.  Default is <code>No</code></em></p>
 					</td>

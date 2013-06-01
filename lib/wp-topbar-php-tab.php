@@ -93,7 +93,7 @@ function wptb_php_options ($wptbOptions) {
 					<td colspan="2">
 					Sample PHP code to use in the "BEFORE" code: Check if a user is logged in, if so then customize the TopBar text -- otherwise add a second topbar:
 					<br>
-					<textarea rows="7" cols="150">
+					<textarea rows="10" cols="150" style="background:lightyellow">
 if ( is_user_logged_in() ) {
   global $current_user;
   get_currentuserinfo();

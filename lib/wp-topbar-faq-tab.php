@@ -66,13 +66,29 @@ Use <code>#topbar</code>
 <p>
 <li><strong>What if I fix the TopBar to the top or bottom of the page?</strong></li>
 <p>
-Use this CSS to fix the TopBar to the bottom of the page: 
-<p>	<code>position:fixed; bottom: 0; padding: 0; margin: 0; width: 100%; z-index: 99999;</code>
+Use this CSS to fix the TopBar to the bottom of the page: </br>
+<p>	<code>position:fixed; bottom: 0; padding: 0; margin: 0; width: 100%; z-index: 99999;</code></br>
 <p>
-Or this to fix the TopBar to the top of the page (adjust the top value to be the height of your TopBar):
-<p>	<code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code>
+Or this to fix the TopBar to the top of the page (adjust the top value to be the height of your TopBar):</br>
+<p>	<code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></br>
 <p>
-Note that by putting your TopBar in a Fixed Position, you will overlay the content of your website by the TopBar.
+Note that by putting your TopBar in a Fixed Position, you will overlay the content of your website by the TopBar.</br>
+<p>
+<li><strong>How do I add a Menu to the TopBar</strong></li>
+In your theme's functions.php file add this code to create a custom menu. Then use the standard WordPress Appearance | Menu to create the menu:</br>
+<p><code>
+//register the custom menus</br>
+function register_wptopbar_menus() {</br>
+&nbsp;&nbsp;&nbsp;register_nav_menus(</br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array( 'wptopbar-menu' => __( 'TopBar Menu' ) )</br>
+&nbsp;&nbsp;&nbsp;);</br>
+}</br>
+add_action( 'init', 'register_wptopbar_menus' );</br>
+</code>
+In the PHP Option ("Before" or "After" - your choice)... use this code:</br>
+<code></br>
+wp_nav_menu(array('menu'=>'wptopbar-menu' ));</br>
+</code>
 <p>
 <li><strong>How to Find the Page ID</strong></li>
 <p>

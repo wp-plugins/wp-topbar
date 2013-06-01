@@ -1,0 +1,20 @@
+/*  
+
+	wp-topbar.css 
+	
+*/
+
+.ui-button-wptb {padding:.2em .2em}
+
+/* fix to bug in wordpress that causes button clicks in most browswers to scroll page to top
+	see http://core.trac.wordpress.org/ticket/23684
+*/
+.screen-reader-text,.screen-reader-text span,.ui-helper-hidden-accessible {
+position:fixed;
+left:1em;
+top:1em;
+height:1px;
+width:1px;
+overflow:hidden;
+display:none;
+}

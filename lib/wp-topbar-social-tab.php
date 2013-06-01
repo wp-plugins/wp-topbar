@@ -21,7 +21,7 @@ function wptb_socialbutton_options($wptbOptions) {
 		echo '<br><code>WP-TopBar Debug Mode: In Social Button Options</code>';
 
 	?>
-		
+
 	<div class="postbox">
 										
 	<h3><a name="SocialButtons">Social Button Settings</a></h3>
@@ -55,13 +55,12 @@ function wptb_socialbutton_options($wptbOptions) {
 				<br>Social Icon 1 Link:&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="text" name="wptbsocialicon1link" id="link" size="100" value="<?php echo stripslashes($wptbOptions['social_icon1_link']); ?>" >
 				<br>Social Icon 1 Link Target:&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon1_link_target_blank"><input type="radio" id="wptb_icon1_link_target_blank" name="wptbicon1linktarget" value="blank" <?php if ($wptbOptions['social_icon1_link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>/> _blank</label>		
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon1_link_target_self"><input type="radio" id="wptb_icon1_link_target_self" name="wptbicon1linktarget" value="self" <?php if ($wptbOptions['social_icon1_link_target'] == "self") { _e('checked="checked"', "wptb"); }?> /> _self</label>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon1_link_target_parent"><input type="radio" id="wptb_icon1_link_target_parent" name="wptbicon1linktarget" value="parent" <?php if ($wptbOptions['social_icon1_link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>/> _parent</label>	
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon1_link_target_top"><input type="radio" id="wptb_icon1_link_target_top" name="wptbicon1linktarget" value="top" <?php if ($wptbOptions['social_icon1_link_target'] == "top") { _e('checked="checked"', "wptb"); }?>/> _top</label>	
+					 	<p id="radio1" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbicon1linktarget1" name="wptbicon1linktarget" class="ui-helper-hidden-accessible" value="blank" <?php if ($wptbOptions['social_icon1_link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon1linktarget1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_blank</span></label>
+						<input type="radio" id="wptbicon1linktarget2" name="wptbicon1linktarget" class="ui-helper-hidden-accessible" value="self" <?php if ($wptbOptions['social_icon1_link_target'] == "self") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon1linktarget2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_self</span></label>
+						<input type="radio" id="wptbicon1linktarget3" name="wptbicon1linktarget" class="ui-helper-hidden-accessible" value="parent" <?php if ($wptbOptions['social_icon1_link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon1linktarget3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_parent</span></label>
+						<input type="radio" id="wptbicon1linktarget4" name="wptbicon1linktarget" class="ui-helper-hidden-accessible" value="top" <?php if ($wptbOptions['social_icon1_link_target'] == "top") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon1linktarget4" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_top</span></label>
+					 	</p>				
 				<br>Social Icon 1 CSS:&nbsp;&nbsp;&nbsp;&nbsp;
 					<textarea name="wptbsocialicon1css" id="wptb_socialicon1_css" rows="2" cols="100"><?php echo $wptbOptions['social_icon1_css']; ?></textarea>
 				<br>
@@ -85,13 +84,12 @@ function wptb_socialbutton_options($wptbOptions) {
 				<br>Social Icon 2 Link:&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="text" name="wptbsocialicon2link" id="link" size="100" value="<?php echo stripslashes($wptbOptions['social_icon2_link']); ?>" >
 				<br>Social Icon 2 Link Target:&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon2_link_target_blank"><input type="radio" id="wptb_icon2_link_target_blank" name="wptbicon2linktarget" value="blank" <?php if ($wptbOptions['social_icon2_link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>/> _blank</label>		
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon2_link_target_self"><input type="radio" id="wptb_icon2_link_target_self" name="wptbicon2linktarget" value="self" <?php if ($wptbOptions['social_icon2_link_target'] == "self") { _e('checked="checked"', "wptb"); }?> /> _self</label>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon2_link_target_parent"><input type="radio" id="wptb_icon2_link_target_parent" name="wptbicon2linktarget" value="parent" <?php if ($wptbOptions['social_icon2_link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>/> _parent</label>	
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon2_link_target_top"><input type="radio" id="wptb_icon2_link_target_top" name="wptbicon2linktarget" value="top" <?php if ($wptbOptions['social_icon2_link_target'] == "top") { _e('checked="checked"', "wptb"); }?>/> _top</label>
+					 	<p id="radio2" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbicon2linktarget1" name="wptbicon2linktarget" class="ui-helper-hidden-accessible" value="blank" <?php if ($wptbOptions['social_icon2_link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon2linktarget1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_blank</span></label>
+						<input type="radio" id="wptbicon2linktarget2" name="wptbicon2linktarget" class="ui-helper-hidden-accessible" value="self" <?php if ($wptbOptions['social_icon2_link_target'] == "self") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon2linktarget2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_self</span></label>
+						<input type="radio" id="wptbicon2linktarget3" name="wptbicon2linktarget" class="ui-helper-hidden-accessible" value="parent" <?php if ($wptbOptions['social_icon2_link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon2linktarget3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_parent</span></label>
+						<input type="radio" id="wptbicon2linktarget4" name="wptbicon2linktarget" class="ui-helper-hidden-accessible" value="top" <?php if ($wptbOptions['social_icon2_link_target'] == "top") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon2linktarget4" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_top</span></label>
+					 	</p>						
 				<br>Social Icon 2 CSS:&nbsp;&nbsp;&nbsp;&nbsp;
 					<textarea name="wptbsocialicon2css" id="wptb_socialicon2_css" rows="2" cols="100"><?php echo $wptbOptions['social_icon2_css']; ?></textarea>
 				<br>
@@ -115,13 +113,12 @@ function wptb_socialbutton_options($wptbOptions) {
 				<br>Social Icon 3 Link:&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="text" name="wptbsocialicon3link" id="link" size="100" value="<?php echo stripslashes($wptbOptions['social_icon3_link']); ?>" >
 				<br>Social Icon 3 Link Target:&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon3_link_target_blank"><input type="radio" id="wptb_icon3_link_target_blank" name="wptbicon3linktarget" value="blank" <?php if ($wptbOptions['social_icon3_link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>/> _blank</label>		
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon3_link_target_self"><input type="radio" id="wptb_icon3_link_target_self" name="wptbicon3linktarget" value="self" <?php if ($wptbOptions['social_icon3_link_target'] == "self") { _e('checked="checked"', "wptb"); }?> /> _self</label>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon3_link_target_parent"><input type="radio" id="wptb_icon3_link_target_parent" name="wptbicon3linktarget" value="parent" <?php if ($wptbOptions['social_icon3_link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>/> _parent</label>	
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon3_link_target_top"><input type="radio" id="wptb_icon3_link_target_top" name="wptbicon3linktarget" value="top" <?php if ($wptbOptions['social_icon3_link_target'] == "top") { _e('checked="checked"', "wptb"); }?>/> _top</label>									
+					 	<p id="radio3" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbicon3linktarget1" name="wptbicon3linktarget" class="ui-helper-hidden-accessible" value="blank" <?php if ($wptbOptions['social_icon3_link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon3linktarget1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_blank</span></label>
+						<input type="radio" id="wptbicon3linktarget2" name="wptbicon3linktarget" class="ui-helper-hidden-accessible" value="self" <?php if ($wptbOptions['social_icon3_link_target'] == "self") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon3linktarget2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_self</span></label>
+						<input type="radio" id="wptbicon3linktarget3" name="wptbicon3linktarget" class="ui-helper-hidden-accessible" value="parent" <?php if ($wptbOptions['social_icon3_link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon3linktarget3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_parent</span></label>
+						<input type="radio" id="wptbicon3linktarget4" name="wptbicon3linktarget" class="ui-helper-hidden-accessible" value="top" <?php if ($wptbOptions['social_icon3_link_target'] == "top") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon3linktarget4" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_top</span></label>
+					 	</p>								
 				<br>Social Icon 3 CSS:&nbsp;&nbsp;&nbsp;&nbsp;
 					<textarea name="wptbsocialicon3css" id="wptb_socialicon3_css" rows="2" cols="100"><?php echo $wptbOptions['social_icon3_css']; ?></textarea>
 				<br>
@@ -147,13 +144,12 @@ function wptb_socialbutton_options($wptbOptions) {
 				<br>Social Icon 4 CSS:&nbsp;&nbsp;&nbsp;&nbsp;
 					<textarea name="wptbsocialicon4css" id="wptb_socialicon4_css" rows="2" cols="100"><?php echo $wptbOptions['social_icon4_css']; ?></textarea>
 				<br>Social Icon 4 Link Target:&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon4_link_target_blank"><input type="radio" id="wptb_icon4_link_target_blank" name="wptbicon4linktarget" value="blank" <?php if ($wptbOptions['social_icon4_link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>/> _blank</label>		
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon4_link_target_self"><input type="radio" id="wptb_icon4_link_target_self" name="wptbicon4linktarget" value="self" <?php if ($wptbOptions['social_icon4_link_target'] == "self") { _e('checked="checked"', "wptb"); }?> /> _self</label>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon4_link_target_parent"><input type="radio" id="wptb_icon4_link_target_parent" name="wptbicon4linktarget" value="parent" <?php if ($wptbOptions['social_icon4_link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>/> _parent</label>	
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_icon4_link_target_top"><input type="radio" id="wptb_icon4_link_target_top" name="wptbicon4linktarget" value="top" <?php if ($wptbOptions['social_icon4_link_target'] == "top") { _e('checked="checked"', "wptb"); }?>/> _top</label>					
+					 	<p id="radio4" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbicon4linktarget1" name="wptbicon4linktarget" class="ui-helper-hidden-accessible" value="blank" <?php if ($wptbOptions['social_icon4_link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon4linktarget1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_blank</span></label>
+						<input type="radio" id="wptbicon4linktarget2" name="wptbicon4linktarget" class="ui-helper-hidden-accessible" value="self" <?php if ($wptbOptions['social_icon4_link_target'] == "self") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon4linktarget2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_self</span></label>
+						<input type="radio" id="wptbicon4linktarget3" name="wptbicon4linktarget" class="ui-helper-hidden-accessible" value="parent" <?php if ($wptbOptions['social_icon4_link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon4linktarget3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_parent</span></label>
+						<input type="radio" id="wptbicon4linktarget4" name="wptbicon4linktarget" class="ui-helper-hidden-accessible" value="top" <?php if ($wptbOptions['social_icon4_link_target'] == "top") { _e('checked="checked"', "wptb"); }?>><label for="wptbicon4linktarget4" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_top</span></label>
+					 	</p>			
 				<br>
 					<?php if ( ! ($wptbOptions['social_icon4_image'] == "") ) {
 						list($width, $height, $type, $attr) = getimagesize($wptbOptions['social_icon4_image']);

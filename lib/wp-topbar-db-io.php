@@ -58,8 +58,8 @@ function wptb_display_all_TopBars() {
 			'end_time' => 'End Time',
 			'show_it' => 'Time Check',
 			'enable_topbar' => 'Enabled?',
-			'only_logged_in' => 'Logged In Users Only?',
-			'text_line' => 'Bar and Link Text'
+			'only_logged_in' => 'Logged In Users Only?'
+//			'text_line' => 'Bar and Link Text'
 		);
 	}
 	    /** ************************************************************************
@@ -139,11 +139,6 @@ function wptb_display_all_TopBars() {
      * column_{$column_title} - if it exists, that method is run. If it doesn't
      * exist, column_default() is called instead.
      * 
-     * This example also illustrates how to implement rollover actions. Actions
-     * should be an associative array formatted as 'slug'=>'link html' - and you
-     * will need to generate the URLs yourself. You could even ensure the links
-     * 
-     * 
      * @see WP_List_Table::::single_row_columns()
      * @param array $item A singular item (one full row's worth of data)
      * @return string Text to be placed inside the column <td> (movie title only)
@@ -201,9 +196,8 @@ function wptb_display_all_TopBars() {
 		echo '</tr>';
 		echo '<tr' . $row_class .  '>';
 		echo '<td>&nbsp</td>';
-		echo '<td style="border-top-style:none;" colspan="7">';
+		echo '<td style="border-top: thin solid black; border-bottom: thin solid black;  border-left: thin solid black; border-right: thin solid black;" colspan="7">';
 		wptb::wptb_display_TopBar("",$item, false, "");
-		echo '<br><br>';
 		echo '</td>';
 		echo '</tr>';
 	}
@@ -1050,6 +1044,7 @@ function wptb_create_table($wptb_echo_on) {
 		past_cookie_values  VARCHAR(20),
 		allow_close VARCHAR(20),
 		topbar_pos VARCHAR (20),
+		scroll_action VARCHAR (20),
 		text_color VARCHAR(20),
 		bar_color  VARCHAR(20),
 		bottom_color VARCHAR(20),
@@ -1135,6 +1130,7 @@ function wtpb_set_default_settings() {
 		'past_cookie_values' => '1',
 		'allow_close' => 'no',
 		'topbar_pos' => 'header',
+		'scroll_action' => 'off', 
 		'text_color' => '#000000',
 		'bar_color' => '#ffffff',
 		'bottom_color' => '#f90000',
@@ -1156,7 +1152,7 @@ function wtpb_set_default_settings() {
 		'enable_image' => 'false',
 		'custom_css_bar' => '',
 		'custom_css_text' => '',
-		'div_css' => 'position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;',
+		'div_css' => 'top: 40; padding:0; margin:0; width: 100%; z-index: 99999;',
 		'social_icon1' => 'off',
 		'social_icon2' => 'off', 
 		'social_icon3' => 'off',
@@ -1255,6 +1251,7 @@ function wtpb_insert_row($wptbOptions, $wptb_echo_on) {
 		'past_cookie_values' => $wptbOptions[ 'past_cookie_values' ],
 		'allow_close' => $wptbOptions[ 'allow_close' ],
 		'topbar_pos' => $wptbOptions[ 'topbar_pos' ],
+		'scroll_action' => $wptbOptions[ 'scroll_action' ], 
 		'text_color' => $wptbOptions[ 'text_color' ],
 		'bar_color' => $wptbOptions[ 'bar_color' ],
 		'bottom_color' => $wptbOptions[ 'bottom_color' ],
@@ -1352,6 +1349,7 @@ function wptb_update_row($wptbOptions, $wptb_echo_on) {
 		'past_cookie_values' => $wptbOptions[ 'past_cookie_values' ],
 		'allow_close' => $wptbOptions[ 'allow_close' ],
 		'topbar_pos' => $wptbOptions[ 'topbar_pos' ],
+		'scroll_action' => $wptbOptions[ 'scroll_action' ], 
 		'text_color' => $wptbOptions[ 'text_color' ],
 		'bar_color' => $wptbOptions[ 'bar_color' ],
 		'bottom_color' => $wptbOptions[ 'bottom_color' ],
@@ -1727,7 +1725,11 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 	if (isset($_POST['wptbtopbarpos'])) {
 		$wptbOptions['topbar_pos'] = $_POST['wptbtopbarpos'];
 	}
-	
+
+	if (isset($_POST['wptbscrollaction'])) {
+		$wptbOptions['scroll_action'] = $_POST['wptbscrollaction'];
+	}
+		
 	// need to check the make sure we are the right tab to correctly handle the toggle buttons
 	
 	if ( $_GET['action'] == 'socialbuttons') {
@@ -1833,6 +1835,9 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 // if upgrade functions need to run.
 // Parameter $wptb_echo_on is used for debugging:  
 //		1=use echo function, 0=use error_log function
+//
+// DB Versions Listing:
+// 4.17 - added scroll_action field 
 //=========================================================================			
 	
 function wtpb_check_for_plugin_upgrade($wptb_echo_on) { 
@@ -1841,7 +1846,7 @@ function wtpb_check_for_plugin_upgrade($wptb_echo_on) {
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 
-	$WPTB_DB_VERSION = "4.15";  // rev this only when this changes
+	$WPTB_DB_VERSION = "4.17";  // rev this only when this changes
 
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			

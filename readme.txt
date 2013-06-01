@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.5.1
-Stable tag: 4.16
+Stable tag: 4.17
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
@@ -14,6 +14,8 @@ Create **MULTIPLE** (Whohoo!) TopBars that will be shown at the top (or bottom) 
 
 New with Verison 4.15+ is the ability to add custom PHP to be executed when the TopBars are created.  Of course, that can be super dangerous if you enter PHP code that is invalid -- you could break your website.  That option should only be used by **Advanced Swimmers** only.
 
+Version 4.17 adds the ability to display the TopBar only when the user scrolls the page.
+
 Version 4.10+ now statically creates the TopBar to allow you to take advantage of caching plugins.
 
 **Superduper major re-write with Version 4.0.**  Refactored all the functions to use its own database table instead of WordPress options.  This allows you to create an unlimited number of TopBars.  This version is leaner, faster, smarter.   Quick links are added throughout to make editing your TopBars a breeze.
@@ -22,7 +24,7 @@ Want to see how this TopBar looks?   You can test how your TopBars show up to al
 
 Want to create a lot of TopBars -- you can copy the existing ones with just a few clicks.   Know SQL?  You can even export the TopBars in three different formats (JSON, CSV or SQL).    Sorry, **no support** is given if you import directly to the database.
 
-With so many option pages, I only included a few screen images.  More images can be found on [Zwebify.com](http://zwebify.com/wordpress-plugins/)
+With so many option pages, I only included a few screen images.  More images can be found on [Zwebify.com](http://zwebify.com/WordPress-plugins/)
 
 Here is a crazy-long list of options you have for each TopBar -- and this is not even complete!
 
@@ -131,7 +133,7 @@ Note that by putting your TopBar in a Fixed Position, you will overlay the conte
 
 You can find the Page ID in the Edit Post or Edit Page URL. For example, the page ID for the following example is “1234.”
 
-http://example.wordpress.com/wp-admin/page.php?action=edit&post=1234
+http://example.WordPress.com/wp-admin/page.php?action=edit&post=1234
 
 = How do I test the TopBar? = 
 
@@ -150,6 +152,10 @@ Go to your Plugins page and delete the plugin or delete all the files in your `/
 
 == Upgrade Notice ==
 
+= 4.17 = 
+
+Version 4.17 adds a new Scrolling option, has some defect fixes and JavaScript updates
+
 = 4.16 = 
 
 Minor fix to SQL/CSV Export function
@@ -164,7 +170,7 @@ Fixed issue where sometimes the html link would sometimes not display correctly
 
 = 4.13 = 
 
-Changed to use Wordpress' embedded jQuery UI & new Color Picker (on WP 3.5+), cleaned up CSS Options Page and other fixes
+Changed to use WordPress' embedded jQuery UI & new Color Picker (on WP 3.5+), cleaned up CSS Options Page and other fixes
 
 = 4.12 = 
 
@@ -196,7 +202,7 @@ Version 4.00 Converted to using database to store MULTIPLE (yahoo!) TopBars.  Re
 
 = 3.10 = 
 
-Version 3.10 supports Wordpress 3.4 and adds the capability to restrict the TopBar from showing by category.   You can also explicitly manage how it shows up on the Home Page.   Moved Control logic to its own options page.
+Version 3.10 supports WordPress 3.4 and adds the capability to restrict the TopBar from showing by category.   You can also explicitly manage how it shows up on the Home Page.   Moved Control logic to its own options page.
 
 = 3.09 = 
 
@@ -228,7 +234,7 @@ Version 3.03 allows users to close the TopBar
 
 = 3.02 = 
 
-Version 3.02 changed date/time picker to a GPL version to conform to Wordpress licensing
+Version 3.02 changed date/time picker to a GPL version to conform to WordPress licensing
 
 = 3.01 = 
 
@@ -264,6 +270,18 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 == Changelog ==
 
 
+= 4.17 - 06/01/2013 = 
+
+1. UPDATED:   timepicker.js updated to version 1.3 - http://trentrichardson.com/examples/timepicker/
+2. FIXED:     More fixes to the SQL/CSV Export functions
+3. UPDATED:	  Jazzed up the UI a bit
+4. CHANGED:   Updated to JQueryUI to 1.10.3
+5. ADDED:     Option to display only when user scrolls the page
+6. ADDED:     Included WordPress Pointers to highlight new functionality, which can be permanently dismissed once read
+7. CHANGED:   Changed the DEFAULT TopBar to not be "fixed" to the top of the page.  This will push the page down instead of overlaying it.
+8. CHANGED:   Cleaned up the plugin's folder structure
+
+
 = 4.16 - 05/16/2013 = 
 
 1. FIXED:  SQL/CSV Export Function adjusted to account for new fields.
@@ -271,7 +289,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 4.15 - 05/03/2013 = 
 
-1. ADDED:  Added PHP options that can be added to the TopBar.  USE AT OWN RISK
+1. ADDED:   Added PHP options that can be added to the TopBar.  USE AT OWN RISK
 2. ADDED:   Added ability to select TopBars based on whether the user is logged in
 3. CHANGED: Now loads own version of JQueryUI (1.10.2) since the DatePicker was not consistently being loaded correctly
 
@@ -284,8 +302,8 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 4.13 - 02/9/2013 =
 
-1. CHANGED: Changed to use Wordpress' embedded jQueryUI
-2. CHANGED: Updated Color Picker from farbtastic to the new WordPress 3.5 Color Picker if using Wordpress 3.5+
+1. CHANGED: Changed to use WordPress' embedded jQueryUI
+2. CHANGED: Updated Color Picker from farbtastic to the new WordPress 3.5 Color Picker if using WordPress 3.5+
 3. UPDATED: timepicker.js updated to version 1.2 (future proof for jQueryUI 1.10 compatability) - http://trentrichardson.com/examples/timepicker/
 4. CHANGED: CSS Options page changed to try to make it clearer how the various CSS options work
 5. CHANGED: Removed URL check on the TopBar link so that qtranslate will process the link correctly
@@ -293,7 +311,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 4.12 - 01/28/2013 =
 
-1. FIXED:   Issue that sometimes causes the plugin to not activate correctly.  Finally found it by using the Bitnami Wordpress Stack - http://bitnami.org/stack/wordpress
+1. FIXED:   Issue that sometimes causes the plugin to not activate correctly.  Finally found it by using the Bitnami WordPress Stack - http://bitnami.org/stack/WordPress
 2. FIXED:   Plugin deletion messages
 3. CHANGED: Removed the option to delete a TopBar from Options pages. Use the All Tables view and Delete using the Bulk Actions drop down list
 
@@ -307,15 +325,15 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 = 4.10 - 12/10/2012 =
 
 1. VALIDATED: Version 4.10 supports WordPress 3.5
-2. FIXED: Several defects found in 3.5 testing
-3. NEW: Now supports caching plugins by generating HTML for all possible TopBars and using JavaScript to randomly select a TopBar
+2. FIXED:     Several defects found in 3.5 testing
+3. NEW:       Now supports caching plugins by generating HTML for all possible TopBars and using JavaScript to randomly select a TopBar
 
 = 4.03 - 9/10/2012 =
 
-1. VALIDATED: Version 4.04 supports Wordpress 3.4.2
-2. NEW: Adds security features (nonces) to the admin pages (Thanks to Blake Entrekin)
-3. FIXED: how the CSS for the link is rendered
-4. FIXED: enable/disable social buttons work again
+1. VALIDATED: Version 4.04 supports WordPress 3.4.2
+2. NEW:       Adds security features (nonces) to the admin pages (Thanks to Blake Entrekin)
+3. FIXED:     How the CSS for the link is rendered
+4. FIXED:     Enable/disable social buttons work again
 
 = 4.02 - 8/31/2012 =
 
@@ -324,10 +342,10 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 4.01 - 7/04/2012 =
 
-1. NEW: Adds explicit support for the qtranslate plugin
-2. FIX: No longer calls exception when the user has not set a default topbar
-3. ADDED: Tab on main page to allow you to bulk set the Close Button settings
-4. FIX: WordPress Export Functions -- workaround for core defect?
+1. NEW:    Adds explicit support for the qtranslate plugin
+2. FIX:    No longer calls exception when the user has not set a default topbar
+3. ADDED:  Tab on main page to allow you to bulk set the Close Button settings
+4. FIX:    WordPress Export Functions -- workaround for core defect?
 
 = 4.00 - 7/01/2012 = 
 
@@ -335,16 +353,16 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 3.10 - 6/05/2012 = 
 
-1. VALIDATED: Version 3.10 supports Wordpress 3.4
-2. FIXED: Removed PSD icons files to make plugin smaller to install
-3. NEW: Adds the capability to restrict the TopBar from showing by category
-4. NEW: You can also excplicity manage how it shows up on the Home Page
-5. NEW: Moved Page ID and new Category ID/Home Page control logic to its own options page
-6. CHANGED:  The labels and descriptions on the options page for selecting the Page ID include/exclude logic. 
+1. VALIDATED: Version 3.10 supports WordPress 3.4
+2. FIXED:     Removed PSD icons files to make plugin smaller to install
+3. NEW:       Adds the capability to restrict the TopBar from showing by category
+4. NEW:       You can also excplicity manage how it shows up on the Home Page
+5. NEW:       Moved Page ID and new Category ID/Home Page control logic to its own options page
+6. CHANGED:   The labels and descriptions on the options page for selecting the Page ID include/exclude logic. 
  
 = 3.09 - 4/26/2012 = 
 
-1. NEW: Added submenus to the Admin bar.
+1. NEW:   Added submenus to the Admin bar.
 2. FIXED: Code to support multisite (network) installs.
 
 = 3.08 - 4/18/2012 = 
@@ -363,7 +381,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 = 3.05 - 3/31/2012 = 
 
 1. FIXED: javascript error if "footer" is chosen as placement of TopBar
-2. NEW: Redesigned admin page
+2. NEW:   Redesigned admin page
 
 = 3.04 - 3/30/2012 = 
 
@@ -371,23 +389,23 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 3.03 - 3/29/2012 = 
 
-1. NEW: Allow users to close the TopBar
+1. NEW:   Allow users to close the TopBar
 2. FIXED: Moved HTML out of HEAD tags and into the BODY tags
 
 = 3.02 - 3/22/2012 = 
 
-1. FIXED: Changed date/time picker to a GPL version to conform to Wordpress licensing
+1. FIXED: Changed date/time picker to a GPL version to conform to WordPress licensing
 
 = 3.01 - 3/18/2012 = 
 
-1. FIXED: Bug that caused wordpress post/pages not to load correctly
+1. FIXED: Bug that caused WordPress post/pages not to load correctly
 
 = 3.0 - 3/17/2012 = 
 
-1. NEW: Added start/end times to limit when the TopBar shows.
+1. NEW:   Added start/end times to limit when the TopBar shows.
 2. FIXED: Updated deprecated functions
 3. FIXED: Tightened code and made the code smaller 
-4. FIXED: enqueues javascript, if necessary
+4. FIXED: Enqueues javascript, if necessary
 
 = 2.1 - 12/30/2011 = 
 
@@ -395,41 +413,41 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 2.0 - 12/26/2011 = 
 
-1. NEW:Added option to make the TopBar disappear after a set amount of time.
-2. NEW:Added copy buttons to copy code samples.
-3. NEW:Added option to invert the Include Pages list to make it actually exclude pages.
-4. FIXED:Cleaned up code to make it tighter.
+1. NEW:   Added option to make the TopBar disappear after a set amount of time.
+2. NEW:   Added copy buttons to copy code samples.
+3. NEW:   Added option to invert the Include Pages list to make it actually exclude pages.
+4. FIXED: Cleaned up code to make it tighter.
 
 = 1.5 - 12/23/2011 = 
 
 1. FIXED: Moved TopBar to the Body instead of the Header and fixed missing close DIV.  That MAY break your site -- test carefully.
-2. NEW:Adds additional Link option (target) which allows you to change how the link opens.
-3. NEW:Added option to put TopBar at the footer. (Thanks, candace88, for the idea!)
-4. NEW:Added and new DIV-level CSS. 
+2. NEW:   Adds additional Link option (target) which allows you to change how the link opens.
+3. NEW:   Added option to put TopBar at the footer. (Thanks, candace88, for the idea!)
+4. NEW:   Added and new DIV-level CSS. 
 
 = 1.4 - 12/10/2011 = 
 
-1. NEW:Added options to change the margin of the TopBar.
-2. FIXED:Cleaned up the code.
-3. VALIDATED: Version 1.4 supports Wordpress 3.3
+1. NEW:       Added options to change the margin of the TopBar.
+2. FIXED:     Cleaned up the code.
+3. VALIDATED: Version 1.4 supports WordPress 3.3
 
 = 1.3 - 12/05/2011 = 
 
-1. NEW:Added easier navigation buttons.  Added more space to the CSS section.
-2. NEW:Added code to allow you to use quotes in your text.
-3. NEW:Added id="topbar" to the output.
+1. NEW: Added easier navigation buttons.  Added more space to the CSS section.
+2. NEW: Added code to allow you to use quotes in your text.
+3. NEW: Added id="topbar" to the output.
 
 = 1.2.1 - 10/08/2011 =
 
-1. FIXED:Minor fix to allow settings page to display correctly.
+1. FIXED: Minor fix to allow settings page to display correctly.
 
 = 1.2 - 10/08/2011 =
 
-1. NEW:Add image background, custom css, and text alignment.
+1. NEW: Add image background, custom css, and text alignment.
 
 = 1.1 - 10/07/2011 =
 
-1. FIXED:Cleaned up the code to make the TopBar be invisible upon first load.
+1. FIXED: Cleaned up the code to make the TopBar be invisible upon first load.
 
 = 1.0 - 9/25/2011 =
 

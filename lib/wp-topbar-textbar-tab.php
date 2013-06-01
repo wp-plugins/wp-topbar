@@ -51,14 +51,13 @@ function wptb_topbartext_options($wptbOptions) {
 				<tr valign="top">
 					<td width="50">Link Target:</label></td>
 					<td>
-					<label for="wptb_link_target_blank"><input type="radio" id="wptb_link_target_blank" name="wptblinktarget" value="blank" <?php if ($wptbOptions['link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>/> _blank</label>		
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_link_target_self"><input type="radio" id="wptb_link_target_self" name="wptblinktarget" value="self" <?php if ($wptbOptions['link_target'] == "self") { _e('checked="checked"', "wptb"); }?> /> _self</label>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_link_target_parent"><input type="radio" id="wptb_link_target_parent" name="wptblinktarget" value="parent" <?php if ($wptbOptions['link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>/> _parent</label>	
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="wptb_link_target_top"><input type="radio" id="wptb_link_target_top" name="wptblinktarget" value="top" <?php if ($wptbOptions['link_target'] == "top") { _e('checked="checked"', "wptb"); }?>/> _top</label>	
-					<p></p>
+					 	<p id="radio1" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptblinktarget1" name="wptblinktarget" class="ui-helper-hidden-accessible" value="blank" <?php if ($wptbOptions['link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>><label for="wptblinktarget1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_blank</span></label>
+						<input type="radio" id="wptblinktarget2" name="wptblinktarget" class="ui-helper-hidden-accessible" value="self" <?php if ($wptbOptions['link_target'] == "self") { _e('checked="checked"', "wptb"); }?>><label for="wptblinktarget2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_self</span></label>
+						<input type="radio" id="wptblinktarget3" name="wptblinktarget" class="ui-helper-hidden-accessible" value="parent" <?php if ($wptbOptions['link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>><label for="wptblinktarget3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_parent</span></label>
+						<input type="radio" id="wptblinktarget4" name="wptblinktarget" class="ui-helper-hidden-accessible" value="top" <?php if ($wptbOptions['link_target'] == "top") { _e('checked="checked"', "wptb"); }?>><label for="wptblinktarget4" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_top</span></label>
+					 	</p>						
+					
 							<p class="sub"><em>Select how you want the link to open:</p>
 							<p><?php _e(" _blank - 	Opens the linked document in a new window or tab (this is default)") ?></p>
 							<p><?php _e(" _self	-	Opens the linked document in the same frame as it was clicked") ?></p>
@@ -69,7 +68,10 @@ function wptb_topbartext_options($wptbOptions) {
 				<tr valign="top">
 					<td width="50">Enable image:</label></td>
 					<td width="50">
-						<label for="wptb_enable_image"><input type="radio" id="wptb_enable_image" name="wptbenableimage" value="true" <?php if ($wptbOptions['enable_image'] == "true") { _e('checked="checked"', "wptb"); }?> /> Yes</label>&nbsp;&nbsp;&nbsp;&nbsp;<label for="wptbenableimage_no"><input type="radio" id="wptbenableimage_no" name="wptbenableimage" value="false" <?php if ($wptbOptions['enable_image'] == "false") { _e('checked="checked"', "wptb"); }?>/> No</label>
+				 	<p id="radio2" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbenableimage1" name="wptbenableimage" class="ui-helper-hidden-accessible" value="true" <?php if ($wptbOptions['enable_image'] == "true") { _e('checked="checked"', "wptb"); }?>><label for="wptbenableimage1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
+						<input type="radio" id="wptbenableimage2" name="wptbenableimage" class="ui-helper-hidden-accessible" value="false" <?php if ($wptbOptions['enable_image'] == "false") { _e('checked="checked"', "wptb"); }?>><label for="wptbenableimage2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
+					</p>					
 					</td>
 				</tr>
 				<tr valign="top">

@@ -22,22 +22,8 @@ function wptb_control_options($wptbOptions) {
 
 	?>
 
-	<script type='text/javascript'>
-		jQuery(document).ready(function() {
-	
-		jQuery('#wptbstarttimebtn').datetimepicker();
-		jQuery('#wptbendtimebtn').datetimepicker();
-	
-		jQuery('#wptbstarttimebtnClear').click( function(e) {jQuery('#wptbstarttimebtn').val('0').change(); } );
-		jQuery('#wptbtimebtnClear').click( function(e) {jQuery('#wptbendtimebtn').val('0').change(); } );
-				
-	});
- 	</script>
-
-		 	
- 	
  	<div class="postbox">
-	<h3><a name=ControlOptions">Control Options</a></h3>
+	<h3><a name="ControlOptions">Control Options</a></h3>
 	<div class="inside">
 			<p class="sub"><em>These are the options that allow you to control which pages your TopBar will be shown on.</em></p>
 
@@ -47,11 +33,12 @@ function wptb_control_options($wptbOptions) {
 					<td>Show TopBar on<br>Home Page:</label><p>
 					<td>
 						<br>
-						<label for="wptb_home_page_always"><input type="radio" id="wptb_home_page_always" name="wptbshowhomepage" value="always" <?php if ($wptbOptions['show_homepage'] == "always") { _e('checked="checked"', "wptb"); }?>/> A. Always</label>		
-						<br>
-						<label for="wptb_show_homepage_never"><input type="radio" id="wptb_home_page_never" name="wptbshowhomepage" value="never" <?php if ($wptbOptions['show_homepage'] == "never") { _e('checked="checked"', "wptb"); }?> /> B. Never</label>
-						<br>
-						<label for="wptb_home_page_conditionally"><input type="radio" id="wptb_home_page_conditionally" name="wptbshowhomepage" value="conditionally" <?php if ($wptbOptions['show_homepage'] == "conditionally") { _e('checked="checked"', "wptb"); }?> /> C. Conditionally</label>
+						
+					 	<p id="radio1" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbshowhomepage1" name="wptbshowhomepage" class="ui-helper-hidden-accessible" value="always" <?php if ($wptbOptions['show_homepage'] == "always") { _e('checked="checked"', "wptb"); }?>><label for="wptbshowhomepage1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">A</span></label>
+						<input type="radio" id="wptbshowhomepage2" name="wptbshowhomepage" class="ui-helper-hidden-accessible" value="never" <?php if ($wptbOptions['show_homepage'] == "never") { _e('checked="checked"', "wptb"); }?>><label for="wptbshowhomepage2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">B</span></label>
+						<input type="radio" id="wptbshowhomepage3" name="wptbshowhomepage" class="ui-helper-hidden-accessible" value="conditionally" <?php if ($wptbOptions['show_homepage'] == "conditionally") { _e('checked="checked"', "wptb"); }?>><label for="wptbshowhomepage3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">C</span></label>
+					 	</p>	
 					</td>
 					<td>
 						<p class="sub"><em>Select how you want the TopBar to show on the Home page.  Default is to <code>conditionally</code> show the TopBar on the Home Page</em>
@@ -68,11 +55,13 @@ function wptb_control_options($wptbOptions) {
 					<td>Logged In Users:</td>
 					<td>
 						<br>
-						<label for="wptbonlyloggedin_no"><input type="radio" id="wptbonlyloggedin_no" name="wptbonlyloggedin" value="no" <?php if ($wptbOptions['only_logged_in'] == "no") { _e('checked="checked"', "wptb"); }?>/> A. Not Logged In</label>		
-						<br>
-						<label for="wptbonlyloggedin_yes"><input type="radio" id="wptbonlyloggedin_yes" name="wptbonlyloggedin" value="yes" <?php if ($wptbOptions['only_logged_in'] == "yes") { _e('checked="checked"', "wptb"); }?> /> B. Logged In</label>
-						<br>
-						<label for="wptbonlyloggedin_both"><input type="radio" id="wptbonlyloggedin_both" name="wptbonlyloggedin" value="all" <?php if ( ($wptbOptions['only_logged_in'] == "all") || ($wptbOptions['only_logged_in'] == "")) { _e('checked="checked"', "wptb"); }?> /> C. Allways</label>
+						
+					 	<p id="radio2" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbonlyloggedin1" name="wptbonlyloggedin" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['only_logged_in'] == "no") { _e('checked="checked"', "wptb"); }?>><label for="wptbonlyloggedin1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">A</span></label>
+						<input type="radio" id="wptbonlyloggedin2" name="wptbonlyloggedin" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['only_logged_in'] == "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptbonlyloggedin2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">B</span></label>
+						<input type="radio" id="wptbonlyloggedin3" name="wptbonlyloggedin" class="ui-helper-hidden-accessible" value="all" <?php if ($wptbOptions['only_logged_in'] == "all") { _e('checked="checked"', "wptb"); }?>><label for="wptbonlyloggedin3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">C</span></label>
+					 	</p>						
+						
 					</td>
 					<td>
 						<p class="sub"><em>Select how you want the TopBar to show for users.  Default is to <code>Allways</code> show the TopBar, regardless if they are logged in</em>
@@ -93,11 +82,11 @@ function wptb_control_options($wptbOptions) {
 				</tr>
 				<tr valign="top">
 					<td>Page ID Criteria:</td>
-					<td><p>
-						<label for="wptb_invert_include_no"><input type="radio" id="wptb_invert_include_no" name="wptbinvertinclude" value="no" <?php if ($wptbOptions['invert_include'] == "no") { _e('checked="checked"', "wptb"); }?> /> Include</label>
-						<label for="wptb_invert_include_yes"><input type="radio" id="wptb_invert_include_yes" name="wptbinvertinclude" value="yes" <?php if ($wptbOptions['invert_include'] == "yes") { _e('checked="checked"', "wptb"); }?>/> Exclude</label>		
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<p>
+					<td>
+				 	<p id="radio3" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbinvertinclude1" name="wptbinvertinclude" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['invert_include'] == "no") { _e('checked="checked"', "wptb"); }?>><label for="wptbinvertinclude1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Include</span></label>
+						<input type="radio" id="wptbinvertinclude2" name="wptbinvertinclude" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['invert_include'] == "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptbinvertinclude2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Exclude</span></label>
+					</p>
 					<td>
 						<p class="sub"><em>Select how you want to process the Page IDs entered above.  Default is <code>Include</code><br><code>Include</code> will have the TopBar show on those Page IDs<br><code>Exclude</code> will have the TopBar to not show up on those specific Page IDs.  </em></p>
 					</td>
@@ -114,11 +103,13 @@ function wptb_control_options($wptbOptions) {
 				<tr valign="top">
 					<td>Category ID Criteria:</label><p>
 </td>
-					<td><p>
-						<label for="wptb_invert_categories_no"><input type="radio" id="wptb_invert_categories_no" name="wptbinvertcategories" value="no" <?php if ($wptbOptions['invert_categories'] == "no") { _e('checked="checked"', "wptb"); }?> /> Include</label>
-						<label for="wptb_invert_categories_yes"><input type="radio" id="wptb_invert_categories_yes" name="wptbinvertcategories" value="yes" <?php if ($wptbOptions['invert_categories'] == "yes") { _e('checked="checked"', "wptb"); }?>/> Exclude</label>		
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<p>
+					<td>
+					
+				 	<p id="radio4" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbinvertcategories1" name="wptbinvertcategories" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['invert_categories'] == "no") { _e('checked="checked"', "wptb"); }?>><label for="wptbinvertcategories1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Include</span></label>
+						<input type="radio" id="wptbinvertcategories2" name="wptbinvertcategories" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['invert_categories'] == "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptbinvertcategories2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Exclude</span></label>
+					</p>					
+					
 					<td>
 						<p class="sub"><em>Select how you want to process the Category IDs entered above.  Default is <code>Include</code><br><code>Include</code> will have the TopBar show on those Category IDs<br><code>Exclude</code> will have the TopBar to not show up on those specific Category IDs.  </em></p>
 					</td>
@@ -126,15 +117,13 @@ function wptb_control_options($wptbOptions) {
 				<tr valign="top">
 					<td>Selection Criteria Logic:</label><p>
 					<td>
-						<br>
-						<label for="wptb_include_logic_page_only"><input type="radio" id="wptb_include_logic_page_only" name="wptbincludelogic" value="page_only" <?php if ($wptbOptions['include_logic'] == "page_only") { _e('checked="checked"', "wptb"); }?>/> A. Page IDs only</label>		
-						<br>
-						<label for="wptb_include_logic_cat_only"><input type="radio" id="wptb_include_logic_cat_only" name="wptbincludelogic" value="cat_only" <?php if ($wptbOptions['include_logic'] == "cat_only") { _e('checked="checked"', "wptb"); }?> /> B. Category IDs</label>
-						<br>
-						<label for="wptb_include_logic_boolean_and"><input type="radio" id="wptb_include_logic_boolean_and" name="wptbincludelogic" value="boolean_and" <?php if ($wptbOptions['include_logic'] == "boolean_and") { _e('checked="checked"', "wptb"); }?> /> C. Both</label>
-						<br>
-						<label for="wptb_include_logic_boolean_or"><input type="radio" id="wptb_include_logic_boolean_or" name="wptbincludelogic" value="boolean_or" <?php if ($wptbOptions['include_logic'] == "boolean_or") { _e('checked="checked"', "wptb"); }?> /> D. Either</label>
-						<p>
+						</br>
+					 	<p id="radio5" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbincludelogic1" name="wptbincludelogic" class="ui-helper-hidden-accessible" value="page_only" <?php if ($wptbOptions['include_logic'] == "page_only") { _e('checked="checked"', "wptb"); }?>><label for="wptbincludelogic1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">A</span></label>
+						<input type="radio" id="wptbincludelogic2" name="wptbincludelogic" class="ui-helper-hidden-accessible" value="cat_only" <?php if ($wptbOptions['include_logic'] == "cat_only") { _e('checked="checked"', "wptb"); }?>><label for="wptbincludelogic2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">B</span></label>
+						<input type="radio" id="wptbincludelogic3" name="wptbincludelogic" class="ui-helper-hidden-accessible" value="boolean_and" <?php if ($wptbOptions['include_logic'] == "boolean_and") { _e('checked="checked"', "wptb"); }?>><label for="wptbincludelogic3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">C</span></label>
+						<input type="radio" id="wptbincludelogic4" name="wptbincludelogic" class="ui-helper-hidden-accessible" value="boolean_or" <?php if ($wptbOptions['include_logic'] == "boolean_or") { _e('checked="checked"', "wptb"); }?>><label for="wptbincludelogic4" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">D</span></label>
+					 	</p>						
 					</td>
 					<td>
 						<p class="sub"><em>Select how you want the TopBar to use the selection criteria you set above.  Default is to check only the <code>Page IDs</code></em>
