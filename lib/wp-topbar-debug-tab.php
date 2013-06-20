@@ -24,8 +24,7 @@ function wptb_debug_options($wptbOptions) {
 	if($wptb_debug)
 		echo '<br><code>WP-TopBar Debug Mode: In Debug Options</code>';
 
-	$wptb_cookie = "wptopbar_".COOKIEHASH;
-	
+	$wptb_cookie = "wptopbar_".$wptbOptions['bar_id'].'_'.COOKIEHASH;	
 	
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
@@ -62,6 +61,7 @@ echo "Charset <small><i>(DB_CHARSET)</i></small>: <strong>".DB_CHARSET."</strong
 echo "Collation <small><i>(DB_COLLATE)</i></small>: <strong>".DB_COLLATE."</strong></br>";
 echo "bar_text encoding: <strong>".$wptb_bar_text_encoding[0]."</strong></br>";
 echo "bar_link_text encoding: <strong>".$wptb_bar_link_text_encoding[0]."</strong></br>";
+echo "wp-tobar internal db version: <strong>".get_option( "wptb_db_version" )."</strong></br>";
 echo "</br>";
 ?>
 			</li>
@@ -112,7 +112,7 @@ Based on your Start/End time settings in the <a href="?page=wp-topbar.php&action
 		<tr>
 		<td valign="top" style="valign:top; width:100%; border-style:solid !important; border-width:1px !important; border-color:black !important;">
 		<?php if ($wptbOptions['enable_topbar'] == "false") { _e( '<strong>The TopBar is not enabled.  Therefore no HTML will be generated. Enable it in the <a href="?page=wp-topbar.php&action=main&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'">Main Options tab</a>.</strong><br>', 'wptb' ); }
-		else {_e ('	<textarea rows="10" cols="150">', 'wptb');wptb::wptb_inject_specific_TopBar_html_js($wptbOptions, true ,"");_e('</textarea>', 'wptb');} ?>
+		else {_e ('	<textarea rows="20" cols="150">', 'wptb');wptb::wptb_inject_TopBar_html_js($wptbOptions, 1);_e('</textarea>', 'wptb');} ?>
 		</td>
 		<br>
 		</tr>

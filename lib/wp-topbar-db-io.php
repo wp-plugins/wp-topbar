@@ -197,7 +197,10 @@ function wptb_display_all_TopBars() {
 		echo '<tr' . $row_class .  '>';
 		echo '<td>&nbsp</td>';
 		echo '<td style="border-top: thin solid black; border-bottom: thin solid black;  border-left: thin solid black; border-right: thin solid black;" colspan="7">';
-		wptb::wptb_display_TopBar("",$item, false, "");
+		if (isset($item['allow_reopen']) && ($item['allow_reopen']) == "yes")
+			wptb::wptb_display_TopBar('',$item, false, 1, true);
+		else 
+			wptb::wptb_display_TopBar('',$item, false, 1, false);
 		echo '</td>';
 		echo '</tr>';
 	}
@@ -616,7 +619,7 @@ function wptb_display_all_TopBars() {
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 	$myrows = $wpdb->get_results( 'SELECT * FROM '.$wptb_table_name);
 	if ( $wpdb->num_rows == 0 ){
-		wtpb_insert_default_row(false);
+		$wptbOptions=wtpb_insert_default_row(false);
 		$wp_list_table->prepare_items();
 		echo '<div class="updated"><p><strong>All TopBars deleted; created default TopBar.</strong></p></div>';
 	}
@@ -766,7 +769,10 @@ function wptb_test_topbar($number_to_show, $wptb_echo_on) {
 			echo "</td>";
 			echo "<td width=50px>".$wptbOptions['weighting_points']."</td>";
 			echo '<td valign="top">';
-			wptb::wptb_display_TopBar("",$wptbOptions, false, "");
+			if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
+				wptb::wptb_display_TopBar('',$wptbOptions, false, 1, true);
+			else 
+				wptb::wptb_display_TopBar('',$wptbOptions, false, 1, false);
 			echo '</td>';
 		}
 		else break;
@@ -818,7 +824,7 @@ function wptb_get_Specific_TopBar($wptb_barid, $wptb_echo_on) {
 			echo '<br><code>WP-TopBar Debug Mode: Table '.$wptb_table_name.' does not exist - creating it</code>';
 
 		wptb_create_table($wptb_debug);				
-		$wptbOptions=wtpb_insert_default_row($wptb_debug);
+		$wptbOptions=wtpb_insert_default_row($wptb_echo_on);
 	}
 	else {
 		if ( $wptb_barid == 0)
@@ -830,8 +836,6 @@ function wptb_get_Specific_TopBar($wptb_barid, $wptb_echo_on) {
 			if($wptb_debug)
 				echo '<br><code>WP-TopBar Debug Mode: Now rows found in Table: '.$wptb_table_name.' - using defaults</code>';
 			$wptbOptions=wtpb_insert_default_row($wptb_echo_on);
-//			$wptbOptions=wtpb_set_default_settings();
-//			$wptbOptions=array();
 		}
 		else
 			foreach ($myrows[0] as $key => $option)
@@ -942,8 +946,8 @@ function wptb_debug_display_TopBar_Options($wptbOptions) {
 	}
 	
 	
-	$wptb_cookie = "wptopbar_".COOKIEHASH;
-
+	$wptb_cookie = "wptopbar_".$wptbOptions['bar_id'].'_'.COOKIEHASH; 
+	
 	echo "<br><code>WP-TopBar Debug Mode: Cookie Name: ".$wptb_cookie."</code>";
 	if (isset($_COOKIE[$wptb_cookie]) && ($wptbOptions['respect_cookie'] = "always"))
 		echo "<br><code>WP-TopBar Debug Mode: Cookie Value: ". $_COOKIE[$wptb_cookie]."</code>"; 
@@ -974,31 +978,6 @@ function wptb_debug_display_TopBar_Options($wptbOptions) {
 	
 }	// End of wptb_debug_display_TopBar_Options
 
-//=========================================================================		
-//
-//Converts the old method (storing in WP options) to its own table
-//
-//=========================================================================		
-
-function wptb_convert_to_database($wptbOptions, $wptb_echo_on) { 
-
-	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
-	else $wptb_debug = false;	
-	
-	global $wpdb;		
-	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
-
-	if($wptb_debug)
-		echo '<br><code>WP-TopBar Debug Mode: Converting from using Options to Database Table: '.$wptb_table_name.'</code>';
-
-	wptb_create_table($wptb_echo_on);	
-	$wptbOptions[ 'weighting_points' ] = 25;
-	$wptbOptions[ 'past_cookie_values' ] = $wptbOptions['cookie_value'];
-					
-	wtpb_insert_row($wptbOptions, $wptb_echo_on);	
-	delete_option('wptbAdminOptions');
-}	// End of wptb_convert_to_database
-
 
 //=========================================================================			
 // Creates Table
@@ -1015,8 +994,8 @@ function wptb_create_table($wptb_echo_on) {
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
 
-	if($wptb_debug)
-		echo '<br><code>WP-TopBar Debug Mode: Creating Table:'.$wptb_table_name.'</code>';
+//	if($wptb_debug)
+//		echo '<br><code>WP-TopBar Debug Mode: Creating Table:'.$wptb_table_name.'</code>';
 		
 	$sql = "CREATE TABLE ". $wptb_table_name. " ( 
 		bar_id BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -1043,6 +1022,7 @@ function wptb_create_table($wptb_echo_on) {
 		cookie_value VARCHAR(20),
 		past_cookie_values  VARCHAR(20),
 		allow_close VARCHAR(20),
+		allow_reopen VARCHAR(20),
 		topbar_pos VARCHAR (20),
 		scroll_action VARCHAR (20),
 		text_color VARCHAR(20),
@@ -1057,6 +1037,8 @@ function wptb_create_table($wptb_echo_on) {
 		margin_bottom SMALLINT,
 		close_button_image TEXT,
 		close_button_css TEXT,
+		reopen_button_image TEXT,
+		reopen_button_css TEXT,
 		link_target VARCHAR(20),
 		bar_link TEXT,
 		bar_text TEXT,
@@ -1071,22 +1053,62 @@ function wptb_create_table($wptb_echo_on) {
 		social_icon2 VARCHAR(20),
 		social_icon3 VARCHAR(20),
 		social_icon4 VARCHAR(20),
+		social_icon5 VARCHAR(20),
+		social_icon6 VARCHAR(20),
+		social_icon7 VARCHAR(20),
+		social_icon8 VARCHAR(20),
+		social_icon9 VARCHAR(20),
+		social_icon10 VARCHAR(20),
 		social_icon1_image TEXT,
 		social_icon2_image TEXT,
 		social_icon3_image TEXT,
 		social_icon4_image TEXT,
+		social_icon5_image TEXT,
+		social_icon6_image TEXT,
+		social_icon7_image TEXT,
+		social_icon8_image TEXT,
+		social_icon9_image TEXT,
+		social_icon10_image TEXT,
 		social_icon1_link TEXT,
 		social_icon2_link TEXT,
 		social_icon3_link TEXT,
 		social_icon4_link TEXT,
+		social_icon5_link TEXT,
+		social_icon6_link TEXT,
+		social_icon7_link TEXT,
+		social_icon8_link TEXT,
+		social_icon9_link TEXT,
+		social_icon10_link TEXT,
 		social_icon1_css TEXT,
 		social_icon2_css TEXT,
 		social_icon3_css TEXT,
 		social_icon4_css TEXT,
+		social_icon5_css TEXT,
+		social_icon6_css TEXT,
+		social_icon7_css TEXT,
+		social_icon8_css TEXT,
+		social_icon9_css TEXT,
+		social_icon10_css TEXT,
 		social_icon1_link_target VARCHAR(20),
 		social_icon2_link_target VARCHAR(20),
 		social_icon3_link_target VARCHAR(20),
 		social_icon4_link_target VARCHAR(20),	
+		social_icon5_link_target VARCHAR(20),	
+		social_icon6_link_target VARCHAR(20),	
+		social_icon7_link_target VARCHAR(20),	
+		social_icon8_link_target VARCHAR(20),	
+		social_icon9_link_target VARCHAR(20),	
+		social_icon10_link_target VARCHAR(20),	
+		social_icon1_position VARCHAR(20),
+		social_icon2_position VARCHAR(20),
+		social_icon3_position VARCHAR(20),
+		social_icon4_position VARCHAR(20),	
+		social_icon5_position VARCHAR(20),	
+		social_icon6_position VARCHAR(20),	
+		social_icon7_position VARCHAR(20),	
+		social_icon8_position VARCHAR(20),	
+		social_icon9_position VARCHAR(20),	
+		social_icon10_position VARCHAR(20),	
 		PRIMARY KEY  id (bar_id)
 		) ;";
 	
@@ -1129,6 +1151,7 @@ function wtpb_set_default_settings() {
 		'cookie_value' => '1',
 		'past_cookie_values' => '1',
 		'allow_close' => 'no',
+		'allow_reopen' => 'no',
 		'topbar_pos' => 'header',
 		'scroll_action' => 'off', 
 		'text_color' => '#000000',
@@ -1142,37 +1165,79 @@ function wtpb_set_default_settings() {
 		'margin_top' => '0',
 		'margin_bottom' => '0',
 		'close_button_image' => str_ireplace( 'https://','http://',plugins_url('/images/close.png', __FILE__) ),
-		'close_button_css' => 'vertical-align:text-bottom;float:right;',
+		'close_button_css' => 'vertical-align:text-bottom;float:right;padding-right:20px;',
+		'reopen_button_image' => str_ireplace( 'https://','http://',plugins_url('/images/open.png', __FILE__) ),
+		'reopen_button_css' => 'display:none; float:right; left: 0px; width:100%; height: 17px; z-index:9999999; padding-right:10px; margin-right: 10px;color:#fff; width: 35px; height: 33px; text-decoration: none; cursor:pointer;',
 		'link_target' => 'blank',
 		'bar_link' => 'http://wordpress.org/extend/plugins/wp-topbar/',
 		'bar_text' => 'Get your own TopBar ',
 		'bar_link_text' => 'from the Wordpress plugin repository',
 		'text_align' => 'center',
-		'bar_image' => '',
-		'enable_image' => 'false',
-		'custom_css_bar' => '',
+		'bar_image' => str_ireplace( 'https://','http://',plugins_url('/samples/wp-topbar_sample_image_2.jpg', __FILE__) ),
+		'enable_image' => 'true',
+		'custom_css_bar' => 'background-repeat: no-repeat;',
 		'custom_css_text' => '',
-		'div_css' => 'top: 40; padding:0; margin:0; width: 100%; z-index: 99999;',
-		'social_icon1' => 'off',
-		'social_icon2' => 'off', 
-		'social_icon3' => 'off',
-		'social_icon4' => 'off',
-		'social_icon1_image' => str_ireplace( 'https://','http://',plugins_url('/icons/PNG/twitter.png', __FILE__) ),
-		'social_icon2_image' => str_ireplace( 'https://','http://',plugins_url('/icons/PNG/facebook.png', __FILE__) ),
-		'social_icon3_image' => str_ireplace( 'https://','http://',plugins_url('/icons/PNG/google.png', __FILE__) ),
-		'social_icon4_image' => '',
-		'social_icon1_link' => 'http://twitter.com/#!/wordpress',
-		'social_icon2_link' => 'http://www.facebook.com/WordPress', 
-		'social_icon3_link' => 'http://plus.google.com/s/wordpress',
-		'social_icon4_link' => '',
-		'social_icon1_css' => 'height:23px; vertical-align:text-bottom;',
-		'social_icon2_css' => 'height:23px; vertical-align:text-bottom;',
-		'social_icon3_css' => 'height:23px; vertical-align:text-bottom;',
-		'social_icon4_css' => '',
-		'social_icon1_link_target' => 'blank',
-		'social_icon2_link_target' => 'blank',
-		'social_icon3_link_target' => 'blank',
-		'social_icon4_link_target' => 'blank'
+		'div_css' => 'position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;',
+		'social_icon1'  => 'off',
+		'social_icon2'  => 'off', 
+		'social_icon3'  => 'off',
+		'social_icon4'  => 'off',
+		'social_icon5'  => 'off',
+		'social_icon6'  => 'off',
+		'social_icon7'  => 'off',
+		'social_icon8'  => 'off',
+		'social_icon9'  => 'off',
+		'social_icon10' => 'off',
+		'social_icon1_image'  => str_ireplace( 'https://','http://',plugins_url('/icons/PNG/twitter.png', __FILE__) ),
+		'social_icon2_image'  => str_ireplace( 'https://','http://',plugins_url('/icons/PNG/facebook.png', __FILE__) ),
+		'social_icon3_image'  => str_ireplace( 'https://','http://',plugins_url('/icons/PNG/google.png', __FILE__) ),
+		'social_icon4_image'  => '',
+		'social_icon5_image'  => '',
+		'social_icon6_image'  => '',
+		'social_icon7_image'  => '',
+		'social_icon8_image'  => '',
+		'social_icon9_image'  => '',
+		'social_icon10_image' => '',
+		'social_icon1_link'  => 'http://twitter.com/#!/wordpress',
+		'social_icon2_link'  => 'http://www.facebook.com/WordPress', 
+		'social_icon3_link'  => 'http://plus.google.com/s/wordpress',
+		'social_icon4_link'  => '',
+		'social_icon5_link'  => '',
+		'social_icon6_link'  => '',
+		'social_icon7_link'  => '',
+		'social_icon8_link'  => '',
+		'social_icon9_link'  => '',
+		'social_icon10_link' => '',
+		'social_icon1_css'  => 'height:23px; vertical-align:text-bottom;',
+		'social_icon2_css'  => 'height:23px; vertical-align:text-bottom;',
+		'social_icon3_css'  => 'height:23px; vertical-align:text-bottom;',
+		'social_icon4_css'  => '',
+		'social_icon5_css'  => '',
+		'social_icon6_css'  => '',
+		'social_icon7_css'  => '',
+		'social_icon8_css'  => '',
+		'social_icon9_css'  => '',
+		'social_icon10_css' => '',
+		'social_icon1_link_target'  => 'blank',
+		'social_icon2_link_target'  => 'blank',
+		'social_icon3_link_target'  => 'blank',
+		'social_icon4_link_target'  => 'blank',
+		'social_icon5_link_target'  => 'blank',
+		'social_icon6_link_target'  => 'blank',
+		'social_icon7_link_target'  => 'blank',
+		'social_icon8_link_target'  => 'blank',
+		'social_icon9_link_target'  => 'blank',
+		'social_icon10_link_target' => 'blank',
+		'social_icon1_position'  => 'right',
+		'social_icon2_position'  => 'right',
+		'social_icon3_position'  => 'right',
+		'social_icon4_position'  => 'right',
+		'social_icon5_position'  => 'right',
+		'social_icon6_position'  => 'right',
+		'social_icon7_position'  => 'right',
+		'social_icon8_position'  => 'right',
+		'social_icon9_position'  => 'right',
+		'social_icon10_position' => 'right'
 		);
 
 }	// End of wtpb_set_default_settings
@@ -1185,14 +1250,14 @@ function wtpb_set_default_settings() {
 
 function wtpb_insert_default_row($wptb_echo_on) {
 
-	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
-	else $wptb_debug = false;			
+//	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
+//	else $wptb_debug = false;			
 
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
 
-	if($wptb_debug)
-		echo '<br><code>WP-TopBar Debug Mode: Inserting Default Row in: '.$wptb_table_name.'</code>';
+//	if ($wptb_debug)
+//		echo '<br><code>WP-TopBar Debug Mode: Inserting Default Row in: '.$wptb_table_name.'</code>';
 	
 	$rows_affected = $wpdb->insert( $wptb_table_name, wtpb_set_default_settings() );
 	
@@ -1250,6 +1315,7 @@ function wtpb_insert_row($wptbOptions, $wptb_echo_on) {
 		'cookie_value' => $wptbOptions[ 'cookie_value' ],
 		'past_cookie_values' => $wptbOptions[ 'past_cookie_values' ],
 		'allow_close' => $wptbOptions[ 'allow_close' ],
+		'allow_reopen' => $wptbOptions[ 'allow_reopen' ],
 		'topbar_pos' => $wptbOptions[ 'topbar_pos' ],
 		'scroll_action' => $wptbOptions[ 'scroll_action' ], 
 		'text_color' => $wptbOptions[ 'text_color' ],
@@ -1264,6 +1330,8 @@ function wtpb_insert_row($wptbOptions, $wptb_echo_on) {
 		'margin_bottom' => $wptbOptions[ 'margin_bottom' ],
 		'close_button_image' => $wptbOptions[ 'close_button_image' ],
 		'close_button_css' => $wptbOptions[ 'close_button_css' ],
+		'reopen_button_image' => $wptbOptions[ 'reopen_button_image' ],
+		'reopen_button_css' => $wptbOptions[ 'reopen_button_css' ],
 		'link_target' => $wptbOptions[ 'link_target' ],
 		'bar_link' => $wptbOptions[ 'bar_link' ],
 		'bar_text' => $wptbOptions[ 'bar_text' ],
@@ -1278,22 +1346,62 @@ function wtpb_insert_row($wptbOptions, $wptb_echo_on) {
 		'social_icon2' => $wptbOptions[ 'social_icon2' ], 
 		'social_icon3' => $wptbOptions[ 'social_icon3' ],
 		'social_icon4' => $wptbOptions[ 'social_icon4' ],
+		'social_icon5' => $wptbOptions[ 'social_icon5' ],
+		'social_icon6' => $wptbOptions[ 'social_icon6' ],
+		'social_icon7' => $wptbOptions[ 'social_icon7' ],
+		'social_icon8' => $wptbOptions[ 'social_icon8' ],
+		'social_icon9' => $wptbOptions[ 'social_icon9' ],
+		'social_icon10' => $wptbOptions[ 'social_icon10' ],
 		'social_icon1_image' => $wptbOptions[ 'social_icon1_image' ],
 		'social_icon2_image' => $wptbOptions[ 'social_icon2_image' ],
 		'social_icon3_image' => $wptbOptions[ 'social_icon3_image' ],
 		'social_icon4_image' => $wptbOptions[ 'social_icon4_image' ],
+		'social_icon5_image' => $wptbOptions[ 'social_icon5_image' ],
+		'social_icon6_image' => $wptbOptions[ 'social_icon6_image' ],
+		'social_icon7_image' => $wptbOptions[ 'social_icon7_image' ],
+		'social_icon8_image' => $wptbOptions[ 'social_icon8_image' ],
+		'social_icon9_image' => $wptbOptions[ 'social_icon9_image' ],
+		'social_icon10_image' => $wptbOptions[ 'social_icon10_image' ],
 		'social_icon1_link' => $wptbOptions[ 'social_icon1_link' ],
 		'social_icon2_link' => $wptbOptions[ 'social_icon2_link' ], 
 		'social_icon3_link' => $wptbOptions[ 'social_icon3_link' ],
 		'social_icon4_link' => $wptbOptions[ 'social_icon4_link' ],
+		'social_icon5_link' => $wptbOptions[ 'social_icon5_link' ],
+		'social_icon6_link' => $wptbOptions[ 'social_icon6_link' ],
+		'social_icon7_link' => $wptbOptions[ 'social_icon7_link' ],
+		'social_icon8_link' => $wptbOptions[ 'social_icon8_link' ],
+		'social_icon9_link' => $wptbOptions[ 'social_icon9_link' ],
+		'social_icon10_link' => $wptbOptions[ 'social_icon10_link' ],
 		'social_icon1_css' => $wptbOptions[ 'social_icon1_css' ],
 		'social_icon2_css' => $wptbOptions[ 'social_icon2_css' ],
 		'social_icon3_css' => $wptbOptions[ 'social_icon3_css' ],
 		'social_icon4_css' => $wptbOptions[ 'social_icon4_css' ],
+		'social_icon5_css' => $wptbOptions[ 'social_icon5_css' ],
+		'social_icon6_css' => $wptbOptions[ 'social_icon6_css' ],
+		'social_icon7_css' => $wptbOptions[ 'social_icon7_css' ],
+		'social_icon8_css' => $wptbOptions[ 'social_icon8_css' ],
+		'social_icon9_css' => $wptbOptions[ 'social_icon9_css' ],
+		'social_icon10_css' => $wptbOptions[ 'social_icon10_css' ],
 		'social_icon1_link_target' => $wptbOptions[ 'social_icon1_link_target' ],
 		'social_icon2_link_target' => $wptbOptions[ 'social_icon2_link_target' ],
 		'social_icon3_link_target' => $wptbOptions[ 'social_icon3_link_target' ],
-		'social_icon4_link_target' => $wptbOptions[ 'social_icon4_link_target' ]
+		'social_icon4_link_target' => $wptbOptions[ 'social_icon4_link_target' ],
+		'social_icon5_link_target' => $wptbOptions[ 'social_icon5_link_target' ],
+		'social_icon6_link_target' => $wptbOptions[ 'social_icon6_link_target' ],
+		'social_icon7_link_target' => $wptbOptions[ 'social_icon7_link_target' ],
+		'social_icon8_link_target' => $wptbOptions[ 'social_icon8_link_target' ],
+		'social_icon9_link_target' => $wptbOptions[ 'social_icon9_link_target' ],
+		'social_icon10_link_target' => $wptbOptions[ 'social_icon10_link_target' ],
+		'social_icon1_position' => $wptbOptions[ 'social_icon1_position' ],
+		'social_icon2_position' => $wptbOptions[ 'social_icon2_position' ],
+		'social_icon3_position' => $wptbOptions[ 'social_icon3_position' ],
+		'social_icon4_position' => $wptbOptions[ 'social_icon4_position' ],
+		'social_icon5_position' => $wptbOptions[ 'social_icon5_position' ],
+		'social_icon6_position' => $wptbOptions[ 'social_icon6_position' ],
+		'social_icon7_position' => $wptbOptions[ 'social_icon7_position' ],
+		'social_icon8_position' => $wptbOptions[ 'social_icon8_position' ],
+		'social_icon9_position' => $wptbOptions[ 'social_icon9_position' ],
+		'social_icon10_position' => $wptbOptions[ 'social_icon10_position' ]		
 		) );
 
 
@@ -1348,6 +1456,7 @@ function wptb_update_row($wptbOptions, $wptb_echo_on) {
 		'cookie_value' => $wptbOptions[ 'cookie_value' ],
 		'past_cookie_values' => $wptbOptions[ 'past_cookie_values' ],
 		'allow_close' => $wptbOptions[ 'allow_close' ],
+		'allow_reopen' => $wptbOptions[ 'allow_reopen' ],
 		'topbar_pos' => $wptbOptions[ 'topbar_pos' ],
 		'scroll_action' => $wptbOptions[ 'scroll_action' ], 
 		'text_color' => $wptbOptions[ 'text_color' ],
@@ -1362,6 +1471,8 @@ function wptb_update_row($wptbOptions, $wptb_echo_on) {
 		'margin_bottom' => $wptbOptions[ 'margin_bottom' ],
 		'close_button_image' => $wptbOptions[ 'close_button_image' ],
 		'close_button_css' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'close_button_css' ])),
+		'reopen_button_image' => $wptbOptions[ 'reopen_button_image' ],
+		'reopen_button_css' => preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'reopen_button_css' ])),
 		'link_target' => $wptbOptions[ 'link_target' ],
 		'bar_link' => $wptbOptions[ 'bar_link' ],
 		'bar_text' => $wptbOptions[ 'bar_text' ],
@@ -1376,22 +1487,62 @@ function wptb_update_row($wptbOptions, $wptb_echo_on) {
 		'social_icon2' => $wptbOptions[ 'social_icon2' ], 
 		'social_icon3' => $wptbOptions[ 'social_icon3' ],
 		'social_icon4' => $wptbOptions[ 'social_icon4' ],
+		'social_icon5' => $wptbOptions[ 'social_icon5' ],
+		'social_icon6' => $wptbOptions[ 'social_icon6' ],
+		'social_icon7' => $wptbOptions[ 'social_icon7' ],
+		'social_icon8' => $wptbOptions[ 'social_icon8' ],
+		'social_icon9' => $wptbOptions[ 'social_icon9' ],
+		'social_icon10' => $wptbOptions[ 'social_icon10' ],
 		'social_icon1_image' => $wptbOptions[ 'social_icon1_image' ],
 		'social_icon2_image' => $wptbOptions[ 'social_icon2_image' ],
 		'social_icon3_image' => $wptbOptions[ 'social_icon3_image' ],
 		'social_icon4_image' => $wptbOptions[ 'social_icon4_image' ],
+		'social_icon5_image' => $wptbOptions[ 'social_icon5_image' ],
+		'social_icon6_image' => $wptbOptions[ 'social_icon6_image' ],
+		'social_icon7_image' => $wptbOptions[ 'social_icon7_image' ],
+		'social_icon8_image' => $wptbOptions[ 'social_icon8_image' ],
+		'social_icon9_image' => $wptbOptions[ 'social_icon9_image' ],
+		'social_icon10_image' => $wptbOptions[ 'social_icon10_image' ],
 		'social_icon1_link' => $wptbOptions[ 'social_icon1_link' ],
 		'social_icon2_link' => $wptbOptions[ 'social_icon2_link' ], 
 		'social_icon3_link' => $wptbOptions[ 'social_icon3_link' ],
 		'social_icon4_link' => $wptbOptions[ 'social_icon4_link' ],
-		'social_icon1_css' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'social_icon1_css' ])),
-		'social_icon2_css' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'social_icon2_css' ])),
-		'social_icon3_css' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'social_icon3_css' ])),
-		'social_icon4_css' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'social_icon4_css' ])),
+		'social_icon5_link' => $wptbOptions[ 'social_icon5_link' ],
+		'social_icon6_link' => $wptbOptions[ 'social_icon6_link' ],
+		'social_icon7_link' => $wptbOptions[ 'social_icon7_link' ],
+		'social_icon8_link' => $wptbOptions[ 'social_icon8_link' ],
+		'social_icon9_link' => $wptbOptions[ 'social_icon9_link' ],
+		'social_icon10_link' => $wptbOptions[ 'social_icon10_link' ],
+		'social_icon1_css' => $wptbOptions[ 'social_icon1_css' ],
+		'social_icon2_css' => $wptbOptions[ 'social_icon2_css' ],
+		'social_icon3_css' => $wptbOptions[ 'social_icon3_css' ],
+		'social_icon4_css' => $wptbOptions[ 'social_icon4_css' ],
+		'social_icon5_css' => $wptbOptions[ 'social_icon5_css' ],
+		'social_icon6_css' => $wptbOptions[ 'social_icon6_css' ],
+		'social_icon7_css' => $wptbOptions[ 'social_icon7_css' ],
+		'social_icon8_css' => $wptbOptions[ 'social_icon8_css' ],
+		'social_icon9_css' => $wptbOptions[ 'social_icon9_css' ],
+		'social_icon10_css' => $wptbOptions[ 'social_icon10_css' ],
 		'social_icon1_link_target' => $wptbOptions[ 'social_icon1_link_target' ],
 		'social_icon2_link_target' => $wptbOptions[ 'social_icon2_link_target' ],
 		'social_icon3_link_target' => $wptbOptions[ 'social_icon3_link_target' ],
-		'social_icon4_link_target' => $wptbOptions[ 'social_icon4_link_target' ]
+		'social_icon4_link_target' => $wptbOptions[ 'social_icon4_link_target' ],
+		'social_icon5_link_target' => $wptbOptions[ 'social_icon5_link_target' ],
+		'social_icon6_link_target' => $wptbOptions[ 'social_icon6_link_target' ],
+		'social_icon7_link_target' => $wptbOptions[ 'social_icon7_link_target' ],
+		'social_icon8_link_target' => $wptbOptions[ 'social_icon8_link_target' ],
+		'social_icon9_link_target' => $wptbOptions[ 'social_icon9_link_target' ],
+		'social_icon10_link_target' => $wptbOptions[ 'social_icon10_link_target' ],
+		'social_icon1_position' => $wptbOptions[ 'social_icon1_position' ],
+		'social_icon2_position' => $wptbOptions[ 'social_icon2_position' ],
+		'social_icon3_position' => $wptbOptions[ 'social_icon3_position' ],
+		'social_icon4_position' => $wptbOptions[ 'social_icon4_position' ],
+		'social_icon5_position' => $wptbOptions[ 'social_icon5_position' ],
+		'social_icon6_position' => $wptbOptions[ 'social_icon6_position' ],
+		'social_icon7_position' => $wptbOptions[ 'social_icon7_position' ],
+		'social_icon8_position' => $wptbOptions[ 'social_icon8_position' ],
+		'social_icon9_position' => $wptbOptions[ 'social_icon9_position' ],
+		'social_icon10_position' => $wptbOptions[ 'social_icon10_position' ]
 		),
 		array('bar_id' => $wptbOptions[ 'bar_id' ] )
 		);
@@ -1472,6 +1623,9 @@ function wptb_bulkupdate_CloseButtonSettings() {
 	if (isset($_POST['wptballowclose'])) {
 		$sql .= "`allow_close` = '".$_POST['wptballowclose']."', ";
 	}
+	if (isset($_POST['wptballowreopen'])) {
+		$sql .= "`allow_reopen` = '".$_POST['wptballowreopen']."', ";
+	}
 	if (isset($_POST['wptbrespectcookie'])) {
 		$sql .= "`respect_cookie` = '".$_POST['wptbrespectcookie']."', ";
 	}
@@ -1484,6 +1638,12 @@ function wptb_bulkupdate_CloseButtonSettings() {
 	}	
 	if (isset($_POST['wptbclosecss'])) {
 		$sql .= "`close_button_css` = '".$_POST['wptbclosecss']."', ";
+	}
+	if (isset($_POST['wptbreopenimage'])) {
+		$sql .= "`reopen_button_image` = '".esc_url($_POST['wptbreopenimage'])."', ";
+	}	
+	if (isset($_POST['wptbreopencss'])) {
+		$sql .= "`reopen_button_css` = '".$_POST['wptbreopencss']."', ";
 	}
 	
 	$sql=substr($sql,0,-2);
@@ -1696,6 +1856,9 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 	if (isset($_POST['wptballowclose'])) {
 		$wptbOptions['allow_close'] = $_POST['wptballowclose'];
 	}
+	if (isset($_POST['wptballowreopen'])) {
+		$wptbOptions['allow_reopen'] = $_POST['wptballowreopen'];
+	}	
 	if (isset($_POST['wptbrespectcookie'])) {
 		$wptbOptions['respect_cookie'] = $_POST['wptbrespectcookie'];
 	}
@@ -1719,6 +1882,12 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 	if (isset($_POST['wptbclosecss'])) {
 		$wptbOptions['close_button_css']  = $_POST['wptbclosecss'];
 	}
+	if (isset($_POST['wptbreopenimage'])) {
+		$wptbOptions['reopen_button_image'] = esc_url($_POST['wptbreopenimage']);
+	}	
+	if (isset($_POST['wptbreopencss'])) {
+		$wptbOptions['reopen_button_css']  = $_POST['wptbreopencss'];
+	}
 	if (isset($_POST['wptblinktarget'])) {
 		$wptbOptions['link_target'] = $_POST['wptblinktarget'];
 	}
@@ -1730,86 +1899,34 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 		$wptbOptions['scroll_action'] = $_POST['wptbscrollaction'];
 	}
 		
-	// need to check the make sure we are the right tab to correctly handle the toggle buttons
+	// need to check the make sure we are the right tab to correctly handle the toggle buttons on the Social Buttons Tab
 	
 	if ( $_GET['action'] == 'socialbuttons') {
-		if (isset($_POST['wptbsocialicon1'])) 
-			$wptbOptions['social_icon1'] = 'on';
-		else
-			$wptbOptions['social_icon1'] = 'off';
 
-		if (isset($_POST['wptbsocialicon2'])) 
-			$wptbOptions['social_icon2'] = 'on';
-		else
-			$wptbOptions['social_icon2'] = 'off';
-
-		if (isset($_POST['wptbsocialicon3'])) 
-			$wptbOptions['social_icon3'] = 'on';
-		else
-			$wptbOptions['social_icon3'] = 'off';
-
-		if (isset($_POST['wptbsocialicon4'])) 
-			$wptbOptions['social_icon4'] = 'on';
-		else
-			$wptbOptions['social_icon4'] = 'off';
-	}
-		
-	if (isset($_POST['wptbsocialicon1image'])) {
-		$wptbOptions['social_icon1_image'] = $_POST['wptbsocialicon1image'];
-	}
-	if (isset($_POST['wptbsocialicon2image'])) {
-		$wptbOptions['social_icon2_image'] = $_POST['wptbsocialicon2image'];
-	}
-	if (isset($_POST['wptbsocialicon3image'])) {
-		$wptbOptions['social_icon3_image'] = $_POST['wptbsocialicon3image'];
-	}
-	if (isset($_POST['wptbsocialicon4image'])) {
-		$wptbOptions['social_icon4_image'] = $_POST['wptbsocialicon4image'];
-	}
-	if (isset($_POST['wptbsocialicon1link'])) {
-		$wptbOptions['social_icon1_link'] = $_POST['wptbsocialicon1link'];
-	}
-	if (isset($_POST['wptbsocialicon2link'])) {
-		$wptbOptions['social_icon2_link'] = $_POST['wptbsocialicon2link'];
-	}
-	if (isset($_POST['wptbsocialicon3link'])) {
-		$wptbOptions['social_icon3_link'] = $_POST['wptbsocialicon3link'];
-	}
-	if (isset($_POST['wptbsocialicon4link'])) {
-		$wptbOptions['social_icon4_link'] = $_POST['wptbsocialicon4link'];
-	}
-	if (isset($_POST['wptbsocialicon1css'])) {
-		$wptbOptions['social_icon1_css'] = $_POST['wptbsocialicon1css'];
-	}			
-	if (isset($_POST['wptbsocialicon2css'])) {
-		$wptbOptions['social_icon2_css'] = $_POST['wptbsocialicon2css'];
-	}			
-	if (isset($_POST['wptbsocialicon3css'])) {
-		$wptbOptions['social_icon3_css'] = $_POST['wptbsocialicon3css'];
-	}			
-	if (isset($_POST['wptbsocialicon4css'])) {
-		$wptbOptions['social_icon4_css'] = $_POST['wptbsocialicon4css'];
-	}			
-	if (isset($_POST['wptbicon1linktarget'])) {
-		$wptbOptions['social_icon1_link_target'] = $_POST['wptbicon1linktarget'];
-	}			
-	if (isset($_POST['wptbicon2linktarget'])) {
-		$wptbOptions['social_icon2_link_target'] = $_POST['wptbicon2linktarget'];
-	}			
-	if (isset($_POST['wptbicon3linktarget'])) {
-		$wptbOptions['social_icon3_link_target'] = $_POST['wptbicon3linktarget'];
-	}			
-	if (isset($_POST['wptbicon4linktarget'])) {
-		$wptbOptions['social_icon4_link_target'] = $_POST['wptbicon4linktarget'];
-	}			
-	
+		for ($i=1; $i<=10; $i++)  {
+			if (isset($_POST['wptbsocialicon'.$i])) 
+				$wptbOptions['social_icon'.$i] = 'on';
+			else
+				$wptbOptions['social_icon'.$i] = 'off';
+			if (isset($_POST['wptbsocialicon'.$i.'image'])) 
+				$wptbOptions['social_icon'.$i.'_image'] = $_POST['wptbsocialicon'.$i.'image'];
+			if (isset($_POST['wptbsocialicon'.$i.'link'])) 
+				$wptbOptions['social_icon'.$i.'_link'] = $_POST['wptbsocialicon'.$i.'link'];
+			if (isset($_POST['wptbsocialicon'.$i.'css']))
+				$wptbOptions['social_icon'.$i.'_css'] = $_POST['wptbsocialicon'.$i.'css'];
+			if (isset($_POST['wptbicon'.$i.'linktarget'])) 
+				$wptbOptions['social_icon'.$i.'_link_target'] = $_POST['wptbicon'.$i.'linktarget'];
+			if (isset($_POST['wptbicon'.$i.'position'])) 
+				$wptbOptions['social_icon'.$i.'_position'] = $_POST['wptbicon'.$i.'position'];
+		}			
+	}	
 
 // Handle magic quotes -- consolidate all of the handling here for easier debugging and changing of settings
 
 	if ( (get_magic_quotes_gpc() ) &&  ( $wptb_debug ) )
 		echo '<br><code>WP-TopBar Debug Mode: Magic Quotes is on</code>';
 
-	$wtpbtextfields = array( '1' => 'custom_css_bar',  '2' => 'bar_text',  '3' => 'custom_css_text', '4' => 'bar_link_text','5' => 'social_icon1_css', '6' => 'social_icon2_css','7' => 'social_icon3_css', '8' => 'social_icon4_css', '9' => 'close_button_css', '10' => 'div_css' );
+	$wtpbtextfields = array( '1' => 'custom_css_bar',  '2' => 'bar_text',  '3' => 'custom_css_text', '4' => 'bar_link_text', '5' => 'close_button_css', '6' => 'reopen_button_css' , '7' => 'div_css');
 
   	foreach( $wtpbtextfields as $number => $field ) {
 		if (get_magic_quotes_gpc())
@@ -1818,6 +1935,15 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 			$wptbOptions[$field] 	 = (str_replace('"',"'",$wptbOptions[$field]));
 
     }
+    
+	for ($i=1; $i<=10; $i++)  {
+		if (get_magic_quotes_gpc())
+			$wptbOptions['social_icon'.$i.'_css'] 	 = (str_replace('"',"'",stripslashes($wptbOptions['social_icon'.$i.'_css'])));
+		else
+			$wptbOptions['social_icon'.$i.'_css'] 	 = (str_replace('"',"'",$wptbOptions['social_icon'.$i.'_css']));
+	
+	}
+    
 	
 	wptb_update_row($wptbOptions, $wptb_debug);
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Settings Updated</code>';
@@ -1829,7 +1955,6 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 
 
 
-
 //=========================================================================			
 // Run this from options page to check
 // if upgrade functions need to run.
@@ -1837,36 +1962,46 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 //		1=use echo function, 0=use error_log function
 //
 // DB Versions Listing:
-// 4.17 - added scroll_action field 
+// 4.17 - added scroll_action field
+// 5.0 - added 6 more Social Buttons and ability to place them (left or right) 
 //=========================================================================			
 	
 function wtpb_check_for_plugin_upgrade($wptb_echo_on) { 
-
+		
 	global $WPTB_VERSION;
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 
-	$WPTB_DB_VERSION = "4.17";  // rev this only when this changes
+	$wpdb->hide_errors();	
+
+	$WPTB_DB_VERSION = "5.0";  // rev this only when this changes
 
 	if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
 	else $wptb_debug = false;			
 
 	$wptbOptions = get_option('wptbAdminOptions');
-		
+				
 	// if options are set, then convert to using a database else check to see if database is in use
-	if ( isset( $wptbOptions['enable_topbar'] ) ) 
-		$wptbOptions = wptb_convert_to_database($wptbOptions, $wptb_echo_on);
+	if ( isset( $wptbOptions['enable_topbar'] ) ) {
+		wptb_create_table($wptb_echo_on);			
+		
+		if (! isset($wptbOptions['enable_image']) )
+			$wptbOptions['enable_image'] = "false";    // default row has this turned on, so turn off since older version may not have this field
+								
+		wtpb_insert_row($wptbOptions, $wptb_echo_on);	
+		delete_option('wptbAdminOptions');
+	}
 	else {
 			if( $wpdb->get_var("show tables like '".$wptb_table_name."'") != $wptb_table_name ) {
 				wptb_create_table($wptb_echo_on);				
 				wtpb_insert_default_row($wptb_echo_on);
 			}
-			else
+			else {
 				// OK, they are using a DB, now check to see if needs to be updated				
 				$installed_ver = get_option( "wptb_db_version" );
-				if( $installed_ver != $WPTB_DB_VERSION ) {
+				if( $installed_ver != $WPTB_DB_VERSION ) 
 					wptb_create_table($wptb_echo_on);
-				}
+			}
 	}
 	
 	update_option( "wptb_db_version", $WPTB_DB_VERSION );
@@ -1912,6 +2047,9 @@ function wtpb_check_for_plugin_upgrade($wptb_echo_on) {
 		else
 			error_log( 'WP-TopBar Debug Mode: end of wtpb_check_for_plugin_upgrade' );
 	}
+	
+		$wpdb->show_errors();
+	
 	
 } // End of function wtpb_check_for_plugin_upgrade 	
 

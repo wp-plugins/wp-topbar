@@ -39,6 +39,10 @@ function wptb_colorselection_options($wptbOptions) {
 //=========================================================================			
 
 function wptb_ColorPicker($wptbOptions) {
+
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+
                 
 	?>
 	
@@ -58,7 +62,7 @@ function wptb_ColorPicker($wptbOptions) {
 	<h3><a name="ColorSelection">Color Selection</a></h3>
 	
 	<div class="inside">
-		<p class="sub"><em>Click the color box to select the color to use.  Bar color is NOT used if Image is enabled (that is set on the <a href='?page=wp-topbar.php&action=topbartext&barid=<?php echo ($wptb_barid_prefix+$wptbOptions['bar_id']); ?>'>TopBar Text and Image</a> tab.)</em></p>
+		<p class="sub"><em>Click the color box to select the color to use.</em></p>
 		<div class="table">
 			<table class="form-table">	
 				<tr valign="top">
@@ -111,6 +115,10 @@ function wptb_ColorPicker($wptbOptions) {
 //=========================================================================			
 
 function wptb_farbtastic($wptbOptions) {
+
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+
                 
 	?>
 	

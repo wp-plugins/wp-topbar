@@ -31,10 +31,40 @@ function wptb_topbartext_options($wptbOptions) {
 		<div class="table">
 			<table class="form-table">	
 				<tr valign="top">
+					<td width="150">Font size (px):</td>
+					<td>
+						<input type="text" name="wptbfontsize" id="fontsize" size="5" value="<?php echo $wptbOptions['font_size']; ?>" >
+						<div id="wtpb-fontsize"></div>
+						</br>
+						<p class="sub"><em>Enter the font size.  Default is <code>14px</code></em></p>
+					</td>
+				</tr>	
+				<tr>
+					<td colspan="2"><hr></td>
+				</tr>
+				<tr valign="top">
+					<td width="150">Text alignment:</td>
+					<td>
+				 	<p id="radio1" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbtextalign1" name="wptbtextalign" class="ui-helper-hidden-accessible" value="left" <?php if ($wptbOptions['text_align'] == "left") { _e('checked="checked"', "wptb"); }?>><label for="wptbtextalign1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Left</span></label>
+						<input type="radio" id="wptbtextalign2" name="wptbtextalign" class="ui-helper-hidden-accessible" value="center" <?php if ($wptbOptions['text_align'] == "center") { _e('checked="checked"', "wptb"); }?>><label for="wptbtextalign2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Center</span></label>
+						<input type="radio" id="wptbtextalign3" name="wptbtextalign" class="ui-helper-hidden-accessible" value="right" <?php if ($wptbOptions['text_align'] == "right") { _e('checked="checked"', "wptb"); }?>><label for="wptbtextalign3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Right</span></label>
+				 	</p>					
+					</br>
+				 	<p class="sub"><em>Select how you want the text to align. Default is <code>center</code> When using right -- try adding padding via the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."'>TopBar CSS</a></em></br>&nbsp;&nbsp;&nbsp;e.g. <code>padding-right:10px;</code></p>
+					</td>
+				</tr>				
+				<tr>
+					<td colspan="2"><hr></td>
+				</tr>
+				<tr valign="top">
 					<td width="150">Message:</label></td>
 					<td>
 						<input type="text" name="wptbbartext" id="bbartext" size="85" value="<?php echo stripslashes($wptbOptions['bar_text']); ?>" >
 					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><hr></td>
 				</tr>
 				<tr valign="top">
 					<td width="150">Link Text:</label></td>
@@ -51,7 +81,7 @@ function wptb_topbartext_options($wptbOptions) {
 				<tr valign="top">
 					<td width="50">Link Target:</label></td>
 					<td>
-					 	<p id="radio1" class="ui-button ui-button-wptbset">
+					 	<p id="radio2" class="ui-button ui-button-wptbset">
 						<input type="radio" id="wptblinktarget1" name="wptblinktarget" class="ui-helper-hidden-accessible" value="blank" <?php if ($wptbOptions['link_target'] == "blank") { _e('checked="checked"', "wptb"); }?>><label for="wptblinktarget1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_blank</span></label>
 						<input type="radio" id="wptblinktarget2" name="wptblinktarget" class="ui-helper-hidden-accessible" value="self" <?php if ($wptbOptions['link_target'] == "self") { _e('checked="checked"', "wptb"); }?>><label for="wptblinktarget2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_self</span></label>
 						<input type="radio" id="wptblinktarget3" name="wptblinktarget" class="ui-helper-hidden-accessible" value="parent" <?php if ($wptbOptions['link_target'] == "parent") { _e('checked="checked"', "wptb"); }?>><label for="wptblinktarget3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">_parent</span></label>
@@ -65,10 +95,13 @@ function wptb_topbartext_options($wptbOptions) {
 							<p><?php _e(" _top	-	Opens the linked document in the full body of the windowtext to align.") ?></em></p>
 					</td>
 				</tr>	
+				<tr>
+					<td colspan="2"><hr></td>
+				</tr>
 				<tr valign="top">
 					<td width="50">Enable image:</label></td>
 					<td width="50">
-				 	<p id="radio2" class="ui-button ui-button-wptbset">
+				 	<p id="radio3" class="ui-button ui-button-wptbset">
 						<input type="radio" id="wptbenableimage1" name="wptbenableimage" class="ui-helper-hidden-accessible" value="true" <?php if ($wptbOptions['enable_image'] == "true") { _e('checked="checked"', "wptb"); }?>><label for="wptbenableimage1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
 						<input type="radio" id="wptbenableimage2" name="wptbenableimage" class="ui-helper-hidden-accessible" value="false" <?php if ($wptbOptions['enable_image'] == "false") { _e('checked="checked"', "wptb"); }?>><label for="wptbenableimage2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
 					</p>					

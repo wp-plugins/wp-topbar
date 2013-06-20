@@ -49,7 +49,7 @@ function wptb_control_options($wptbOptions) {
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2"><hr></td>
+					<td colspan="3"><hr></td>
 				</tr>
 				<tr valign="top">
 					<td>Logged In Users:</td>
@@ -71,7 +71,10 @@ function wptb_control_options($wptbOptions) {
 						</p>
 					</td>
 				</tr>
-				<tr valign="top">
+				<tr>
+					<td colspan="3"><hr></td>
+				</tr>
+					<tr valign="top">
 					<td width="150">Page IDs:</label></td>
 					<td>
 						<input type="text" name="wptbincludepages" id="includepages" size="30" value="<?php echo $wptbOptions['include_pages']; ?>" >
@@ -91,7 +94,10 @@ function wptb_control_options($wptbOptions) {
 						<p class="sub"><em>Select how you want to process the Page IDs entered above.  Default is <code>Include</code><br><code>Include</code> will have the TopBar show on those Page IDs<br><code>Exclude</code> will have the TopBar to not show up on those specific Page IDs.  </em></p>
 					</td>
 				</tr>
-				<tr valign="top">
+				<tr>
+					<td colspan="3"><hr></td>
+				</tr>
+					<tr valign="top">
 					<td width="150">Category IDs:</label></td>
 					<td>
 						<input type="text" name="wptbincludecategories" id="includecategories" size="30" value="<?php echo $wptbOptions['include_categories']; ?>" >
@@ -114,7 +120,10 @@ function wptb_control_options($wptbOptions) {
 						<p class="sub"><em>Select how you want to process the Category IDs entered above.  Default is <code>Include</code><br><code>Include</code> will have the TopBar show on those Category IDs<br><code>Exclude</code> will have the TopBar to not show up on those specific Category IDs.  </em></p>
 					</td>
 				</tr>			
-				<tr valign="top">
+				<tr>
+					<td colspan="3"><hr></td>
+				</tr>
+					<tr valign="top">
 					<td>Selection Criteria Logic:</label><p>
 					<td>
 						</br>

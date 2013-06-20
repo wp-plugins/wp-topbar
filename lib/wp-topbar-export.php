@@ -42,9 +42,9 @@ function wptb_display_export_options() {
 		</div>
 	    <form method="post"    action="<?php echo $url;?>">
 	        <p class="submit">
-	            <input type="submit" name=wptbExportJSON class="button-primary" value="Export Options in JSON Format" />
-	            <input type="submit" name=wptbExportSQL class="button-primary"  value="Export Options in SQL Format" />
-	            <input type="submit" name=wptbExportCSV class="button-primary"  value="Export Options in CSV Format" />
+	            <input type="submit" name="wptbExportJSON" class="button-primary" value="Export Options in JSON Format" />
+	            <input type="submit" name="wptbExportSQL"  class="button-primary"  value="Export Options in SQL Format" />
+	            <input type="submit" name="wptbExportCSV"  class="button-primary"  value="Export Options in CSV Format" />
 	        </p>
 	    </form>
 	</div>

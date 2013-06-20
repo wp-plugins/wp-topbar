@@ -35,6 +35,7 @@ function wptb_options_page() {
 
 	require_once( dirname(__FILE__).'/wp-topbar-db-io.php');  //database and I-O functions php
 	require_once( dirname(__FILE__).'/wp-topbar-export.php');  //export functions
+	require_once( dirname(__FILE__).'/wp-topbar-main-tab.php');  //load main options php
 	require_once( dirname(__FILE__).'/wp-topbar-debug-tab.php');  //load debug pages php
 	require_once( dirname(__FILE__).'/wp-topbar-close-tab.php');  //load close pages php
 	require_once( dirname(__FILE__).'/wp-topbar-color-tab.php');  //load color selection pages php
@@ -46,6 +47,7 @@ function wptb_options_page() {
 	require_once( dirname(__FILE__).'/wp-topbar-display-functions.php');  //load admin pages php
 	require_once( dirname(__FILE__).'/wp-topbar-faq-tab.php');  //load faq page php	
 	require_once( dirname(__FILE__).'/wp-topbar-php-tab.php');  //load php pages php
+	require_once( dirname(__FILE__).'/wp-topbar-uninstall-tab.php');  //load uninstall pages php
 	
 	// $wptb_common_style is used by all buttons except the Copy & Special buttons
 		
@@ -164,6 +166,15 @@ function wptb_options_page() {
 		wptb_bulkupdate_CloseButtonSettings();
 		$action = 'table';
 	}
+	else if ( isset (  $_POST['uninstall_wptbSettings'] ) ) {			
+		wptb_uninstall_wptbSettings();
+		wp_redirect(get_option('siteurl').'/wp-admin/plugins.php');
+		exit;				
+	}
+	else if ( isset (  $_POST['nouninstall_wptbSettings'] ) ) {			
+		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');
+		exit;
+	}
 	else if ( isset (  $_POST['wptbExportJSON'] ) ) {			
 		wptb_export_options_json();
 		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');
@@ -177,7 +188,7 @@ function wptb_options_page() {
 		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');					
 	}
 	else if ( isset($_POST['wptbInsertBar']) )  {
-		wtpb_insert_default_row(false);
+		$wptbOptions=wtpb_insert_default_row($wptb_debug);
 		$action = 'insertdefault';
 	}		
 	else if ( ( isset (  $_POST['wptbDeleteBar'] ) ) && ( get_transient( 'wptb_delete_row') ) ) {
@@ -199,7 +210,7 @@ function wptb_options_page() {
 	}
 
 	
-	if($wptb_debug && isset($wptbOptions['wptb_version'])) echo '<br><code>WP-TopBar Debug Mode: Version ',$wptbOptions['wptb_version'],'</code>';
+	if($wptb_debug && isset($wptbOptions['wptb_version'])) echo '<br><code>WP-TopBar Debug Mode: Version ',$WPTB_VERSION,'</code>';
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: WP-TopBar Debug Mode: Action: ',$action,'</code>';
 	if($wptb_debug && isset($wptb_barid)) echo '<br><code>WP-TopBar Debug Mode: BarID: ',$wptb_barid,'</code>';
 	if($wptb_debug && isset($wptb_barid_prefix)) echo '<br><code>WP-TopBar Debug Mode: BarID Prefix: ',$wptb_barid_prefix,'</code>';
@@ -233,6 +244,11 @@ function wptb_options_page() {
 			wptb_display_admin_header();
             wptb_options_tabs($action);
 			wptb_closebutton_bulk_options();
+			break;
+        case 'uninstall' :
+			wptb_display_admin_header();
+            wptb_options_tabs($action);
+			wptb_uninstall_options();
 			break;
         case 'testpriority' :
 			wptb_display_admin_header();
@@ -324,221 +340,6 @@ function wptb_options_page() {
         endswitch;
 
 }  // end function wptb_options_page
-
-
-
-
-
-//=========================================================================			
-// Main Options
-//=========================================================================			
-
-
-		
-function wptb_main_options($wptbOptions) {
-
-	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
-	$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
-
-	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
-	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
-	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
-
-
-	$wptb_debug=get_transient( 'wptb_debug' );	
-	if($wptb_debug) {
-		echo '<br><code>WP-TopBar Debug Mode: In Main Options</code>';
-		echo '<br><code>BarID Prefix: '.$wptb_barid_prefix.'</code>';
-    }
-    
-    
-	?>
-
-
-
- 	<div class="postbox">
-	<h3><a name="MainOptions">Main Options</a></h3>
-	<div class="inside">
-		<div class="table">
-			<table class="form-table">
-				<input name="wptb_update_setting_nonce" type="hidden" value="<?php wp_create_nonce('wptb_update_setting_nonce'); ?>" />			
-				<tr valign="top">
-					<td width="150">Enable TopBar:</label></td>
-					<td>
-				 	<p id="radio1" class="ui-button ui-button-wptbset">
-						<input type="radio" id="wptbenabletopbar1" name="wptbenabletopbar" class="ui-helper-hidden-accessible" value="true" <?php if ($wptbOptions['enable_topbar'] == "true") { _e('checked="checked"', "wptb"); }?>><label for="wptbenabletopbar1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
-						<input type="radio" id="wptbenabletopbar2" name="wptbenabletopbar" class="ui-helper-hidden-accessible" value="false" <?php if ($wptbOptions['enable_topbar'] == "false") { _e('checked="checked"', "wptb"); }?>><label for="wptbenabletopbar2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
-					</p>
-					</td>
-					<td>
-						<p class="sub"><em>This allows you to turn off the TopBar without disabling the plugin.</em></p>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td width="150">Priority:</label></td>
-					<td>
-						<input type="text" name="wptbpriority" id="priority" size="30" value="<?php echo $wptbOptions['weighting_points']; ?>" >
-					</td>
-					<td>
-							<p class="sub"><em>Enter the relative priorty (1 to 100) for the TopBar to show.  A higher number means this TopBar will be selected more frequently; a lower number means less frequently.  (See the <a <?php echo 'href="?page=wp-topbar.php&action=faq&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'"'; ?>>FAQ</a> for more details.) Default is <code>25</code>.</em></p>
-					</td>
-				</tr>			
-				<tr valign="top">
-					<td width="150">TopBar Location:</label></td>
-					<td>
-				 	<p id="radio2" class="ui-button ui-button-wptbset">
-						<input type="radio" id="wptbtopbarpos1" name="wptbtopbarpos" class="ui-helper-hidden-accessible" value="header" <?php if ($wptbOptions['topbar_pos'] == "header") { _e('checked="checked"', "wptb"); }?>><label for="wptbtopbarpos1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Above Header</span></label>
-						<input type="radio" id="wptbtopbarpos2" name="wptbtopbarpos" class="ui-helper-hidden-accessible" value="footer" <?php if ($wptbOptions['topbar_pos'] == "footer") { _e('checked="checked"', "wptb"); }?>><label for="wptbtopbarpos2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Below Footer</span></label>
-				 	</p>
-					</td>
-					<td>
-							<p class="sub"><em>Select where you want to TopBar to be located. Default is <code>Above Header</code></em></p>
-					</td>
-				</tr>	
-				<tr valign="top">
-					<td width="150">Scroll Action:</label></td>
-					<td>
-				 	<p id="radio3" class="ui-button ui-button-wptbset">
-						<input type="radio" id="wptbscrollaction1" name="wptbscrollaction" class="ui-helper-hidden-accessible" value="on"  <?php if ($wptbOptions['scroll_action'] == "on") { _e('checked="checked"', "wptb"); }?>><label for="wptbscrollaction1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">On</span></label>
-						<input type="radio" id="wptbscrollaction2" name="wptbscrollaction" class="ui-helper-hidden-accessible" value="off" <?php if ($wptbOptions['scroll_action'] != "on") { _e('checked="checked"', "wptb"); }?>><label for="wptbscrollaction2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Off</span></label>
-				 	</p>
-					</td>
-					<td>
-							<p class="sub"><em>Only show the TopBar when the user scrolls the page?  If the user scrolls back to the top of the page, the TopBar gracefully fades away.  Note, if this is to On, the TopBar ignores the Display Time value below.  Default is <code>Off</code>, this will show the scrollbar even if the user does not scroll the page.</em></p>
-					</td>
-				</tr>					<tr valign="top">
-					<td width="150">Start Delay:</label></td>
-					<td>
-						<input type="text" name="wptbdelayintime" id="delayintime" size="30" value="<?php echo $wptbOptions['delay_time']; ?>" >
-					</td>
-					<td>
-							<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to delay before appearing.  Enter 0 for no delay.</em></p>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td width="150">Slide Time:</label></td>
-					<td>
-						<input type="text" name="wptbslidetime" id="slidetime" size="30" value="<?php echo $wptbOptions['slide_time']; ?>" >
-					</td>
-					<td>
-							<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to take to slide down on the page.  Enter 0 for no delay.</em></p>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td width="150">Display Time:</label></td>
-					<td>
-						<input type="text" name="wptbdisplaytime" id="displaytime" size="30" value="<?php echo $wptbOptions['display_time']; ?>" >
-					</td>
-					<td>
-							<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to remain on the page.  Enter 0 for the TopBar to not disappear.</em></p>
-					</td>
-				</tr>							
-				<tr valign="top">
-					<td width="150">Starting Time:</label></td>
-					<td>
-						<div class="wptb-date-picker-container"> <input type="text" id="wptbstarttimebtn" name="wptbstarttime" size="30" value="<?php echo $wptbOptions['start_time']; ?>"></label></div><p class="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" id="wptbstarttimebtnClear">Set Start Time to Zero</p>									  
-						<div id="wptb_start_time"></div>				    
-					</td>
-					<td>
-							<p class="sub"><em>Pick the date/time for the TopBar to start showing.  Default is <code>zero</code>.</em></p>
-					</td>
-				</tr>							
-				<tr valign="top">
-					<td width="150">Ending Time:</label></td>
-					<td>
-						<input type="text" id="wptbendtimebtn" name="wptbendtime" size="30" value="<?php echo $wptbOptions['end_time']; ?>"></label>	<p class="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" id="wptbtimebtnClear">&nbspSet End Time to Zero</p>							  
-						<div id="wptb_end_time"></div>				    
-					</td>
-					<td>
-							<p class="sub"><em>Pick the date/time for the TopBar to stop showing.  Of course, it must be after the start time. Select 0 for the TopBar to never disappear.</em></p>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td width="150">Bottom border height (px):</label></td>
-					<td>
-						<input type="text" name="wptbbottomborderheight" id="bottomborderheight" size="5" value="<?php echo $wptbOptions['bottom_border_height']; ?>" >
-					</td>
-					<td>
-							<p class="sub"><em>Enter the height of the bottom of the border.  Default is <code>3px</code></em></p>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td width="150">Top padding (px):</label></td>
-					<td>
-						<input type="text" name="wptbpaddingtop" id="paddingtop" size="5" value="<?php echo $wptbOptions['padding_top']; ?>" >
-					</td>
-					<td>
-							<p class="sub"><em>Enter the top padding.  Default is <code>8px</code></em></p>
-					</td>
-				</tr>			
-				<tr valign="top">
-					<td width="150">Bottom padding (px):</label></td>
-					<td>
-						<input type="text" name="wptbpaddingbottom" id="paddingbottom" size="5" value="<?php echo $wptbOptions['padding_bottom']; ?>" >
-					</td>
-					<td>
-							<p class="sub"><em>Enter the bottom padding.  Default is <code>8px</code></em></p>
-					</td>
-				</tr>		
-				<tr valign="top">
-					<td width="150">Top margin (px):</label></td>
-					<td>
-						<input type="text" name="wptbmargintop" id="margintop" size="5" value="<?php echo $wptbOptions['margin_top']; ?>" >
-					</td>
-					<td>
-							<p class="sub"><em>Enter the top margin.  Default is <code>0px</code></em></p>
-					</td>
-				</tr>			
-				<tr valign="top">
-					<td width="150">Bottom margin (px):</label></td>
-					<td>
-						<input type="text" name="wptbmarginbottom" id="marginbottom" size="5" value="<?php echo $wptbOptions['margin_bottom']; ?>" >
-					</td>
-					<td>
-							<p class="sub"><em>Enter the bottom margin.  Default is <code>0px</code></em></p>
-					</td>
-				</tr>				
-				<tr valign="top">
-					<td width="150">Font size (px):</label></td>
-					<td>
-						<input type="text" name="wptbfontsize" id="fontsize" size="5" value="<?php echo $wptbOptions['font_size']; ?>" >
-					</td>
-					<td>
-							<p class="sub"><em>Enter the font size.  Default is <code>14px</code></em></p>
-					</td>
-				</tr>	
-				<tr valign="top">
-					<td width="150">Text alignment:</label></td>
-					<td>
-				 	<p id="radio4" class="ui-button ui-button-wptbset">
-						<input type="radio" id="wptbtextalign1" name="wptbtextalign" class="ui-helper-hidden-accessible" value="left" <?php if ($wptbOptions['text_align'] == "left") { _e('checked="checked"', "wptb"); }?>><label for="wptbtextalign1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Left</span></label>
-						<input type="radio" id="wptbtextalign2" name="wptbtextalign" class="ui-helper-hidden-accessible" value="center" <?php if ($wptbOptions['text_align'] == "center") { _e('checked="checked"', "wptb"); }?>><label for="wptbtextalign2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Center</span></label>
-						<input type="radio" id="wptbtextalign3" name="wptbtextalign" class="ui-helper-hidden-accessible" value="right" <?php if ($wptbOptions['text_align'] == "right") { _e('checked="checked"', "wptb"); }?>><label for="wptbtextalign3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Right</span></label>
-				 	</p>					
-					</td>
-					<td>
-							<p class="sub"><em>Select how you want the text to align. Default is <code>center</code> When using right -- try adding padding via the TopBar CSS tab. e.g. </em><code>padding-right:10px;</code></p>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<table>
-		<tr>
-			<td style="valign:top; width:500px;"><p class="submit">
-				<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
-			</td>
-			<td style="valign:top;">
-				<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
-			</td>
-		</tr>
-		</table>	<div class="clear"></div>	
-		</div>
-	</div> <!-- end of Main Options -->
-	
-	<?php
-}	// End of wptb_main_options
-
-
 
 
 

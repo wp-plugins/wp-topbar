@@ -34,9 +34,9 @@ function wptb_php_options ($wptbOptions) {
 		<p class="sub"><em>These are the settings to allow you to have custom PHP to be executed when the TopBar is created.
 		<br><br><strong>THIS CAN BE SUPER DANGEROUS.  READ THIS CAREFULLY</strong>
 		<br><br>How does this work?  The code entered in the fields below are evaluated (using the php <code>eval()</code> function).  
-		<br><br>The plugin works by generating each TopBar in a single <code>&lt;p&gt;....&lt;/p&gt;</code> tag.  
-		<br>The "BEFORE" code you enter below is evaluated <strong>after</strong> the starting <code>&lt;p&gt;</code> tag.
-		<br>While the "AFTER" code you enter below is evaluated <strong>before</strong> the closing <code>&lt;/p&gt;</code> tag.
+		<br><br>The plugin works by generating each TopBar in a single <code>&lt;div&gt;....&lt;/div&gt;</code> container.  
+		<br>The "BEFORE" code you enter below is evaluated <strong>after</strong> the starting <code>&lt;div&gt;</code> tag.
+		<br>While the "AFTER" code you enter below is evaluated <strong>before</strong> the closing <code>&lt;/div&gt;</code> tag.
 		<br>
 		<br>Enter any invalid PHP code, and you can BREAK your website.  Note that the code mustn't be wrapped in opening and closing PHP tags, i.e. <code>echo "Hi!";</code> must be passed instead of <code>&lt;p&gt;? echo "Hi!"; &lt;/p&gt;</code>. It is still possible to leave and reenter PHP mode though using the appropriate PHP tags, e.g. <code>echo "In PHP mode!"; &lt;/p&gt;In <strong>HTML</strong> mode!&lt;p&gt;? echo "Back in PHP mode!";</code>.
 		<br><br><strong>Make sure to always end in PHP mode!</strong>

@@ -78,12 +78,12 @@ function wptb_register_pointer( $p ) {
             'position' => array( 'edge' => 'left', 'align' => 'right' )
         )
     );
-    $p['417pointer1'] = array(
+    $p['500pointer1'] = array(
         'target' => '.wptb-table',
         'options' => array(
             'content' => sprintf( '<h3> %s </h3> <p> %s </p>',
-                __( 'New Features in Version 4.17!' ,'plugindomain'),
-                __( 'Check out a new feature in this version:</br></br>You now have a new option to only display the TopBar when the user scrolls the screen. For each ToolBar, look in <strong>Main Options</strong> tab for the new <strong>Scroll Action</strong> option.','plugindomain')
+                __( 'New Features in Version 5.0!' ,'plugindomain'),
+                __( 'Check out the new features in this version:</br></br>> You can now re-open a TopBar via the Close Button Tab</br>> You can now have a total of 10 Social Buttons.</br>> Social Buttons can be before or after the TopBar</br>> See the Change Log for all the updates.','plugindomain')
             ),
             'position' => array( 'edge' => 'top', 'align' => 'left' )
         )

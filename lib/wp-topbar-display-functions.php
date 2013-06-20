@@ -11,7 +11,7 @@ Display Functions
 
 
 function wptb_options_tabs( $current = 'table' ) {
-    $tabs = array( 'table'=> 'All TopBars', 'testpriority' => 'Test Priority', 'bulkclosebutton'=> 'Close Button', 'export' => 'Export Options', 'mainfaq' => 'FAQ' );
+    $tabs = array( 'table'=> 'All TopBars', 'testpriority' => 'Test Priority', 'bulkclosebutton'=> 'Close Button', 'export' => 'Export Options', 'uninstall' => 'Uninstall', 'mainfaq' => 'FAQ' );
     $links = array();
         
 	if ( $current == 'table' ) $wptb_barid="";
@@ -88,7 +88,7 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid ) {
 
 //    $tabs = array( 'table'=> 'All TopBars', 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','debug' => 'Debug', 'delete' => 'Delete&nbspSettings', 'faq' => 'FAQ' );
 
-    $tabs = array( 'table'=> 'All TopBars', 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','debug' => 'Debug', 'phptexttab' => 'PHP',  'faq' => 'FAQ' );
+    $tabs = array( 'table'=> 'All TopBars', 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons', 'phptexttab' => 'PHP',  'debug' => 'Debug', 'faq' => 'FAQ' );
     $links = array();
     
 	if ( $current == 'table' ) $wptb_barid="";
@@ -196,20 +196,29 @@ function wptb_display_common_info($wptbOptions) {
 
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Displaying Common Info</code>';
 	
+	// 
+	// Display Warning Messges for any possible incompatible plugin settings.
+	// 
 	
 	if (($wptbOptions['topbar_pos'] == 'footer') && (strpos($wptbOptions['div_css'], "bottom") === false))
-		_e( "<div class='error'><strong>You have set the TopBar Location to Below the Footer (in the Main Options) but the CSS 'For the entire TopBar' (in TopBar CSS) may not be set correctly.<br>It should be something like <code>position:fixed; bottom: 0; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
+		_e( "<div class='error'><strong>You have set the TopBar Location to Below Footer (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#priority'>Main Options</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS Option C</a> may not be set correctly.<br>It should be something like <code>position:fixed; bottom: 0; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 
 	if (($wptbOptions['topbar_pos'] == 'header') && (strpos($wptbOptions['div_css'], "top") === false))
-		_e( "<div class='error'><strong>You have set the TopBar Location to be Above the Header (in the Main Options) but the CSS 'For the entire TopBar' (in TopBar CSS) may not be set correctly.<br>It should be something like <code>fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
+		_e( "<div class='error'><strong>You have set the TopBar Location to be Above Header (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#priority'>Main Options</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS Option C</a> may not be set correctly.<br>It should be something like <code>position: fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 
-	
-	
+	if (($wptbOptions['scroll_action'] == "on") && (strpos($wptbOptions['div_css'], "fixed") === false))
+		_e( "<div class='error'><strong>You have turned on the Scroll Action option (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Main Options</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS Option C</a> may not be set correctly.<br>It should have it's position 'fixed' like <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
+
+//	if (($wptbOptions['allow_close'] == "yes") && (strpos($wptbOptions['div_css'], "fixed") === false))
+//		_e( "<div class='error'><strong>You have turned allowed the user to close the Top Bar (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#allowclose'>Close Button tab</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS Option C</a> may not be set correctly.<br>It should have it's position 'fixed' like <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
+	if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes" && $wptbOptions['respect_cookie'] == 'always' ) 
+		_e( "<div class='error'><strong>You have allowed the TopBar to be re-opened (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) and have have Enabled Cookies.  Cookies are ignored if the TopBar is allowed to be re-opened.</strong></div>", 'wptb' ); 
+
 		   
-	$wptb_cookie = "wptopbar_".COOKIEHASH;
+	$wptb_cookie = "wptopbar_".$wptbOptions['bar_id'].'_'.COOKIEHASH;
 	if  ( ($wptbOptions['respect_cookie'] == 'always' ) AND ( isset ($_COOKIE[$wptb_cookie])) ) 
-		if ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value']  ) 
-		 _e( "<div class='error'><strong>You have a cookie with this browser that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the Close Button tab.</strong></div>", 'wptb' ); 
+	if ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value']  ) 
+	 _e( "<div class='error'><strong>You have a cookie with this browser that will prevent the TopBar from showing.  To show the TopBar, clear your browser's cookies, change the Cookie Value, or disable cookies in the Close Button tab.</strong></div>", 'wptb' ); 
 
 	?>
 	
@@ -271,12 +280,35 @@ function wptb_display_common_info($wptbOptions) {
 			<p class="sub"><strong>This is how the TopBar will appear on the website.</strong>
 			<br>To test the TopBar on your site, you can set the Page IDs (on the <a href="?page=wp-topbar.php&action=control&barid=<?php echo ($wptbOptions['bar_id']+$wptb_barid_prefix); ?>">Control tab</a>) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
 			<br> The first black line below represents the top of the screen.  The second black line represents the bottom of the TopBar.</p>
+			<?php 
+			if (isset( $_GET['action'] ) && ( $_GET['action'] == 'phptexttab' ) ) {
+		        echo '
+			<strong>IF THE TopBar IS NOT RENDERING CORRECTLY</strong> in the Preview section below and is breaking the page, then your custom PHP needs to be fixed.
+</br>
+<ul>You have two options to fix this:</br>
+<li>1. Append <code>&nopreview</code> to the url when you are trying to edit a TopBar.  E.g. <a href="?page=wp-topbar.php&action=phptexttab&barid='.($wptbOptions['bar_id']+$wptb_barid_prefix).'&nopreview"><code>?page=wp-topbar.php&action=phptexttab&barid='.($wptbOptions['bar_id']+$wptb_barid_prefix).'&nopreview</code></a>.  Hit <code>enter</code> to reload the page. You should now be able to edit the custom php.</li>
+<li>2. Go into your database tool (usually using phpMyAdmin), find the wp-topbar table and delete the offending row.</li>
+</ul></br>';
+			}
+			?>
 			<div class="table">
 				<table class="form-table">
 					<tr valign="top">
 							<div>
 							<hr style="margin: 0px; height: 1px; padding: 0px; background-color: #000; color: #000;" />
-							<?php wptb::wptb_display_TopBar("",$wptbOptions, false, ""); ?>
+							<?php 
+									if ((isset($_GET['page']) && $_GET['page'] == 'wp-topbar.php') &&
+								        isset( $_GET['nopreview'] ) && current_user_can( 'manage_options' ) ) {
+											unset($_GET['nopreview']);
+											echo "<strong>Preview disabled</strong>";
+										}
+									else
+										if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "on")
+											wptb::wptb_display_TopBar('',$wptbOptions, false, 1, true);
+										else 
+											wptb::wptb_display_TopBar('',$wptbOptions, false, 1, false);
+										?>
+
 							<hr style="margin: 0px; height: 1px; padding: 0px; background-color: #000; color: #000;" />
 							</div> 
 		 				</td>

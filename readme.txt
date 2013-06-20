@@ -4,21 +4,23 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.5.1
-Stable tag: 4.17
+Stable tag: 5.0
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
 == Description ==
 
-Create **MULTIPLE** (Whohoo!) TopBars that will be shown at the top (or bottom) of your website.  TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  We made this so customizable and easy to change the color, text, image, link that you can easily lose track of time getting your TopBars perfect!
+Create **MULTIPLE** TopBars that will be shown at the top (or bottom) of your website.  The Cacheable TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even add your own PHP. You can easily lose track of time getting your TopBars perfect!
+
+Version 5.0 now allows the user to re-open a TopBar, adds more Social buttons (and you can place them before or after the TopBar.)  It also gives you a way to supress live preview (see FAQ for &nopreview option) to help find broken, custom PHP.  Also, there a several more warning messages as the TopBar tries to tell you if you may have an incompatible setting.
+
+Version 4.17 adds the ability to display the TopBar only when the user scrolls the page. 
 
 New with Verison 4.15+ is the ability to add custom PHP to be executed when the TopBars are created.  Of course, that can be super dangerous if you enter PHP code that is invalid -- you could break your website.  That option should only be used by **Advanced Swimmers** only.
 
-Version 4.17 adds the ability to display the TopBar only when the user scrolls the page.
-
 Version 4.10+ now statically creates the TopBar to allow you to take advantage of caching plugins.
 
-**Superduper major re-write with Version 4.0.**  Refactored all the functions to use its own database table instead of WordPress options.  This allows you to create an unlimited number of TopBars.  This version is leaner, faster, smarter.   Quick links are added throughout to make editing your TopBars a breeze.
+There was a **Superduper major re-write with Version 4.0.**  Refactored all the functions to use its own database table instead of WordPress options.  This allows you to create an unlimited number of TopBars.  This version is leaner, faster, smarter.   Quick links are added throughout to make editing your TopBars a breeze.
 
 Want to see how this TopBar looks?   You can test how your TopBars show up to allow you to adjusting the selection factors on the fly.  You can even get a sampling of how 10 pageviews would render the TopBar -- *great for A/B testing*.
 
@@ -70,11 +72,17 @@ You may have CSS settings that prevent the TopBar from loading. If you entered a
 
 You can also use the Debug page to see if you can see an error.
 
+= HELP! I am using custom PHP and now my website is broken =
+Don't Panic! 
+You have two options to fix this:
+1. Append &nopreview to the url when you are trying to edit a TopBar. E.g. https://www.dummy.org/wp/wp-admin/?page=wp-topbar.php&action=phptexttab&barid=422116&nopreview.    Hit ENTER to reload the page. You should now be able to edit the custom php.
+2. Go into your database tool (usually using phpMyAdmin), find the wp-topbar table and delete the offending row. 
+
 = My TopBar does not support my local language = 
 
 The problem is with your table collation. You need to change the collation to utf8_general_ci.
 
-Run this query from your phpadmin to change the collation.
+Run this query from your phpMyAdmin to change the collation.
 
 ALTER TABLE 'DATABASEPREFIX'_topbar_data CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci
 
@@ -145,12 +153,14 @@ IE does not (yet) implement gradients like other browsers.  So, make sure you te
 
 = How dow I uninstall? = 
 
-Go to the Delete Settings tab and then click the Delete Settings button at the top of the page.
-Hit the Delete Settings Button. 
-Click "OK" on the warning box.
-Go to your Plugins page and delete the plugin or delete all the files in your `/wp-content/plugins/wp-topbar` directory 
+Go to the Uninstall tab and then click the Uninstall button at the bottom of the page.
+You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the Plugin
 
 == Upgrade Notice ==
+
+= 5.0 = 
+
+Version 5.0 adds ability to reopen a TopBar, fixes a couple of defects and enhances how custom PHP is supported.  Changed TopBar to use a DIV container instead of a P container. Double check how your TopBars now render after upgrading.  Added six more Social Buttons.  See Changelog for all updates.
 
 = 4.17 = 
 
@@ -269,6 +279,23 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+= 5.0 - 06/19/2013 =
+
+1. ADDED:     Added ability to reopen a TopBar.
+2. CHANGED:   Now the TopBar uses the Bar Color even if you have an image set.  Double check how TopBars now render if you use an image!!
+3. FIXED:     Change the TopBar to use a real container (<div> instead of <p>) to fix custom PHP issues. Please double check how TopBars now render.
+4. CHANGED:   Updated jQuery Theme to make buttons/sliders easier to see
+5. UPDATED:   Finished adding slider bars to the Main Options tab to select numbers
+6. ADDED:     Added a way to suppress live preview (see FAQ for "&nopreview" option) to help find broken custom PHP
+7. UPDATED:   Default TopBar uses a new sample image and "positon fixed"
+8. CHANGED:   Changed CSS Option A to add "background-repeat: no-repeat;"
+9. ADDED:     Added more warning messages for possible incompatible options selected by the user
+10. ADDED:    Added six more Social Buttons - and the ability to place them before/after the TopBar
+11. ADDED:    Added Uninstall Option
+12. FIXED:    Fixed how the plugin handled conversion from pre-database versions
+13. UPDATED:  Updated the FAQ with more current information
+14. CHANGED:  Moved Font & Text Alignment options to the TextBar Tap
+15. FIXED:    How the Close Button works to be more reliable
 
 = 4.17 - 06/01/2013 = 
 

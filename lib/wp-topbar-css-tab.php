@@ -17,7 +17,7 @@ function wptb_topbarcss_options($wptbOptions) {
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
 	if($wptb_debug)
-		echo '<br><code>WP-TopBar Debug Mode: In TopBar CSS Options</code>';
+		echo '</br><code>WP-TopBar Debug Mode: In TopBar CSS Options</code>';
 
 	?>
 	
@@ -30,13 +30,15 @@ function wptb_topbarcss_options($wptbOptions) {
 		</p>
 		</em>
 		<em><p><strong>How these options work:</strong>
-		<br />
-		The TopBar is displayed within it's own <em>div</em> tab:
-		<br />
+		</br>
+		The TopBar is displayed within it's own <em>div</em> containers:
+		</br>
 		<p style="padding-left:5em">
-		&lt;div id="topbar" style="<strong>CSS Option C</strong>"&gt;<br />
-		&lt;p style="<strong>CSS Option A</strong>"&gt;Your TopBar Text Goes Here&lt;a style="<strong>CSS Option B</strong>"&lt;/a&gt;&lt;/p&gt;<br />
-		&lt;/div&gt;<br /></p>
+		&lt;div id="topbar" style="<strong>CSS Option C</strong>"&gt;</br>
+		&nbsp;&nbsp;&nbsp;&lt;div id="wptbheadline1" style="<strong>CSS Option A</strong>"&gt;Your TopBar Text Goes Here</br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a style="<strong>CSS Option B</strong>"&lt;/a&gt;</br>
+		&nbsp;&nbsp;&nbsp;&lt;/div&gt;</br>
+		&lt;/div&gt;</br></p>
 		</em>	
 
 	</div>
@@ -47,11 +49,11 @@ function wptb_topbarcss_options($wptbOptions) {
 		<div class="table">
 			<table class="form-table">		
 				<tr valign="top">
-					<td width="150"><strong>CSS Option A</strong><br>For the Bar:<br>(i.e. for the &lt;p&gt; Tag on the TopBar)</label></td>
+					<td width="150"><strong>CSS Option A</strong></br>For the Bar/Background Image:</br>(i.e. for the &lt;p&gt; Tag on the TopBar)</label></td>
 					<td>
-						<strong>Examples:</strong><br>
-						1. To make all text lowercase:&nbsp;&nbsp;&nbsp;<textarea rows="1" cols="50" style="background-color:lightyellow;">text-transform:lowercase;</textarea><br>
-						2. To make all text uppercase using the Georgia Font:&nbsp;&nbsp;&nbsp;<textarea rows="1" cols="50" style="background-color:lightyellow;">text-transform:uppercase;font-family:'georgia';padding-right:10px;</textarea><br>
+						<strong>Examples:</strong></br>
+						1. To make all text lowercase:&nbsp;&nbsp;&nbsp;<textarea rows="1" cols="50" style="background-color:lightyellow;">text-transform:lowercase;</textarea></br>
+						2. To make all text uppercase using the Georgia Font:&nbsp;&nbsp;&nbsp;<textarea rows="1" cols="50" style="background-color:lightyellow;">text-transform:uppercase;font-family:'georgia';padding-right:10px;</textarea></br>
 						3. To add a gradient bar:&nbsp;&nbsp;&nbsp;<textarea rows="9" cols="120" style="background-color:lightyellow;">background: rgb(109,179,242);
 background: -moz-linear-gradient(top,  rgba(109,179,242,1) 0%, rgba(84,163,238,1) 50%, rgba(54,144,240,1) 51%, rgba(30,105,222,1) 100%);
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(109,179,242,1)), color-stop(50%,rgba(84,163,238,1)), color-stop(51%,rgba(54,144,240,1)), color-stop(100%,rgba(30,105,222,1)));
@@ -59,21 +61,28 @@ background: -webkit-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238
 background: -o-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
 background: -ms-linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
 background: linear-gradient(top,  rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', endColorstr='#1e69de',GradientType=0 );</textarea><br>
-						4. To made the TopBar partially opaque:&nbsp;&nbsp;&nbsp;<textarea rows="1" cols="50" style="background-color:lightyellow;">background: transparent filter: alpha(opacity=90); opacity: 0.9;</textarea><br><br>
-						<strong>Enter CSS Option A Here:</strong><br>
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', endColorstr='#1e69de',GradientType=0 );</textarea></br>
+						4. To made the TopBar partially opaque:&nbsp;&nbsp;&nbsp;<textarea rows="1" cols="60" style="background-color:lightyellow;">background: transparent filter: alpha(opacity=90); opacity: 0.9;</textarea></br>
+						5. To not repeat Background Image, make the TopBar 100px high & vertically center the text in the TopBar:&nbsp;&nbsp;&nbsp;<textarea rows="2" cols="60" style="background-color:lightyellow;">background-repeat:no-repeat; height:100px; line-height:100px; vertical-align:middle;</textarea></br></br>
+						<strong>Enter CSS Option A Here:</strong></br>
 						<textarea name="wptbcustomcssbar" id="customcssbar" rows="10" cols="100"><?php echo stripslashes($wptbOptions['custom_css_bar']); ?></textarea>
 					</td>
 				</tr>
+				<tr>
+					<td colspan="2"><hr></td>
+				</tr>
 				<tr valign="top">
-					<td width="150"><strong>CSS Option B</strong><br>For the Text Message:<br>(i.e. for the &lt;a&gt; Tag on the TopBar)</label></td>
+					<td width="150"><strong>CSS Option B</strong></br>For the Text Message:</br>(i.e. for the &lt;a&gt; Tag on the TopBar)</label></td>
 					<td>
-						<strong>Enter CSS Option B Here:</strong><br>
+						<strong>Enter CSS Option B Here:</strong></br>
 						<textarea name="wptbcustomcsstext" id="customcsstext" rows="10" cols="100"><?php echo stripslashes($wptbOptions['custom_css_text']); ?></textarea>
 					</td>
 				</tr>	
+				<tr>
+					<td colspan="2"><hr></td>
+				</tr>
 				<tr valign="top">
-					<td width="150"><strong>CSS Option C</strong><br>For the entire TopBar:<br>(i.e. at the TopBar's &lt;DIV&gt;)</label></td>
+					<td width="150"><strong>CSS Option C</strong></br>For the entire TopBar:</br>(i.e. at the TopBar's &lt;DIV&gt;)</label></td>
 					<td><p>Use this CSS to fix the TopBar to the top of the page and <strong>OVERLAY</strong> the contents of the page:<p>				
 					<textarea rows="1" cols="80" style="background-color:lightyellow;">position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</textarea>
 					<p>Or this CSS to fix the TopBar to the top of the page and <strong>PUSH</strong> the contents down:<p>				
@@ -82,7 +91,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', end
 					<textarea rows="1" cols="80" style="background-color:lightyellow;">position:fixed; bottom: 0; padding:0; margin:0; width: 100%; z-index: 99999;</textarea>
 	
 					<p><strong>Note that by putting your TopBar in a Fixed position, you will overlay the content of your website by the TopBar.</strong></p>
-					<strong>Enter CSS Option C Here:</strong><br>
+					<strong>Enter CSS Option C Here:</strong></br>
 					<textarea name="wptbdivcss" id="divcss" rows="2" cols="100"><?php echo stripslashes($wptbOptions['div_css']); ?></textarea>
 					</td>
 				</tr>	
