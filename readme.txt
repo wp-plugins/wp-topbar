@@ -283,7 +283,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 1. ADDED:     Added ability to reopen a TopBar.
 2. CHANGED:   Now the TopBar uses the Bar Color even if you have an image set.  Double check how TopBars now render if you use an image!!
-3. FIXED:     Change the TopBar to use a real container (<div> instead of <p>) to fix custom PHP issues. Please double check how TopBars now render.
+3. FIXED:     Change the TopBar to use a real container (div instead of p) to fix custom PHP issues. Please double check how TopBars now render.
 4. CHANGED:   Updated jQuery Theme to make buttons/sliders easier to see
 5. UPDATED:   Finished adding slider bars to the Main Options tab to select numbers
 6. ADDED:     Added a way to suppress live preview (see FAQ for "&nopreview" option) to help find broken custom PHP
