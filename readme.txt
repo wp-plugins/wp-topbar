@@ -294,7 +294,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 11. ADDED:    Added Uninstall Option
 12. FIXED:    Fixed how the plugin handled conversion from pre-database versions
 13. UPDATED:  Updated the FAQ with more current information
-14. CHANGED:  Moved Font & Text Alignment options to the TextBar Tap
+14. CHANGED:  Moved Font & Text Alignment options to the TextBar Tab
 15. FIXED:    How the Close Button works to be more reliable
 
 = 4.17 - 06/01/2013 = 
