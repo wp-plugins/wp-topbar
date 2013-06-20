@@ -200,9 +200,9 @@ class wptb {
 		
 	function wptb_activate_plugin() {   
 	
-			require_once( dirname(__FILE__).'/lib/wp-topbar-db-io.php');  //database and I-O functions php
-
+	//		require_once( dirname(__FILE__).'/lib/wp-topbar-db-io.php');  //database and I-O functions php
 	//		wptb::wptb_check_for_plugin_upgrade(false);	// do not echo out parameters if debugging
+		
 	
 	} // End of function wptb_activate_plugin 	
 	

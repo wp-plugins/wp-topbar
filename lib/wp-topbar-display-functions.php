@@ -213,6 +213,12 @@ function wptb_display_common_info($wptbOptions) {
 //		_e( "<div class='error'><strong>You have turned allowed the user to close the Top Bar (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#allowclose'>Close Button tab</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS Option C</a> may not be set correctly.<br>It should have it's position 'fixed' like <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 	if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes" && $wptbOptions['respect_cookie'] == 'always' ) 
 		_e( "<div class='error'><strong>You have allowed the TopBar to be re-opened (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) and have have Enabled Cookies.  Cookies are ignored if the TopBar is allowed to be re-opened.</strong></div>", 'wptb' ); 
+	if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes" && $wptbOptions['reopen_button_css'] == '' ) 
+		_e( "<div class='error'><strong>You have allowed the TopBar to be re-opened (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) but no CSS is entered for that TopBar on the same option page.  Re-open button will not work without (at least) the default CSS entered.</strong></div>", 'wptb' ); 
+	if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes" && $wptbOptions['reopen_button_css'] == '' ) 
+		_e( "<div class='error'><strong>You have allowed the TopBar to be re-opened (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) but no image has been selected for that TopBar.</strong></div>", 'wptb' ); 
+
+
 
 		   
 	$wptb_cookie = "wptopbar_".$wptbOptions['bar_id'].'_'.COOKIEHASH;

@@ -107,7 +107,7 @@ function wptb_closebutton_bulk_options() {
 					<td>
 					 	<p id="radio2" class="ui-button ui-button-wptbset">
 							<input type="radio" id="wptballowreopenb1" name="wptballowreopen" class="ui-helper-hidden-accessible" value="yes" <?php if ($allow_reopen == "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptballowreopenb1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
-							<input type="radio" id="wptballowreopenb2" name="wptballowreopen" class="ui-helper-hidden-accessible" value="no" <?php if ($allow_reopen == "no") { _e('checked="checked"', "wptb"); }?>><label for="wptballowreopenb2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
+							<input type="radio" id="wptballowreopenb2" name="wptballowreopen" class="ui-helper-hidden-accessible" value="no" <?php if ($allow_reopen != "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptballowreopenb2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
 						</p>						
 					</br>
 					<p class="sub"><em>Allows the user to reopen the TopBar.  Default is <code>No</code></em></p>
@@ -337,7 +337,7 @@ function wptb_closebutton_options($wptbOptions) {
 					<th scope="row">Reopen Button Image URL:</br>
 					<?php if ( ! ($wptbOptions['reopen_button_image'] == "") )  _e('<img style="float:right; margin: 0 0 15px 15px;" src="'.$wptbOptions['reopen_button_image'].'"/>', 'wptb' );	?>
 					</th>
-					<td><label for="wptbupload_closebutton">
+					<td><label for="wptbupload_reopenbutton">
 					<input id="wptbupload_reopenbutton" type="text" size="85" name="wptbreopenimage" value="<?php echo $wptbOptions['reopen_button_image']; ?>" />
 					<input class="browse_upload button" name="wptbreopenimage" id="wptbupload_reopenbutton_button" type="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" value="Upload Image" />
 					
