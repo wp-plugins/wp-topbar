@@ -198,11 +198,11 @@ class wptb {
 	// Run this when plugin is activiated 
 	//=========================================================================			
 		
-	function wptb_activate_plugin() { 
+	function wptb_activate_plugin() {   
 	
 			require_once( dirname(__FILE__).'/lib/wp-topbar-db-io.php');  //database and I-O functions php
 
-			wptb_check_for_plugin_upgrade(false);	// do not echo out parameters if debugging
+	//		wptb::wptb_check_for_plugin_upgrade(false);	// do not echo out parameters if debugging
 	
 	} // End of function wptb_activate_plugin 	
 	
@@ -366,11 +366,21 @@ class wptb {
 	function wptb_display_TopBar($wptb_visibility, $wptbOptions, $wptbaddslashes, $wptbTopBarNumber, $wptbReopen) {
 	
 		if ( $wptbaddslashes ) {
-			$wtpbtextfields = array( '1' => 'custom_css_bar',  '2' => 'bar_text',  '3' => 'custom_css_text', '4' => 'bar_link_text', '5' => 'close_button_css', '6' => 'reopen_button_css' , '7' => 'div_css');
-		  	foreach( $wptbtextfields as $number => $field ) {				
-		  		if ( isset($wptbOptions[$field]) )	 
-		  			$wptbOptions[$field] = addslashes($wptbOptions[$field]);
-			}
+	  		if ( isset($wptbOptions['custom_css_bar']) )	 
+	  			$wptbOptions['custom_css_bar'] = addslashes($wptbOptions['custom_css_bar']);
+	  		if ( isset($wptbOptions['bar_text']) )	 
+	  			$wptbOptions['bar_text'] = addslashes($wptbOptions['bar_text']);
+	  		if ( isset($wptbOptions['custom_css_text']) )	 
+	  			$wptbOptions['custom_css_text'] = addslashes($wptbOptions['custom_css_text']);
+	  		if ( isset($wptbOptions['bar_link_text']) )	 
+	  			$wptbOptions['bar_link_text'] = addslashes($wptbOptions['bar_link_text']);
+	  		if ( isset($wptbOptions['close_button_css']) )	 
+	  			$wptbOptions['close_button_css'] = addslashes($wptbOptions['close_button_css']);
+	  		if ( isset($wptbOptions['reopen_button_css']) )	 
+	  			$wptbOptions['reopen_button_css'] = addslashes($wptbOptions['reopen_button_css']);
+	  		if ( isset($wptbOptions['div_css']) )	 
+	  			$wptbOptions['div_css'] = addslashes($wptbOptions['div_css']);
+			
 		
 			for ($i=1; $i<=10; $i++)  {
 				if ( isset($wptbOptions[$field]) )	
