@@ -209,15 +209,34 @@ function wptb_display_common_info($wptbOptions) {
 	if (($wptbOptions['scroll_action'] == "on") && (strpos($wptbOptions['div_css'], "fixed") === false))
 		_e( "<div class='error'><strong>You have turned on the Scroll Action option (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Main Options</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS Option C</a> may not be set correctly.<br>It should have it's position 'fixed' like <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 
-//	if (($wptbOptions['allow_close'] == "yes") && (strpos($wptbOptions['div_css'], "fixed") === false))
-//		_e( "<div class='error'><strong>You have turned allowed the user to close the Top Bar (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#allowclose'>Close Button tab</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS Option C</a> may not be set correctly.<br>It should have it's position 'fixed' like <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 	if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes" && $wptbOptions['respect_cookie'] == 'always' ) 
 		_e( "<div class='error'><strong>You have allowed the TopBar to be re-opened (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) and have have Enabled Cookies.  Cookies are ignored if the TopBar is allowed to be re-opened.</strong></div>", 'wptb' ); 
-	if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes" && $wptbOptions['reopen_button_css'] == '' ) 
-		_e( "<div class='error'><strong>You have allowed the TopBar to be re-opened (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) but no CSS is entered for that TopBar on the same option page.  Re-open button will not work without (at least) the default CSS entered.</strong></div>", 'wptb' ); 
-	if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes" && $wptbOptions['reopen_button_css'] == '' ) 
-		_e( "<div class='error'><strong>You have allowed the TopBar to be re-opened (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) but no image has been selected for that TopBar.</strong></div>", 'wptb' ); 
 
+	if (((isset($wptbOptions['allow_close']) && ($wptbOptions['allow_close']) == "yes") ||  (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes" )) && $wptbOptions['close_button_css'] == '' ) 
+		_e( "<div class='error'><strong>You have allowed the TopBar to be closed (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) but no close button CSS is entered for this TopBar on the same option page.</strong></div>", 'wptb' ); 
+
+	if (((isset($wptbOptions['allow_close']) && ($wptbOptions['allow_close']) == "yes") ||  (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes" )) && $wptbOptions['close_button_image'] == '' ) 
+		_e( "<div class='error'><strong>You have allowed the TopBar to be closed (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) but no close button image has been entered for this TopBar.</strong></div>", 'wptb' ); 
+
+	if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes" && $wptbOptions['reopen_button_css'] == '' ) 
+		_e( "<div class='error'><strong>You have allowed the TopBar to be re-opened (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) but no re-open button CSS is entered for this TopBar on the same option page.  Re-open button will not work without (at least) the default CSS entered.</strong></div>", 'wptb' ); 
+
+	if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes" && $wptbOptions['reopen_button_image'] == '' ) 
+		_e( "<div class='error'><strong>You have allowed the TopBar to be re-opened (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) but no re-open button image has been entered for this TopBar.</strong></div>", 'wptb' ); 
+
+	if (isset($wptbOptions['enable_image']) && ($wptbOptions['enable_image']) == "true" && $wptbOptions['bar_image'] == '' ) 
+		_e( "<div class='error'><strong>You have enabled a bar image (in the <a href='?page=wp-topbar.php&action=topbartext&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."'>TopBar Text & Image tab</a>) but no image has been entered for this TopBar.</strong></div>", 'wptb' ); 
+
+
+	for ($i=1; $i<=10; $i++)  {
+		if (isset($wptbOptions['social_icon'.$i]) && ($wptbOptions['social_icon'.$i]) == "on" && $wptbOptions['social_icon'.$i.'_image'] == '' ) 
+			_e( "<div class='error'><strong>You have enabled an image for Social Button # ".$i." (in the <a href='?page=wp-topbar.php&action=socialbuttons&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."'>Social Buttons tab</a>) but no image has been entered for this Social Button.</strong></div>", 'wptb' ); 
+	}
+
+
+	// 
+	// end of Warning Messges
+	// 
 
 
 		   

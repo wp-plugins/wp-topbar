@@ -3,8 +3,8 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
-Tested up to: 3.5.1
-Stable tag: 5.0
+Tested up to: 3.5.2
+Stable tag: 5.01
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
@@ -66,7 +66,9 @@ I've included a sample image for you to try on your website:  wp-topbar_sample_i
 == Frequently Asked Questions ==
 
 = My TopBar is not working. What should I do? =
-Check for any messages under the Live Preview heading on the Admin Page. It will tell you if you have cookies or time settings that will prevent the TopBar from loading.
+Are you upgrading from an old version?   I do my best to allow for clean upgrades.  Just in case, try creating a default TopBar.  If that works, you may have CSS or other incompatabilities on the older TopBar that does not work with the latest version.  
+
+Also, check for any messages under the Live Preview heading on the Admin Page. It will tell you if you have cookies or time settings that will prevent the TopBar from loading.  
 
 You may have CSS settings that prevent the TopBar from loading. If you entered any setting that are not valid, the TopBar will not load. Try deleting the settings and then re-entering your CSS until you find the one that is causing the issue.
 
@@ -157,6 +159,10 @@ Go to the Uninstall tab and then click the Uninstall button at the bottom of the
 You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the Plugin
 
 == Upgrade Notice ==
+
+= 5.01 = 
+
+Version 5.01 supports WordPress 3.5.2 and fixes minor bugs
 
 = 5.0 = 
 
@@ -278,6 +284,12 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+= 5.01 - 06/22/2013 =
+
+1. VALIDATED: Version 5.01 supports WordPress 3.5.2
+2. FIXED:     Defects related to re-open button options, added more warning messages for using re-open options
+3. UPDATED:   Updated FAQ to describe how to create your own menus.
 
 = 5.0 - 06/19/2013 =
 

@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.0
+Version: 5.01
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -27,7 +27,7 @@ Author URI: http://zwebify.com/wordpress-plugins/
 
 
 
-$WPTB_VERSION = "5.0";
+$WPTB_VERSION = "5.01";
 
 
 if( ! class_exists( 'wptb' ) ):

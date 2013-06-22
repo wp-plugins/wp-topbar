@@ -84,9 +84,9 @@ Look in this directory (<code><?PHP echo str_ireplace( 'https://','http://',plug
 </br>
 <li><strong>What CSS ID's are available?</strong></li>
 Use <code>#topbar</code>
+</br>  
 </br>
-</br>
-<li><strong>What if I fix the TopBar to the top or bottom of the page?</strong></li>
+<li><strong>What if I want to have the TopBar stationary at the top or bottom of the page?</strong></li>
 Use this CSS to fix the TopBar to the bottom of the page: </br>
 </br>	<code>position:fixed; bottom: 0; padding: 0; margin: 0; width: 100%; z-index: 99999;</code></br>
 </br>
@@ -97,20 +97,11 @@ Note that by putting your TopBar in a Fixed Position, you will overlay the conte
 </br>
 </br>
 <li><strong>How do I add a Menu to the TopBar</strong></li>
-In your theme's functions.php file add this code to create a custom menu. Then use the standard WordPress Appearance | Menu to create the menu:</br>
-</br><code>
-//register the custom menus</br>
-function register_wptopbar_menus() {</br>
-&nbsp;&nbsp;&nbsp;register_nav_menus(</br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array( 'wptopbar-menu' => __( 'TopBar Menu' ) )</br>
-&nbsp;&nbsp;&nbsp;);</br>
-}</br>
-add_action( 'init', 'register_wptopbar_menus' );</br>
-</code></br>
-In the PHP Option ("Before" or "After" - your choice)... use this code:</br>
+Create a new menu via the standard WordPress Appearance | Menu and name it something unique, say "Translation".
+</br>Now you can use that to create a menu use the PHP Option ("Before" or "After" - your choice)... using this code:</br>
 <code>
 $defaults = array(</br>
-&nbsp;&nbsp;&nbsp;'menu' => 'wptopbar-menu',</br>
+&nbsp;&nbsp;&nbsp;'menu' => 'Translation',</br>
 &nbsp;&nbsp;&nbsp;'menu_class'  => 'wptb-menu-class',</br>
 &nbsp;&nbsp;&nbsp;'container_class' => 'wptb-container-class',</br>
 &nbsp;&nbsp;&nbsp;'echo' => 0</br>
@@ -118,7 +109,8 @@ $defaults = array(</br>
 $menu = wp_nav_menu( $defaults);</br>
 echo preg_replace("/\r\n|\r|\n/",'',$menu);</code>
 </br></br>
-Then style using <code>.wptb-menu-class</code> or <code>.wptb-container-class</code> (whichever you prefer.)
+You can style it using <code>.wptb-menu-class</code> or <code>.wptb-container-class</code> (whichever you prefer.)</br></br>
+To make the Menu fancy, you might need to create a custom walker (see <a href="http://codex.wordpress.org/Function_Reference/wp_nav_menu">http://codex.wordpress.org/Function_Reference/wp_nav_menu</a>) on all the gory details on this WordPress function.
 </br>
 </br>
 <li><strong>My TopBar does not support my local language</strong></li>

@@ -1963,7 +1963,7 @@ function wptb_update_settings($wptb_barid, $wptb_debug) {
 //
 // DB Versions Listing:
 // 4.17 - added scroll_action field
-// 5.0 - added 6 more Social Buttons and ability to place them (left or right) 
+// 5.0 - added 6 more Social Buttons and ability to place them (left or right), added reopen options
 //=========================================================================			
 	
 function wtpb_check_for_plugin_upgrade($wptb_echo_on) { 
