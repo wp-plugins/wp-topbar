@@ -1201,17 +1201,17 @@ function wtpb_check_for_plugin_upgrade($wptb_display_errors) {
 		else {
 			$wptbDefaultValues=wtpb_set_default_settings();
 		
-			foreach ( $myrows as $wptbOptions ) 
-			{	
-				foreach ( $wptbDefaultValues as $option_name => $value ) {
-					if (! isset( $wptbOptions[$option_name] ))  {
-						$wptbOptions[$option_name] = $value;
-						if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Row:'.$wptbOptions[ 'bar_id' ].' Set default for '.$option_name.' to "'.$value.'"</code>';
-
-					}
-				}
-			}
-			wptb_update_row($wptbOptions);
+//			foreach ( $myrows as $wptbOptions ) 
+//			{	
+//				foreach ( $wptbDefaultValues as $option_name => $value ) {
+//					if (! isset( $wptbOptions[$option_name] ))  {
+//						$wptbOptions[$option_name] = $value;
+//						if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Row:'.$wptbOptions[ 'bar_id' ].' Set default for '.$option_name.' to "'.$value.'"</code>';
+//
+//					}
+//				}
+//			}
+//			wptb_update_row($wptbOptions);
 		}
 
 	}
