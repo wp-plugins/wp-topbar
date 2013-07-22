@@ -13,16 +13,12 @@ Color Options Tab
 function wptb_colorselection_options($wptbOptions) {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
-			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
-
-	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
-	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
-	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+			$wptb_submit_style, $wptb_special_button_style;    
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
+
 	if($wptb_debug)
-		echo '<br><code>WP-TopBar Debug Mode: In Color Selection Options</code>';
-		
+		echo '</br><code>WP-TopBar Debug Mode: wptb_colorselection_options() for ID: '.$wptbOptions[ 'bar_id' ].'</code>';
 		
 	global $wp_version;
     if ( version_compare( $wp_version, "3.5", '>=' ) ) 
@@ -41,9 +37,13 @@ function wptb_colorselection_options($wptbOptions) {
 function wptb_ColorPicker($wptbOptions) {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
-			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+			$wptb_submit_style, $wptb_special_button_style;    
 
-                
+ 	$wptb_debug=get_transient( 'wptb_debug' );	
+
+	if($wptb_debug)
+		echo '</br><code>WP-TopBar Debug Mode: wptb_ColorPicker() for ID: '.$wptbOptions[ 'bar_id' ].'</code>';
+               
 	?>
 	
 	<script type='text/javascript'>
@@ -117,8 +117,16 @@ function wptb_ColorPicker($wptbOptions) {
 function wptb_farbtastic($wptbOptions) {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
-			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+			$wptb_submit_style, $wptb_special_button_style;    
 
+	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+   	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+   	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+
+	$wptb_debug=get_transient( 'wptb_debug' );	
+
+	if($wptb_debug)
+		echo '</br><code>WP-TopBar Debug Mode: wptb_farbtastic() for ID: '.$wptbOptions[ 'bar_id' ].'</code>';
                 
 	?>
 	

@@ -10,14 +10,15 @@ Uninstall Option Tab
 // TopBar Uninstall Option
 //=========================================================================			
 
-function wptb_uninstall_options($wptbOptions) {
+function wptb_uninstall_options() {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
-			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+			$wptb_submit_style, $wptb_special_button_style;    
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
+	
 	if($wptb_debug)
-		echo '</br><code>WP-TopBar Debug Mode: In TopBar Uninstall Option</code>';
+		echo '</br><code>WP-TopBar Debug Mode: wptb_uninstall_options()</code>';
 
 	$url=get_option('siteurl');
 	$url=get_option('siteurl')."/wp-admin/?page=wp-topbar.php&amp;action=uninstall&amp;noheader=true";
@@ -59,10 +60,15 @@ This operation deletes ALL TopBar data. If you continue, You will not be able to
 function wptb_uninstall_wptbSettings() {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
-			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+			$wptb_submit_style, $wptb_special_button_style;    
 
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
+
+	$wptb_debug=get_transient( 'wptb_debug' );	
+	
+	if($wptb_debug)
+		echo '</br><code>WP-TopBar Debug Mode: wptb_uninstall_wptbSettings()</code>';
 	
 	delete_option( 'wptbAdminOptions');
 	delete_option( 'wptb_db_version' );

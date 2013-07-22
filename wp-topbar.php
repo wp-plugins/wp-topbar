@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.01
+Version: 5.02
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -27,7 +27,7 @@ Author URI: http://zwebify.com/wordpress-plugins/
 
 
 
-$WPTB_VERSION = "5.01";
+$WPTB_VERSION = "5.02";
 
 
 if( ! class_exists( 'wptb' ) ):
@@ -221,7 +221,7 @@ class wptb {
 			require_once( dirname(__FILE__).'/lib/wp-topbar-db-io.php');  //database and I-O functions php
 			wptb_check_for_plugin_upgrade(false);	// do not echo out parameters if debugging
 		}
-		wptb::wptb_build_cacheable_html_js(true);
+		wptb::wptb_build_cacheable_html_js();
 	}  // end function wptb_activate_TopBar_html_js
 
 
@@ -383,7 +383,7 @@ class wptb {
 			
 		
 			for ($i=1; $i<=10; $i++)  {
-				if ( isset($wptbOptions[$field]) )	
+				if ( isset($wptbOptions['social_icon'.$i.'_css']) )	
 					$wptbOptions['social_icon'.$i.'_css'] = addslashes($wptbOptions['social_icon'.$i.'_css']);
 			}
 		}
@@ -515,9 +515,12 @@ class wptb {
 	//=========================================================================		
 	
 	function wptb_build_scrollable_topbar_js($wptbOptions, $wptbTopBarNumber) {	
+	
+		if (!isset($wptbOptions[ 'scroll_amount' ]) || !is_numeric($wptbOptions[ 'scroll_amount' ]))
+			$wptbOptions[ 'scroll_amount' ] = 0;
 		
 		$html_out = "		".$wptbTopBarNumber.": function() {jQuery(window).scroll(function(){
-				if(jQuery(window).scrollTop()> 0 ) {
+				if(jQuery(window).scrollTop()> ".$wptbOptions['scroll_amount'].") {
 					jQuery('#wptbheadline".$wptbTopBarNumber."').css('visibility','visible').slideDown('".$wptbOptions['slide_time']."').fadeIn(1000).show('slow');	
 				} else {
 					jQuery('#wptbheadline".$wptbTopBarNumber."').fadeOut('slow');
@@ -611,15 +614,14 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 	//=========================================================================		
 	//Builds the cacheable topbars; using one loop building all parts at once
 	//=========================================================================		
-	function wptb_build_cacheable_html_js($wptb_echo_on) {
+	function wptb_build_cacheable_html_js() {
 	
 		global $WPTB_VERSION;
 	
-		if ( $wptb_echo_on ) $wptb_debug=get_transient( 'wptb_debug' );	
-		else $wptb_debug = false;			
+		$wptb_debug=get_transient( 'wptb_debug' );	
 	
 		if($wptb_debug)
-			echo '<br><code>WP-TopBar Debug Mode: Getting TopBars in Random Order</code>';
+			echo '<br><code>WP-TopBar Debug Mode: wptb_build_cacheable_html_js() - Getting TopBars in Random Order</code>';
 	
 		global $wpdb;
 		$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	

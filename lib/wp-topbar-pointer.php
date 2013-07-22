@@ -88,6 +88,18 @@ function wptb_register_pointer( $p ) {
             'position' => array( 'edge' => 'top', 'align' => 'left' )
         )
     ); 
+     $p['502pointer1'] = array(
+        'target' => '.wptb-samples',
+        'options' => array(
+            'content' => sprintf( '<h3> %s </h3> <p> %s </p>',
+                __( 'Samples!' ,'plugindomain'),
+                __( 'Check out these samples to see how you can customize your own TopBar.  You can copy any (or all) the samples for easy customizing to your needs.','plugindomain')
+            ),
+            'position' => array( 'edge' => 'top', 'align' => 'left' )
+        )
+    );      
+    
+    
     return $p;
 }
 

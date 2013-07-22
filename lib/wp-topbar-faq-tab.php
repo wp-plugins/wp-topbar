@@ -12,17 +12,17 @@ FAQ Functions
 function wptb_faq_page($wptbOptions,$wptbShowLinks) {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
-			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
-
-	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
-	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
-	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
-
+			$wptb_submit_style, $wptb_special_button_style;    
 	
+   	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+   	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+   	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+
 	$wptb_debug=get_transient( 'wptb_debug' );	
 
 	if($wptb_debug)
-		echo '</br><code>WP-TopBar Debug Mode: In FAQ</code>';
+		echo '</br><code>WP-TopBar Debug Mode: wptb_faq_page() for ID: '.$wptbOptions[ 'bar_id' ].'</code>';
+
 	?>
 					
 	<div class="postbox">

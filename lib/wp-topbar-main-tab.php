@@ -14,19 +14,16 @@ Main Options Tab
 function wptb_main_options($wptbOptions) {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
-	$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+			$wptb_submit_style, $wptb_special_button_style;    
 
-	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
-	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
-	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
-
+   	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+   	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+   	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
-	if($wptb_debug) {
-		echo '<br><code>WP-TopBar Debug Mode: In Main Options</code>';
-		echo '<br><code>BarID Prefix: '.$wptb_barid_prefix.'</code>';
-    }
-    
+
+	if($wptb_debug)
+		echo '</br><code>WP-TopBar Debug Mode: wptb_main_options() for ID: '.$wptbOptions[ 'bar_id' ].'</code>';
     
 	?>
 
@@ -54,7 +51,7 @@ function wptb_main_options($wptbOptions) {
 					<td colspan="3"><hr></td>
 				</tr>
 				<tr valign="top">
-					<td width="150" id="priority">Priority:</td>
+					<td width="150" id="prioritytop"> Priority:</td>
 					<td>
 						<input type="text" name="wptbpriority" id="priority" size="4" value="<?php echo $wptbOptions['weighting_points']; ?>" >
 						<div id="wtpb-priority"></div>
@@ -91,6 +88,16 @@ function wptb_main_options($wptbOptions) {
 					</td>
 					<td>
 							<p class="sub"><em>Only show the TopBar when the user scrolls the page?  If the user scrolls back to the top of the page, the TopBar gracefully fades away.  Note, if this is to On, the TopBar ignores the Display Time value below.</br></br>Also, <strong>it works best</strong> when the <a <?php echo 'href="?page=wp-topbar.php&action=topbarcss&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'#divcss"'; ?>>TopBar CSS Option C</a> has it's <code>position</code> fixed: e.g. <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code>.</br></br>Default is <code>Off</code>, this will show the scrollbar even if the user does not scroll the page.</em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td width="150">Scroll Amount:</td>
+					<td>
+						<input type="text" name="wptbscrollamount" id="scrollamount" size="30" value="<?php echo $wptbOptions['scroll_amount']; ?>" >
+						<div id="wtpb-scroll-amount"></div>
+					</td>
+					<td>
+							<p class="sub"><em>This option allows you to adjust how far the user has to scroll the page before the Scrollable TopBar appears.   Selecting 0 (zero) will display the TopBar immediately after the user scrolls the page.</br></br>Default is <code>0</code>.</em></p>
 					</td>
 				</tr>
 				<tr>

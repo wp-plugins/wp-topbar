@@ -13,14 +13,15 @@ Close Options Tab
 function wptb_closebutton_bulk_options() {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
-			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+			$wptb_submit_style, $wptb_special_button_style;    
 
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
+
 	if($wptb_debug)
-		echo '<br><code>WP-TopBar Debug Mode: In Close Button Bulk Options</code>';
+		echo '</br><code>WP-TopBar Debug Mode: wptb_closebutton_bulk_options()</code>';
 
 
 	$allow_close = "no";
@@ -213,15 +214,16 @@ function wptb_closebutton_bulk_options() {
 function wptb_closebutton_options($wptbOptions) {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
-			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+			$wptb_submit_style, $wptb_special_button_style;    
 
-	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
-	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
-	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+   	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+   	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+   	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
+
 	if($wptb_debug)
-		echo '<br><code>WP-TopBar Debug Mode: In Close Button Options</code>';
+		echo '</br><code>WP-TopBar Debug Mode: wptb_closebutton_options() for ID: '.$wptbOptions[ 'bar_id' ].'</code>';
 
 	?>
 	

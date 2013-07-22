@@ -10,8 +10,13 @@ export Functions
 
 function wptb_display_export_options() {
 	
-//	echo $_POST['wptbExportJSON'].'<BR>' ;
-//	echo $_POST['wptbExportCSV'].'<BR>' ;
+	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
+			$wptb_submit_style, $wptb_special_button_style;    
+
+	$wptb_debug=get_transient( 'wptb_debug' );	
+
+	if($wptb_debug)
+		echo '</br><code>WP-TopBar Debug Mode: wptb_display_export_options()</code>';
 
 // siteurl broken in 3.4.1
 	
@@ -103,6 +108,7 @@ function wptb_export_options_csv() {
 				case 'weighting_points':
 				case 'delay_time':
 				case 'slide_time': 
+				case 'scroll_amount': 
 				case 'display_time':
 				case 'bottom_border_height':
 				case 'font_size':
@@ -159,6 +165,7 @@ function wptb_export_options_json() {
 	
 	$num_rows=$wpdb->num_rows;
 
+/*
 	$settings = array();
 
 	
@@ -169,10 +176,14 @@ function wptb_export_options_json() {
 		}
 		$j++;
 	}
+
 	
 //	if ( ! $settings ) return;
 
-    $json_output = json_encode( (array) $settings );
+    //$json_output = json_encode( (array) $settings );
+    
+*/    
+    $json_output = json_encode( $myrows );
     
 	$file = 'wp_topbar_export';
 	$filename = $file."_".date("Y-m-d_H-i",time());
@@ -241,6 +252,7 @@ function wptb_export_options_sql() {
 				case 'delay_time':
 				case 'slide_time': 
 				case 'display_time':
+				case 'scroll_amount': 
 				case 'bottom_border_height':
 				case 'font_size':
 				case 'padding_top':

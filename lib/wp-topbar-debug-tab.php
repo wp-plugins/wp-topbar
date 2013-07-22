@@ -12,17 +12,17 @@ Debug Options Tab
 function wptb_debug_options($wptbOptions) {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
-			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+			$wptb_submit_style, $wptb_special_button_style;    
 
-	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
-	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
-	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
-
+   	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+   	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+   	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
 
 	if($wptb_debug)
-		echo '<br><code>WP-TopBar Debug Mode: In Debug Options</code>';
+		echo '</br><code>WP-TopBar Debug Mode: wptb_debug_options() for ID: '.$wptbOptions[ 'bar_id' ].'</code>';
+
 
 	$wptb_cookie = "wptopbar_".$wptbOptions['bar_id'].'_'.COOKIEHASH;	
 	

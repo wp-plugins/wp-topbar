@@ -14,11 +14,12 @@ Control Options Tab
 function wptb_control_options($wptbOptions) {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
-	$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+			$wptb_submit_style, $wptb_special_button_style;    
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
+
 	if($wptb_debug)
-		echo '<br><code>WP-TopBar Debug Mode: In Control Options</code>';
+		echo '</br><code>WP-TopBar Debug Mode: wptb_control_options() for ID: '.$wptbOptions[ 'bar_id' ].'</code>';
 
 	?>
 

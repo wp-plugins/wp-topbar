@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.5.2
-Stable tag: 5.01
+Stable tag: 5.02
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
@@ -12,7 +12,7 @@ Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars 
 
 Create **MULTIPLE** TopBars that will be shown at the top (or bottom) of your website.  The Cacheable TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even add your own PHP. You can easily lose track of time getting your TopBars perfect!
 
-Version 5.0 now allows the user to re-open a TopBar, adds more Social buttons (and you can place them before or after the TopBar.)  It also gives you a way to supress live preview (see FAQ for &nopreview option) to help find broken, custom PHP.  Also, there a several more warning messages as the TopBar tries to tell you if you may have an incompatible setting.
+Version 5.0 now allows the user to re-open a TopBar, adds more Social buttons (and you can place them before or after the TopBar.)  You can also see some Sample ToolBars that shows how you can use the plugin. It also gives you a way to supress live preview (see FAQ for &nopreview option) to help find broken, custom PHP.  Also, there a several more warning messages as the TopBar tries to tell you if you may have an incompatible setting.
 
 Version 4.17 adds the ability to display the TopBar only when the user scrolls the page. 
 
@@ -160,6 +160,10 @@ You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the P
 
 == Upgrade Notice ==
 
+= 5.02 = 
+
+Version 5.02 adds Sample ToolBars tab, adds Scoll Amount field and fixes minor bugs
+
 = 5.01 = 
 
 Version 5.01 supports WordPress 3.5.2 and fixes minor bugs
@@ -284,6 +288,15 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+
+= 5.02 - 07/21/2013 =
+
+1. FIXED:     Defect related to checking CSS of social buttons
+2. FIXED:     Defects related bulk duplication of rows
+3. FIXED:     CSS issue that caused the browser to jump to the top of the screen when a button was selected
+4. ADDED:     New Sample TopBars
+5. ADDED:     Added Scroll Amount field to fine tune the Scoll Action option.  Thanks to ellefrost for the idea.
 
 = 5.01 - 06/22/2013 =
 

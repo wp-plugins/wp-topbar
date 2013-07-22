@@ -30,8 +30,9 @@ function wptb_admin_notice() {
 function wptb_options_page() {
 
 	global 	$wptb_common_style, $wptb_button_style, $wptb_clear_style, $wptb_cssgradient_style, 
-			$wptb_submit_style, $wptb_delete_style, $wptb_special_button_style;    
+			$wptb_submit_style, $wptb_special_button_style;    
 
+	global $WPTB_VERSION;
 
 	require_once( dirname(__FILE__).'/wp-topbar-db-io.php');  //database and I-O functions php
 	require_once( dirname(__FILE__).'/wp-topbar-export.php');  //export functions
@@ -43,7 +44,7 @@ function wptb_options_page() {
 	require_once( dirname(__FILE__).'/wp-topbar-control-tab.php');  //load control logic pages php
 	require_once( dirname(__FILE__).'/wp-topbar-social-tab.php');  //load social button pages php
 	require_once( dirname(__FILE__).'/wp-topbar-textbar-tab.php');  //load textbar edit pages php
-	require_once( dirname(__FILE__).'/wp-topbar-delete-tab.php');  //load delete pages php
+	require_once( dirname(__FILE__).'/wp-topbar-sample-tab.php');  //load sample pages php
 	require_once( dirname(__FILE__).'/wp-topbar-display-functions.php');  //load admin pages php
 	require_once( dirname(__FILE__).'/wp-topbar-faq-tab.php');  //load faq page php	
 	require_once( dirname(__FILE__).'/wp-topbar-php-tab.php');  //load php pages php
@@ -95,15 +96,6 @@ function wptb_options_page() {
 		background:-o-linear-gradient(top, #217342, #65d67f);
 		color: white;'.$wptb_common_style;  
 	
-	$wptb_delete_style = 'border-top:1px solid #f59898;
-		background:#d46565;
-		background:-webkit-gradient(linear, left top, left bottom, from(#732121), to(#d46565));
-		background:-webkit-linear-gradient(top, #732121, #d46565);
-		background:-moz-linear-gradient(top, #732121, #d46565);
-		background:-ms-linear-gradient(top, #732121, #d46565);
-		background:-o-linear-gradient(top, #732121, #d46565);
-		color:#f2f2f2;'.$wptb_common_style;
-	
 	$wptb_special_button_style = "border-top: 1px solid #d7ddcb;
 		   background: #ebf3df;
 		   color: black;
@@ -115,13 +107,6 @@ function wptb_options_page() {
 		   text-decoration: none;
 		   vertical-align: middle;";
 
-//	first time through, check for updated settings
-
-	$wptb_debug=get_transient( 'wptb_debug' );	
-
-	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: ', date('D, d M Y H:i:s (e)',get_transient( 'wptb_debug' )),'</code>';	
-//    $screen = get_current_screen();
-//    echo 'Screen id: ['.$screen->id.']</br';
 
 // check action options, deaault = 'table'
 
@@ -130,6 +115,12 @@ function wptb_options_page() {
     else
         $action = 'table';    
 
+	$wptb_debug=get_transient( 'wptb_debug' );	
+
+	if($wptb_debug) {
+		echo '</br><code>WP-TopBar Debug Mode: wptb_options_page() - Action: '.$action.'</code>';
+		echo '</br><code>WP-TopBar Debug Mode: Debug Until:', date('D, d M Y H:i:s (e)',get_transient( 'wptb_debug' )),'</code>';	
+	}
 // check page we are displaying, if > that max possible pages, then reset to max_pages
 
     if ( isset ( $_GET['paged'] ) ) {
@@ -156,9 +147,10 @@ function wptb_options_page() {
 		else {
 		        $wptb_barid = ($_GET['barid'] - $wptb_barid_prefix);
 		        
-		        if (isset($_POST['update_wptbSettings']))
+		        if (isset($_POST['update_wptbSettings'])) {
 					if (check_admin_referer('wptb_update_setting_nonce','wptbupdatesettingnonce'))	
-						$wptbOptions=wptb_update_settings($wptb_barid, $wptb_debug);			
+						$wptbOptions=wptb_update_settings($wptb_barid);
+				}				
 		}
 	}
 	
@@ -188,23 +180,17 @@ function wptb_options_page() {
 		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');					
 	}
 	else if ( isset($_POST['wptbInsertBar']) )  {
-		$wptbOptions=wtpb_insert_default_row($wptb_debug);
+		$wptbOptions=wtpb_insert_default_row();
 		$action = 'insertdefault';
-	}		
-	else if ( ( isset (  $_POST['wptbDeleteBar'] ) ) && ( get_transient( 'wptb_delete_row') ) ) {
-		// make sure “&noheader=true” is added to the page that called this to make WP wait before the it outputs any of the HTML.
-		// then the redirect will work!  Also, debug is forced off to ensure no output occurs before redirect
-		$wptb_barid = get_transient( 'wptb_delete_row');
-		wptb_delete_settings( $wptb_barid , false);
-		delete_transient ('wptb_delete_row' );
-		// store bar_id of row that was deleted for 5 minutes to display on next refresh
-		set_transient( 'wptb_row_deleted', $wptb_barid, 5*60 );
-		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');				
-	}		
-	else {
+	}			
+	else if ( $action == 'copysample' ) {
+		$wptbOptions = array();	
+	}
+	else 
+	{
 		wtpb_check_for_plugin_upgrade($wptb_debug);
 		if ( isset( $wptb_barid ) )
-			$wptbOptions = wptb_get_Specific_TopBar($wptb_barid,true);
+			$wptbOptions = wptb_get_Specific_TopBar($wptb_barid);
 		else
 			$wptbOptions = array();
 	}
@@ -218,16 +204,24 @@ function wptb_options_page() {
     switch ( $action ) :
         case 'enable' :
         case 'disable' :
-	        wptb_toggle_enabled($action,$wptb_barid,$wptbOptions,$wptb_debug);
+	        wptb_toggle_enabled($action,$wptb_barid,$wptbOptions);
             wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table'.$current_page);				
             break;
-
+            
+        case 'copysample' :
+    		$file_data = file_get_contents( dirname(__FILE__).'/samples/sample_topbars.json');
+			$data = json_decode($file_data, true);			
+		  	$wptbOptions = wptb_fix_sample_row($data [$wptb_barid - 1]);			
+			wtpb_insert_row($wptbOptions);
+	        wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table'.$current_page);			
+        	break;
+        	
         case 'duplicate' :
   			// make sure “&noheader=true” is added to the page that called this to make WP wait before the it outputs any of the HTML.
   			// then the redirect will work!  Also, debug is forced off to ensure no output occurs before redirect
-  			$wptbOptions=wptb_get_Specific_TopBar($wptb_barid, false);
+  			$wptbOptions=wptb_get_Specific_TopBar($wptb_barid);
   			$wptbOptions['enable_topbar']='false';
-  			wtpb_insert_row($wptbOptions, false);
+  			wtpb_insert_row($wptbOptions);
 			global $wpdb;
 			// store number of rows affected for 5 minutes to display on next refresh
 			set_transient( 'wptb_inserted_rows', $wpdb->rows_affected, 5*60 );
@@ -253,7 +247,7 @@ function wptb_options_page() {
         case 'testpriority' :
 			wptb_display_admin_header();
             wptb_options_tabs($action);
-			wptb_test_topbar(10 ,$wptb_debug);
+			wptb_test_topbar(10);
 			break;
         case 'main' :
 			wptb_display_admin_header();
@@ -297,12 +291,6 @@ function wptb_options_page() {
         	wptb_display_common_info($wptbOptions);
             wptb_php_options($wptbOptions);
             break;
-        case 'delete' :
-			wptb_display_admin_header();
-			wptb_bar_edit_options_tabs($action,$wptb_barid);
-        	wptb_display_common_info($wptbOptions);
-            wptb_delete_options($wptbOptions);
-            break;
         case 'faq' :
 			wptb_display_admin_header();
 			wptb_bar_edit_options_tabs($action,$wptb_barid);
@@ -332,6 +320,16 @@ function wptb_options_page() {
     		echo '<div class="updated"><p><strong>Inserted default row.</strong></p></div>';
         	wptb_display_all_TopBars();
             break;        
+        case 'samples' :
+			wptb_display_admin_header();
+        	wptb_options_tabs('samples');
+        	wptb_display_Sample_TopBars();
+            break;
+		case 'copysampletopbar' :		
+			wptb_display_admin_header();
+        	wptb_options_tabs('table');
+        	wptb_display_all_TopBars();
+			break;
         default :
 			wptb_display_admin_header();
         	wptb_options_tabs('table');
