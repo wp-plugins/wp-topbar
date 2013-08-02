@@ -3,8 +3,8 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
-Tested up to: 3.5.2
-Stable tag: 5.02
+Tested up to: 3.6P
+Stable tag: 5.03
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
@@ -160,6 +160,10 @@ You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the P
 
 == Upgrade Notice ==
 
+= 5.03 = 
+
+Version 5.03 adds option to start the TopBar in the closed position and fixed minor bugs
+
 = 5.02 = 
 
 Version 5.02 adds Sample ToolBars tab, adds Scoll Amount field and fixes minor bugs
@@ -289,6 +293,13 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+
+= 5.03 - 08/01/2013 =
+
+1. VALIDATED: Version 5.03 supports WordPress 3.6
+2. ADDED:     Added code to set default values for existing TopBars (useful when adding new user defined fields)
+3. ADDED:     Added Reopen Position field.  Thanks to Lisa L. for the idea.
+4. FIXED:	  Fixed Custom CSS for the link defect. Thanks to carolemagouirk for finding it!
 
 = 5.02 - 07/21/2013 =
 

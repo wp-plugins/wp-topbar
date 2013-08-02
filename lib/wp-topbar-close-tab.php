@@ -43,6 +43,10 @@ function wptb_closebutton_bulk_options() {
 	$allow_reopen_count = $wpdb->get_var( ( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `allow_reopen` = "'.$allow_reopen_max.'"' ) );
 	if ( $allow_reopen_count == $row_count) $allow_reopen = $allow_reopen_max;
 
+	$reopen_position_max   = $wpdb->get_var( ( 'SELECT MAX(`reopen_position`) FROM '.$wptb_table_name ) );
+	$reopen_position_count = $wpdb->get_var( ( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `reopen_position` = "'.$reopen_position_max.'"' ) );
+	if ( $reopen_position_count == $row_count) $reopen_position = $reopen_position_max;
+
 	$respect_cookie_max   = $wpdb->get_var( ( 'SELECT MAX(`respect_cookie`) FROM '.$wptb_table_name ) );
 	$respect_cookie_count = $wpdb->get_var( ( 'SELECT COUNT(*) FROM '.$wptb_table_name.' WHERE `respect_cookie` = "'.$respect_cookie_max.'"' ) );
 	if ( $respect_cookie_count == $row_count) $respect_cookie = $respect_cookie_max;
@@ -114,13 +118,24 @@ function wptb_closebutton_bulk_options() {
 					<p class="sub"><em>Allows the user to reopen the TopBar.  Default is <code>No</code></em></p>
 					</td>
 				</tr>					
+				<tr valign="top">
+					<td width="150">Re-openable TopBar should start Open or Closed:</label></td>
+					<td>
+					 	<p id="radio3" class="ui-button ui-button-wptbset">
+							<input type="radio" id="wptbreopenpositionb1" name="wptbreopenposition" class="ui-helper-hidden-accessible" value="yes" <?php if ($reopen_position != "closed") { _e('checked="checked"', "wptb"); }?>><label for="wptbreopenpositionb1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Open</span></label>
+							<input type="radio" id="wptbreopenpositionb2" name="wptbreopenposition" class="ui-helper-hidden-accessible" value="no" <?php if ($reopen_position == "closed") { _e('checked="checked"', "wptb"); }?>><label for="wptbreopenpositionb2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Closed</span></label>
+						</p>						
+					</br>
+					<p class="sub"><em>Sets how the Re-openable TopBar is displayed to the user -- as opened or closed.  Default is <code>Open</code></em></p>
+					</td>
+				</tr>					
 				<tr>
 					<td colspan="2"><hr></td>
 				</tr>
 					<tr valign="top">
 					<td width="150">Enable Cookies:</label></td>
 					<td>						
-					 	<p id="radio3" class="ui-button ui-button-wptbset">
+					 	<p id="radio4" class="ui-button ui-button-wptbset">
 							<input type="radio" id="wptbrespectcookieb1" name="wptbrespectcookie" class="ui-helper-hidden-accessible" value="always" <?php if ($respect_cookie == "always") { _e('checked="checked"', "wptb"); }?>><label for="wptbrespectcookieb1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
 							<input type="radio" id="wptbrespectcookieb2" name="wptbrespectcookie" class="ui-helper-hidden-accessible" value="ignore" <?php if ($respect_cookie == "ignore") { _e('checked="checked"', "wptb"); }?>><label for="wptbrespectcookieb2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
 						</p>					
@@ -265,13 +280,24 @@ function wptb_closebutton_options($wptbOptions) {
 					</br>
 							<p class="sub"><em>This allows the user to close and reopen the TopBar.  Default is <code>No</code></em></p>
 					</td>
-				</tr><tr>
+				</tr>
+				<tr valign="top">
+					<td width="150">Re-openable TopBar should start Open or Closed:</label></td>
+					<td>
+					 	<p id="radio5" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbreopenposition1" name="wptbreopenposition" class="ui-helper-hidden-accessible" value="open"  <?php if ($wptbOptions['reopen_position'] == "open") { _e('checked="checked"', "wptb"); }?>><label for="wptbreopenposition1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Open</span></label>
+						<input type="radio" id="wptbreopenposition2" name="wptbreopenposition" class="ui-helper-hidden-accessible" value="closed" <?php if ($wptbOptions['reopen_position'] == "closed") { _e('checked="checked"', "wptb"); }?>><label for="wptbreopenposition2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Closed</span></label>
+						</p>						
+					</br>
+					<p class="sub"><em>Sets how the Re-openable TopBar is displayed to the user -- as opened or closed.  Default is <code>Open</code></em></p>
+					</td>
+				</tr>						<tr>
 					<td colspan="2"><hr></td>
 				</tr>
 				<tr valign="top">
 					<td width="150">Enable Cookies:</label></td>
 					<td>
-					 	<p id="radio5" class="ui-button ui-button-wptbset">
+					 	<p id="radio6" class="ui-button ui-button-wptbset">
 							<input type="radio" id="wptbrespectcookie1" name="wptbrespectcookie" class="ui-helper-hidden-accessible" value="always" <?php if ($wptbOptions['respect_cookie'] == "always") { _e('checked="checked"', "wptb"); }?>><label for="wptbrespectcookie1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
 							<input type="radio" id="wptbrespectcookie2" name="wptbrespectcookie" class="ui-helper-hidden-accessible" value="ignore" <?php if ($wptbOptions['respect_cookie'] == "ignore") { _e('checked="checked"', "wptb"); }?>><label for="wptbrespectcookie2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
 						</p>											

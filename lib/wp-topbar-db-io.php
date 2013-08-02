@@ -194,6 +194,7 @@ function wptb_create_table() {
 		past_cookie_values  VARCHAR(20),
 		allow_close VARCHAR(20),
 		allow_reopen VARCHAR(20),
+		reopen_position VARCHAR(20),
 		topbar_pos VARCHAR (20),
 		scroll_action VARCHAR (20),
 		scroll_amount INT,
@@ -303,10 +304,12 @@ function wtpb_set_default_settings() {
 		echo '<br><code>WP-TopBar Debug Mode: wtpb_set_default_settings()</code>';
 
 	global $WPTB_VERSION;
+	global $WPTB_DB_VERSION;
+
 
 	return array(
 	 	'weighting_points'=> 25,				 	
-		'wptb_version' => $WPTB_VERSION,
+		'wptb_version' => $WPTB_DB_VERSION,
 		'enable_topbar' => 'false',
 		'include_pages' => '0',
 		'invert_include' => 'no',
@@ -329,6 +332,7 @@ function wtpb_set_default_settings() {
 		'past_cookie_values' => '1',
 		'allow_close' => 'no',
 		'allow_reopen' => 'no',
+		'reopen_position' => 'open',
 		'topbar_pos' => 'header',
 		'scroll_action' => 'off',
 		'scroll_amount' => '0', 
@@ -492,6 +496,7 @@ function wtpb_insert_row($wptbOptions) {
 		'past_cookie_values' => $wptbOptions[ 'past_cookie_values' ],
 		'allow_close' => $wptbOptions[ 'allow_close' ],
 		'allow_reopen' => $wptbOptions[ 'allow_reopen' ],
+		'reopen_position' => $wptbOptions[ 'reopen_position' ],
 		'topbar_pos' => $wptbOptions[ 'topbar_pos' ],
 		'scroll_action' => $wptbOptions[ 'scroll_action' ], 
 		'scroll_amount' => $wptbOptions[ 'scroll_amount' ],
@@ -633,6 +638,7 @@ function wptb_update_row($wptbOptions) {
 		'past_cookie_values' => $wptbOptions[ 'past_cookie_values' ],
 		'allow_close' => $wptbOptions[ 'allow_close' ],
 		'allow_reopen' => $wptbOptions[ 'allow_reopen' ],
+		'reopen_position' => $wptbOptions[ 'reopen_position' ],
 		'topbar_pos' => $wptbOptions[ 'topbar_pos' ],
 		'scroll_action' => $wptbOptions[ 'scroll_action' ], 
 		'scroll_amount' => $wptbOptions[ 'scroll_amount' ],
@@ -782,6 +788,9 @@ function wptb_bulkupdate_CloseButtonSettings() {
 	}
 	if (isset($_POST['wptballowreopen'])) {
 		$sql .= "`allow_reopen` = '".$_POST['wptballowreopen']."', ";
+	}
+	if (isset($_POST['wptbreopenposition'])) {
+		$sql .= "`reopen_position` = '".$_POST['wptbreopenposition']."', ";
 	}
 	if (isset($_POST['wptbrespectcookie'])) {
 		$sql .= "`respect_cookie` = '".$_POST['wptbrespectcookie']."', ";
@@ -1024,6 +1033,9 @@ function wptb_update_settings($wptb_barid) {
 	if (isset($_POST['wptballowreopen'])) {
 		$wptbOptions['allow_reopen'] = $_POST['wptballowreopen'];
 	}	
+	if (isset($_POST['wptbreopenposition'])) {
+		$wptbOptions['reopen_position'] = $_POST['wptbreopenposition'];
+	}	
 	if (isset($_POST['wptbrespectcookie'])) {
 		$wptbOptions['respect_cookie'] = $_POST['wptbrespectcookie'];
 	}
@@ -1129,25 +1141,31 @@ function wptb_update_settings($wptb_barid) {
 // DB Versions Listing:
 // 4.17 - added scroll_action field
 // 5.0 - added 6 more Social Buttons and ability to place them (left or right), added reopen options
-// 5.2 - added scroll_amount field
+// 5.02 - added scroll_amount field
+// 5.03 - added reopen_position field
 //=========================================================================			
 	
 function wtpb_check_for_plugin_upgrade($wptb_display_errors) { 
 		
 	global $WPTB_VERSION;
+	global $WPTB_DB_VERSION;
 	global $wpdb;
+	
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 
 	$wpdb->hide_errors();	
 
-	$WPTB_DB_VERSION = "5.2";  // rev this only when this changes
-
 	$wptb_debug=get_transient( 'wptb_debug' );	
+
+	if($wptb_debug) 
+			echo '<br><code>WP-TopBar Debug Mode: wtpb_check_for_plugin_upgrade()</code>';
+
 
 	$wptbOptions = get_option('wptbAdminOptions');
 				
 	// if options are set, then convert to using a database else check to see if database is in use
 	if ( isset( $wptbOptions['enable_topbar'] ) ) {
+		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Found wptbAdminOptions - Converting to Table</code>';
 		wptb_create_table();			
 		
 		if (! isset($wptbOptions['enable_image']) )
@@ -1157,17 +1175,28 @@ function wtpb_check_for_plugin_upgrade($wptb_display_errors) {
 		delete_option('wptbAdminOptions');
 	}
 	else {
+			if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: No wptbAdminOptions - Looking for Table:'.$wptb_table_name.'</code>';
 			if( $wpdb->get_var("show tables like '".$wptb_table_name."'") != $wptb_table_name ) {
+				if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: No Table - Creating and adding default row.</code>';
 				wptb_create_table();				
 				wtpb_insert_default_row();
 			}
 			else {
 				// OK, they are using a DB, now check to see if needs to be updated				
 				$installed_ver = get_option( "wptb_db_version" );
-				if( $installed_ver != $WPTB_DB_VERSION ) 
+				if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Installed DB: '.$installed_ver.'</code>';
+				if( $installed_ver != $WPTB_DB_VERSION ) {
+					if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Upgrading DB to '.$WPTB_DB_VERSION.'</code>';
 					wptb_create_table();
-			}
+					wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERSION);
 				}
+			}
+	}
+	
+
+	// force this check for testing
+	wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERSION);
+
 			
 	if($wptb_debug) {
 		if($$wptb_display_errors) {
@@ -1178,9 +1207,28 @@ function wtpb_check_for_plugin_upgrade($wptb_display_errors) {
 			error_log( 'WP-TopBar Debug Mode: in wtpb_check_for_plugin_upgrade' );
 			error_Log( 'WP-TopBar Debug Mode: Plugin Version: '.$WPTB_VERSION);
 		}
-	}		
+	}
 	
+	$wpdb->show_errors();
+		
 	
+} // End of function wtpb_check_for_plugin_upgrade 	
+	
+function wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERSION) { 
+
+	global $WPTB_VERSION;
+	global $WPTB_DB_VERSION;
+	global $wpdb;
+
+	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
+
+	$wpdb->hide_errors();	
+
+	$wptb_debug=get_transient( 'wptb_debug' );	
+
+	if($wptb_debug) 
+			echo '<br><code>WP-TopBar Debug Mode: wtpb_check_table_for_default_values()</code>';
+
 	$wptb_db_version=$wpdb->get_col(  
 	"
 	SELECT      min(wptb_version)
@@ -1190,28 +1238,34 @@ function wtpb_check_for_plugin_upgrade($wptb_display_errors) {
 
 //	wptb_create_table();
 
-	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: DB Version: ',$wptb_db_version[0],'</code>';
+	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: DB Version in Table: ',$wptb_db_version[0],'</code>';
 	
-	if ( $wptb_db_version[0] != $WPTB_VERSION ) {
+	if ( $wptb_db_version[0] != $WPTB_DB_VERSION ) {
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Version Upgrade Needed</code>';
-		
-		$myrows = $wpdb->get_results( 'SELECT * FROM '.$wptb_table_name);
+		$myrows = $wpdb->get_results( 'SELECT * FROM '.$wptb_table_name, ARRAY_A);
 		if ( $wpdb->num_rows == 0 )
 			$wptbOptions=wtpb_insert_default_row();
 		else {
 			$wptbDefaultValues=wtpb_set_default_settings();
-		
-//			foreach ( $myrows as $wptbOptions ) 
-//			{	
-//				foreach ( $wptbDefaultValues as $option_name => $value ) {
-//					if (! isset( $wptbOptions[$option_name] ))  {
-//						$wptbOptions[$option_name] = $value;
-//						if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Row:'.$wptbOptions[ 'bar_id' ].' Set default for '.$option_name.' to "'.$value.'"</code>';
-//
-//					}
-//				}
-//			}
-//			wptb_update_row($wptbOptions);
+			$wptbDefaultValues[ 'enable_image' ] = false;  // default row has this turned on, so turn off since older version may not have this field
+			if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Checking Rows</code>';
+
+			foreach ( $myrows as $wptbOptions ) 
+			{	
+				if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Checking Row: '.$wptbOptions[ 'bar_id' ].'</code>';
+				foreach ( $wptbDefaultValues as $option_name => $value ) {
+						if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Checking Option: '.$option_name.'</code>';
+					if (! isset( $wptbOptions[$option_name] ))  {
+						$wptbOptions[$option_name] = $value;
+						if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Row:'.$wptbOptions[ 'bar_id' ].' Set default for '.$option_name.' to "'.$value.'"</code>';
+
+					}
+				}
+			}
+			if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Updating Row</code>';
+
+			$wptbOptions[ 'wptb_version' ] = $WPTB_DB_VERSION;
+			wptb_update_row($wptbOptions);
 		}
 
 	}
@@ -1229,7 +1283,7 @@ function wtpb_check_for_plugin_upgrade($wptb_display_errors) {
 	
 	update_option( "wptb_db_version", $WPTB_DB_VERSION );
 	
-} // End of function wtpb_check_for_plugin_upgrade 	
+} // End of function wtpb_check_table_for_default_values 	
 
 
 

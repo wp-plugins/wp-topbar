@@ -68,16 +68,6 @@ function wptb_register_pointer( $p ) {
    // EDGE: On what edge do we want the pointer to appear. Options are 'top', 'left', 'right', 'bottom'
    // ALIGN: How do we want out custom pointer to align to the element it is attached to. Options are 'left', 'right', 'center'
 
-    $p['417pointer2'] = array(
-        'target' => '.wptb-phptexttab',
-        'options' => array(
-            'content' => sprintf( '<h3> %s </h3> <p> %s </p>',
-                __( 'New Features in Version 4.15!' ,'plugindomain'),
-                __( 'You can now enter PHP to be executed on each TopBar...note this is for <strong>Advanced Swimmers</strong> only!','plugindomain')
-            ),
-            'position' => array( 'edge' => 'left', 'align' => 'right' )
-        )
-    );
     $p['500pointer1'] = array(
         'target' => '.wptb-table',
         'options' => array(

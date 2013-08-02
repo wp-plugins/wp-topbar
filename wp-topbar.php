@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.02
+Version: 5.03
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -27,7 +27,9 @@ Author URI: http://zwebify.com/wordpress-plugins/
 
 
 
-$WPTB_VERSION = "5.02";
+$WPTB_VERSION = "5.03";
+$WPTB_DB_VERSION = "5.03";  // rev this only when this changes
+
 
 
 if( ! class_exists( 'wptb' ) ):
@@ -426,7 +428,7 @@ class wptb {
 // bar & link		
 		echo $wptbOptions['bar_text'],'<a style="color:',$wptbOptions['link_color'],'; ';
 		if ($wptbOptions['custom_css_text'] != '')
-			echo "{".trim($wptbOptions['custom_css_text'])."}";
+			echo trim($wptbOptions['custom_css_text']);
 		echo '" ';
 		echo 'href="',$wptbOptions['bar_link'],'" target="_',$wptbOptions['link_target'],'">';
 		echo $wptbOptions['bar_link_text'],'</a>'; 
@@ -574,8 +576,11 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 	
 	function wptb_build_reopenable__topbar_js ($wptbTopBarNumber) {	
 		
-		$html_out = "		".$wptbTopBarNumber.": function() {window.setTimeout(function() { wptbbar_show".$wptbTopBarNumber."();}, 0)}";
-
+		if (isset($wptbOptions['reopen_position']) && ($wptbOptions['reopen_position']) == "closed")
+			$html_out = "		".$wptbTopBarNumber.": function() {window.setTimeout(function() { wptbbar_hide".$wptbTopBarNumber."();}, 0)}";
+		else
+			$html_out = "		".$wptbTopBarNumber.": function() {window.setTimeout(function() { wptbbar_show".$wptbTopBarNumber."();}, 0)}";
+		
 		return $html_out;
 		
 	}  // end function wptb_build_reopenable__topbar_js
@@ -683,7 +688,7 @@ jQuery(document).ready(function() {
 					}
 
 					if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
-						$html_part_3_out .= wptb::wptb_build_reopenable__topbar_js($wptbTopBarNumber+1);			
+						$html_part_3_out .= wptb::wptb_build_reopenable__topbar_js($wptbOptions, ($wptbTopBarNumber+1));			
 					else if ( $wptbOptions['scroll_action'] != "on" ) 
 						$html_part_3_out .= wptb::wptb_build_original_topbar_js($wptbOptions, ($wptbTopBarNumber+1));
 					else  
