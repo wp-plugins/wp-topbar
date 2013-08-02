@@ -3,7 +3,7 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
-Tested up to: 3.6P
+Tested up to: 3.6
 Stable tag: 5.03
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
