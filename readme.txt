@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.6
-Stable tag: 5.03
+Stable tag: 5.04
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
@@ -160,6 +160,11 @@ You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the P
 
 == Upgrade Notice ==
 
+
+= 5.04 = 
+
+Added option to only show the TopBar on the Home Page.  Fixes a few defects.
+
 = 5.03 = 
 
 Version 5.03 adds option to start the TopBar in the closed position and fixed minor bugs
@@ -293,6 +298,13 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+
+= 5.04 - 08/30/2013 =
+
+1. ADDED:     Added option to only show the TopBar on the Home Page.  Thanks to Liltiger for the idea.
+2. UPDATED:   timepicker.js and CSS updated to version 1.4 - http://trentrichardson.com/examples/timepicker/
+3. FIXED:     Fixed a Social Button target defect - thanks to leslie.
+3. CHANGED:   On social tab, do not display image size if PHP is not setup to allow remote URL fopens.  Thanks to ericd for discovering this.
 
 = 5.03 - 08/01/2013 =
 

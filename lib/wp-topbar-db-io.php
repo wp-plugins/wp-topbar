@@ -946,9 +946,9 @@ function wptb_update_settings($wptb_barid) {
 			$wptbOptions['scroll_amount'] = $_POST['wptbscrollamount']+0;
 	}			
 	if (isset($_POST['wptbstarttime'])) {
-				
-			$wptbOptions['start_time'] = $_POST['wptbstarttime'];
-			$wptbOptions['start_time_utc'] = $_POST['wptbstarttime'];
+								
+		$wptbOptions['start_time'] = $_POST['wptbstarttime'];
+		$wptbOptions['start_time_utc'] = $_POST['wptbstarttime'];
 	}
 	if (isset($_POST['wptbendtime'])) {
 
@@ -1121,7 +1121,15 @@ function wptb_update_settings($wptb_barid) {
 	
 	}
     
-	
+	if ($wptbOptions['start_time'] == '') {
+		$wptbOptions['start_time'] = 0;	
+		$wptbOptions['start_time_utc'] = 0;	
+	} 
+	if ($wptbOptions['end_time'] == '') {
+		$wptbOptions['end_time'] = 0;	
+		$wptbOptions['end_time_utc'] = 0;				
+	}
+
 	wptb_update_row($wptbOptions);
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Settings Updated</code>';
 	echo '<div class="updated"><p><strong>Settings Updated.</strong></p></div>';

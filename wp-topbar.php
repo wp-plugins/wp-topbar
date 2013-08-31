@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.03
+Version: 5.04
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -27,7 +27,7 @@ Author URI: http://zwebify.com/wordpress-plugins/
 
 
 
-$WPTB_VERSION = "5.03";
+$WPTB_VERSION = "5.04";
 $WPTB_DB_VERSION = "5.03";  // rev this only when this changes
 
 
@@ -280,7 +280,9 @@ class wptb {
 				$thePostID = $wp_query->post->ID;
 		}
 		
-		if ( is_home() && ( $wptbOptions['show_homepage'] == "never" ) ) { return false; }		
+		if (   is_home() && ( $wptbOptions['show_homepage'] == "never" ) ) { return false; }			
+		if ( ! is_home() && ( $wptbOptions['show_homepage'] == "only"  ) ) { return false; }		
+	
 
 		if ( ! ( is_home() && ( $wptbOptions['show_homepage'] == "always" ) ) ) {	
 
@@ -422,7 +424,7 @@ class wptb {
 // Left Social Buttons
 		for ($i=1; $i<=10; $i++)  {
 			if ( ($wptbOptions['social_icon'.$i.''] == 'on') && ($wptbOptions['social_icon'.$i.'_image'] !== '') && ($wptbOptions['social_icon'.$i.'_position'] == 'left') )
-				echo '<a href="'.$wptbOptions['social_icon'.$i.'_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon'.$i.'_image'].'" style="'.trim($wptbOptions['social_icon'.$i.'_css']).'"/></a>';
+				echo '<a href="'.$wptbOptions['social_icon'.$i.'_link'].'" target="_'.$wptbOptions['social_icon'.$i.'_link_target'].'"><img  src="'.$wptbOptions['social_icon'.$i.'_image'].'" style="'.trim($wptbOptions['social_icon'.$i.'_css']).'"/></a>';
 		}
 
 // bar & link		
@@ -436,7 +438,7 @@ class wptb {
 // Right Social Buttons		
 		for ($i=1; $i<=10; $i++)  {
 			if ( ($wptbOptions['social_icon'.$i.''] == 'on') && ($wptbOptions['social_icon'.$i.'_image'] !== '') && ($wptbOptions['social_icon'.$i.'_position'] !== 'left') )
-				echo '<a href="'.$wptbOptions['social_icon'.$i.'_link'].'" target="_'.$wptbOptions['link_target'].'"><img  src="'.$wptbOptions['social_icon'.$i.'_image'].'" style="'.trim($wptbOptions['social_icon'.$i.'_css']).'"/></a>';
+				echo '<a href="'.$wptbOptions['social_icon'.$i.'_link'].'" target="_'.$wptbOptions['social_icon'.$i.'_link_target'].'"><img  src="'.$wptbOptions['social_icon'.$i.'_image'].'" style="'.trim($wptbOptions['social_icon'.$i.'_css']).'"/></a>';
 		}
 			
 // Close Button			

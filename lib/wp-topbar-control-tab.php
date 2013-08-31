@@ -38,14 +38,16 @@ function wptb_control_options($wptbOptions) {
 					 	<p id="radio1" class="ui-button ui-button-wptbset">
 						<input type="radio" id="wptbshowhomepage1" name="wptbshowhomepage" class="ui-helper-hidden-accessible" value="always" <?php if ($wptbOptions['show_homepage'] == "always") { _e('checked="checked"', "wptb"); }?>><label for="wptbshowhomepage1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">A</span></label>
 						<input type="radio" id="wptbshowhomepage2" name="wptbshowhomepage" class="ui-helper-hidden-accessible" value="never" <?php if ($wptbOptions['show_homepage'] == "never") { _e('checked="checked"', "wptb"); }?>><label for="wptbshowhomepage2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">B</span></label>
-						<input type="radio" id="wptbshowhomepage3" name="wptbshowhomepage" class="ui-helper-hidden-accessible" value="conditionally" <?php if ($wptbOptions['show_homepage'] == "conditionally") { _e('checked="checked"', "wptb"); }?>><label for="wptbshowhomepage3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">C</span></label>
+						<input type="radio" id="wptbshowhomepage3" name="wptbshowhomepage" class="ui-helper-hidden-accessible" value="conditionally" <?php if ($wptbOptions['show_homepage'] == "conditionally") { _e('checked="checked"', "wptb"); }?>><label for="wptbshowhomepage3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">C</span></label>
+						<input type="radio" id="wptbshowhomepage4" name="wptbshowhomepage" class="ui-helper-hidden-accessible" value="only" <?php if ($wptbOptions['show_homepage'] == "only") { _e('checked="checked"', "wptb"); }?>><label for="wptbshowhomepage4" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">D</span></label>
 					 	</p>	
 					</td>
 					<td>
 						<p class="sub"><em>Select how you want the TopBar to show on the Home page.  Default is to <code>conditionally</code> show the TopBar on the Home Page</em>
 						<br>A. <strong>Always</strong> shows the TopBar on the Home Page regardless of any other criteria entered on this page.
 						<br>B. <strong>Never</strong> shows the TopBar on the Home Page regardless of any other criteria entered on this page.
-						<br>C. <strong>Only</strong> shows the TopBar on the Home Page if the page matches the Page ID and/or Category criteria entered on this page.
+						<br>C. <strong>Conditionally</strong> shows the TopBar on the Home Page if the page matches the Page ID and/or Category criteria entered on this page.
+						<br>D. <strong>Only</strong> shows the TopBar on the Home Page and not other pages.
 						</p>
 					</td>
 				</tr>

@@ -128,9 +128,11 @@ function wptb_socialbutton_options($wptbOptions) {
 				<br>';				
 				
 				if ( ! ($wptbOptions['social_icon'.$i.'_image'] == "") ) {
-						list($width, $height, $type, $attr) = getimagesize($wptbOptions['social_icon'.$i.'_image']);
-						if ($width != '')
-							echo "Image size: ".$width." px (w) x ".$height." px (h).";
+						if ( ini_get("allow_url_fopen") ) {
+							list($width, $height, $type, $attr) = getimagesize($wptbOptions['social_icon'.$i.'_image']);
+							if ($width != '')
+								echo "Image size: ".$width." px (w) x ".$height." px (h).";
+						}
 					}
 				
 				echo '
