@@ -29,7 +29,7 @@ function wptb_socialbutton_options($wptbOptions) {
 										
 	<div class="inside">
 		<p class="sub"><em>These are the settings for settings the Social Buttons.
-		<br><br>You have four buttons that you can add to the TopBar.  Each allows you to set the image, link and CSS.  The CSS is applied the the <code>&lt img &gt</code> tag.
+		<br><br>You have 10 buttons that you can add to the TopBar.  Each allows you to set the image, link and CSS.  The CSS is applied to the <code>&lt img &gt</code> tag.
 		<br>
 		<br><em>Link Target Options:
 		<br>&nbsp;&nbsp;&nbsp;&nbsp; _blank - 	Opens the linked document in a new window or tab (this is default)

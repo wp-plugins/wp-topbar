@@ -146,7 +146,7 @@ function wptb_display_admin_header() {
 		WP-TopBar - Version <?php _e($WPTB_VERSION); ?></h2>
 		<div class="postbox">
 		<br>
-		Creates TopBars that can be shown at the top of your website.  Version 5 adds ability to close TopBars and also gives you a Sample Tab.
+		Creates TopBars that can be shown at the top of your website.  Version 5 adds ability to close TopBars and also gives you a Sample TopBar Tab that has starter TopBars that you can customize.
 		<br><br>
 		Please <a id="wptbdonate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J" target="_blank"><img style="height:20px; vertical-align:middle;" src="<?php  echo plugins_url('/images/donate.gif', __FILE__)?>" /></a>
 if you find this plugin useful.
@@ -969,12 +969,41 @@ function wptb_display_all_TopBars() {
         
         <div id="icon-options-general" class="icon32"><br/></div>
         <h2>Listing of all TopBars</h2>
-        
-        <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
-            <p>Select a TopBar to edit.  You can also enable, disable, bulk duplicate or delete your TopBars from here.</p> 
-	        <p>Use the <strong>Test Priority</strong> tab to see how the plugin will randomly select 10 TopBars.</p>
-	        <p>Hit the <strong>Create Default Row</strong> button to insert a default TopBar into the table.</p>
-        </div>
+        <table style="background:white;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
+			<tr valign="top" >
+			<td width="400" bgcolor="#bcfbc5" align="center">
+			<strong>Overview</strong>
+			</td>
+			<td width="5">
+			</td>
+			<td bgcolor="#e2f8b9" align="center">
+	        <strong>Step-by-Step</strong>
+			</td>
+ 			</tr>	
+			<tr valign="top" >
+			<td width="400">
+            Select a TopBar to edit.  You can also enable, disable, bulk duplicate or delete your TopBars from here.
+	        <br /><br />Use the <strong>Test Priority</strong> tab to see how the plugin will randomly select 10 TopBars.
+	        <br /><br />The table below shows you the Priority and Start/Stop times for each TopBar.  It also tells you if a TopBar will show based on the current time and if that TopBar is enabled.   It will also show you if it will show only for logged in users or all users.
+			</td>
+			<td width="5" bgcolor="grey">
+			</td>
+			<td>
+	        1.  Select the TopBar to edit by hovering over the row and selecting the Main Options link.   
+	        <br />&nbsp&nbsp&nbsp&nbsp<strong>OR</strong>
+	        <br />&nbsp&nbsp&nbsp&nbspHit the <strong>Create Default Row</strong> button below to insert a default TopBar at end of the table.  Find it and edit it.
+	        <br />&nbsp&nbsp&nbsp&nbsp<strong>OR</strong>
+	        <br />&nbsp&nbsp&nbsp&nbspGo to the Sample TopBar Tab (above) and select one or more TopBars to add to the table below. 
+	        <br />2.  Change the various options to configure the TopBar, using the Tabs to setup how the TopBar looks.  Explore each tab to see all the options.
+	        <br />3.  Go back to the Main Options tab and toggle the Enable switch to allow the TopBar to be shown.
+	        <br />4.  Go back to the All TopBars tab to add more TopBars. Add and customize as many TopBars as you need.
+	        <br />5.  Now, every time a web page is displayed, the plugin builds all of the TopBars that match the Control Tab and Time criteria.
+	     	<br />&nbsp&nbsp&nbsp&nbspA TopBar is randomly selected (although, the Priority Weighting can be used to give one TopBar more preference than another.)  
+	     	<br />&nbsp&nbsp&nbsp&nbspThey are built in such a way that your cacheing plugin will cache the results.			<td>
+			</td>
+ 			</tr>	
+		</table>
+
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="topbar-filter" method="get">
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->

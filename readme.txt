@@ -3,8 +3,8 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
-Tested up to: 3.6
-Stable tag: 5.04
+Tested up to: 3.6.1
+Stable tag: 5.05
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
@@ -84,7 +84,7 @@ You have two options to fix this:
 
 The problem is with your table collation. You need to change the collation to utf8_general_ci.
 
-Run this query from your phpMyAdmin to change the collation.
+Run this query from your phpMyAdmin to change the collation.  Make sure to change DATABASEPREFIX with your database prefix from wp-config.php
 
 ALTER TABLE 'DATABASEPREFIX'_topbar_data CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci
 
@@ -160,6 +160,10 @@ You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the P
 
 == Upgrade Notice ==
 
+
+= 5.04 = 
+
+Version 5.05 supports WordPress 3.6.1, improves the setup documentation, moves Start/Stop time to Control Tab for UI consistency.
 
 = 5.04 = 
 
@@ -297,6 +301,12 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+
+= 5.05 - 09/13/2013 =
+
+1. VALIDATED: Version 5.05 supports WordPress 3.6.1
+2. CHANGED:  Moved Start/Stop time to Control Tab to have all the attributes that can effect when a TopBar is shown all on one Tab.
 
 
 = 5.04 - 08/30/2013 =

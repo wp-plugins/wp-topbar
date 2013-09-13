@@ -31,10 +31,13 @@ $wptb_debug=get_transient( 'wptb_debug' );
 	<h3><a name="TopBarText">TopBar Text, Image and Link</a></h3>
 										
 	<div class="inside">
-		<p class="sub"><em>These are the text, image and links to be used in the TopBar. The image is placed first (if any), then the text (if any) is overlaid on it.  Scale the image to fix your website.  If you enable the image (by selecting "Yes"), then the image will be used and the bar color will be ignored.</em></p>
+		<p class="sub"><strong>These are the text, image and links to be used in the TopBar. The image is placed first (if any), then the text (if any) is overlaid on it.  Scale the image to fix your website.  If you enable the image (by selecting "Yes"), then the image will be used and the bar color will be ignored.</strong></p>
 		
 		<div class="table">
 			<table class="form-table">	
+				<tr>
+					<td colspan="3"><hr></td>
+				</tr>				
 				<tr valign="top">
 					<td width="150">Font size (px):</td>
 					<td>

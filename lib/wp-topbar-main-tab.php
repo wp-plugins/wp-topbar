@@ -131,32 +131,6 @@ function wptb_main_options($wptbOptions) {
 							<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to remain on the page.  Enter 0 for the TopBar to not disappear.</em></p>
 					</td>
 				</tr>							
-				<tr>
-					<td colspan="3"><hr></td>
-				</tr>
-				<tr valign="top">
-					<td width="150">Starting Time:</td>
-					<td>
-						<input class="ui-front" type="text" id="wptbstarttimebtn" name="wptbstarttime"  style="position: relative; z-index: 100000;" size="30" value="<?php if ($wptbOptions['start_time'] == 0) echo ""; else echo $wptbOptions['start_time']; ?>"></div><p class="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" id="wptbstarttimebtnClear">Set Start Time to Blank</p>									  
-						<div class="ui-front" id="wptb_start_time"></div>				    
-					</td>
-					<td>
-							<p class="sub"><em>Pick the date/time for the TopBar to start showing.  Default is <code>Blank</code>.</em></p>
-					</td>
-				</tr>							
-				<tr valign="top">
-					<td width="150">Ending Time:</td>
-					<td>
-						<input class="ui-front" type="text" id="wptbendtimebtn" name="wptbendtime"  style="position: relative; z-index: 100000;" size="30" value="<?php if ($wptbOptions['end_time'] == 0) echo ""; else echo $wptbOptions['end_time']; ?>">	<p class="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" id="wptbtimebtnClear">&nbspSet End Time to Blank</p>							  
-						<div class="ui-front" id="wptb_end_time"></div>				    
-					</td>
-					<td>
-							<p class="sub"><em>Pick the date/time for the TopBar to stop showing.  Of course, it must be after the start time. Select Blank for the TopBar to never disappear.  Default is <code>Blank</code>.</em></p>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3"><hr></td>
-				</tr>
 				<tr valign="top">
 					<td width="150">Bottom border height (px):</td>
 					<td>
