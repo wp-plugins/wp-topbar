@@ -84,7 +84,8 @@ You have two options to fix this:
 
 The problem is with your table collation. You need to change the collation to utf8_general_ci.
 
-Run this query from your phpMyAdmin to change the collation.  Make sure to change DATABASEPREFIX with your database prefix from wp-config.php
+Run this query from your phpMyAdmin to change the collation.  
+Make sure to change the word DATABASEPREFIX below with your database prefix from your wp-config.php file.
 
 ALTER TABLE 'DATABASEPREFIX'_topbar_data CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci
 
