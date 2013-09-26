@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.05
+Version: 5.06
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -27,7 +27,7 @@ Author URI: http://zwebify.com/wordpress-plugins/
 
 
 
-$WPTB_VERSION = "5.05";
+$WPTB_VERSION = "5.06";
 $WPTB_DB_VERSION = "5.03";  // rev this only when this changes
 
 
@@ -576,7 +576,7 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 	//Builds the javascript to close/Reopen the TopBar (part 2)
 	//=========================================================================		
 	
-	function wptb_build_reopenable__topbar_js ($wptbTopBarNumber) {	
+	function wptb_build_reopenable__topbar_js ($wptbOptions, $wptbTopBarNumber) {	
 		
 		if (isset($wptbOptions['reopen_position']) && ($wptbOptions['reopen_position']) == "closed")
 			$html_out = "		".$wptbTopBarNumber.": function() {window.setTimeout(function() { wptbbar_hide".$wptbTopBarNumber."();}, 0)}";
