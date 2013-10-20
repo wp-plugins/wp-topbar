@@ -76,7 +76,7 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid ) {
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
 
-    $tabs = array( 'table'=> 'All TopBars', 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons', 'phptexttab' => 'PHP',  'debug' => 'Debug', 'faq' => 'FAQ' );
+    $tabs = array( 'table'=> 'All TopBars', 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS&nbsp&&nbspHTML', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons', 'phptexttab' => 'PHP',  'debug' => 'Debug', 'faq' => 'FAQ' );
     $links = array();
     
 	if ( $current == 'table' ) $wptb_barid="";
@@ -194,13 +194,13 @@ function wptb_display_common_info($wptbOptions) {
 	// 
 	
 	if (($wptbOptions['topbar_pos'] == 'footer') && (strpos($wptbOptions['div_css'], "bottom") === false))
-		_e( "<div class='error'><strong>You have set the TopBar Location to Below Footer (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#priority'>Main Options</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS Option C</a> may not be set correctly.<br>It should be something like <code>position:fixed; bottom: 0; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
+		_e( "<div class='error'><strong>You have set the TopBar Location to Below Footer (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#priority'>Main Options</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS & HTML Tab - Option C</a> may not be set correctly.<br>It should be something like <code>position:fixed; bottom: 0; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 
 	if (($wptbOptions['topbar_pos'] == 'header') && (strpos($wptbOptions['div_css'], "top") === false))
-		_e( "<div class='error'><strong>You have set the TopBar Location to be Above Header (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#priority'>Main Options</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS Option C</a> may not be set correctly.<br>It should be something like <code>position: fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
+		_e( "<div class='error'><strong>You have set the TopBar Location to be Above Header (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#priority'>Main Options</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS & HTML Tab - Option C</a> may not be set correctly.<br>It should be something like <code>position: fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 
 	if (($wptbOptions['scroll_action'] == "on") && (strpos($wptbOptions['div_css'], "fixed") === false))
-		_e( "<div class='error'><strong>You have turned on the Scroll Action option (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Main Options</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS Option C</a> may not be set correctly.<br>It should have it's position 'fixed' like <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
+		_e( "<div class='error'><strong>You have turned on the Scroll Action option (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Main Options</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS & HTML Tab -  Option C</a> may not be set correctly.<br>It should have it's position 'fixed' like <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 
 	if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes" && $wptbOptions['respect_cookie'] == 'always' ) 
 		_e( "<div class='error'><strong>You have allowed the TopBar to be re-opened (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) and have have Enabled Cookies.  Cookies are ignored if the TopBar is allowed to be re-opened.</strong></div>", 'wptb' ); 
@@ -497,7 +497,7 @@ function wptb_display_all_TopBars() {
 	    else
 	        $current_page = '';    
 	        	        
-        $tabs = array( 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','phptexttab' => 'PHP', 'debug' => 'Debug' );    
+        $tabs = array( 'main' => 'Main&nbspOptions',  'control' => 'Control',  'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage',  'topbarcss' => 'TopBar&nbspCSS&nbsp&&nbspHTML', 'colorselection' => 'Color&nbspSelection','closebutton' => 'Close&nbspButton', 'socialbuttons' => 'Social&nbspButtons','phptexttab' => 'PHP', 'debug' => 'Debug' );    
 
         //Build row actions
 
@@ -1065,7 +1065,7 @@ function wptb_test_topbar($number_to_show) {
 	</tfoot>
 	<tbody>
 	<?php 
-	$tabs = array( 'disable'=> '<br>Disable |<br>', 'main' => 'Main&nbspOptions |<br>',   'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage |<br>', 'topbarcss' => 'TopBar&nbspCSS |<br>', 'colorselection' => 'Color&nbspSelection' );    
+	$tabs = array( 'disable'=> '<br>Disable |<br>', 'main' => 'Main&nbspOptions |<br>',   'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage |<br>', 'topbarcss' => 'TopBar&nbspCSS&nbsp&&nbspHTML |<br>', 'colorselection' => 'Color&nbspSelection' );    
 	$n=1;
 	while ( $n <= $number_to_show ) {
 		$wptbOptions=wptb_get_Random_TopBar();

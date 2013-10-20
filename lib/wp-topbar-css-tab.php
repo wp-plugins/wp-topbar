@@ -1,13 +1,13 @@
 <?php 
 
 /*
-CSS Options Tab
+CSS & HTML Options Tab
 */
 
 
 
 //=========================================================================			
-// TopBar CSS Options
+// TopBar CSS & HTML Options
 //=========================================================================			
 
 function wptb_topbarcss_options($wptbOptions) {
@@ -23,9 +23,9 @@ function wptb_topbarcss_options($wptbOptions) {
 	?>
 	
 	<div class="postbox">
-	<h3><a name="topbarcss">TopBar CSS</a></h3>
+	<h3><a name="topbarcss">TopBar CSS & HTML</a></h3>
 	<div class="inside">
-		<em><p class="sub">Enter any custom CSS for the TopBar.  This allows you to add padding, font styles & more.  Be really careful here -- this could break your website!  Test this with multiple browsers to make sure it works across them all. Double-quotes are automatically replaced with single quotes.<p><strong>Don't forget the trailing semi-colon.</strong></p>
+		<em><p class="sub">Enter any custom CSS and HTML for the TopBar.  This allows you to add padding, font styles & more.  Be really careful here -- this could break your website!  Test this with multiple browsers to make sure it works across them all. Double-quotes are automatically replaced with single quotes.<p><strong>Don't forget the trailing semi-colon.</strong></p>
 		Create a custom CSS gradient at colorzilla.com:
 		<a class="button" style="<?php _e( $wptb_cssgradient_style , 'wptb' ); ?>" href="http://www.colorzilla.com/gradient-editor/" target="_blank">http://www.colorzilla.com/gradient-editor/</a>	
 		</p>
@@ -35,13 +35,13 @@ function wptb_topbarcss_options($wptbOptions) {
 		The TopBar is displayed within it's own <em>div</em> containers:
 		</br>
 		<p style="padding-left:5em">
-		&lt;div id="topbar" style="<strong>CSS Option C</strong>"&gt;</br>
-		&nbsp;&nbsp;&nbsp;&lt;div id="wptbheadline1" style="<strong>CSS Option A</strong>"&gt;Your TopBar Text Goes Here</br>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a style="<strong>CSS Option B</strong>"&lt;/a&gt;</br>
+		&lt;div id="topbar" style="<strong>CSS Option C</strong>"&nbsp;&nbsp;&nbsp;<strong>HTML Option C</strong>&gt;</br>
+		&nbsp;&nbsp;&nbsp;&lt;div id="wptbheadline1" style="<strong>CSS Option A</strong>"&nbsp;&nbsp;&nbsp;<strong>HTML Option A</strong>&gt;Your TopBar Text Goes Here</br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a style="<strong>CSS Option B</strong>"&nbsp;&nbsp;&nbsp;<strong>HTML Option B</strong>&lt;/a&gt;</br>
 		&nbsp;&nbsp;&nbsp;&lt;/div&gt;</br>
 		&lt;/div&gt;</br></p>
 		</em>	
-
+		</br>You have separate fields to enter your custom CSS and HTML below:
 	</div>
 	</div>
 	<div class="postbox">
@@ -50,7 +50,7 @@ function wptb_topbarcss_options($wptbOptions) {
 		<div class="table">
 			<table class="form-table">		
 				<tr valign="top">
-					<td width="150"><strong>CSS Option A</strong></br>For the Bar/Background Image:</br>(i.e. for the &lt;p&gt; Tag on the TopBar)</label></td>
+					<td width="150"><strong>CSS Option A</strong></br>For the Bar/Background Image:</br>(i.e. for the second &lt;DIV&gt; Tag for the TopBar)</td>
 					<td>
 						<strong>Examples:</strong></br>
 						1. To make all text lowercase:&nbsp;&nbsp;&nbsp;<textarea rows="1" cols="50" style="background-color:lightyellow;">text-transform:lowercase;</textarea></br>
@@ -73,7 +73,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', end
 					<td colspan="2"><hr></td>
 				</tr>
 				<tr valign="top">
-					<td width="150"><strong>CSS Option B</strong></br>For the Text Message:</br>(i.e. for the &lt;a&gt; Tag on the TopBar)</label></td>
+					<td width="150"><strong>CSS Option B</strong></br>For the Text Message:</br>(i.e. for the &lt;a&gt; Tag on the TopBar)</td>
 					<td>
 						<strong>Enter CSS Option B Here:</strong></br>
 						<textarea name="wptbcustomcsstext" id="customcsstext" rows="10" cols="100"><?php echo stripslashes($wptbOptions['custom_css_text']); ?></textarea>
@@ -83,7 +83,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', end
 					<td colspan="2"><hr></td>
 				</tr>
 				<tr valign="top">
-					<td width="150"><strong>CSS Option C</strong></br>For the entire TopBar:</br>(i.e. at the TopBar's &lt;DIV&gt;)</label></td>
+					<td width="150"><strong>CSS Option C</strong></br>For the entire TopBar:</br>(i.e. at the TopBar's &lt;DIV&gt;)</td>
 					<td><p>Use this CSS to fix the TopBar to the top of the page and <strong>OVERLAY</strong> the contents of the page:<p>				
 					<textarea rows="1" cols="80" style="background-color:lightyellow;">position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</textarea>
 					<p>Or this CSS to fix the TopBar to the top of the page and <strong>PUSH</strong> the contents down:<p>				
@@ -93,20 +93,80 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', end
 	
 					<p><strong>Note that by putting your TopBar in a Fixed position, you will overlay the content of your website by the TopBar.</strong></p>
 					<strong>Enter CSS Option C Here:</strong></br>
-					<textarea name="wptbdivcss" id="divcss" rows="2" cols="100"><?php echo stripslashes($wptbOptions['div_css']); ?></textarea>
+					<textarea name="wptbdivcss" id="divcss" rows="10" cols="100"><?php echo stripslashes($wptbOptions['div_css']); ?></textarea>
+					</td>
+				</tr>	
+				<tr>
+					<td colspan="2"><hr></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					    <br/>Enter your custom HTML below.  Note you <strong>MUST</strong> use only double quotes ("); do <strong>NOT</strong> use single quotes (') for they will break the TopBar:<br/>
+						<em><p><strong>How these options work:</strong>
+						</br>
+						The TopBar is displayed within it's own <em>div</em> containers:
+						</br>
+						<p style="padding-left:5em">
+						&lt;div id="topbar" style="<strong>CSS Option C</strong>"&nbsp;&nbsp;&nbsp;<strong>HTML Option C</strong>&gt;</br>
+						&nbsp;&nbsp;&nbsp;&lt;div id="wptbheadline1" style="<strong>CSS Option A</strong>"&nbsp;&nbsp;&nbsp;<strong>HTML Option A</strong>&gt;Your TopBar Text Goes Here</br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a style="<strong>CSS Option B</strong>"&nbsp;&nbsp;&nbsp;<strong>HTML Option B</strong>&lt;/a&gt;</br>
+						&nbsp;&nbsp;&nbsp;&lt;/div&gt;</br>
+						&lt;/div&gt;</br></p>
+						</em>	
+				</td>
+				</tr>
+				<tr>
+					<td colspan="2"><hr></td>
+				</tr>
+				<tr valign="top">
+					<td width="150"><strong>HTML Option A</strong></br>For the Bar/Background Image:</br>(i.e. for the second &lt;DIV&gt; Tag on the TopBar)</td>
+					<td><p>Use this add custom HTML to the second DIV tag for the TopBar:
+					<p><strong>Example:</strong></p><p>			
+					<textarea rows="1" cols="80" style="background-color:lightyellow;">name="mytopbarname"</textarea>
+					</p>
+					<strong>Enter HTML Option A Here:</strong></br>
+					<textarea name="wptbbarcustomhtml" id="htmla" rows="5" cols="100"><?php echo stripslashes($wptbOptions['bar_custom_html']); ?></textarea>
+					</td>
+				</tr>	
+				<tr>
+					<td colspan="2"><hr></td>
+				</tr>
+				<tr valign="top">
+					<td width="150"><strong>HTML Option B</strong></br>For the Link:</br>(i.e. for the &lt;a&gt; Tag on the TopBar)</td>
+					<td><p>Use this add custom HTML to the link tag (&lt;a&gt;):
+					<p><strong>Example:</strong></p><p>	
+					<textarea rows="1" cols="80" style="background-color:lightyellow;">rel="lightbox"</textarea>
+					</p>
+					<strong>Enter HTML Option B Here:</strong></br>
+					<textarea name="wptblinkcustomhtml" id="htmlb" rows="5" cols="100"><?php echo stripslashes($wptbOptions['bar_link_custom_html']); ?></textarea>
+					</td>
+				</tr>	
+				<tr>
+					<td colspan="2"><hr></td>
+				</tr>
+				<tr valign="top">
+					<td width="150"><strong>HTML Option C</strong></br>For the entire TopBar:</br>(i.e. at the TopBar's &lt;DIV&gt;)</td>
+					<td><p>Use this add custom HTML to the main DIV tag for the TopBar:
+					<p><strong>Example:</strong></p><p>
+					This will trigger the <em>onmouseover</em> DOM event and execute custom JavaScript code.  That code needs to be loaded by your theme or another method.</p><p>			
+					<textarea rows="1" cols="80" style="background-color:lightyellow;">onmouseover="YourCustomJavaScriptCode"</textarea>
+					</p>
+					<strong>Enter HTML Option C Here:</strong></br>
+					<textarea name="wptbdivcustomhtml" id="htmlc" rows="5" cols="100"><?php echo stripslashes($wptbOptions['div_custom_html']); ?></textarea>
 					</td>
 				</tr>	
 			</table>
-		</div>
+	</div>
 		<table>
-		<tr>
-			<td style="valign:top; width:500px;"><p class="submit">
-				<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
-			</td>
-			<td style="valign:top;">
-				<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
-			</td>
-		</tr>
+			<tr>
+				<td style="valign:top; width:500px;"><p class="submit">
+					<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
+				</td>
+				<td style="valign:top;">
+					<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
+				</td>
+			</tr>
+
 		</table
 		
 		<div class="clear"></div>	

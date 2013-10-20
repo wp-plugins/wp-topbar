@@ -85,7 +85,7 @@ function wptb_main_options($wptbOptions) {
 				 	</p>
 					</td>
 					<td>
-							<p class="sub"><em>Only show the TopBar when the user scrolls the page?  If the user scrolls back to the top of the page, the TopBar gracefully fades away.  Note, if this is to On, the TopBar ignores the Display Time value below.</br></br>Also, <strong>it works best</strong> when the <a <?php echo 'href="?page=wp-topbar.php&action=topbarcss&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'#divcss"'; ?>>TopBar CSS Option C</a> has it's <code>position</code> fixed: e.g. <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code>.</br></br>Default is <code>Off</code>, this will show the scrollbar even if the user does not scroll the page.</em></p>
+							<p class="sub"><em>Only show the TopBar when the user scrolls the page?  If the user scrolls back to the top of the page, the TopBar gracefully fades away.  Note, if this is to On, the TopBar ignores the Display Time value below.</br></br>Also, <strong>it works best</strong> when the <a <?php echo 'href="?page=wp-topbar.php&action=topbarcss&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'#divcss"'; ?>>TopBar CSS & HTML Tab - Option C</a> has it's <code>position</code> fixed: e.g. <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code>.</br></br>Default is <code>Off</code>, this will show the scrollbar even if the user does not scroll the page.</em></p>
 					</td>
 				</tr>
 				<tr valign="top">

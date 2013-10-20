@@ -35,12 +35,12 @@ function wptb_faq_page($wptbOptions,$wptbShowLinks) {
 <li><strong>My TopBar is not working.  What should I do?</strong></li>
 Use the <a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=debug&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'"'; ?>>Debug tab</a> to see how the TopBar is being generated.
 </br>Check for any messages under the Live Preview heading on the Admin Page.  It will tell you if you have cookies or time settings that will prevent the TopBar from loading.
-</br>You may have CSS settings that prevent the TopBar from loading.  If you entered any setting that are not valid, the TopBar will not load. Try deleting the settings and then re-entering your CSS until you find the one that is causing the issue.  Again, the <a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=debug&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'"'; ?>>Debug tab</a> can help you discover any issues.
+</br>You may have custom CSS or HTML settings that prevent the TopBar from loading.  If you entered any setting that are not valid, the TopBar will not load. Try deleting the settings and then re-entering your CSS or HTML until you find the one that is causing the issue.  Again, the <a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=debug&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'"'; ?>>Debug tab</a> can help you discover any issues.
 </br>
 </br>Finally, your Page IDs or Category selection may be preventing the TopBar from loading.  See how your settings are configured on the <a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=control&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'"'; ?>>Control tab</a>.
 </br>
 </br>
-<li><strong>HELP!  I am using custom PHP and now my website is broken</strong></li>
+<li><strong>HELP!  I am using custom PHP, CSS or HTML and now my website is broken</strong></li>
 Don't <strong>Panic</strong>!
 </br>
 You have two options to fix this:</br>

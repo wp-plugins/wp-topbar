@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.06
+Version: 5.10
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -27,8 +27,8 @@ Author URI: http://zwebify.com/wordpress-plugins/
 
 
 
-$WPTB_VERSION = "5.06";
-$WPTB_DB_VERSION = "5.03";  // rev this only when this changes
+$WPTB_VERSION = "5.10";
+$WPTB_DB_VERSION = "5.04";  // rev this only when this changes
 
 
 
@@ -246,7 +246,7 @@ class wptb {
 			echo "jQuery('body').prepend('";
 		}
 				
-		echo '<div id="topbar'.$wptbOptions['bar_id'].'" style="'.trim($wptbOptions['div_css']).'">';
+		echo '<div id="topbar'.$wptbOptions['bar_id'].'" style="'.trim($wptbOptions['div_css']).'" '.$wptbOptions['div_custom_html'].' >';
 		
 		if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
 			wptb::wptb_display_TopBar('display:none;',$wptbOptions, true, $wptbTopBarNumber, true);
@@ -368,23 +368,15 @@ class wptb {
 	//=========================================================================		
 	
 	function wptb_display_TopBar($wptb_visibility, $wptbOptions, $wptbaddslashes, $wptbTopBarNumber, $wptbReopen) {
-	
+
+
 		if ( $wptbaddslashes ) {
-	  		if ( isset($wptbOptions['custom_css_bar']) )	 
-	  			$wptbOptions['custom_css_bar'] = addslashes($wptbOptions['custom_css_bar']);
-	  		if ( isset($wptbOptions['bar_text']) )	 
-	  			$wptbOptions['bar_text'] = addslashes($wptbOptions['bar_text']);
-	  		if ( isset($wptbOptions['custom_css_text']) )	 
-	  			$wptbOptions['custom_css_text'] = addslashes($wptbOptions['custom_css_text']);
-	  		if ( isset($wptbOptions['bar_link_text']) )	 
-	  			$wptbOptions['bar_link_text'] = addslashes($wptbOptions['bar_link_text']);
-	  		if ( isset($wptbOptions['close_button_css']) )	 
-	  			$wptbOptions['close_button_css'] = addslashes($wptbOptions['close_button_css']);
-	  		if ( isset($wptbOptions['reopen_button_css']) )	 
-	  			$wptbOptions['reopen_button_css'] = addslashes($wptbOptions['reopen_button_css']);
-	  		if ( isset($wptbOptions['div_css']) )	 
-	  			$wptbOptions['div_css'] = addslashes($wptbOptions['div_css']);
-			
+
+			$wtpbtextfields = array( '1' => 'custom_css_bar',  '2' => 'bar_text',  '3' => 'custom_css_text', '4' => 'bar_link_text', '5' => 'close_button_css', '6' => 'reopen_button_css' , '7' => 'div_css' );
+		
+		  	foreach( $wtpbtextfields as $number => $field ) {
+		  			$wptbOptions[$field] = addslashes($wptbOptions[$field]);
+		    }			
 		
 			for ($i=1; $i<=10; $i++)  {
 				if ( isset($wptbOptions['social_icon'.$i.'_css']) )	
@@ -413,7 +405,7 @@ class wptb {
 		echo 'border-bottom-width: ',$wptbOptions['bottom_border_height'],'px;';
 		if ($wptbOptions['custom_css_bar'] != '') 
 				echo trim($wptbOptions['custom_css_bar'])." ";
-		echo '">';
+		echo '" '.$wptbOptions['bar_custom_html'].' >';
 
 // Before Custom PHP
 
@@ -431,9 +423,9 @@ class wptb {
 		echo $wptbOptions['bar_text'],'<a style="color:',$wptbOptions['link_color'],'; ';
 		if ($wptbOptions['custom_css_text'] != '')
 			echo trim($wptbOptions['custom_css_text']);
-		echo '" ';
+		echo '" '.$wptbOptions['bar_link_custom_html'].' ';
 		echo 'href="',$wptbOptions['bar_link'],'" target="_',$wptbOptions['link_target'],'">';
-		echo $wptbOptions['bar_link_text'],'</a>'; 
+		echo $wptbOptions['bar_link_text'].'</a>'; 
 
 // Right Social Buttons		
 		for ($i=1; $i<=10; $i++)  {

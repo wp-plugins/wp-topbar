@@ -59,7 +59,7 @@ $wptb_debug=get_transient( 'wptb_debug' );
 						<input type="radio" id="wptbtextalign3" name="wptbtextalign" class="ui-helper-hidden-accessible" value="right" <?php if ($wptbOptions['text_align'] == "right") { _e('checked="checked"', "wptb"); }?>><label for="wptbtextalign3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Right</span></label>
 				 	</p>					
 					</br>
-				 	<p class="sub"><em>Select how you want the text to align. Default is <code>center</code> When using right -- try adding padding via the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."'>TopBar CSS</a></em></br>&nbsp;&nbsp;&nbsp;e.g. <code>padding-right:10px;</code></p>
+				 	<p class="sub"><em>Select how you want the text to align. Default is <code>center</code> When using right -- try adding padding via the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."'>TopBar CSS & HTML</a></em></br>&nbsp;&nbsp;&nbsp;e.g. <code>padding-right:10px;</code></p>
 					</td>
 				</tr>				
 				<tr>

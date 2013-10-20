@@ -222,6 +222,9 @@ function wptb_create_table() {
 		custom_css_bar TEXT,
 		custom_css_text TEXT,
 		div_css TEXT,
+		div_custom_html TEXT,
+		bar_custom_html TEXT,
+		bar_link_custom_html TEXT,
 		social_icon1 VARCHAR(20),
 		social_icon2 VARCHAR(20),
 		social_icon3 VARCHAR(20),
@@ -360,6 +363,9 @@ function wtpb_set_default_settings() {
 		'custom_css_bar' => 'background-repeat: no-repeat;',
 		'custom_css_text' => '',
 		'div_css' => 'position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;',
+		'bar_custom_html' => '',
+		'bar_link_custom_html' => '',
+		'div_custom_html' => '',
 		'social_icon1'  => 'off',
 		'social_icon2'  => 'off', 
 		'social_icon3'  => 'off',
@@ -524,6 +530,9 @@ function wtpb_insert_row($wptbOptions) {
 		'custom_css_bar' => $wptbOptions[ 'custom_css_bar' ],
 		'custom_css_text' => $wptbOptions[ 'custom_css_text' ],
 		'div_css' => $wptbOptions[ 'div_css' ],
+		'bar_custom_html' => $wptbOptions [ 'bar_custom_html' ],
+		'bar_link_custom_html' => $wptbOptions [ 'bar_link_custom_html' ],
+		'div_custom_html' => $wptbOptions [ 'div_custom_html' ],
 		'social_icon1' => $wptbOptions[ 'social_icon1' ],
 		'social_icon2' => $wptbOptions[ 'social_icon2' ], 
 		'social_icon3' => $wptbOptions[ 'social_icon3' ],
@@ -663,9 +672,12 @@ function wptb_update_row($wptbOptions) {
 		'text_align' => $wptbOptions[ 'text_align' ],
 		'bar_image' => $wptbOptions[ 'bar_image' ],
 		'enable_image' => $wptbOptions[ 'enable_image' ],
-		'custom_css_bar' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'custom_css_bar' ])),
-		'custom_css_text' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'custom_css_text' ])),
-		'div_css' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'div_css' ])),
+		'custom_css_bar' =>       preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'custom_css_bar' ])),
+		'custom_css_text' =>      preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'custom_css_text' ])),
+		'div_css' =>              preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'div_css' ])),
+		'bar_custom_html' =>      preg_replace("/\n|\r/", " ",trim($wptbOptions [ 'bar_custom_html' ])),
+		'bar_link_custom_html' => preg_replace("/\n|\r/", " ",trim($wptbOptions [ 'bar_link_custom_html' ])),
+		'div_custom_html' =>      preg_replace("/\n|\r/", " ",trim($wptbOptions [ 'div_custom_html' ])),
 		'social_icon1' => $wptbOptions[ 'social_icon1' ],
 		'social_icon2' => $wptbOptions[ 'social_icon2' ], 
 		'social_icon3' => $wptbOptions[ 'social_icon3' ],
@@ -1009,6 +1021,15 @@ function wptb_update_settings($wptb_barid) {
 	if (isset($_POST['wptblinktext'])) {
 		$wptbOptions['bar_link_text'] = $_POST['wptblinktext'];
 	}
+	if (isset($_POST['wptbbarcustomhtml'])) {
+		$wptbOptions['bar_custom_html'] = $_POST['wptbbarcustomhtml'];
+	}
+	if (isset($_POST['wptblinkcustomhtml'])) {
+		$wptbOptions['bar_link_custom_html'] = $_POST['wptblinkcustomhtml'];
+	}
+	if (isset($_POST['wptbdivcustomhtml'])) {
+		$wptbOptions['div_custom_html'] = $_POST['wptbdivcustomhtml'];
+	}	
 	if (isset($_POST['wptbtextalign'])) {
 		$wptbOptions['text_align'] = $_POST['wptbtextalign'];
 	}
@@ -1112,6 +1133,20 @@ function wptb_update_settings($wptb_barid) {
 			$wptbOptions[$field] 	 = (str_replace('"',"'",$wptbOptions[$field]));
 
     }
+
+// for these -- need to make sure the user is not using single quotes - -that breaks the plugin.
+    
+    $wtpbtextfields = array('1' => 'div_custom_html' , '2' => 'bar_custom_html' , '3' => 'bar_link_custom_html');
+  	foreach( $wtpbtextfields as $number => $field ) {
+		if (get_magic_quotes_gpc())
+			$wptbOptions[$field] 	 = (str_replace("'",'"',stripslashes($wptbOptions[$field])));
+		else
+			$wptbOptions[$field] 	 = (str_replace("'",'"',$wptbOptions[$field]));
+    }
+    
+    
+    
+     
     
 	for ($i=1; $i<=10; $i++)  {
 		if (get_magic_quotes_gpc())
@@ -1207,7 +1242,7 @@ function wtpb_check_for_plugin_upgrade($wptb_display_errors) {
 
 			
 	if($wptb_debug) {
-		if($$wptb_display_errors) {
+		if($wptb_display_errors) {
 			echo '<br><code>WP-TopBar Debug Mode: in wtpb_check_for_plugin_upgrade</code>' ;
 			echo '<br><code>WP-TopBar Debug Mode: Plugin Version: ',$WPTB_VERSION,'</code>';
 		}
@@ -1280,7 +1315,7 @@ function wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERS
 	
 		
 	if($wptb_debug) {
-		if($$wptb_display_errors) 
+		if($wptb_display_errors) 
 			echo '<br><code>WP-TopBar Debug Mode: end of wtpb_check_for_plugin_upgrade</code>' ;
 		else
 			error_log( 'WP-TopBar Debug Mode: end of wtpb_check_for_plugin_upgrade' );

@@ -4,13 +4,15 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.6.1
-Stable tag: 5.06
+Stable tag: 5.10
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
 == Description ==
 
 Create **MULTIPLE** TopBars that will be shown at the top (or bottom) of your website.  The Cacheable TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even add your own PHP. You can easily lose track of time getting your TopBars perfect!
+
+Version 5.10 allows you to enter additional custom HTML to the TopBar.  You have three different places where you can provide even more customization for your TopBar.  Now you can set your own event triggers or custom codes
 
 Version 5.0 now allows the user to re-open a TopBar, adds more Social buttons (and you can place them before or after the TopBar.)  You can also see some Sample ToolBars that shows how you can use the plugin. It also gives you a way to supress live preview (see FAQ for &nopreview option) to help find broken, custom PHP.  Also, there a several more warning messages as the TopBar tries to tell you if you may have an incompatible setting.
 
@@ -70,11 +72,11 @@ Are you upgrading from an old version?   I do my best to allow for clean upgrade
 
 Also, check for any messages under the Live Preview heading on the Admin Page. It will tell you if you have cookies or time settings that will prevent the TopBar from loading.  
 
-You may have CSS settings that prevent the TopBar from loading. If you entered any setting that are not valid, the TopBar will not load. Try deleting the settings and then re-entering your CSS until you find the one that is causing the issue.
+You may have custom CSS or HTML settings that prevent the TopBar from loading. If you entered any setting that are not valid, the TopBar will not load. Try deleting the settings and then re-entering your custom CSS or HTML until you find the one that is causing the issue.
 
 You can also use the Debug page to see if you can see an error.
 
-= HELP! I am using custom PHP and now my website is broken =
+= HELP! I am using custom PHP, CSS or HTML and now my website is broken =
 Don't Panic! 
 You have two options to fix this:
 1. Append &nopreview to the url when you are trying to edit a TopBar. E.g. https://www.dummy.org/wp/wp-admin/?page=wp-topbar.php&action=phptexttab&barid=422116&nopreview.    Hit ENTER to reload the page. You should now be able to edit the custom php.
@@ -160,6 +162,10 @@ Go to the Uninstall tab and then click the Uninstall button at the bottom of the
 You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the Plugin
 
 == Upgrade Notice ==
+
+= 5.10 = 
+
+Added features to allow you to enter custom HTML giving you even more control. Renamed CSS tab to 'CSS & HTML' tab. 
 
 = 5.06 = 
 
@@ -306,6 +312,11 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+
+= 5.10 - 10/20/2013 =
+
+1.  ADDED: 	Three new custom HTML fields and Renamed CSS tab to 'CSS & HTML' tab. 
+2.  FIXED:	Minor defect fixes to the debug code
 
 = 5.06 - 09/25/2013 =
 
