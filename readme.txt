@@ -305,7 +305,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 1. This is how it will look on your website
 2. All TopBars Screen
-3. Test Priority Screen
+3. Sample TopBar Screen
 4. Export Options Screen
 5. Main Options Screen for a single TopBar
 
