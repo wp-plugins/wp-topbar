@@ -12,6 +12,8 @@ Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars 
 
 Create **MULTIPLE** TopBars that will be shown at the top (or bottom) of your website.  The Cacheable TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even add your own PHP. You can easily lose track of time getting your TopBars perfect!
 
+Version 5.11 gives you an new option to show the TopBar on mobile devices, not mobile devices, or all devices.
+
 Version 5.10 allows you to enter additional custom HTML to the TopBar.  You have three different places where you can provide even more customization for your TopBar.  Now you can set your own event triggers or custom codes
 
 Version 5.0 now allows the user to re-open a TopBar, adds more Social buttons (and you can place them before or after the TopBar.)  You can also see some Sample ToolBars that shows how you can use the plugin. It also gives you a way to supress live preview (see FAQ for &nopreview option) to help find broken, custom PHP.  Also, there a several more warning messages as the TopBar tries to tell you if you may have an incompatible setting.
