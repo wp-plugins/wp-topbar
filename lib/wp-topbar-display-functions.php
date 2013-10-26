@@ -399,7 +399,8 @@ function wptb_display_all_TopBars() {
 			'end_time' => 'End Time',
 			'show_it' => 'Time Check',
 			'enable_topbar' => 'Enabled?',
-			'only_logged_in' => 'Logged In Users Only?'
+			'only_logged_in' => 'Logged In Users Only?',
+			'mobile_check' => 'Mobile?'
 //			'text_line' => 'Bar and Link Text'
 		);
 	}
@@ -439,6 +440,14 @@ function wptb_display_all_TopBars() {
 				else 
 					return "All Users";				
 				break;			
+			case "mobile_check":
+				if ($item[$column_name] == "only_mobile" ) 
+					return "Only Mobile Devices";					
+				else if ($item[$column_name] == "not_mobile" ) 
+					return "Not on Mobile Devices";	
+				else 
+					return "All Devices";				
+				break;	
 			case "weighting_points": 
 				$width=$item[$column_name]+0;
 //				return $item[$column_name];
@@ -535,7 +544,7 @@ function wptb_display_all_TopBars() {
 		echo '</tr>';
 		echo '<tr' . $row_class .  '>';
 		echo '<td>&nbsp</td>';
-		echo '<td style="border-top: thin solid black; border-bottom: thin solid black;  border-left: thin solid black; border-right: thin solid black;" colspan="7">';
+		echo '<td style="border-top: thin solid black; border-bottom: thin solid black;  border-left: thin solid black; border-right: thin solid black;" colspan="8">';
 		if (isset($item['allow_reopen']) && ($item['allow_reopen']) == "yes")
 			wptb::wptb_display_TopBar('',$item, false, 1, true);
 		else 

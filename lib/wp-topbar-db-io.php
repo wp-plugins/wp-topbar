@@ -180,6 +180,7 @@ function wptb_create_table() {
 		include_logic TEXT,
 		show_homepage VARCHAR(20),
 		only_logged_in VARCHAR(20),
+		mobile_check VARCHAR(20),
 		php_text_prefix TEXT,
 		php_text_suffix TEXT,
 		delay_time INT,
@@ -321,6 +322,7 @@ function wtpb_set_default_settings() {
 		'include_logic' => 'page_only',
 		'show_homepage' => 'conditionally',
 		'only_logged_in' => 'all',
+		'mobile_check' => 'all_devices',
 		'php_text_prefix' => '',
 		'php_text_suffix' => '',
 		'delay_time' => '5000',
@@ -488,6 +490,7 @@ function wtpb_insert_row($wptbOptions) {
 		'include_logic' => $wptbOptions[ 'include_logic' ],
 		'show_homepage' => $wptbOptions[ 'show_homepage' ],
 		'only_logged_in' => $wptbOptions[ 'only_logged_in' ],
+		'mobile_check' => $wptbOptions[ 'mobile_check' ],
 		'php_text_prefix' => $wptbOptions[ 'php_text_prefix' ],
 		'php_text_suffix' => $wptbOptions[ 'php_text_suffix' ],
 		'delay_time' => $wptbOptions[ 'delay_time' ],
@@ -633,6 +636,7 @@ function wptb_update_row($wptbOptions) {
 		'include_logic' => $wptbOptions[ 'include_logic' ],
 		'show_homepage' => $wptbOptions[ 'show_homepage' ],
 		'only_logged_in' => $wptbOptions[ 'only_logged_in' ],
+		'mobile_check' => $wptbOptions[ 'mobile_check' ],
 		'php_text_prefix' => $wptbOptions[ 'php_text_prefix' ],
 		'php_text_suffix' => $wptbOptions[ 'php_text_suffix' ],
 		'delay_time' => $wptbOptions[ 'delay_time' ],
@@ -905,6 +909,9 @@ function wptb_update_settings($wptb_barid) {
 	}	
 	if (isset($_POST['wptbonlyloggedin'])) {
 		$wptbOptions['only_logged_in'] = $_POST['wptbonlyloggedin'];
+	}	
+	if (isset($_POST['wptbmobilecheck'])) {
+		$wptbOptions['mobile_check'] = $_POST['wptbmobilecheck'];
 	}	
 	if (isset($_POST['wptbphptextprefix'])) {
 		$wptbOptions['php_text_prefix'] = $_POST['wptbphptextprefix'];
@@ -1186,6 +1193,8 @@ function wptb_update_settings($wptb_barid) {
 // 5.0 - added 6 more Social Buttons and ability to place them (left or right), added reopen options
 // 5.02 - added scroll_amount field
 // 5.03 - added reopen_position field
+// 5.04 - added custom HTML field
+// 5.05 - added mobile_check field
 //=========================================================================			
 	
 function wtpb_check_for_plugin_upgrade($wptb_display_errors) { 
@@ -1237,7 +1246,7 @@ function wtpb_check_for_plugin_upgrade($wptb_display_errors) {
 	}
 	
 
-	// force this check for testing
+	// force this check to make sure all values are set to default values
 	wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERSION);
 
 			
@@ -1281,7 +1290,7 @@ function wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERS
 
 //	wptb_create_table();
 
-	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: DB Version in Table: ',$wptb_db_version[0],'</code>';
+	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: MIN DB Version in Table: ',$wptb_db_version[0],'</code>';
 	
 	if ( $wptb_db_version[0] != $WPTB_DB_VERSION ) {
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Version Upgrade Needed</code>';
@@ -1304,11 +1313,11 @@ function wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERS
 
 					}
 				}
+			
+				if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Updating Row</code>';
+				$wptbOptions[ 'wptb_version' ] = $WPTB_DB_VERSION;
+				wptb_update_row($wptbOptions);
 			}
-			if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Updating Row</code>';
-
-			$wptbOptions[ 'wptb_version' ] = $WPTB_DB_VERSION;
-			wptb_update_row($wptbOptions);
 		}
 
 	}
@@ -1325,6 +1334,14 @@ function wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERS
 	
 	
 	update_option( "wptb_db_version", $WPTB_DB_VERSION );
+	if($wptb_debug) {
+		if($wptb_display_errors) 
+			echo '<br><code>WP-TopBar Debug Mode: version is now set to: '.	get_option( "wptb_db_version" ).'</code>' ;
+		else
+			error_log( 'WP-TopBar Debug Mode: version is now set to: '.	get_option( "wptb_db_version" ) );
+	}
+
+	
 	
 } // End of function wtpb_check_table_for_default_values 	
 

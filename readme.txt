@@ -3,8 +3,8 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
-Tested up to: 3.6.1
-Stable tag: 5.10
+Tested up to: 3.7
+Stable tag: 5.11
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
@@ -163,6 +163,10 @@ You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the P
 
 == Upgrade Notice ==
 
+= 5.11 = 
+
+Version 5.11 supports WordPress 3.7, added control option to control showing of TopBar on mobile devices. 
+
 = 5.10 = 
 
 Added features to allow you to enter custom HTML giving you even more control. Renamed CSS tab to 'CSS & HTML' tab. 
@@ -313,10 +317,16 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 == Changelog ==
 
 
+= 5.11 - 10/25/2013 =
+
+1. VALIDATED: 	Version 5.11 supports WordPress 3.7
+2. ADDED: 		New control option to check for Mobie devices using wp_is_mobile() 
+3. FIXED:		Defect related to how the plugin handles upgrades to the next version
+
 = 5.10 - 10/20/2013 =
 
-1.  ADDED: 	Three new custom HTML fields and Renamed CSS tab to 'CSS & HTML' tab. 
-2.  FIXED:	Minor defect fixes to the debug code
+1. ADDED: 	Three new custom HTML fields and Renamed CSS tab to 'CSS & HTML' tab. 
+2. FIXED:	Minor defect fixes to the debug code
 
 = 5.06 - 09/25/2013 =
 

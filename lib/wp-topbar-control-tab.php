@@ -36,7 +36,7 @@ function wptb_control_options($wptbOptions) {
 				<tr valign="top">
 					<td width="150">Starting Time:</td>
 					<td>
-						<input class="ui-front" type="text" id="wptbstarttimebtn" name="wptbstarttime"  style="position: relative; z-index: 100000;" size="30" value="<?php if ($wptbOptions['start_time'] == 0) echo ""; else echo $wptbOptions['start_time']; ?>"></div><p class="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" id="wptbstarttimebtnClear">Set Start Time to Blank</p>									  
+						<input class="ui-front" type="text" id="wptbstarttimebtn" name="wptbstarttime"  style="position: relative; z-index: 100000;" size="30" value="<?php if ($wptbOptions['start_time'] == 0) echo ""; else echo $wptbOptions['start_time']; ?>"></div><p class="button" style="<?php _e( $wptb_special_button_style , 'wptb' ); ?>" id="wptbstarttimebtnClear">Set Start Time to Blank</p>									   
 						<div class="ui-front" id="wptb_start_time"></div>				    
 					</td>
 					<td>
@@ -61,7 +61,7 @@ function wptb_control_options($wptbOptions) {
 					<td>
 						<br>
 						
-					 	<p id="radio2" class="ui-button ui-button-wptbset">
+					 	<p id="radio1" class="ui-button ui-button-wptbset">
 						<input type="radio" id="wptbonlyloggedin1" name="wptbonlyloggedin" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['only_logged_in'] == "no") { _e('checked="checked"', "wptb"); }?>><label for="wptbonlyloggedin1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">A</span></label>
 						<input type="radio" id="wptbonlyloggedin2" name="wptbonlyloggedin" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['only_logged_in'] == "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptbonlyloggedin2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">B</span></label>
 						<input type="radio" id="wptbonlyloggedin3" name="wptbonlyloggedin" class="ui-helper-hidden-accessible" value="all" <?php if ($wptbOptions['only_logged_in'] == "all") { _e('checked="checked"', "wptb"); }?>><label for="wptbonlyloggedin3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">C</span></label>
@@ -78,13 +78,35 @@ function wptb_control_options($wptbOptions) {
 				</tr>				
 				<tr>
 					<td colspan="3"><hr></td>
+				</tr>
+				<tr valign="top">
+					<td>Mobile Devices:</td>
+					<td>
+						<br>
+					 	<p id="radio2" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbmobilecheck1" name="wptbmobilecheck" class="ui-helper-hidden-accessible" value="only_mobilem" <?php if ($wptbOptions['mobile_check'] == "only_mobile") { _e('checked="checked"', "wptb"); }?>><label for="wptbmobilecheck1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">A</span></label>
+						<input type="radio" id="wptbmobilecheck2" name="wptbmobilecheck" class="ui-helper-hidden-accessible" value="not_mobile" <?php if ($wptbOptions['mobile_check'] == "not_mobile") { _e('checked="checked"', "wptb"); }?>><label for="wptbmobilecheck2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">B</span></label>
+						<input type="radio" id="wptbmobilecheck3" name="wptbmobilecheck" class="ui-helper-hidden-accessible" value="all_devices" <?php if ($wptbOptions['mobile_check'] == "all_devices") { _e('checked="checked"', "wptb"); }?>><label for="wptbmobilecheck3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">C</span></label>
+					 	</p>						
+						
+					</td>
+					<td>
+						<p class="sub"><em>Select how you want the TopBar to show for mobile users.  Default is to <code>Allways</code> show the TopBar, regardless if they are logged in</em>
+						<br>A. <strong>Mobile Devices</strong> shows the TopBar only for mobile dvices.
+						<br>B. <strong>non-Mobile Devices</strong> shows the TopBar only for other devices.
+						<br>C. <strong>Always</strong> shows the TopBar for all devices.
+						</p>
+					</td>
+				</tr>								
+				<tr>
+					<td colspan="3"><hr></td>
 				</tr>				
 				<tr valign="top">
 					<td>Show TopBar on<br>Home Page:</label><p>
 					<td>
 						<br>
 						
-					 	<p id="radio1" class="ui-button ui-button-wptbset">
+					 	<p id="radio3" class="ui-button ui-button-wptbset">
 						<input type="radio" id="wptbshowhomepage1" name="wptbshowhomepage" class="ui-helper-hidden-accessible" value="always" <?php if ($wptbOptions['show_homepage'] == "always") { _e('checked="checked"', "wptb"); }?>><label for="wptbshowhomepage1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">A</span></label>
 						<input type="radio" id="wptbshowhomepage2" name="wptbshowhomepage" class="ui-helper-hidden-accessible" value="never" <?php if ($wptbOptions['show_homepage'] == "never") { _e('checked="checked"', "wptb"); }?>><label for="wptbshowhomepage2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">B</span></label>
 						<input type="radio" id="wptbshowhomepage3" name="wptbshowhomepage" class="ui-helper-hidden-accessible" value="conditionally" <?php if ($wptbOptions['show_homepage'] == "conditionally") { _e('checked="checked"', "wptb"); }?>><label for="wptbshowhomepage3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">C</span></label>
@@ -115,7 +137,7 @@ function wptb_control_options($wptbOptions) {
 				<tr valign="top">
 					<td>Page ID Criteria:</td>
 					<td>
-				 	<p id="radio3" class="ui-button ui-button-wptbset">
+				 	<p id="radio4" class="ui-button ui-button-wptbset">
 						<input type="radio" id="wptbinvertinclude1" name="wptbinvertinclude" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['invert_include'] == "no") { _e('checked="checked"', "wptb"); }?>><label for="wptbinvertinclude1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Include</span></label>
 						<input type="radio" id="wptbinvertinclude2" name="wptbinvertinclude" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['invert_include'] == "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptbinvertinclude2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Exclude</span></label>
 					</p>
@@ -140,7 +162,7 @@ function wptb_control_options($wptbOptions) {
 </td>
 					<td>
 					
-				 	<p id="radio4" class="ui-button ui-button-wptbset">
+				 	<p id="radio5" class="ui-button ui-button-wptbset">
 						<input type="radio" id="wptbinvertcategories1" name="wptbinvertcategories" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['invert_categories'] == "no") { _e('checked="checked"', "wptb"); }?>><label for="wptbinvertcategories1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Include</span></label>
 						<input type="radio" id="wptbinvertcategories2" name="wptbinvertcategories" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['invert_categories'] == "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptbinvertcategories2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Exclude</span></label>
 					</p>					
@@ -156,7 +178,7 @@ function wptb_control_options($wptbOptions) {
 					<td>Selection Criteria Logic:</label><p>
 					<td>
 						</br>
-					 	<p id="radio5" class="ui-button ui-button-wptbset">
+					 	<p id="radio6" class="ui-button ui-button-wptbset">
 						<input type="radio" id="wptbincludelogic1" name="wptbincludelogic" class="ui-helper-hidden-accessible" value="page_only" <?php if ($wptbOptions['include_logic'] == "page_only") { _e('checked="checked"', "wptb"); }?>><label for="wptbincludelogic1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">A</span></label>
 						<input type="radio" id="wptbincludelogic2" name="wptbincludelogic" class="ui-helper-hidden-accessible" value="cat_only" <?php if ($wptbOptions['include_logic'] == "cat_only") { _e('checked="checked"', "wptb"); }?>><label for="wptbincludelogic2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">B</span></label>
 						<input type="radio" id="wptbincludelogic3" name="wptbincludelogic" class="ui-helper-hidden-accessible" value="boolean_and" <?php if ($wptbOptions['include_logic'] == "boolean_and") { _e('checked="checked"', "wptb"); }?>><label for="wptbincludelogic3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">C</span></label>

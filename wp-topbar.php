@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.10
+Version: 5.11
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -27,8 +27,8 @@ Author URI: http://zwebify.com/wordpress-plugins/
 
 
 
-$WPTB_VERSION = "5.10";
-$WPTB_DB_VERSION = "5.04";  // rev this only when this changes
+$WPTB_VERSION = "5.11";
+$WPTB_DB_VERSION = "5.05";  // rev this only when this changes
 
 
 
@@ -353,6 +353,35 @@ class wptb {
 ';
 			return false;  
 		}
+		
+		// if we have the mobile_check field set, then check to see if the user is coming from a mobile device then process it appropriately
+		if (isset( $wptbOptions['mobile_check'] )) {
+	
+			switch ( $wptbOptions['mobile_check'] ) {
+				
+			case 'only_mobile':
+	
+				if ( ! ( wp_is_mobile() )) {return false;}		
+				break;
+				
+			case 'not_mobile':
+			
+				if (  wp_is_mobile() ) {return false;}		
+				break;
+				
+			case 'all_devices':
+					
+				break;				
+			}
+		
+		}
+		
+		//if (isset($wptbOptions['php_text_control']) && ($wptbOptions['php_text_control'] != "" )) {
+		//	$wptbPHPControl=true;
+		//	eval( stripslashes($wptbOptions['php_text_control'] ) );
+		//	return $wptbPHPControl;
+		//}			
+
 		
 		return true;
 
