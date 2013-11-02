@@ -1,13 +1,13 @@
 <?php 
 
 /*
-Pointer Function
+Pointer Functions
 
 */
 
 
 //=========================================================================			
-// PHP Options
+// Pointer Functions 
 //=========================================================================			
 
 
@@ -68,12 +68,12 @@ function wptb_register_pointer( $p ) {
    // EDGE: On what edge do we want the pointer to appear. Options are 'top', 'left', 'right', 'bottom'
    // ALIGN: How do we want out custom pointer to align to the element it is attached to. Options are 'left', 'right', 'center'
 
-    $p['500pointer1'] = array(
+    $p['511pointer1'] = array(
         'target' => '.wptb-table',
         'options' => array(
             'content' => sprintf( '<h3> %s </h3> <p> %s </p>',
-                __( 'New Features in Version 5.0!' ,'plugindomain'),
-                __( 'Check out the new features in this version:</br></br>> You can now re-open a TopBar via the Close Button Tab</br>> You can now have a total of 10 Social Buttons.</br>> Social Buttons can be before or after the TopBar</br>> See the Change Log for all the updates.','plugindomain')
+                __( 'New Features in Versions 5.10+!' ,'plugindomain'),
+                __( 'Check out the new features in this version:</br></br>v 5.11 - You an new option to show the TopBar on mobile devices, not mobile devices, or all devices. See the <strong>Control Tab</strong></br></br>v 5.10 - You can add additional custom HTML to the TopBar.  You have three different places where you can provide even more customization for your TopBar.  Now you can set your own event triggers or custom code. See the <strong>CSS & HTML tab</strong>.','plugindomain')
             ),
             'position' => array( 'edge' => 'top', 'align' => 'left' )
         )

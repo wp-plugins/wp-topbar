@@ -1074,6 +1074,11 @@ function wptb_test_topbar($number_to_show) {
 	</tfoot>
 	<tbody>
 	<?php 
+
+   	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+   	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+   	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+
 	$tabs = array( 'disable'=> '<br>Disable |<br>', 'main' => 'Main&nbspOptions |<br>',   'topbartext' => 'TopBar&nbspText&nbsp&&nbspImage |<br>', 'topbarcss' => 'TopBar&nbspCSS&nbsp&&nbspHTML |<br>', 'colorselection' => 'Color&nbspSelection' );    
 	$n=1;
 	while ( $n <= $number_to_show ) {

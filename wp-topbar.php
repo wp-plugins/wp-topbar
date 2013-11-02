@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.11
+Version: 5.12
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -26,16 +26,13 @@ Author URI: http://zwebify.com/wordpress-plugins/
 */
 
 
-
-$WPTB_VERSION = "5.11";
+$WPTB_VERSION = "5.12";
 $WPTB_DB_VERSION = "5.05";  // rev this only when this changes
-
-
 
 if( ! class_exists( 'wptb' ) ):
 class wptb {
 
-	function init(){
+	 function init(){
 
 		//=========================================================================			
 		//Perform any onetime functions when plugin is activiated
@@ -82,7 +79,7 @@ class wptb {
 	// Enqueue jquery to get our javascripts to run -- just in case no other theme/plugin has
 	//=========================================================================	
 	
-	function wptb_enqueue_jquery() {
+	public static function wptb_enqueue_jquery() {
     		wp_enqueue_script('jquery');     
 		
 	} // End of function wptb_enqueue_jquery
@@ -91,7 +88,7 @@ class wptb {
 	// Enqueue Media Uploader, Farbtastics, etc. for the color pickers, etc.
 	//=========================================================================		
 		
-	function wptb_enqueue_admin_scripts() {
+	public static function wptb_enqueue_admin_scripts() {
 		
 		if (isset($_GET['page']) && $_GET['page'] == 'wp-topbar.php') {  // only load these on the admin page
 			wp_enqueue_script( 'media-upload' );
@@ -148,7 +145,7 @@ class wptb {
 	// e.g. .../?page=wp-topbar.php&debug
 	//=========================================================================			
 	
-	function wptb_debug_check() {	
+	public static function wptb_debug_check() {	
 		
 		if ((isset($_GET['page']) && $_GET['page'] == 'wp-topbar.php') &&
 	        isset( $_GET['debug'] ) && current_user_can( 'manage_options' ) ) {
@@ -161,7 +158,7 @@ class wptb {
 	// Add 'Settings' link to plugin page
 	//=========================================================================			
 	
-	function wptb_plugin_action_links($links) {
+	public static function wptb_plugin_action_links($links) {
 		$wptb_settings_link = '<a href="'.admin_url( 'admin.php?page=wp-topbar.php' ).'">Settings</a>';
 		array_unshift($links, $wptb_settings_link);
 		return $links;
@@ -172,7 +169,7 @@ class wptb {
 	// Add donate link on manage plugin page
 	//=========================================================================			
 	
-	function wptb_plugin_donate_link($links, $file) {
+	public static function wptb_plugin_donate_link($links, $file) {
 		if ($file == plugin_basename(__FILE__)) {
 				$donate_link = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J" target="_blank">Donate</a>';
 				$links[] = $donate_link;
@@ -185,7 +182,7 @@ class wptb {
 	// Initialize the admin panel, add main option menu and submenus
 	//=========================================================================			
 		
-	function wptb_options_panel() { //create custom top-level menu 
+	public static function wptb_options_panel() { //create custom top-level menu 
 		add_menu_page( 'WP TopBar', 'WP TopBar', 'manage_options', 'wp-topbar.php', 'wptb_options_page', plugins_url('/images/icon.png', __FILE__)); 	
 		
 		$tabs = array( 'table' => 'All TopBars', 'testpriority' => 'Test Priority', 'bulkclosebutton'=> 'Close Button', 'export' => 'Export', 'mainfaq' => 'FAQ' );
@@ -200,7 +197,7 @@ class wptb {
 	// Run this when plugin is activiated 
 	//=========================================================================			
 		
-	function wptb_activate_plugin() {   
+	public static function wptb_activate_plugin() {   
 	
 	//		require_once( dirname(__FILE__).'/lib/wp-topbar-db-io.php');  //database and I-O functions php
 	//		wptb::wptb_check_for_plugin_upgrade(false);	// do not echo out parameters if debugging
@@ -213,7 +210,7 @@ class wptb {
 	//Adds the TopBar HTML and Javascript to the output
 	//=========================================================================		
 		
-	function wptb_activate_TopBar_html_js() {
+	public static function wptb_activate_TopBar_html_js() {
 
 		// check for options using the old method, if used - honor it.  otherwise get a TopBar from the database	
 		$wptbOptions = get_option('wptbAdminOptions');
@@ -231,7 +228,7 @@ class wptb {
 	// Inject specific TopBar HTML; Also used on the admin (debug) pages
 	//=========================================================================		
 
-	function wptb_inject_TopBar_html_js($wptbOptions, $wptbTopBarNumber) {
+	public static function wptb_inject_TopBar_html_js($wptbOptions, $wptbTopBarNumber) {
 
 		if ( wptb::wptb_check_options_to_show_row($wptbOptions) == false ) { return false; }
 			
@@ -246,7 +243,7 @@ class wptb {
 			echo "jQuery('body').prepend('";
 		}
 				
-		echo '<div id="topbar'.$wptbOptions['bar_id'].'" style="'.trim($wptbOptions['div_css']).'" '.$wptbOptions['div_custom_html'].' >';
+		echo '<div id="topbar'.$wptbOptions['bar_id'].'" style="'.trim($wptbOptions['div_css']).'" '.stripslashes($wptbOptions['div_custom_html']).' >';
 		
 		if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
 			wptb::wptb_display_TopBar('display:none;',$wptbOptions, true, $wptbTopBarNumber, true);
@@ -271,7 +268,7 @@ class wptb {
 	// checks all the options, returns TRUE if TopBar should show, FALSE if not
 	//=========================================================================		
 	
-	function wptb_check_options_to_show_row($wptbOptions) {
+	public static function wptb_check_options_to_show_row($wptbOptions) {
 	
 		if (isset($_GET['page']) && $_GET['page'] == 'wp-topbar.php') 
 				$thePostID = "";
@@ -375,14 +372,7 @@ class wptb {
 			}
 		
 		}
-		
-		//if (isset($wptbOptions['php_text_control']) && ($wptbOptions['php_text_control'] != "" )) {
-		//	$wptbPHPControl=true;
-		//	eval( stripslashes($wptbOptions['php_text_control'] ) );
-		//	return $wptbPHPControl;
-		//}			
-
-		
+				
 		return true;
 
 	}	// End of wptb_check_options_to_show_row
@@ -434,7 +424,7 @@ class wptb {
 		echo 'border-bottom-width: ',$wptbOptions['bottom_border_height'],'px;';
 		if ($wptbOptions['custom_css_bar'] != '') 
 				echo trim($wptbOptions['custom_css_bar'])." ";
-		echo '" '.$wptbOptions['bar_custom_html'].' >';
+		echo '" '.stripslashes($wptbOptions['bar_custom_html']).' >';
 
 // Before Custom PHP
 
@@ -452,7 +442,7 @@ class wptb {
 		echo $wptbOptions['bar_text'],'<a style="color:',$wptbOptions['link_color'],'; ';
 		if ($wptbOptions['custom_css_text'] != '')
 			echo trim($wptbOptions['custom_css_text']);
-		echo '" '.$wptbOptions['bar_link_custom_html'].' ';
+		echo '" '.stripslashes($wptbOptions['bar_link_custom_html']).' ';
 		echo 'href="',$wptbOptions['bar_link'],'" target="_',$wptbOptions['link_target'],'">';
 		echo $wptbOptions['bar_link_text'].'</a>'; 
 
@@ -489,7 +479,7 @@ class wptb {
 	//Destroy Cookie
 	//=========================================================================		
 	
-	function wptb_destory_cookie_js($bar_id) {	
+	public static function wptb_destory_cookie_js($bar_id) {	
 		
 		$wptb_cookie = "wptopbar_".$bar_id.'_'.COOKIEHASH;
 		return 'document.cookie="'.$wptb_cookie.'"'."+'=;expires=Thu, 01-Jan-70 00:00:01 GMT;';".'';
@@ -502,7 +492,7 @@ class wptb {
 	//Build Cookie
 	//=========================================================================		
 	
-	function wptb_build_cookie_js($wptbOptions, $wptbTopBarNumber) {	
+	public static function wptb_build_cookie_js($wptbOptions, $wptbTopBarNumber) {	
 		
 		if  ($wptbOptions['respect_cookie'] == 'always') { 
 			$wptb_cookie = "wptopbar_".$wptbOptions['bar_id'].'_'.COOKIEHASH;
@@ -521,7 +511,7 @@ class wptb {
 	//Build Original TopBar
 	//=========================================================================		
 	
-	function wptb_build_original_topbar_js($wptbOptions, $wptbTopBarNumber) {	
+	public static function wptb_build_original_topbar_js($wptbOptions, $wptbTopBarNumber) {	
 		
 		$html_out = "		".$wptbTopBarNumber.": function() {jQuery(".'"#wptbheadline'.$wptbTopBarNumber.'").hide().delay('.$wptbOptions['delay_time'].').css("visibility","visible").slideDown('.$wptbOptions['slide_time'].').fadeIn(1000).show("slow");';
 		if (($wptbOptions['display_time']+0) != 0) {
@@ -539,7 +529,7 @@ class wptb {
 	//Build Scrollable TopBar
 	//=========================================================================		
 	
-	function wptb_build_scrollable_topbar_js($wptbOptions, $wptbTopBarNumber) {	
+	public static function wptb_build_scrollable_topbar_js($wptbOptions, $wptbTopBarNumber) {	
 	
 		if (!isset($wptbOptions[ 'scroll_amount' ]) || !is_numeric($wptbOptions[ 'scroll_amount' ]))
 			$wptbOptions[ 'scroll_amount' ] = 0;
@@ -562,7 +552,7 @@ class wptb {
 
 // NOTE - marginTop ? does that need to change as the size of the image changes? dynamically change this?
 
-	function wptb_build_reopenable_js($wptbOptions, $wptbTopBarNumber) {
+	public static function wptb_build_reopenable_js($wptbOptions, $wptbTopBarNumber) {
 
 	return  "
 var wptbshow_open_button".$wptbTopBarNumber." = false;
@@ -597,7 +587,7 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 	//Builds the javascript to close/Reopen the TopBar (part 2)
 	//=========================================================================		
 	
-	function wptb_build_reopenable__topbar_js ($wptbOptions, $wptbTopBarNumber) {	
+	public static function wptb_build_reopenable__topbar_js ($wptbOptions, $wptbTopBarNumber) {	
 		
 		if (isset($wptbOptions['reopen_position']) && ($wptbOptions['reopen_position']) == "closed")
 			$html_out = "		".$wptbTopBarNumber.": function() {window.setTimeout(function() { wptbbar_hide".$wptbTopBarNumber."();}, 0)}";
@@ -613,7 +603,7 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 	//Builds the javascript to Randomly Select a TopBar
 	//=========================================================================		
 	
-	function wptb_random_selection_js ($wptbNumberSelected,$wptbTotalWeightingPoints) {	
+	public static function wptb_random_selection_js ($wptbNumberSelected,$wptbTotalWeightingPoints) {	
 	
 		if ( $wptbNumberSelected == 1) 
 			return '
@@ -642,7 +632,7 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 	//=========================================================================		
 	//Builds the cacheable topbars; using one loop building all parts at once
 	//=========================================================================		
-	function wptb_build_cacheable_html_js() {
+	public static function wptb_build_cacheable_html_js() {
 	
 		global $WPTB_VERSION;
 	
@@ -768,6 +758,8 @@ jQuery(document).ready(function() {
 
 }
 
-wptb::init();
+$wptb = new wptb();
+$wptb->init();
+
 endif;
 ?>
