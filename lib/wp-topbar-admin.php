@@ -34,6 +34,9 @@ function wptb_options_page() {
 
 	global $WPTB_VERSION;
 
+	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
+	$wptbRotateTopbars = $wptbGlobalOptions [ 'rotate_topbars' ];
+
 	require_once( dirname(__FILE__).'/wp-topbar-db-io.php');  //database and I-O functions php
 	require_once( dirname(__FILE__).'/wp-topbar-export.php');  //export functions
 	require_once( dirname(__FILE__).'/wp-topbar-main-tab.php');  //load main options php
@@ -47,6 +50,7 @@ function wptb_options_page() {
 	require_once( dirname(__FILE__).'/wp-topbar-sample-tab.php');  //load sample pages php
 	require_once( dirname(__FILE__).'/wp-topbar-display-functions.php');  //load admin pages php
 	require_once( dirname(__FILE__).'/wp-topbar-faq-tab.php');  //load faq page php	
+	require_once( dirname(__FILE__).'/wp-topbar-settings-tab.php');  //load global settings pages php
 	require_once( dirname(__FILE__).'/wp-topbar-php-tab.php');  //load php pages php
 	require_once( dirname(__FILE__).'/wp-topbar-uninstall-tab.php');  //load uninstall pages php
 	
@@ -120,6 +124,7 @@ function wptb_options_page() {
 	if($wptb_debug) {
 		echo '</br><code>WP-TopBar Debug Mode: wptb_options_page() - Action: '.$action.'</code>';
 		echo '</br><code>WP-TopBar Debug Mode: Debug Until:', date('D, d M Y H:i:s (e)',get_transient( 'wptb_debug' )),'</code>';	
+		echo '</br><code>WP-TopBar Debug Mode: Roate TopBars Setting:', $wptbRotateTopbars ,'</code>';	
 	}
 // check page we are displaying, if > that max possible pages, then reset to max_pages
 
@@ -149,12 +154,15 @@ function wptb_options_page() {
 		        
 		        if (isset($_POST['update_wptbSettings'])) {
 					if (check_admin_referer('wptb_update_setting_nonce','wptbupdatesettingnonce'))	
-						$wptbOptions=wptb_update_settings($wptb_barid);
+						$wptbOptions=wptb_update_TopBarSettings($wptb_barid);
 				}				
 		}
 	}
 	
-	if ( isset (  $_POST['update_wptbCloseButton'] ) ) {			
+	if ( isset (  $_POST['update_wptbGlobalSettings'] ) ) {			
+		wptb_update_GlobalSettings();
+	}
+	else if ( isset (  $_POST['update_wptbCloseButton'] ) ) {			
 		wptb_bulkupdate_CloseButtonSettings();
 		$action = 'table';
 	}
@@ -238,6 +246,11 @@ function wptb_options_page() {
 			wptb_display_admin_header();
             wptb_options_tabs($action);
 			wptb_closebutton_bulk_options();
+			break;
+        case 'globalsettings' :
+			wptb_display_admin_header();
+            wptb_options_tabs($action);
+			wptb_globalsettings_options();
 			break;
         case 'uninstall' :
 			wptb_display_admin_header();

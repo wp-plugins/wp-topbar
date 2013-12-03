@@ -131,6 +131,9 @@ function wptb_main_options($wptbOptions) {
 							<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to remain on the page.  Enter 0 for the TopBar to not disappear.</em></p>
 					</td>
 				</tr>							
+				<tr>
+					<td colspan="3"><hr></td>
+				</tr>
 				<tr valign="top">
 					<td width="150">Bottom border height (px):</td>
 					<td>
@@ -140,6 +143,9 @@ function wptb_main_options($wptbOptions) {
 					<td>
 							<p class="sub"><em>Enter the height of the bottom of the border.  Default is <code>3px</code></em></p>
 					</td>
+				</tr>
+				<tr>
+					<td colspan="3"><hr></td>
 				</tr>
 				<tr valign="top">
 					<td width="150">Top padding (px):</td>
@@ -161,6 +167,9 @@ function wptb_main_options($wptbOptions) {
 							<p class="sub"><em>Enter the bottom padding.  Default is <code>8px</code></em></p>
 					</td>
 				</tr>		
+				<tr>
+					<td colspan="3"><hr></td>
+				</tr>
 				<tr valign="top">
 					<td width="150">Top margin (px):</td>
 					<td>
@@ -180,7 +189,27 @@ function wptb_main_options($wptbOptions) {
 					<td>
 							<p class="sub"><em>Enter the bottom margin.  Default is <code>0px</code></em></p>
 					</td>
-				</tr>				
+				</tr>	
+				<tr valign="top">
+					<td width="150">Left margin (px):</td>
+					<td>
+						<input type="text" name="wptbmarginleft" id="marginleft" size="5" value="<?php echo $wptbOptions['margin_left']; ?>" >
+						<div id="wtpb-marginleft"></div>
+					</td>
+					<td>
+							<p class="sub"><em>Enter the left margin.  Default is <code>0px</code></em></p>
+					</td>
+				</tr>	
+				<tr valign="top">
+					<td width="150">Right margin (px):</td>
+					<td>
+						<input type="text" name="wptbmarginright" id="marginright" size="5" value="<?php echo $wptbOptions['margin_right']; ?>" >
+						<div id="wtpb-marginright"></div>
+					</td>
+					<td>
+							<p class="sub"><em>Enter the right margin.  Default is <code>0px</code></em></p>
+					</td>
+				</tr>												
 			</table>
 		</div>
 		<table>

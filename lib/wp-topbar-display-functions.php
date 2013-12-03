@@ -14,7 +14,7 @@ function wptb_options_tabs( $current = 'table' ) {
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
 
-    $tabs = array( 'table'=> 'All TopBars', 'testpriority' => 'Test Priority', 'bulkclosebutton'=> 'Close Button', 'export' => 'Export Options', 'samples' => 'Sample TopBars', 'mainfaq' => 'FAQ', 'uninstall' => 'Uninstall');
+    $tabs = array( 'table'=> 'All TopBars', 'testpriority' => 'Test Priority', 'bulkclosebutton'=> 'Close Button', 'export' => 'Export Options', 'samples' => 'Sample TopBars', 'mainfaq' => 'FAQ', 'globalsettings' => 'Global Settings', 'uninstall' => 'Uninstall');
     $links = array();
         
 	if ( $current == 'table' ) $wptb_barid="";
@@ -170,6 +170,9 @@ if you find this plugin useful.
 
 function wptb_display_common_info($wptbOptions) {
 
+	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
+	$wptbRotateTopbars = $wptbGlobalOptions [ 'rotate_topbars' ];
+	
    	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
    	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
    	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
@@ -193,11 +196,20 @@ function wptb_display_common_info($wptbOptions) {
 	// Display Warning Messges for any possible incompatible plugin settings.
 	// 
 	
+	if (($wptbRotateTopbars == "yes") && ($wptbOptions['scroll_action'] == "on")) 
+		_e( "<div class='error'><strong>You have allowed the Scroll Action on for this TopBar (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Main Options tab</a>) and have the Rotate TopBars turned on in the <a href='?page=wp-topbar.php&action=globalsettings'>Global Settings tab</a>.  Scroll Action option is ignored if the TopBars are being rotated.</strong></div>", 'wptb' ); 
+
+	if (($wptbRotateTopbars == "yes") && ($wptbOptions['allow_close'] == "yes")) 
+		_e( "<div class='error'><strong>You have allowed the TopBar to be closed (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) and have the Rotate TopBars turned on in the <a href='?page=wp-topbar.php&action=globalsettings'>Global Settings tab</a>.  Close Buttons are ignored if the TopBars are being rotated.</strong></div>", 'wptb' ); 
+
+	if (($wptbRotateTopbars == "yes") && ($wptbOptions['allow_reopen'] == "yes"))
+		_e( "<div class='error'><strong>You have turned on the Re-Open TopBar option (in the <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Close Button tab</a>) and have the Rotate TopBars turned on in the <a href='?page=wp-topbar.php&action=globalsettings'>Global Settings tab</a>.  Re-open buttons are ignored if the TopBars are being rotated.</strong></div>", 'wptb' ); 
+
 	if (($wptbOptions['topbar_pos'] == 'footer') && (strpos($wptbOptions['div_css'], "bottom") === false))
 		_e( "<div class='error'><strong>You have set the TopBar Location to Below Footer (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#priority'>Main Options</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS & HTML Tab - Option C</a> may not be set correctly.<br>It should be something like <code>position:fixed; bottom: 0; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 
 	if (($wptbOptions['topbar_pos'] == 'header') && (strpos($wptbOptions['div_css'], "top") === false))
-		_e( "<div class='error'><strong>You have set the TopBar Location to be Above Header (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#priority'>Main Options</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS & HTML Tab - Option C</a> may not be set correctly.<br>It should be something like <code>position: fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
+		_e( "<div class='error'><strong>You have set the TopBar Location to be Above Header (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#priority'>Main Options tab</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS & HTML Tab - Option C</a> may not be set correctly.<br>It should be something like <code>position: fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
 
 	if (($wptbOptions['scroll_action'] == "on") && (strpos($wptbOptions['div_css'], "fixed") === false))
 		_e( "<div class='error'><strong>You have turned on the Scroll Action option (in the <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>Main Options</a>) but the <a href='?page=wp-topbar.php&action=topbarcss&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#divcss'>TopBar CSS & HTML Tab -  Option C</a> may not be set correctly.<br>It should have it's position 'fixed' like <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></strong></div>", 'wptb' ); 
@@ -231,7 +243,12 @@ function wptb_display_common_info($wptbOptions) {
 	// end of Warning Messges
 	// 
 
-
+	if ( $wptbRotateTopbars == "yes" ) {				// force these to off/no if Rotate is turned on
+		$wptbOptions['scroll_action'] = "off";
+		$wptbOptions['allow_reopen'] = "no";
+		$wptbOptions['allow_close'] = "no";
+	}
+	
 		   
 	$wptb_cookie = "wptopbar_".$wptbOptions['bar_id'].'_'.COOKIEHASH;
 	if  ( ($wptbOptions['respect_cookie'] == 'always' ) AND ( isset ($_COOKIE[$wptb_cookie])) ) 
@@ -296,9 +313,10 @@ function wptb_display_common_info($wptbOptions) {
 		<h3>Live Preview of TopBar #: <?php echo $wptbOptions['bar_id'];?></h3>
 		<div class="inside">
 			<p class="sub"><strong>This is how the TopBar will appear on the website.</strong>
-			<br>To test the TopBar on your site, you can set the Page IDs (on the <a href="?page=wp-topbar.php&action=control&barid=<?php echo ($wptbOptions['bar_id']+$wptb_barid_prefix); ?>">Control tab</a>) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
-			<br> The first black line below represents the top of the screen.  The second black line represents the bottom of the TopBar.</p>
-			<?php 
+			<br/>To test the TopBar on your site, you can set the Page IDs (on the <a href="?page=wp-topbar.php&action=control&barid=<?php echo ($wptbOptions['bar_id']+$wptb_barid_prefix); ?>">Control tab</a>) to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.
+			<br/> The first black line below represents the top of the screen.  The second black line represents the bottom of the TopBar.</p>
+			<?php if ( $wptbRotateTopbars == "yes" ) 
+			echo "The <strong>Rotate TopBars</strong> option is turned on in the <a href='?page=wp-topbar.php&action=globalsettings'>Global Settings tab</a>.  With this turned ON, the Scrollable, Close Button, and Re-Open options are <strong>ignored and turned off</strong>.<br/><br/>";
 			if (isset( $_GET['action'] ) && ( $_GET['action'] == 'phptexttab' ) ) {
 		        echo '
 			<strong>IF THE TopBar IS NOT RENDERING CORRECTLY</strong> in the Preview section below and is breaking the page, then your custom PHP needs to be fixed.
@@ -545,6 +563,17 @@ function wptb_display_all_TopBars() {
 		echo '<tr' . $row_class .  '>';
 		echo '<td>&nbsp</td>';
 		echo '<td style="border-top: thin solid black; border-bottom: thin solid black;  border-left: thin solid black; border-right: thin solid black;" colspan="8">';
+		
+		
+		$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
+		$wptbRotateTopbars = $wptbGlobalOptions [ 'rotate_topbars' ];
+
+		if ( $wptbRotateTopbars == "yes" ) {				// force these to off/no if Rotate is turned on
+			$item['scroll_action'] = "off";
+			$item['allow_reopen'] = "no";
+			$item['allow_close'] = "no";
+		}
+				
 		if (isset($item['allow_reopen']) && ($item['allow_reopen']) == "yes")
 			wptb::wptb_display_TopBar('',$item, false, 1, true);
 		else 
@@ -992,8 +1021,9 @@ function wptb_display_all_TopBars() {
 			<tr valign="top" >
 			<td width="400">
             Select a TopBar to edit.  You can also enable, disable, bulk duplicate or delete your TopBars from here.
-	        <br /><br />Use the <strong>Test Priority</strong> tab to see how the plugin will randomly select 10 TopBars.
+	        <br /><br />Use the <strong><a href='?page=wp-topbar.php&action=testpriority'>Test Priority tab</a></strong> to see how the plugin will randomly select 10 TopBars.
 	        <br /><br />The table below shows you the Priority and Start/Stop times for each TopBar.  It also tells you if a TopBar will show based on the current time and if that TopBar is enabled.   It will also show you if it will show only for logged in users or all users.
+			<br /><br />Use the <strong><a href='?page=wp-topbar.php&action=globalsettings'>Global Settings tab</a></strong> to affect how all TopBars are processed. 
 			</td>
 			<td width="5" bgcolor="grey">
 			</td>
@@ -1002,7 +1032,7 @@ function wptb_display_all_TopBars() {
 	        <br />&nbsp&nbsp&nbsp&nbsp<strong>OR</strong>
 	        <br />&nbsp&nbsp&nbsp&nbspHit the <strong>Create Default Row</strong> button below to insert a default TopBar at end of the table.  Find it and edit it.
 	        <br />&nbsp&nbsp&nbsp&nbsp<strong>OR</strong>
-	        <br />&nbsp&nbsp&nbsp&nbspGo to the Sample TopBar Tab (above) and select one or more TopBars to add to the table below. 
+	        <br />&nbsp&nbsp&nbsp&nbspGo to the <strong><a href='?page=wp-topbar.php&action=samples'>Sample TopBar tab</a></strong> (above) and select one or more TopBars to add to the table below. 
 	        <br />2.  Change the various options to configure the TopBar, using the Tabs to setup how the TopBar looks.  Explore each tab to see all the options.
 	        <br />3.  Go back to the Main Options tab and toggle the Enable switch to allow the TopBar to be shown.
 	        <br />4.  Go back to the All TopBars tab to add more TopBars. Add and customize as many TopBars as you need.
@@ -1048,6 +1078,9 @@ function wptb_test_topbar($number_to_show) {
 	if($wptb_debug)
 		echo '</br><code>WP-TopBar Debug Mode: wptb_test_topbar() for ID: '.$number_to_show.'</code>';
 
+	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
+	$wptbRotateTopbars = $wptbGlobalOptions [ 'rotate_topbars' ];
+
 	?>
     <div class="wrap">
     
@@ -1084,6 +1117,13 @@ function wptb_test_topbar($number_to_show) {
 	while ( $n <= $number_to_show ) {
 		$wptbOptions=wptb_get_Random_TopBar();
 		if (isset ( $wptbOptions ['bar_id'] ) ) {
+
+			if ( $wptbRotateTopbars == "yes" ) {				// force these to off/no if Rotate is turned on
+				$wptbOptions['scroll_action'] = "off";
+				$wptbOptions['allow_reopen'] = "no";
+				$wptbOptions['allow_close'] = "no";
+			}
+		
 			echo "<tr>";
 			echo "<td  width=125px>".$wptbOptions['bar_id'];
 

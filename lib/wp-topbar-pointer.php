@@ -68,12 +68,13 @@ function wptb_register_pointer( $p ) {
    // EDGE: On what edge do we want the pointer to appear. Options are 'top', 'left', 'right', 'bottom'
    // ALIGN: How do we want out custom pointer to align to the element it is attached to. Options are 'left', 'right', 'center'
 
-    $p['511pointer1'] = array(
-        'target' => '.wptb-table',
+ 
+    $p['513pointer1'] = array(
+        'target' => '.wptb-globalsettings',
         'options' => array(
             'content' => sprintf( '<h3> %s </h3> <p> %s </p>',
-                __( 'New Features in Versions 5.10+!' ,'plugindomain'),
-                __( 'Check out the new features in this version:</br></br>v 5.11 - You an new option to show the TopBar on mobile devices, not mobile devices, or all devices. See the <strong>Control Tab</strong></br></br>v 5.10 - You can add additional custom HTML to the TopBar.  You have three different places where you can provide even more customization for your TopBar.  Now you can set your own event triggers or custom code. See the <strong>CSS & HTML tab</strong>.','plugindomain')
+                __( 'New Features in Versions 5.13+!' ,'plugindomain'),
+                __( 'Tired of showing only one TopBar? With the new Global Settings Tab, you can now rotate through all available TopBars for each pageview. See the <strong>General Settings tab</strong>.','plugindomain')
             ),
             'position' => array( 'edge' => 'top', 'align' => 'left' )
         )

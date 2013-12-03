@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.12
+Version: 5.13
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 
@@ -26,8 +26,8 @@ Author URI: http://zwebify.com/wordpress-plugins/
 */
 
 
-$WPTB_VERSION = "5.12";
-$WPTB_DB_VERSION = "5.05";  // rev this only when this changes
+$WPTB_VERSION = "5.13";
+$WPTB_DB_VERSION = "5.06";  // rev this only when this changes
 
 if( ! class_exists( 'wptb' ) ):
 class wptb {
@@ -49,12 +49,11 @@ class wptb {
 			require_once( dirname(__FILE__).'/lib/wp-topbar-pointer.php');  //load pointer pages php
 		
 		//Actions
-			add_action( 'init', array( __CLASS__, 'wptb_enqueue_admin_scripts' ) );
 			add_action( 'init', array( __CLASS__, 'wptb_debug_check' ) );
 			add_action( 'admin_menu', array( __CLASS__, 'wptb_options_panel' ) ); 
 			add_action( 'admin_notices', 'wptb_admin_notice' );
-			add_action( 'admin_enqueue_scripts', 'wptb_pointer_load', 1000 );
-
+			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'wptb_enqueue_admin_scripts' ));
+			add_action( 'admin_enqueue_scripts', 'wptb_pointer_load' );
 		
 		//Filters
 			add_filter( 'plugin_action_links_' . plugin_basename(__FILE__) , array( __CLASS__, 'wptb_plugin_action_links' ) );
@@ -91,24 +90,22 @@ class wptb {
 	public static function wptb_enqueue_admin_scripts() {
 		
 		if (isset($_GET['page']) && $_GET['page'] == 'wp-topbar.php') {  // only load these on the admin page
+
+			wp_enqueue_script( 'jquery' );			
+
+			wp_enqueue_script( 'jquery-ui-core' );
+		    wp_enqueue_script( 'jquery-ui-slider' );
+		    wp_enqueue_script( 'jquery-ui-datepicker' );
+		    wp_enqueue_script( 'jquery-ui-button' );
+
 			wp_enqueue_script( 'media-upload' );
+
 			wp_enqueue_script( 'thickbox' );
-			
 			wp_enqueue_style( 'thickbox' );
-	
+				
 			wp_register_script( 'wptb_upload',        plugins_url('/lib/js/wp-topbar-load-image.js', __FILE__), array('jquery','media-upload','thickbox') );
 			wp_enqueue_script(  'wptb_upload' ) ;
 			
-			wp_enqueue_script( 'jquery' );
-			
-			
-			wp_register_script( 'wptb_jquery_ui_js',  plugins_url('/lib/js/jquery-ui-1.10.3.custom.min.js', __FILE__) );
-			wp_enqueue_script(  'wptb_jquery_ui_js');  
-			
-//			wp_enqueue_script( 'jquery-ui-core' );
-//			wp_enqueue_script( 'jquery-ui-datepicker' );
-//			wp_enqueue_script( 'jquery-ui-slider');
-						
 			wp_register_script( 'wptb_timepicker_js',    plugins_url('/lib/js/jquery-ui-timepicker-addon.js', __FILE__), array('jquery') );
 			wp_enqueue_script(  'wptb_timepicker_js' );
 
@@ -133,8 +130,7 @@ class wptb {
 				wp_enqueue_style( 'farbtastic' );
 				wp_enqueue_script( 'farbtastic' );
 			}
-
-		}
+			}
 				
 	} // End of function wptb_enqueue_admin_scripts
 	
@@ -206,6 +202,53 @@ class wptb {
 	} // End of function wptb_activate_plugin 	
 	
 
+	//=========================================================================			
+	// Get Global Settings, set them if they do not exist
+	//=========================================================================			
+		
+	public static function wptb_get_GlobalSettings() {   
+
+		$wptbGlobalOptions = get_option( "wptb_global_options" );
+		
+		if (! $wptbGlobalOptions) {
+			$wptbRotateTopbars = "no";
+			$wptbRotateDisplayTime = 9000;
+			$wptbRotateStartDelay = 1000;
+			
+			// setup GlobalOptions for the first time
+			$wptbGlobalOptions = array(
+			  'rotate_topbars'		=> $wptbRotateTopbars,
+			  'rotate_display_time' => $wptbRotateDisplayTime,
+			  'rotate_start_delay' 	=> $wptbRotateStartDelay
+			);
+
+			update_option( "wptb_global_options", $wptbGlobalOptions );
+		}	
+				
+		// force these to default values if they don't exist - since this is called from the frontside, we don't want to break any pageviews
+		$wptbUpdateGlobalOptions = false;
+		
+		if ( ! isset($wptbGlobalOptions [ 'rotate_topbars' ]) ) {
+			$wptbGlobalOptions [ 'rotate_topbars' ] = "no";
+			$wptbUpdateGlobalOptions = true;
+		}
+		if ( ! isset($wptbGlobalOptions [ 'rotate_display_time' ]) ) { 
+			$wptbGlobalOptions [ 'rotate_display_time' ] = 9000;
+			$wptbUpdateGlobalOptions = true;
+		}
+		if ( ! isset($wptbGlobalOptions [ 'rotate_start_delay' ]) ) {
+			$wptbGlobalOptions [ 'rotate_start_delay' ] = 1000;
+			$wptbUpdateGlobalOptions = true;
+		}
+
+		if ($wptbUpdateGlobalOptions)
+			update_option( "wptb_global_options", $wptbGlobalOptions );
+	
+		return $wptbGlobalOptions;
+
+	} // End of function wptb_get_GlobalSettings 	
+
+
 	//=========================================================================		
 	//Adds the TopBar HTML and Javascript to the output
 	//=========================================================================		
@@ -231,6 +274,9 @@ class wptb {
 	public static function wptb_inject_TopBar_html_js($wptbOptions, $wptbTopBarNumber) {
 
 		if ( wptb::wptb_check_options_to_show_row($wptbOptions) == false ) { return false; }
+
+		$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
+		$wptbRotateTopbars = $wptbGlobalOptions [ 'rotate_topbars' ];
 			
 	// use javascript to force the HTML to just before body tag if the topbar is at the top of the page
 		if ( $wptbOptions['topbar_pos'] == 'header' ) { 	
@@ -247,9 +293,14 @@ class wptb {
 		
 		if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
 			wptb::wptb_display_TopBar('display:none;',$wptbOptions, true, $wptbTopBarNumber, true);
-		else 
-			wptb::wptb_display_TopBar('visibility:hidden;',$wptbOptions, true, $wptbTopBarNumber, false);
-
+		else {
+			if ($wptbRotateTopbars == "yes" )
+				$wptbDisplay='display:none;';
+			else
+				$wptbDisplay='visibility:hidden;';
+		
+			wptb::wptb_display_TopBar($wptbDisplay,$wptbOptions, true, $wptbTopBarNumber, false);
+		}
 		echo '</div>';
 				
 		if ( $wptbOptions['topbar_pos'] == 'header' ) {
@@ -386,7 +437,7 @@ class wptb {
 	//	True = then call addslashes to the string  
 	//=========================================================================		
 	
-	function wptb_display_TopBar($wptb_visibility, $wptbOptions, $wptbaddslashes, $wptbTopBarNumber, $wptbReopen) {
+	public static function wptb_display_TopBar($wptb_visibility, $wptbOptions, $wptbaddslashes, $wptbTopBarNumber, $wptbReopen) {
 
 
 		if ( $wptbaddslashes ) {
@@ -409,6 +460,10 @@ class wptb {
 			$wptbOptions['bar_link'] = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage($wptbOptions['bar_link']);
 		}
 		
+		if (! isset($wptbOptions['margin_right'] )) $wptbOptions['margin_right'] = 0;
+		if (! isset($wptbOptions['margin_left'] )) $wptbOptions['margin_left'] = 0;
+		
+		
 // Setup DIV Container
 
 		echo '<div id="wptbheadline'.$wptbTopBarNumber.'" class="wptbbar'.$wptbTopBarNumber.'" style="'.$wptb_visibility;
@@ -416,7 +471,7 @@ class wptb {
 			echo "background: {$wptbOptions['bar_color']};";
 		else 
 		 	echo "background-color: {$wptbOptions['bar_color']};background-image: url({$wptbOptions['bar_image']}); background-position:center;"; 
-		echo 'margin:  ',$wptbOptions['margin_top'],'px 0px ',$wptbOptions['margin_bottom'],'px;';
+		echo 'margin:  '.$wptbOptions['margin_top'],'px '.$wptbOptions['margin_right'].'px '.$wptbOptions['margin_bottom'].'px '.$wptbOptions['margin_left'].'px ;';
 		echo 'text-align:',$wptbOptions['text_align'],';','font-size: ',$wptbOptions['font_size'],'px; ';	
 		echo 'padding-top:',$wptbOptions['padding_top'],'px;','padding-bottom:',$wptbOptions['padding_bottom'],'px;'; 	
 		echo 'color:',$wptbOptions['text_color'],'; display:block;';
@@ -635,7 +690,12 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 	public static function wptb_build_cacheable_html_js() {
 	
 		global $WPTB_VERSION;
-	
+
+		$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();		
+		$wptbRotateTopbars 		= $wptbGlobalOptions [ 'rotate_topbars' ];
+		$wptbRotateDisplayTime 	= $wptbGlobalOptions [ 'rotate_display_time' ];
+		$wptbRotateStartDelay 	= $wptbGlobalOptions [ 'rotate_start_delay' ];
+		
 		$wptb_debug=get_transient( 'wptb_debug' );	
 	
 		if($wptb_debug)
@@ -650,20 +710,25 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 												COALESCE(STR_TO_DATE( `start_time_utc`,  '%m/%d/%Y %H:%i'     ), 0)),0) <= 0 
 					AND	COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  `end_time_utc` ,  '%m/%d/%Y %H:%i'       ), 0), 					
 												COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0)),0) <=0
-				ORDER BY `topbar_pos`
+				ORDER BY `weighting_points` DESC
 				";		
 
 		$all_rows = $wpdb->get_results( $sql, ARRAY_A );
 		
-		echo '<!-- WP-TopBar_'.$WPTB_VERSION.' :: DB: '.get_option( "wptb_db_version" ).' :: Number of TopBars Selected: '.$wpdb->num_rows.'-->
+		echo '<!-- WP-TopBar_'.$WPTB_VERSION.' :: DB: '.get_option( "wptb_db_version" ).' :: Number of TopBars Selected: '.$wpdb->num_rows.' :: Rotate TopBars: '.$wptbRotateTopbars.' -->
 ';
 		$wptbTopBarNumber=0;
 		$html_part_1_out = "
 jQuery(document).ready(function() {
 ";
-		$html_part_2_out = "	
+
+		if ( $wptbRotateTopbars == "no" )
+			$html_part_2_out = "	
 	var wptbPoints = [];
 ";
+		else
+			$html_part_2_out = "";
+			
 		$html_part_3_out = "
 	var wptbSelectRow = {
 ";
@@ -681,55 +746,96 @@ jQuery(document).ready(function() {
 			    foreach ($one_row as $key => $option){
 					$wptbOptions[$key] = $option;
 				}
-//			foreach ($all_rows as $wptbOptions) {
+
+				if ( $wptbRotateTopbars == "yes" ) {				// force these to off/no if Rotate is turned on
+					$wptbOptions['scroll_action'] = "off";
+					$wptbOptions['allow_reopen'] = "no";
+					$wptbOptions['allow_close'] = "no";
+				}
 				
 				$row_selected =  ( wptb::wptb_inject_TopBar_html_js($wptbOptions, $wptbTopBarNumber + 1) );
 											
 				if ( $row_selected ) {			
-					if  ( !( $cookie_destroyed ) && $wptbOptions['respect_cookie'] == 'ignore')  {
-						$cookie_destroyed = true;
-						$html_cookie_out .= wptb::wptb_destory_cookie_js($wptbOptions['bar_id']);
-					}
-						
-					if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
-						$html_part_4_out .= wptb::wptb_build_reopenable_js($wptbOptions, $wptbTopBarNumber+1);
-					else if ($wptbOptions['allow_close'] == 'yes')	{
-						$html_part_4_out .= 'function close_wptopbar'.($wptbTopBarNumber+1).'() { jQuery("#wptbheadline'.($wptbTopBarNumber+1).'").toggle();';
-						if ( $wptbOptions['respect_cookie'] == 'always' ) 
-							$html_part_4_out .= wptb::wptb_build_cookie_js($wptbOptions, ($wptbTopBarNumber+1));
-						$html_part_4_out .= "}";
-					}
+					if ( $wptbRotateTopbars == "no" ) {
+					
+						if  ( !( $cookie_destroyed ) && $wptbOptions['respect_cookie'] == 'ignore')  {
+							$cookie_destroyed = true;
+							$html_cookie_out .= wptb::wptb_destory_cookie_js($wptbOptions['bar_id']);
+						}
+							
+						if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
+							$html_part_4_out .= wptb::wptb_build_reopenable_js($wptbOptions, $wptbTopBarNumber+1);
+						else if ($wptbOptions['allow_close'] == 'yes')	{
+							$html_part_4_out .= 'function close_wptopbar'.($wptbTopBarNumber+1).'() { jQuery("#wptbheadline'.($wptbTopBarNumber+1).'").toggle();';
+							if ( $wptbOptions['respect_cookie'] == 'always' ) 
+								$html_part_4_out .= wptb::wptb_build_cookie_js($wptbOptions, ($wptbTopBarNumber+1));
+							$html_part_4_out .= "}";
+						}
 
-					if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
-						$html_part_3_out .= wptb::wptb_build_reopenable__topbar_js($wptbOptions, ($wptbTopBarNumber+1));			
-					else if ( $wptbOptions['scroll_action'] != "on" ) 
-						$html_part_3_out .= wptb::wptb_build_original_topbar_js($wptbOptions, ($wptbTopBarNumber+1));
-					else  
-						$html_part_3_out .= wptb::wptb_build_scrollable_topbar_js($wptbOptions, ($wptbTopBarNumber+1));
+						if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
+							$html_part_3_out .= wptb::wptb_build_reopenable__topbar_js($wptbOptions, ($wptbTopBarNumber+1));			
+						else if ( $wptbOptions['scroll_action'] != "on" ) 
+							$html_part_3_out .= wptb::wptb_build_original_topbar_js($wptbOptions, ($wptbTopBarNumber+1));
+						else  
+							$html_part_3_out .= wptb::wptb_build_scrollable_topbar_js($wptbOptions, ($wptbTopBarNumber+1));
+
 						
-					if (($wptbTopBarNumber+1) < $wpdb->num_rows)
-						$html_part_3_out .= ",
+						if (($wptbTopBarNumber+1) < $wpdb->num_rows)
+							$html_part_3_out .= ",
 ";
+						$html_part_2_out .= '
+	wptbPoints[ '.$wptbTopBarNumber.' ] = '.$wptbOptions['weighting_points'].';';
+
+					}
 	
 					$html_part_1_out .= '
 	jQuery("#wptbheadline'.($wptbTopBarNumber + 1).'").hide();';		
-					$html_part_2_out .= '
-	wptbPoints[ '.$wptbTopBarNumber.' ] = '.$wptbOptions['weighting_points'].';';
+
 					$wptbTopBarNumber = $wptbTopBarNumber + 1; 
 					$wptbTotalWeightingPoints = $wptbTotalWeightingPoints + intval( $wptbOptions['weighting_points'] );
+								
 				}
 			}
-			$html_part_2_out .= wptb::wptb_random_selection_js ($wptbTopBarNumber, $wptbTotalWeightingPoints);
-		
 			$html_part_3_out .= "
 	};
 
+";
+			if ( $wptbRotateTopbars == "yes" ) {
+
+				$html_part_3_out = "
+				
+	// execute all TopBars sequentially:
+	
+	var j = 1;
+	
+	wptbSequence(j);
+	
+	function wptbSequence(j) {
+		jQuery('#wptbheadline' + j).delay(".$wptbRotateStartDelay.").slideDown(200).delay(".$wptbRotateDisplayTime.").slideUp(200);
+		j = j + 1;
+		if (j > ".$wptbTopBarNumber.") {
+			j = 1;
+		}
+		setTimeout(function(){wptbSequence(j)},".(400+$wptbRotateDisplayTime+$wptbRotateStartDelay).");
+	}
+";
+	
+			}
+			else {
+				$html_part_2_out .= wptb::wptb_random_selection_js ($wptbTopBarNumber, $wptbTotalWeightingPoints);
+
+				$html_part_3_out .= "
 	// execute the one specified in the 'wptb_selected_row' variable:
 
 	wptbSelectRow[wptb_selected_row]();
+";
+			}
+			
+			$html_part_3_out .= "
 }
 );
 ";
+
 			$html_part_4_out .= "
 ";
 			$html_cookie_out .= "

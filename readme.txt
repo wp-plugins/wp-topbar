@@ -4,13 +4,15 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.7.1
-Stable tag: 5.12
+Stable tag: 5.13
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
 == Description ==
 
 Create **MULTIPLE** TopBars that will be shown at the top (or bottom) of your website.  The Cacheable TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even add your own PHP. You can easily lose track of time getting your TopBars perfect!
+
+Version 5.13 gives you an new Global Settings page.  You can now select to **rotate** through all valid TopBars on each pageview.
 
 Version 5.11 gives you an new option to show the TopBar on mobile devices, not mobile devices, or all devices.
 
@@ -107,6 +109,8 @@ You have four choices to handle include (or exclude) the TopBar from showing:
  
 The default is to check by PageId.
 
+= How do the new Rotate Toolbars Global Setting (in version 4.13+) work? = 
+This new settings will select all the valid TopBars that can be shown on a pageview (e.g. those that match all the control, date/time criteria.)  Then it will rotate through the TopBars in priority order - with the TopBars with the highest priority shown first.   This option will override the use of Close Buttons or Re-open Buttons.  It will also ignore the Scroll Action option.   You can set the delay between TopBars on in the Global Settings tab.
 
 = How do the new cookies (in version 3.04) work behind the scenes? = 
 
@@ -165,9 +169,13 @@ You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the P
 
 == Upgrade Notice ==
 
+= 5.13 = 
+
+Added ability to rotate through the TopBars on each pageview, changed to use the to built-in jQueryUI libraries, added new options to adjust the left/right margins, minor defect fixes.
+
 = 5.12 = 
 
-Version 5.12 fixes Strict Standards error messages and other defects
+Version 5.12 fixes Strict Standards error messages and other defects.
 
 = 5.11 = 
 
@@ -179,7 +187,7 @@ Added features to allow you to enter custom HTML giving you even more control. R
 
 = 5.06 = 
 
-Defect fix for toolbars that use the re-openable option
+Defect fix for toolbars that use the re-openable option.
 
 = 5.05 = 
 
@@ -191,15 +199,15 @@ Added option to only show the TopBar on the Home Page.  Fixes a few defects.
 
 = 5.03 = 
 
-Version 5.03 adds option to start the TopBar in the closed position and fixed minor bugs
+Version 5.03 adds option to start the TopBar in the closed position and fixed minor bugs.
 
 = 5.02 = 
 
-Version 5.02 adds Sample ToolBars tab, adds Scoll Amount field and fixes minor bugs
+Version 5.02 adds Sample ToolBars tab, adds Scoll Amount field and fixes minor bugs.
 
 = 5.01 = 
 
-Version 5.01 supports WordPress 3.5.2 and fixes minor bugs
+Version 5.01 supports WordPress 3.5.2 and fixes minor bugs.
 
 = 5.0 = 
 
@@ -207,35 +215,35 @@ Version 5.0 adds ability to reopen a TopBar, fixes a couple of defects and enhan
 
 = 4.17 = 
 
-Version 4.17 adds a new Scrolling option, has some defect fixes and JavaScript updates
+Version 4.17 adds a new Scrolling option, has some defect fixes and JavaScript updates.
 
 = 4.16 = 
 
-Minor fix to SQL/CSV Export function
+Minor fix to SQL/CSV Export function.
 
 = 4.15 = 
 
-Now can add custom PHP to the TopBar.  Also now has the ability to select TopBars based on whether the user is logged in
+Now can add custom PHP to the TopBar.  Also now has the ability to select TopBars based on whether the user is logged in.
 
 = 4.14 = 
 
-Fixed issue where sometimes the html link would sometimes not display correctly
+Fixed issue where sometimes the html link would sometimes not display correctly.
 
 = 4.13 = 
 
-Changed to use WordPress' embedded jQuery UI & new Color Picker (on WP 3.5+), cleaned up CSS Options Page and other fixes
+Changed to use WordPress' embedded jQuery UI & new Color Picker (on WP 3.5+), cleaned up CSS Options Page and other fixes.
 
 = 4.12 = 
 
-Fixed issues that sometimes causes the plugin to not activate correctly
+Fixed issues that sometimes causes the plugin to not activate correctly.
 
 = 4.11 = 
 
-Version 4.11 supports WordPress 3.5.1, updates jQuery UI to latest version, and fixes minor bugs
+Version 4.11 supports WordPress 3.5.1, updates jQuery UI to latest version, and fixes minor bugs.
 
 = 4.10 = 
 
-Version 4.10 supports WordPress 3.5, fixes several defects, and now supports caching
+Version 4.10 supports WordPress 3.5, fixes several defects, and now supports caching.
 
 = 4.03 = 
 
@@ -243,11 +251,11 @@ Version 4.03 supports WordPress 3.4.2, adds security features, and fixes a few b
 
 = 4.02 = 
 
-Version 4.02 adds warning to update settings after upgrade and fixes a defect
+Version 4.02 adds warning to update settings after upgrade and fixes a defect.
 
 = 4.01 = 
 
-Version 4.01 add explicit support for the qtranslate plugin and a tab to bulk change all Close Button settings
+Version 4.01 add explicit support for the qtranslate plugin and a tab to bulk change all Close Button settings.
 
 = 4.00 = 
 
@@ -279,15 +287,15 @@ Version 3.05 has a new admin page and fixes a few errors.
 
 = 3.04 = 
 
-Version 3.04 fixes corrupts SVN files
+Version 3.04 fixes corrupts SVN files.
 
 = 3.03 = 
 
-Version 3.03 allows users to close the TopBar
+Version 3.03 allows users to close the TopBar.
 
 = 3.02 = 
 
-Version 3.02 changed date/time picker to a GPL version to conform to WordPress licensing
+Version 3.02 changed date/time picker to a GPL version to conform to WordPress licensing.
 
 = 3.01 = 
 
@@ -321,6 +329,13 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+= 5.13 - 12/02/2013 =
+
+1. FIXED:		Plugin changed to use the to built-in jQueryUI libraries.
+2. FIXED: 		Removed one last Strict Standards (PHP) error messages
+3. ADDED:       Ability to adjust left/right margins on the TopBar (thanks to tobywallis for the idea!)
+4. ADDED:		Ability to Rotate through your TopBars on one pageview (thanks to traemccombs for the idea!)
 
 = 5.12 - 11/02/2013 =
 

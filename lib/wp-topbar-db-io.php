@@ -209,6 +209,8 @@ function wptb_create_table() {
 		padding_bottom SMALLINT,
 		margin_top SMALLINT,
 		margin_bottom SMALLINT,
+		margin_left SMALLINT,
+		margin_right SMALLINT,		
 		close_button_image TEXT,
 		close_button_css TEXT,
 		reopen_button_image TEXT,
@@ -351,6 +353,8 @@ function wtpb_set_default_settings() {
 		'padding_bottom' => '8',
 		'margin_top' => '0',
 		'margin_bottom' => '0',
+		'margin_left' => '0',
+		'margin_right' => '0',
 		'close_button_image' => str_ireplace( 'https://','http://',plugins_url('/images/close.png', __FILE__) ),
 		'close_button_css' => 'vertical-align:text-bottom;float:right;padding-right:20px;',
 		'reopen_button_image' => str_ireplace( 'https://','http://',plugins_url('/images/open.png', __FILE__) ),
@@ -519,6 +523,8 @@ function wtpb_insert_row($wptbOptions) {
 		'padding_bottom' => $wptbOptions[ 'padding_bottom' ],
 		'margin_top' => $wptbOptions[ 'margin_top' ],
 		'margin_bottom' => $wptbOptions[ 'margin_bottom' ],
+		'margin_left' => $wptbOptions[ 'margin_left' ],
+		'margin_right' => $wptbOptions[ 'margin_right' ],
 		'close_button_image' => $wptbOptions[ 'close_button_image' ],
 		'close_button_css' => $wptbOptions[ 'close_button_css' ],
 		'reopen_button_image' => $wptbOptions[ 'reopen_button_image' ],
@@ -665,6 +671,8 @@ function wptb_update_row($wptbOptions) {
 		'padding_bottom' => $wptbOptions[ 'padding_bottom' ],
 		'margin_top' => $wptbOptions[ 'margin_top' ],
 		'margin_bottom' => $wptbOptions[ 'margin_bottom' ],
+		'margin_left' => $wptbOptions[ 'margin_left' ],
+		'margin_right' => $wptbOptions[ 'margin_right' ],
 		'close_button_image' => $wptbOptions[ 'close_button_image' ],
 		'close_button_css' =>    preg_replace("/\n|\r/", " ",trim($wptbOptions[ 'close_button_css' ])),
 		'reopen_button_image' => $wptbOptions[ 'reopen_button_image' ],
@@ -784,6 +792,49 @@ function wptb_toggle_enabled($tab,$wptb_barid,$wptbOptions) {
 
 
 //=========================================================================			
+// Update Global Settings 
+//=========================================================================			
+
+
+function wptb_update_GlobalSettings() {
+
+	$wptb_debug=get_transient( 'wptb_debug' );	
+		
+	if($wptb_debug) 
+		echo '<br><code>WP-TopBar Debug Mode: wptb_update_GlobalSettings()</code>';
+	
+	if (isset($_POST['wptbrotatetopbars'])) {
+		$wptbRotateTopbars = $_POST['wptbrotatetopbars'];
+	}
+	if (isset($_POST['wptbrotatedisplaytime'])) {
+		if (!is_numeric($_POST['wptbrotatedisplaytime'])) {
+			echo '<div class="error"><strong>Rotation Display Time is not numeric. Resetting to 9000.</strong></div>';
+			$wptbRotateDisplayTime = 9000;
+		} 
+		else
+			$wptbRotateDisplayTime = $_POST['wptbrotatedisplaytime']+0;
+	}
+	if (isset($_POST['wptbrotatestartdelay'])) {
+		if (!is_numeric($_POST['wptbrotatestartdelay'])) {
+			echo '<div class="error"><strong>Rotation Start Delay is not numeric. Resetting to 1000.</strong></div>';
+			$wptbRotateStartDelay = 1000;
+		} 
+		else 	
+			$wptbRotateStartDelay = $_POST['wptbrotatestartdelay']+0;
+	}
+	$wptbGlobalOptions = array(
+		  'rotate_topbars' 	    => $wptbRotateTopbars,
+		  'rotate_display_time' => $wptbRotateDisplayTime,
+		  'rotate_start_delay'  => $wptbRotateStartDelay
+	);
+	
+	update_option( "wptb_global_options", $wptbGlobalOptions ); 
+
+	
+}	// End of wptb_update_GlobalSettings
+
+
+//=========================================================================			
 // Bulk Update CloseButton Settings 
 //=========================================================================			
 
@@ -845,12 +896,12 @@ function wptb_bulkupdate_CloseButtonSettings() {
 // Update Settings 
 //=========================================================================			
 
-function wptb_update_settings($wptb_barid) {	
+function wptb_update_TopBarSettings($wptb_barid) {	
 	
 	$wptb_debug=get_transient( 'wptb_debug' );	
 		
 	if($wptb_debug) 
-		echo '<br><code>WP-TopBar Debug Mode: wptb_update_settings() for ID: '.$wptb_barid.'</code>';
+		echo '<br><code>WP-TopBar Debug Mode: wptb_update_TopBarSettings() for ID: '.$wptb_barid.'</code>';
 		
 	$wptbOptions = wptb_get_Specific_TopBar($wptb_barid,true);
 
@@ -1018,7 +1069,25 @@ function wptb_update_settings($wptb_barid) {
 		} 
 		else 	
 			$wptbOptions['margin_bottom'] = $_POST['wptbmarginbottom']+0;
-	}						
+	}
+	if (isset($_POST['wptbmarginleft'])) {
+	
+		if (!is_numeric($_POST['wptbmarginleft'])) {
+			echo '<div class="error"><strong>left margin is not numeric. Resetting to 0px.</strong></div>';
+			$wptbOptions['margin_left'] = 0;
+		} 
+		else 	
+			$wptbOptions['margin_left'] = $_POST['wptbmarginleft']+0;
+	}
+	if (isset($_POST['wptbmarginright'])) {
+	
+		if (!is_numeric($_POST['wptbmarginright'])) {
+			echo '<div class="error"><strong>right margin is not numeric. Resetting to 0px.</strong></div>';
+			$wptbOptions['margin_right'] = 0;
+		} 
+		else 	
+			$wptbOptions['margin_right'] = $_POST['wptbmarginright']+0;
+	}								
 	if (isset($_POST['wptblinkurl'])) {
 		$wptbOptions['bar_link'] = $_POST['wptblinkurl'];
 	}			
@@ -1178,7 +1247,7 @@ function wptb_update_settings($wptb_barid) {
 		
 	return $wptbOptions;
 	
-}	// End of wptb_update_settings
+}	// End of wptb_update_TopBarSettings
 
 
 
@@ -1195,6 +1264,7 @@ function wptb_update_settings($wptb_barid) {
 // 5.03 - added reopen_position field
 // 5.04 - added custom HTML field
 // 5.05 - added mobile_check field
+// 5.06 - added margin_left, margin_right fields
 //=========================================================================			
 	
 function wtpb_check_for_plugin_upgrade($wptb_display_errors) { 

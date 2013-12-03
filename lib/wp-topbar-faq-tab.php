@@ -59,9 +59,14 @@ Here is the general order:</br><code>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Right</strong> Social Buttons</br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>After</strong> Custom PHP</br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;</br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;</br></code>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;</code>
 </br>
-<li><strong>How do the new cookies (in version 3.04+) work behind the scenes?</strong></li>
+</br>
+<li><strong>How do the new Rotate Toolbars Global Setting (in version 4.13+) work?</strong></li>
+This new settings will select all the valid TopBars that can be shown on a pageview (e.g. those that match all the control, date/time criteria.)  Then it will rotate through the TopBars in priority order - with the TopBars with the highest priority shown first.   This option will override the use of Close Buttons or Re-open Buttons.  It will also ignore the Scroll Action option.   You can set the delay between TopBars on in the <a href='?page=wp-topbar.php&action=globalsettings'>Global Settings tab</a>.
+</br>
+</br>
+<li><strong>How do the cookies work behind the scenes?</strong></li>
 If you allow the user to close the TopBar, then the plugin checks to see if you have enabled cookies.   If they are not enabled, it deletes any existing cookies.   If they are enabled, it looks to see if a cookie has been created.  A cookie is only created if the TopBar has been previously closed by the user.  If it finds a cookie and the cookie value matches the Cookie Value setting, it prevents the TopBar from showing.
 </br>
 If you change the Cookie Value to something new (<a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=closebutton&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'"'; ?>">on the Close Button tab</a>), the TopBar will show up again.  This is useful if you want to force the TopBar to show on new content.  Make sure to select something you haven't used before.  A good idea is to increment the value by one every time you want to force the TopBar to show.
