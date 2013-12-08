@@ -12,7 +12,7 @@ Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars 
 
 Create **MULTIPLE** TopBars that will be shown at the top (or bottom) of your website.  The Cacheable TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even add your own PHP. You can easily lose track of time getting your TopBars perfect!
 
-Version 5.14 gives you more Rotation Options, makes it easier to enable/disaple a TopBar and gives you more control with Network installs.
+Version 5.14 gives you more Rotation options, makes it easier to enable/disable a TopBar and gives you more control with Network installs.
 
 Version 5.13 gives you a new Global Settings page.  You can now select to **rotate** through all valid TopBars on each pageview.
 
