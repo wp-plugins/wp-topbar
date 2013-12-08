@@ -203,7 +203,7 @@ class wptb {
 		if ( is_multisite() ) { // check if on multi-site and if so, check if plugin shows only on Admin pages
 			if ( ! current_user_can( 'manage_network_plugins' )  ) {
 				$wptbNetworkGlobalOptions = get_site_option( 'wptb_network_global_options' );
-				if (( isset($wptbNetworkGlobalOptions [ 'multisite_super admin_only' ] )) && ($wptbNetworkGlobalOptions [ 'multisite_super_admin_only' ] == "yes"))
+				if (( isset($wptbNetworkGlobalOptions [ 'multisite_super_admin_only' ] )) && ($wptbNetworkGlobalOptions [ 'multisite_super_admin_only' ] == "yes"))
 					return;
 			}
 		}
