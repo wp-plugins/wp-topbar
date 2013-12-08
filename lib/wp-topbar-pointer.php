@@ -69,12 +69,12 @@ function wptb_register_pointer( $p ) {
    // ALIGN: How do we want out custom pointer to align to the element it is attached to. Options are 'left', 'right', 'center'
 
  
-    $p['513pointer1'] = array(
+    $p['514pointer1'] = array(
         'target' => '.wptb-globalsettings',
         'options' => array(
             'content' => sprintf( '<h3> %s </h3> <p> %s </p>',
                 __( 'New Features in Versions 5.13+!' ,'plugindomain'),
-                __( 'Tired of showing only one TopBar? With the new Global Settings Tab, you can now rotate through all available TopBars for each pageview. See the <strong>General Settings tab</strong>.','plugindomain')
+                __( 'Now with even <strong>more</strong> Rotation options!</br></br>Tired of showing only one TopBar? With the new Global Settings Tab, you can now rotate through all available TopBars for each pageview. See the <strong>Global Settings tab</strong>.','plugindomain')
             ),
             'position' => array( 'edge' => 'top', 'align' => 'left' )
         )

@@ -34,23 +34,8 @@ function wptb_main_options($wptbOptions) {
 			<table class="form-table">
 				<input name="wptb_update_setting_nonce" type="hidden" value="<?php wp_create_nonce('wptb_update_setting_nonce'); ?>" />			
 				<tr valign="top">
-					<td width="150">Enable TopBar:</td>
-					<td>
-				 	<p id="radio1" class="ui-button ui-button-wptbset">
-						<input type="radio" id="wptbenabletopbar1" name="wptbenabletopbar" class="ui-helper-hidden-accessible" value="true" <?php if ($wptbOptions['enable_topbar'] == "true") { _e('checked="checked"', "wptb"); }?>><label for="wptbenabletopbar1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
-						<input type="radio" id="wptbenabletopbar2" name="wptbenabletopbar" class="ui-helper-hidden-accessible" value="false" <?php if ($wptbOptions['enable_topbar'] == "false") { _e('checked="checked"', "wptb"); }?>><label for="wptbenabletopbar2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
-					</p>
-					</td>
-					<td>
-						<p class="sub"><em>This allows you to turn off the TopBar without disabling the plugin.</em></p>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3"><hr></td>
-				</tr>
-				<tr valign="top">
 					<td width="150" id="prioritytop"> Priority:</td>
-					<td>
+					<td width="300">
 						<input type="text" name="wptbpriority" id="priority" size="4" value="<?php echo $wptbOptions['weighting_points']; ?>" >
 						<div id="wtpb-priority"></div>
 					</td>

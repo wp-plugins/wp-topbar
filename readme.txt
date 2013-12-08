@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.7.1
-Stable tag: 5.13
+Stable tag: 5.14
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
@@ -12,7 +12,9 @@ Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars 
 
 Create **MULTIPLE** TopBars that will be shown at the top (or bottom) of your website.  The Cacheable TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even add your own PHP. You can easily lose track of time getting your TopBars perfect!
 
-Version 5.13 gives you an new Global Settings page.  You can now select to **rotate** through all valid TopBars on each pageview.
+Version 5.14 gives you more Global Settings page and more control with Network installs.
+
+Version 5.13 gives you a new Global Settings page.  You can now select to **rotate** through all valid TopBars on each pageview.
 
 Version 5.11 gives you an new option to show the TopBar on mobile devices, not mobile devices, or all devices.
 
@@ -169,9 +171,13 @@ You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the P
 
 == Upgrade Notice ==
 
+= 5.14 = 
+
+Added more rotate options, added Network settings, major clean-up to the Uninstall option, squashed a few bugs.
+
 = 5.13 = 
 
-Added ability to rotate through the TopBars on each pageview, changed to use the to built-in jQueryUI libraries, added new options to adjust the left/right margins, minor defect fixes.
+Added ability to rotate through the TopBars on each pageview, changed to use the to built-in jQueryUI libraries, added new options to adjust the left/right margins, minor defect fixes.  Also made it easier to enable/disable a TopBar.
 
 = 5.12 = 
 
@@ -329,6 +335,16 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+= 5.14 - 12/08/2013 =
+
+1. ADDED:		More rotate options: limit the number of rotations, hide/show last TopBar and add random order (thanks to orensbruli & traemccombs)
+2. ADDED: 		Control settings for Network installations (thanks to Itookmyprozac for the idea!)
+3. FIXED:       Uninstall options are refactored to insure all data is deleted in a Network installation
+4. CHANGED:     Removed work-around for WordPress core defect (#23684 - fixed in 3.8) see http://core.trac.wordpress.org/ticket/23684
+5. CHANGED:     Moved Enable option to be at the top of most of the TopBar tabs - makes it easier to enable/disable a TopBar.
+
+Added more rotate options, added Network settings, major clean-up to the Uninstall option, squashed a few bugs.
 
 = 5.13 - 12/02/2013 =
 

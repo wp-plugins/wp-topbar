@@ -14,7 +14,10 @@ function wptb_options_tabs( $current = 'table' ) {
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
 
-    $tabs = array( 'table'=> 'All TopBars', 'testpriority' => 'Test Priority', 'bulkclosebutton'=> 'Close Button', 'export' => 'Export Options', 'samples' => 'Sample TopBars', 'mainfaq' => 'FAQ', 'globalsettings' => 'Global Settings', 'uninstall' => 'Uninstall');
+	if ( is_multisite() ) // remove Uninstall Option for Multi Site installs
+	    $tabs = array( 'table'=> 'All TopBars', 'testpriority' => 'Test Priority', 'bulkclosebutton'=> 'Close Button', 'export' => 'Export Options', 'samples' => 'Sample TopBars', 'mainfaq' => 'FAQ', 'globalsettings' => 'Global Settings');
+	else
+	    $tabs = array( 'table'=> 'All TopBars', 'testpriority' => 'Test Priority', 'bulkclosebutton'=> 'Close Button', 'export' => 'Export Options', 'samples' => 'Sample TopBars', 'mainfaq' => 'FAQ', 'globalsettings' => 'Global Settings', 'uninstall' => 'Uninstall');
     $links = array();
         
 	if ( $current == 'table' ) $wptb_barid="";
@@ -68,7 +71,7 @@ function wptb_options_tabs( $current = 'table' ) {
 //=========================================================================			
 
 
-function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid ) {
+function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid, $wptbOptions ) {
 
    	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
    	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
@@ -117,6 +120,34 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid ) {
 // add plugin home page link       
     echo "<a class='ui-widget-content ui-corner-top' style='font-size:18px; font-weight:normal; padding: 0 10px 0 10px; text-decoration:none'  href='http://wordpress.org/extend/plugins/wp-topbar/' target='_blank'>Plugin Homepage</a>";
     echo '</h2>';
+    if (( $current == "debug" ) || ( $current == "faq" ))
+	  return;
+    ?>
+
+	<div class="postbox">
+
+    			<table>
+
+				<tr valign="middle">
+					<td width="150"><strong>Enable TopBar:</strong></td>
+					<td>
+				 	<p id="radio0" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbenabletopbar1" name="wptbenabletopbar" class="ui-helper-hidden-accessible" value="true" <?php if ($wptbOptions['enable_topbar'] == "true") { _e('checked="checked"', "wptb"); }?>><label for="wptbenabletopbar1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
+						<input type="radio" id="wptbenabletopbar2" name="wptbenabletopbar" class="ui-helper-hidden-accessible" value="false" <?php if ($wptbOptions['enable_topbar'] == "false") { _e('checked="checked"', "wptb"); }?>><label for="wptbenabletopbar2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
+					</p>
+					</td>
+					<td>
+					<?php if ($wptbOptions['enable_topbar'] == "false")
+					echo "<span class='wtpb-off-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/off.png', __FILE__).')"'."></span>";
+				else
+					echo  "<span class='wtpb-on-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/on.png', __FILE__).')"'."></span>";
+					?>
+					</td>
+				</tr>
+				</table>
+	</div>
+				<?php
+    
 
 }  // end function wptb_bar_edit_options_tabs
 

@@ -822,10 +822,30 @@ function wptb_update_GlobalSettings() {
 		else 	
 			$wptbRotateStartDelay = $_POST['wptbrotatestartdelay']+0;
 	}
+	
+	if ( isset($_POST [ 'wptbrotateorder' ]) ) {
+		$wptbRotateOrder = $_POST [ 'wptbrotateorder' ] ;
+	}
+	
+	if ( isset($_POST [ 'wptbrotatecount' ]) ) {
+		if (!is_numeric($_POST['wptbrotatecount'])) {
+			echo '<div class="error"><strong>Rotation Count is not numeric. Resetting to 0.</strong></div>';
+			$wptbRotateCount = 0;
+		} 
+		else 
+			$wptbRotateCount = $_POST [ 'wptbrotatecount' ]+0;
+	}
+	if ( isset($_POST [ 'wptbrotatehidelast' ]) ) {
+		$wptbRotateHideLastTopBar = $_POST [ 'wptbrotatehidelast' ];
+	}
+
 	$wptbGlobalOptions = array(
-		  'rotate_topbars' 	    => $wptbRotateTopbars,
-		  'rotate_display_time' => $wptbRotateDisplayTime,
-		  'rotate_start_delay'  => $wptbRotateStartDelay
+	  'rotate_topbars'			=> $wptbRotateTopbars,
+	  'rotate_display_time' 	=> $wptbRotateDisplayTime,
+	  'rotate_start_delay' 		=> $wptbRotateStartDelay,
+	  'rotate_order'			=> $wptbRotateOrder,
+	  'rotate_count'	 		=> $wptbRotateCount,
+	  'rotate_hide_last'		=> $wptbRotateHideLastTopBar
 	);
 	
 	update_option( "wptb_global_options", $wptbGlobalOptions ); 

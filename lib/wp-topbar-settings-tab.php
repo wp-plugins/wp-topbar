@@ -22,12 +22,15 @@ function wptb_globalsettings_options() {
 	
 	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
 	
-	$wptbRotateTopbars 		= $wptbGlobalOptions [ 'rotate_topbars' ];
-	$wptbRotateDisplayTime 	= $wptbGlobalOptions [ 'rotate_display_time' ];
-	$wptbRotateStartDelay 	= $wptbGlobalOptions [ 'rotate_start_delay' ];
-	
+	$wptbRotateTopbars 			= $wptbGlobalOptions [ 'rotate_topbars' ];
+	$wptbRotateDisplayTime 		= $wptbGlobalOptions [ 'rotate_display_time' ];
+	$wptbRotateStartDelay 		= $wptbGlobalOptions [ 'rotate_start_delay' ];
+	$wptbRotateOrder 			= $wptbGlobalOptions [ 'rotate_order' ];
+	$wptbRotateCount 			= $wptbGlobalOptions [ 'rotate_count' ];
+	$wptbRotateHideLastTopBar 	= $wptbGlobalOptions [ 'rotate_hide_last' ];
+		
+		
 	?>
-
 	
 	<div class="postbox">
 										
@@ -75,9 +78,43 @@ function wptb_globalsettings_options() {
 						<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to display before rotating for the next TopBar.  Enter 0 for no delay (not recommended!)  Default is <code>9000</code>.</em></p>
 					</td>
 				</tr>	
+				<tr valign="top">
+					<td width="150">Rotation Count:</td>
+					<td>
+						<input type="text" name="wptbrotatecount" id="rotatecount" size="30" value="<?php echo $wptbRotateCount; ?>" >
+						<div id="wtpb-rotatecount"></div>
+					</td>
+					<td>
+						<p class="sub"><em>Enter the number of times the TopBar should be shown.  Enter 0 to continuously rotate.  Default is <code>0</code>.</em></p>
+					</td>
+				</tr>					
+				<tr valign="top">
+					<td width="150">Hide Last TopBar on Rotation:</label></td>
+					<td>
+					 	<p id="radio2" class="ui-button ui-button-wptbset">
+							<input type="radio" id="wptbrotatehidelast1" name="wptbrotatehidelast" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbRotateHideLastTopBar == "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptbrotatehidelast1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
+							<input type="radio" id="wptbrotatehidelast2" name="wptbrotatehidelast" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbRotateHideLastTopBar == "no") { _e('checked="checked"', "wptb"); }?>><label for="wptbrotatehidelast2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
+						</p>						
+					</td>
+					<td>
+						<p class="sub"><em>If you have selected to limit the number of TopBars that are shown in rotation, this option determines whether the last TopBar is hidden or stays on the the page.  Default is <code>Yes</code></em></p>
+					</td>
+				</tr>						
+				<tr valign="top">
+					<td width="150">Rotate Order:</label></td>
+					<td>
+					 	<p id="radio3" class="ui-button ui-button-wptbset">
+							<input type="radio" id="wptbrotateorder1" name="wptbrotateorder" class="ui-helper-hidden-accessible" value="random" <?php if ($wptbRotateOrder == "random") { _e('checked="checked"', "wptb"); }?>><label for="wptbrotateorder1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Random Order</span></label>
+							<input type="radio" id="wptbrotateorder2" name="wptbrotateorder" class="ui-helper-hidden-accessible" value="priority" <?php if ($wptbRotateOrder == "priority") { _e('checked="checked"', "wptb"); }?>><label for="wptbrotateorder2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">By Priority</span></label>
+						</p>						
+					</td>
+					<td>
+						<p class="sub"><em>This selects the order that the TopBars will be shown:</br>&nbsp;&nbsp;<strong>Random Order</strong> selects them in a random order. Then rotates through them in that order.</br>&nbsp;&nbsp;<strong>Priority Order</strong> selects them in descending order or priority.</br>&nbsp;Default is <code>Priority Order</code></em></p>
+					</td>
+				</tr>				
 				<tr>
 					<td colspan="3"><hr></td>
-				</tr>								
+				</tr>		
 			</table>
 		</div>
 		<table>
@@ -140,11 +177,37 @@ function wptb_globalsettings_options() {
 	echo 'Server Timezone:   <strong>',date_default_timezone_get(),'</strong></br>';
 	echo 'Current Time:      <strong>',date('m/d/Y H:i (e)',$wptb_current_time),'</strong></br>';		
 	echo "</br>";
-	
+	?>
+				</li>
+				<li><strong>Multisite Check:</strong></br>
+	<?php
+	if ( is_multisite() ) {
+		echo "Multisite:		<strong>Yes</strong><br>"; 
 
+		$wptbNetworkGlobalOptions = get_site_option( 'wptb_network_global_options' );
+		if ( ! isset($wptbNetworkGlobalOptions [ 'multisite_super_admin_only' ] )) {
+			$wptbMultiSuperAdminOnly = "no";
+			$wptbNetworkGlobalOptions = array(
+			  'multisite_super_admin_only'	=> $wptbMultiSuperAdminOnly
+			);
+			update_site_option( 'wptb_network_global_options' , $wptbNetworkGlobalOptions );
+		}
+		else
+			$wptbMultiSuperAdminOnly = $wptbNetworkGlobalOptions [ 'multisite_super_admin_only' ];
+		echo "Super Admin Only:		<strong>".$wptbMultiSuperAdminOnly."</strong></br>";
+		if ( current_user_can( 'manage_network_plugins' )  )  
+			echo "manage_network_plugins:		<strong>Yes</strong><br>"; 
+		else
+			echo "manage_network_plugins:		<strong>No</strong><br>"; 
+	}
+	else
+		echo "Multisite:		<strong>No</strong><br>"; 
+	echo "</br>";	echo "</br>";
+	?>
+				</li>
 	
-	
-}	// End of wptb_closebutton_bulk_options
+	<?php
+}	// End of wptb_globalsettings_options
 
 
 

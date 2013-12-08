@@ -264,49 +264,49 @@ function wptb_options_page() {
 			break;
         case 'main' :
 			wptb_display_admin_header();
-			wptb_bar_edit_options_tabs($action,$wptb_barid);
+			wptb_bar_edit_options_tabs($action,$wptb_barid, $wptbOptions);
         	wptb_display_common_info($wptbOptions);
             wptb_main_options($wptbOptions);
             break;
         case 'control' :
 			wptb_display_admin_header();
-			wptb_bar_edit_options_tabs($action,$wptb_barid);
+			wptb_bar_edit_options_tabs($action,$wptb_barid, $wptbOptions);
         	wptb_display_common_info($wptbOptions);
             wptb_control_options($wptbOptions);
             break;
         case 'topbarcss' :
 			wptb_display_admin_header();
-			wptb_bar_edit_options_tabs($action,$wptb_barid);
+			wptb_bar_edit_options_tabs($action,$wptb_barid, $wptbOptions);
         	wptb_display_common_info($wptbOptions);
             wptb_topbarcss_options($wptbOptions);
             break;
         case 'colorselection' :
 			wptb_display_admin_header();
-			wptb_bar_edit_options_tabs($action,$wptb_barid);
+			wptb_bar_edit_options_tabs($action,$wptb_barid, $wptbOptions);
         	wptb_display_common_info($wptbOptions);
             wptb_colorselection_options($wptbOptions);
             break;
         case 'topbartext' :
 			wptb_display_admin_header();
-			wptb_bar_edit_options_tabs($action,$wptb_barid);
+			wptb_bar_edit_options_tabs($action,$wptb_barid, $wptbOptions);
         	wptb_display_common_info($wptbOptions);
             wptb_topbartext_options($wptbOptions);
             break;
         case 'closebutton' :
 			wptb_display_admin_header();
-			wptb_bar_edit_options_tabs($action,$wptb_barid);
+			wptb_bar_edit_options_tabs($action,$wptb_barid, $wptbOptions);
         	wptb_display_common_info($wptbOptions);
             wptb_closebutton_options($wptbOptions);
             break;
         case 'phptexttab' :
 			wptb_display_admin_header();
-			wptb_bar_edit_options_tabs($action,$wptb_barid);
+			wptb_bar_edit_options_tabs($action,$wptb_barid, $wptbOptions);
         	wptb_display_common_info($wptbOptions);
             wptb_php_options($wptbOptions);
             break;
         case 'faq' :
 			wptb_display_admin_header();
-			wptb_bar_edit_options_tabs($action,$wptb_barid);
+			wptb_bar_edit_options_tabs($action,$wptb_barid, $wptbOptions);
         	wptb_display_common_info($wptbOptions);
             wptb_faq_page($wptbOptions,true);
             break;        
@@ -317,13 +317,13 @@ function wptb_options_page() {
             break;
         case 'socialbuttons' :
 			wptb_display_admin_header();
-			wptb_bar_edit_options_tabs($action,$wptb_barid);
+			wptb_bar_edit_options_tabs($action,$wptb_barid, $wptbOptions);
         	wptb_display_common_info($wptbOptions);
             wptb_socialbutton_options($wptbOptions);
             break;
         case 'debug' :
 			wptb_display_admin_header();
-			wptb_bar_edit_options_tabs($action,$wptb_barid);
+			wptb_bar_edit_options_tabs($action,$wptb_barid, $wptbOptions);
 			wptb_display_common_info($wptbOptions);
             wptb_debug_options($wptbOptions);
             break;
