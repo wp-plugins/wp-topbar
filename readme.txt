@@ -12,7 +12,7 @@ Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars 
 
 Create **MULTIPLE** TopBars that will be shown at the top (or bottom) of your website.  The Cacheable TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even add your own PHP. You can easily lose track of time getting your TopBars perfect!
 
-Version 5.14 gives you more Global Settings page and more control with Network installs.
+Version 5.14 gives you more Rotation Options, makes it easier to enable/disaple a TopBar and gives you more control with Network installs.
 
 Version 5.13 gives you a new Global Settings page.  You can now select to **rotate** through all valid TopBars on each pageview.
 
@@ -342,9 +342,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 2. ADDED: 		Control settings for Network installations (thanks to Itookmyprozac for the idea!)
 3. FIXED:       Uninstall options are refactored to insure all data is deleted in a Network installation
 4. CHANGED:     Removed work-around for WordPress core defect (#23684 - fixed in 3.8) see http://core.trac.wordpress.org/ticket/23684
-5. CHANGED:     Moved Enable option to be at the top of most of the TopBar tabs - makes it easier to enable/disable a TopBar.
-
-Added more rotate options, added Network settings, major clean-up to the Uninstall option, squashed a few bugs.
+5. CHANGED:     Moved Enable option to be at the top of most of the TopBar tabs - makes it easier to enable/disable a TopBar	.
 
 = 5.13 - 12/02/2013 =
 
