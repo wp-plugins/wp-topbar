@@ -277,8 +277,8 @@ function wptb_network_settings() {
 	
 	echo "Charset <small><i>(DB_CHARSET)</i></small>: <strong>".DB_CHARSET."</strong></br>";
 	echo "Collation <small><i>(DB_COLLATE)</i></small>: <strong>".DB_COLLATE."</strong></br>";
-	echo "bar_text encoding: <strong>".$wptb_bar_text_encoding[0]."</strong></br>";
-	echo "bar_link_text encoding: <strong>".$wptb_bar_link_text_encoding[0]."</strong></br>";
+	if (isset($wptb_bar_text_encoding[0])) echo "bar_text encoding: <strong>".$wptb_bar_text_encoding[0]."</strong></br>";
+	if (isset($wptb_bar_link_encoding[0])) echo "bar_link_text encoding: <strong>".$wptb_bar_link_text_encoding[0]."</strong></br>";
 	echo "wp-tobar internal db version: <strong>".get_option( "wptb_db_version" )."</strong></br>";
 	echo "</br>";
 	?>
