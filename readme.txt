@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.7.1
-Stable tag: 5.14
+Stable tag: 5.15
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
@@ -101,7 +101,7 @@ Of course, make a backup of your table first!
 
 (Thanks to samhat for help on this one!)
 
-= How do the new Include/Exclude login (in version 3.10) work behind the scenes? = 
+= How does the Include/Exclude logic (in version 3.10) work behind the scenes? = 
 
 You have four choices to handle include (or exclude) the TopBar from showing:
  Page ID - this only checks the current page's ID against the list you entered.
@@ -114,7 +114,7 @@ The default is to check by PageId.
 = How do the new Rotate Toolbars Global Setting (in version 4.13+) work? = 
 This new settings will select all the valid TopBars that can be shown on a pageview (e.g. those that match all the control, date/time criteria.)  Then it will rotate through the TopBars in priority order - with the TopBars with the highest priority shown first.   This option will override the use of Close Buttons or Re-open Buttons.  It will also ignore the Scroll Action option.   You can set the delay between TopBars on in the Global Settings tab.
 
-= How do the new cookies (in version 3.04) work behind the scenes? = 
+= How do the cookies (in version 3.04) work behind the scenes? = 
 
 If you allow the user to close the TopBar, then the plugin checks to see if you have enabled cookies.   If they are not enabled, it deletes any existing cookies.   If they are enabled, it looks to see if a cookie has been created.  A cookie is only created if the TopBar has been previously closed by the user.  If it finds a cookie, it prevents the TopBar from showing.
 
@@ -166,10 +166,13 @@ IE does not (yet) implement gradients like other browsers.  So, make sure you te
 
 = How dow I uninstall? = 
 
-Go to the Uninstall tab and then click the Uninstall button at the bottom of the page.
-You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the Plugin
+Go to the Uninstall tab (or if are on a Multi Site install, you first need to login as a Super Admin then select the Uninstall from the TopBar Menu List) and then click the Uninstall button at the bottom of the page.   You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the Plugin
 
 == Upgrade Notice ==
+
+= 5.15 = 
+
+Fixed simple defect that prevented the Network settings option for working correctly.   
 
 = 5.14 = 
 
@@ -335,6 +338,10 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+= 5.15 - 12/09/2013 =
+
+1. FIXED		Defect in new code for Network Plugin control.  (thanks again to Itookmyprozac!)
 
 = 5.14 - 12/08/2013 =
 

@@ -109,7 +109,7 @@ function wptb_globalsettings_options() {
 						</p>						
 					</td>
 					<td>
-						<p class="sub"><em>This selects the order that the TopBars will be shown:</br>&nbsp;&nbsp;<strong>Random Order</strong> selects them in a random order. Then rotates through them in that order.</br>&nbsp;&nbsp;<strong>Priority Order</strong> selects them in descending order or priority.</br>&nbsp;Default is <code>Priority Order</code></em></p>
+						<p class="sub"><em>This selects the order that the TopBars will be shown:</br>&nbsp;&nbsp;<strong>Random Order</strong> selects them in a random order. Then rotates through them in that order.</br>&nbsp;&nbsp;<strong>Priority Order</strong> selects them in descending order of priority.</br>&nbsp;Default is <code>Priority Order</code></em></p>
 					</td>
 				</tr>				
 				<tr>
