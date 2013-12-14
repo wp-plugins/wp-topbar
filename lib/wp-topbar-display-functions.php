@@ -216,11 +216,11 @@ function wptb_display_common_info($wptbOptions) {
 	if($wptb_debug)
 			wptb_debug_display_TopBar_Options($wptbOptions);
 	
-	if ($wptbOptions['start_time_utc'] > $wptbOptions['end_time_utc'] && $wptbOptions['end_time_utc'] != 0 ) {
+	if (strtotime($wptbOptions['start_time_utc']) > strtotime($wptbOptions['end_time_utc']) && strtotime($wptbOptions['end_time_utc']) != 0 ) {
 		echo '<div class="error"><strong>End Time is before Start Time - TopBar will not display.</strong></div>';
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: End Time Before Start Time Error</code>';
 	}
-
+		
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Displaying Common Info</code>';
 	
 	// 

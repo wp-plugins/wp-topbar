@@ -3,8 +3,8 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
-Tested up to: 3.7.1
-Stable tag: 5.15
+Tested up to: 3.8
+Stable tag: 5.16
 
 Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
 
@@ -169,6 +169,10 @@ IE does not (yet) implement gradients like other browsers.  So, make sure you te
 Go to the Uninstall tab (or if are on a Multi Site install, you first need to login as a Super Admin then select the Uninstall from the TopBar Menu List) and then click the Uninstall button at the bottom of the page.   You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the Plugin
 
 == Upgrade Notice ==
+
+= 5.16 = 
+
+Version 5.16 supports WordPress 3.8, and fixes some pesky defects. 
 
 = 5.15 = 
 
@@ -338,6 +342,14 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+
+= 5.16 - 12/12/2013 =
+
+1. VALIDATED: 	Version 5.16 supports WordPress 3.8
+2. FIXED:		How the Mobile_User selection logic (thanks to faderdesign!)
+3. FIXED:		&debug now works again
+4. FIXED:		Fixed the date/time check error message (thanks to tandy22!)
 
 = 5.15 - 12/09/2013 =
 
