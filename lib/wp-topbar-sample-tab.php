@@ -2,25 +2,39 @@
 
 /*
 Sample ToolBars Tab
+
+i18n Compatible 
+
 */
 
-function wptb_fix_sample_filepath($wptb_filename) {
+
+
+//=========================================================================			
+// Sample Toolbars
+//=========================================================================			
+
+
+function wptb_fix_sample_filepath($wptb_filename, $wptb_pathname) {
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
-
-	if($wptb_debug)
-		echo '</br><code>WP-TopBar Debug Mode: wptb_fix_sample_filepath() for filename: '.$wptb_filename.'</code>';
 
 	if ($wptb_filename == "") return "";
 	
 	$path_parts = pathinfo($wptb_filename);
 	
-	return str_ireplace( 'https://','http://',plugins_url('/samples/'.$path_parts['basename'], __FILE__) );
+	$new_filename = str_ireplace( 'https://','http://', $wptb_pathname.$path_parts['basename'] );
 		
-} // end of wptb_fix_sample_filepath
+	if($wptb_debug)
+		echo '</br><code>WP-TopBar Debug Mode: wptb_fix_sample_filepath() for filename: '.$wptb_filename.' to '.$new_filename.'</code>';
+	
+	return $new_filename;
+		
+} 
+
+// end of wptb_fix_sample_filepath
 
 
-function wptb_fix_sample_row($wptbOptions) {
+function wptb_fix_sample_row($wptbOptions, $wptb_pathname) {
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
 
@@ -31,16 +45,85 @@ function wptb_fix_sample_row($wptbOptions) {
 
 	// following section converts all file paths to the /sample directory
 	
-	$wptbOptions['close_button_image']  = wptb_fix_sample_filepath($wptbOptions['close_button_image']);
-	$wptbOptions['reopen_button_image'] = wptb_fix_sample_filepath($wptbOptions['reopen_button_image'] );
-	$wptbOptions['bar_image']           = wptb_fix_sample_filepath($wptbOptions['bar_image']);
+	$wptbOptions['close_button_image']  = wptb_fix_sample_filepath($wptbOptions['close_button_image'], $wptb_pathname);
+	$wptbOptions['reopen_button_image'] = wptb_fix_sample_filepath($wptbOptions['reopen_button_image'], $wptb_pathname );
+	$wptbOptions['bar_image']           = wptb_fix_sample_filepath($wptbOptions['bar_image'], $wptb_pathname);
 	for ($i=1; $i<=10; $i++)  {
-		$wptbOptions['social_icon'.$i.'_image'] = wptb_fix_sample_filepath($wptbOptions['social_icon'.$i.'_image' ]);
+		$wptbOptions['social_icon'.$i.'_image'] = wptb_fix_sample_filepath($wptbOptions['social_icon'.$i.'_image' ], $wptb_pathname);
 	}
 
 	return $wptbOptions;
 
-} // end of wptb_fix_row
+} // end of wptb_fix_sample_row
+
+
+function wptb_fix_all_rows($wptbRows, $wptb_pathname, $wptb_barid) {
+
+	$wptb_debug=get_transient( 'wptb_debug' );	
+
+	if($wptb_debug)
+		echo '</br><code>WP-TopBar Debug Mode: wptb_fix_all_rows() for ['.$wptb_pathname. ']. Starting ID is '.$wptb_barid.'</code>';
+
+	$num_rows = count($wptbRows);
+	$j = 0;
+	
+	while ( $j < $num_rows ) {	
+		$data[$j] = wptb_fix_sample_row($wptbRows[$j], $wptb_pathname);		
+		$data[$j]['bar_id'] = $wptb_barid + 1;		
+//			echo "</br>Before: ".$wptbRows[$j]['bar_image']."</br>After: ".$data[$j]['bar_image']."</br>";			
+		$wptb_barid++;
+		$j++;
+	}
+
+	if($wptb_debug)
+		echo '</br><code>WP-TopBar Debug Mode: wptb_fix_all_rows() Ending ID is '.$wptb_barid.'</code>';
+
+	return $data;
+
+} // end of wptb_fix_all_rows
+
+
+function wptb_get_sample_data() {
+
+	$wptb_debug=get_transient( 'wptb_debug' );	
+
+	if($wptb_debug)
+		echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data()</code>';
+
+  	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
+	$wptbGSCustomSamplesPath = $wptbGlobalOptions [ 'custom_samples_path' ];
+
+	$file_data1 = file_get_contents( dirname(__FILE__).'/samples/sample_topbars.json');
+    $raw_data = wptb_fix_all_rows(json_decode($file_data1, true), plugins_url('', __FILE__).'/samples/', 0);
+	
+    if ( $wptbGSCustomSamplesPath != "") {
+		if($wptb_debug)
+			echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data() - loading: ['.$wptbGSCustomSamplesPath.'custom_topbars.json'.']</code>';
+		$file_data2 = file_get_contents( $wptbGSCustomSamplesPath.'custom_topbars.json' );
+			if($wptb_debug) {
+				echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data() - Type Custom File '.gettype($file_data2).'</code>';
+				echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data() - Type JSON Decon '.gettype(json_decode($file_data2,2)).'</code>';
+		}
+		if ( is_array(json_decode($file_data2, true)) ) {
+			if($wptb_debug)
+				echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data() - fixing: ['.$wptbGSCustomSamplesPath.'custom_topbars.json'.']</code>';
+		    $raw_data2 = wptb_fix_all_rows(json_decode($file_data2, true), $wptbGSCustomSamplesPath, count($raw_data));
+			$raw_data  = array_merge($raw_data, $raw_data2);
+		}
+	}
+	
+	if($wptb_debug)
+		echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data(): Number of rows returning '.count($raw_data).'</code>';
+	
+//		echo '['.file_get_contents( $wptbGSCustomSamplesPath.'custom_topbars.json').']';
+//		var_dump($file_data2);
+//		echo "</br>";
+//		echo "Number of rows: ".count($file_data)."</br>";
+
+
+	return $raw_data;
+	
+} // end of wptb_get_sample_data
 
 //=========================================================================		
 //  Display the Sample topbars table
@@ -60,7 +143,8 @@ function wptb_display_Sample_TopBars() {
 	}
 	class wptb_Sample_TopBar_Table extends WP_List_Table {
 
-	/**
+
+/**
 	 * Constructor, we override the parent to pass our own arguments
 	 * We usually focus on three parameters: singular and plural labels, as well as whether the class supports AJAX.
 	 */
@@ -94,7 +178,7 @@ function wptb_display_Sample_TopBars() {
 	function get_columns() {
 		return $columns= array(
 			'cb' => '<input type="checkbox" />',
-			'bar_id' => 'ID'
+			'bar_id' => __('ID','wp-topbar')
 		);
 	}
     /** ************************************************************************
@@ -176,7 +260,7 @@ function wptb_display_Sample_TopBars() {
     }	
     
     function no_items() {
-	    echo '<br><strong>Sorry, no sample TopBars to show.</strong><br>	';
+	    echo '<br><strong>'.__('Sorry, no sample TopBars to show.','wp-topbar').'</strong><br>';
 	    return;
     }
     
@@ -326,7 +410,7 @@ function wptb_display_Sample_TopBars() {
      **************************************************************************/
     function get_bulk_actions() {
         $actions = array(
-            'bulkcopy'    => 'Copy to TopBar Table'
+            'bulkcopy'    => __('Copy to TopBar Table','wp-topbar')
         );
         return $actions;
     }
@@ -346,18 +430,17 @@ function wptb_display_Sample_TopBars() {
 				
 		case "bulkcopy":
 				$barids = isset($_REQUEST['barid']) ? $_REQUEST['barid'] : array();
-				$file_data = file_get_contents( dirname(__FILE__).'/samples/sample_topbars.json');
-				$data = json_decode($file_data, true);
+		        $data = wptb_get_sample_data();       		
 	            $n = count($barids);
 				foreach ($barids as $key => $barid) {
-				  	$wptbOptions = wptb_fix_sample_row($data [$barid - 1]);			
+				  	$wptbOptions = $data [$barid - 1];			
 				  	$wptbOptions['enable_topbar'] = 'false';
 		  			wtpb_insert_row($wptbOptions);
 		  		}
-				if ($n == 1)	
-					echo '<div class="updated"><p><strong>'.$n.' row copied.  Go to the All TopBars tab to see them.</strong></p></div>';
-				else
-					echo '<div class="updated"><p><strong>'.$n.' rows copied.  Go to the All TopBars tab to see them.</strong></p></div>';
+				if ($n > 0) {
+			        $wptb_i18n = sprintf( _n('%d row copied. Go to the All TopBars tab to see them.', '%d rows copied. Go to the All TopBars tab to see them.', $n, 'wp-topbar'), $n );
+			        echo '<div class="updated"><p><strong>'.$wptb_i18n.'</strong></p></div>';		
+				}	  
 
 		}
     }
@@ -379,7 +462,7 @@ function wptb_display_Sample_TopBars() {
      **************************************************************************/
     function prepare_items() {
         
-        /**
+      /**
          * First, lets decide how many records per page to show
          */
         $per_page = 20;
@@ -410,28 +493,13 @@ function wptb_display_Sample_TopBars() {
          * Optional. You can handle your bulk actions however you see fit. In this
          * case, we'll handle them within our package just to keep things clean.
          */
-        $this->process_bulk_action();
-               
-		$file_data = file_get_contents( dirname(__FILE__).'/samples/sample_topbars.json');
-	    $raw_data = json_decode($file_data, true);
-//		var_dump($file_data);
-//		echo "</br>";
-//		echo "Number of rows: ".count($file_data)."</br>";
+       
+		$data[]="";
+       
+        $this->process_bulk_action(); 
+        
+        $data = wptb_get_sample_data();       		
 
-		$j=0;
-		$num_rows = count($raw_data);
-		
-		while ( $j < $num_rows ) {	
-			$data[$j] = wptb_fix_sample_row($raw_data[$j]);		
-			$data[$j]['bar_id'] = $j + 1;	
-
-//			echo "</br>Before: ".$raw_data[$j]['bar_image']."</br>After: ".$data[$j]['bar_image']."</br>";			
-			$j++;
-		}
-
-		
-		
-                
         /**
          * REQUIRED for pagination. Let's figure out what page the user is currently 
          * looking at. We'll need this later, so you should always include it in 
@@ -484,16 +552,22 @@ function wptb_display_Sample_TopBars() {
 	 //Prepare Table of elements
 	$wp_list_table = new wptb_Sample_TopBar_Table();
 	$wp_list_table->prepare_items();
-	
+  	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
+	$wptbGSCustomSamplesPath = $wptbGlobalOptions [ 'custom_samples_path' ];
+
 	?>
 	
     <div class="wrap">
         
         <div id="icon-options-general" class="icon32"><br/></div>
-        <h2>Sample TopBars</h2>
+        <h2><?php _e('Sample TopBars','wp-topbar'); ?></h2>
         
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
-            <p>You can copy one row (by hovering over the TopBar and clicking the Copy TopBar link.)  Or you can copy multiple samples by clicking on their checkboxes and then using the drop down box on the Bulk Options to copy those TopBars.</p> 
+            <p><?php _e('You can copy one row (by hovering over the TopBar and clicking the Copy TopBar link.)  Or you can copy multiple samples by clicking on their checkboxes and then using the drop down box on the Bulk Options to copy those TopBars.','wp-topbar'); ?></p> 
+            <?php if ( $wptbGSCustomSamplesPath != "") 
+            			echo __('Attempting to load custom TopBars from this location:','wp-topbar').' <code>'.htmlspecialchars($wptbGSCustomSamplesPath).'custom_topbars.json</code>';
+    	  		  echo '<br>'.__('To load your own Custom Samples Topbars, go to the', 'wp-topbar')." <a href='?page=wp-topbar.php&action=globalsettings'>".__('Global Settings tab','wp-topbar').'</a>';
+ ?>
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="topbar-filter" method="get">

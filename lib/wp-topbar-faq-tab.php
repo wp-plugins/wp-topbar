@@ -62,7 +62,18 @@ Here is the general order:</br><code>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;</code>
 </br>
 </br>
-<li><strong>How do the new Rotate Toolbars Global Setting (in version 4.13+) work?</strong></li>
+<li><strong>How can I have my own custom TopBars show on the Samples tab?</strong></li>
+First create all the TopBars you want as custom Samples.   
+</br>Then export the TopBars in the JSON format.   
+</br>Now, create a location on your server to store the files.   For example <code>../wp/wp-content/plugins/wp-topbar-samples</code>.
+</br>Next rename the export file to <code>custom_topbars.json</code>.
+</br>Now move that file, plus any images you need into the directory you created.  
+</br>Finally, go to the General Settings Tab and enter the URL for the directory in the "Custom Samples URL" field.  Make sure you have "allow_url_fopen" turned on in your php.ini (otherwise, we cannot read the file.)
+</br>Now, the TopBar will first display the Standard samples then the TopBars from your <code>custom_topbars.json file</code>.  
+</br>You can then copy these new TopBars just like the Standard samples.
+</br>
+</br>
+<li><strong>How does the Rotate Toolbars Global Setting work?</strong></li>
 This new settings will select all the valid TopBars that can be shown on a pageview (e.g. those that match all the control, date/time criteria.)  Then it will rotate through the TopBars in priority order - with the TopBars with the highest priority shown first.   This option will override the use of Close Buttons or Re-open Buttons.  It will also ignore the Scroll Action option.   You can set the delay between TopBars on in the <a <?php if ( $wptbShowLinks ) echo "href='?page=wp-topbar.php&action=globalsettings'"; ?>>Global Settings tab</a>.
 </br>
 </br>
@@ -73,7 +84,7 @@ If you change the Cookie Value to something new (<a <?php if ( $wptbShowLinks ) 
 </br>With Version 4.00+, <strong>all</strong> TopBars must share the same cookie settings for this to work.  You can set the TopBars to be the same by using the new  <a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=bulkclosebutton"'; ?>>Close Button tab</a> on the main page
 </br>
 </br>
-<li><strong>How does the Priority field (in version 4.00+) work?</strong></li>
+<li><strong>How does the Priority field work?</strong></li>
 The Plugin randomly selects a valid TopBar to show using this field to skew how they are selected.  The TopBar multiplies a random number (between 0 and 1) with the TopBar's Priority value (which is a number between 1 to 100).  A higher number means this TopBar will be selected more frequently; a lower number means less frequently. 
 </br>
 </br>

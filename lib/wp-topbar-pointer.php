@@ -3,6 +3,8 @@
 /*
 Pointer Functions
 
+i18n Compatible
+
 */
 
 
@@ -72,9 +74,9 @@ function wptb_register_pointer( $p ) {
     $p['514pointer1'] = array(
         'target' => '.wptb-globalsettings',
         'options' => array(
-            'content' => sprintf( '<h3> %s </h3> <p> %s </p>',
-                __( 'New Features in Versions 5.13+!' ,'plugindomain'),
-                __( 'Now with even <strong>more</strong> Rotation options!</br></br>Tired of showing only one TopBar? With the new Global Settings Tab, you can now rotate through all available TopBars for each pageview. See the <strong>Global Settings tab</strong>.','plugindomain')
+            'content' => sprintf( '<h3> %1$s </h3> <p> %2$s </p>',
+                __( 'New Features in Versions 5.13+!' ,'wp-topbar'),
+                __( 'Now with even <strong>more</strong> Rotation options!</br></br>Tired of showing only one TopBar? With the new Global Settings Tab, you can now rotate through all available TopBars for each pageview. See the <strong>Global Settings tab</strong>.','wp-topbar')
             ),
             'position' => array( 'edge' => 'top', 'align' => 'left' )
         )
@@ -82,9 +84,9 @@ function wptb_register_pointer( $p ) {
      $p['502pointer1'] = array(
         'target' => '.wptb-samples',
         'options' => array(
-            'content' => sprintf( '<h3> %s </h3> <p> %s </p>',
-                __( 'Samples!' ,'plugindomain'),
-                __( 'Check out these samples to see how you can customize your own TopBar.  You can copy any (or all) the samples for easy customizing to your needs.','plugindomain')
+            'content' => sprintf( '<h3> %1$s </h3> <p> %2$s </p>',
+                __( 'Samples!' ,'wp-topbar'),
+                __( 'Check out these samples to see how you can customize your own TopBar.  You can copy any (or all) the samples for easy customizing to your needs.','wp-topbar')
             ),
             'position' => array( 'edge' => 'top', 'align' => 'left' )
         )

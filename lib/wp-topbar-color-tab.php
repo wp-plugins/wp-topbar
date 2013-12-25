@@ -2,6 +2,9 @@
 
 /*
 Color Options Tab
+
+i18n Compatible
+
 */
 
 
@@ -59,32 +62,32 @@ function wptb_ColorPicker($wptbOptions) {
 	
 	<div class="postbox">
 										
-	<h3><a name="ColorSelection">Color Selection</a></h3>
+	<h3><a name="ColorSelection"><?php _e('Color Selection','wp-topbar'); ?></a></h3>
 	
 	<div class="inside">
-		<p class="sub"><em>Click the color box to select the color to use.</em></p>
+		<p class="sub"><em><?php _e('Click the color box to select the color to use.','wp-topbar'); ?></em></p>
 		<div class="table">
 			<table class="form-table">	
 				<tr valign="top">
-					<td width="200">Color of the Bar:</label></td>
+					<td width="200"><?php _e('Color of the Bar','wp-topbar'); ?>:</label></td>
 					<td>
 				      <input type="text" class="wptb_colorpicker_bar" id="barcolor" name="wptbbarcolor" value="<?php echo $wptbOptions['bar_color']; ?>">
 					</td>
 				</tr>
 				<tr valign="top">
-					<td width="200">Color of the bottom border of the Bar:</label></td>
+					<td width="200"><?php _e('Color of the bottom border of the Bar','wp-topbar'); ?>:</label></td>
 					<td>
 				      <input type="text" class="wptb_colorpicker_bottom" id="bottomcolor" name="wptbbottomcolor" value="<?php echo $wptbOptions['bottom_color']; ?>">
 					</td>
 				</tr>
 				<tr valign="top">
-					<td width="200">Color of the Message:</label></td>
+					<td width="200"><?php _e('Color of the Message','wp-topbar'); ?>:</label></td>
 					<td>
 					    <input type="text" class="wptb_colorpicker_text" id="textcolor" name="wptbtextcolor" value="<?php echo $wptbOptions['text_color']; ?>">
 					</td>
 				</tr>
 				<tr valign="top">
-					<td width="200">Color of the Link:</label></td>
+					<td width="200"><?php _e('Color of the Link','wp-topbar'); ?>:</label></td>
 					<td>
 					    <input type="text" class="wptb_link_color" id="linkcolor" name="wptblinkcolor" value="<?php echo $wptbOptions['link_color']; ?>">
 					</td>
@@ -94,10 +97,10 @@ function wptb_ColorPicker($wptbOptions) {
 		<table>
 		<tr>
 			<td style="valign:top; width:500px;"><p class="submit">
-				<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
+				<input type="submit" style="<?php echo $wptb_submit_style; ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wp-topbar') ?>" />
 			</td>
 			<td style="valign:top;">
-				<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
+				<input type="button" class="button" style="<?php echo $wptb_button_style; ?>" value="<?php _e('Back to Top', 'wp-topbar') ?>" onClick="parent.location='#Top'">
 			</td>
 		</tr>
 		</table>
@@ -158,35 +161,35 @@ function wptb_farbtastic($wptbOptions) {
 	
 	<div class="postbox">
 										
-	<h3><a name="ColorSelection">Color Selection</a></h3>
+	<h3><a name="ColorSelection"><?php _e('Color Selection','wp-topbar'); ?></a></h3>
 	
 	<div class="inside">
-		<p class="sub"><em>Click the color box to select the color to use.  Bar color is NOT used if Image is enabled (that is set on the <a href='?page=wp-topbar.php&action=topbartext&barid=<?php echo ($wptb_barid_prefix+$wptbOptions['bar_id']); ?>'>TopBar Text and Image</a> tab.)</em></p>
+		<p class="sub"><em><?php _e('Click the color box to select the color to use.','wp-topbar'); ?></em></p>
 		<div class="table">
 			<table class="form-table">	
 				<tr valign="top">
-					<td width="200">Color of the Bar:</label></td>
+					<td width="200"><?php _e('Color of the Bar','wp-topbar'); ?>:</label></td>
 					<td>
 				      <input type="text" id="barcolor" name="wptbbarcolor" value="<?php echo $wptbOptions['bar_color']; ?>">
 				      <div class="wptb_colorpicker_bar"></div>		
 					</td>
 				</tr>
 				<tr valign="top">
-					<td width="200">Color of the bottom border of the Bar:</label></td>
+					<td width="200"><?php _e('Color of the bottom border of the Bar','wp-topbar'); ?>:</label></td>
 					<td>
 				      <input type="text" id="bottomcolor" name="wptbbottomcolor" value="<?php echo $wptbOptions['bottom_color']; ?>">
 				      <div class="wptb_colorpicker_bottom"></div>			
 					</td>
 				</tr>
 				<tr valign="top">
-					<td width="200">Color of the Message:</label></td>
+					<td width="200"><?php _e('Color of the Message','wp-topbar'); ?>:</label></td>
 					<td>
 					    <input type="text" id="textcolor" name="wptbtextcolor" value="<?php echo $wptbOptions['text_color']; ?>">
 					    <div class="wptb_colorpicker_text"></div>				    
 					</td>
 				</tr>
 				<tr valign="top">
-					<td width="200">Color of the Link:</label></td>
+					<td width="200"><?php _e('Color of the Link','wp-topbar'); ?>:</label></td>
 					<td>
 					    <input type="text" id="linkcolor" name="wptblinkcolor" value="<?php echo $wptbOptions['link_color']; ?>">
 					    <div class="wptb_link_color"></div>
@@ -197,10 +200,10 @@ function wptb_farbtastic($wptbOptions) {
 		<table>
 		<tr>
 			<td style="valign:top; width:500px;"><p class="submit">
-				<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
+				<input type="submit" style="<?php echo $wptb_submit_style; ?>" name="update_wptbSettings" value="<?php _e('Update Settings', 'wp-topbar') ?>" />
 			</td>
 			<td style="valign:top;">
-				<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
+				<input type="button" class="button" style="<?php echo $wptb_button_style; ?>" value="<?php _e('Back to Top', 'wp-topbar') ?>" onClick="parent.location='#Top'">
 			</td>
 		</tr>
 		</table>

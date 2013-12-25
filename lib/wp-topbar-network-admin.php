@@ -2,6 +2,9 @@
 
 /*
 Network Admin Page
+
+i18n Compatible 
+
 */
 
 //=========================================================================		
@@ -155,15 +158,15 @@ function wptb_display_network_admin_header() {
 	<a name="Top"></a>
 		<div class=wrap>
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
-		<h2><img src="<?php _e( plugins_url('/images/banner-772x250.png', __FILE__), 'wptb' ); ?>" height="50" alt="TopBar Banner"/>
-		WP-TopBar - Version <?php _e($WPTB_VERSION); ?></h2>
-		<h3>Network / Multi-Site Admin Page</h3>
+		<h2><img src="<?php echo plugins_url('/images/banner-772x250.png', __FILE__); ?>" height="50" alt="TopBar Banner"/>
+		<?php echo __('WP-TopBar - Version','wp-topbar').' '.$WPTB_VERSION; ?></h2>
+		<h3><?php _e('Network / Multi-Site Admin Page','wp-topbar'); ?></h3>
 		<div class="postbox">
 		<br>
-		Creates TopBars that can be shown at the top of your website.  Version 5 adds ability to close TopBars and also gives you a Sample TopBar Tab that has starter TopBars that you can customize.
-		<br><br>
-		Please <a id="wptbdonate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J" target="_blank"><img style="height:20px; vertical-align:middle;" src="<?php  echo plugins_url('/images/donate.gif', __FILE__)?>" /></a>
-if you find this plugin useful.
+		<?php _e('Creates TopBars that can be shown at the top of your website.  Version 5 adds ability to close TopBars and also gives you a Sample TopBar Tab that has starter TopBars that you can customize.','wp-topbar'); ?>
+		<br/><br/>
+		<?php echo _x('Please','part of please donate if you find this plugin useful', 'wp-topbar'); ?> <a id="wptbdonate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J" target="_blank"><img style="height:20px; vertical-align:middle;" src="<?php  echo plugins_url('/images/donate.gif', __FILE__)?>" /></a>
+<?php echo _x('if you find this plugin useful.', 'part of please donate if you find this plugin useful', 'wp-topbar'); ?>
 		</br>
 		<p class="wptb-pointer"></p>
 		<hr>
@@ -184,26 +187,26 @@ function wptb_network_settings() {
 	if($wptb_debug)
 		echo '</br><code>WP-TopBar Debug Mode: wptb_globalsettings_options()</code>';
 	
-	$wptbNetworkGlobalOptions = get_site_option( 'wptb_network_global_options' );
+	$wptbGSNetworkGlobalOptions = get_site_option( 'wptb_network_global_options' );
 	
-	if ( ! isset($wptbNetworkGlobalOptions [ 'multisite_super_admin_only' ] )) {
+	if ( ! isset($wptbGSNetworkGlobalOptions [ 'multisite_super_admin_only' ] )) {
 		$wptbMultiSuperAdminOnly = "no";
-		$wptbNetworkGlobalOptions = array(
+		$wptbGSNetworkGlobalOptions = array(
 		  'multisite_super_admin_only'	=> $wptbMultiSuperAdminOnly
 		);
-		update_site_option( 'wptb_network_global_options' , $wptbNetworkGlobalOptions );
+		update_site_option( 'wptb_network_global_options' , $wptbGSNetworkGlobalOptions );
 	}
 	else
-		$wptbMultiSuperAdminOnly = $wptbNetworkGlobalOptions [ 'multisite_super_admin_only' ];
+		$wptbMultiSuperAdminOnly = $wptbGSNetworkGlobalOptions [ 'multisite_super_admin_only' ];
 		
 	?>
 	
 	<div class="postbox">
 										
-	<h3><a name="CloseButton">Network/Multisite Settings</a></h3>
+	<h3><a name="CloseButton"><?php _e('Network/Multisite Settings','wp-topbar'); ?></a></h3>
 										
 	<div class="inside">
-		<p class="sub"><em>This page contains the Network/Multisite Settings that effect all TopBars.</em>
+		<p class="sub"><em><?php _e('This page contains the Network/Multisite Settings that effect all TopBars.','wp-topbar'); ?></em>
 		<br>
 		</p>
 		
@@ -213,15 +216,15 @@ function wptb_network_settings() {
 					<td colspan="3"><hr></td>
 				</tr>
 				<tr valign="top">
-					<td width="150">ONLY Show Admin Pages for Multi-Site Network Admins:</label></td>
+					<td width="150"><?php _e('ONLY Show Admin Pages for Multi-Site Network Admins','wp-topbar'); ?>:</label></td>
 					<td>
 					 	<p id="radio4" class="ui-button ui-button-wptbset">
-							<input type="radio" id="wptbmultisiteadminonly1" name="wptbmultisiteadminonly" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbMultiSuperAdminOnly == "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptbmultisiteadminonly1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
-							<input type="radio" id="wptbmultisiteadminonly2" name="wptbmultisiteadminonly" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbMultiSuperAdminOnly == "no") { _e('checked="checked"', "wptb"); }?>><label for="wptbmultisiteadminonly2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
+							<input type="radio" id="wptbmultisiteadminonly1" name="wptbmultisiteadminonly" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbMultiSuperAdminOnly == "yes") { echo 'checked="checked"'; }?>><label for="wptbmultisiteadminonly1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Yes','wp-topbar'); ?></span></label>
+							<input type="radio" id="wptbmultisiteadminonly2" name="wptbmultisiteadminonly" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbMultiSuperAdminOnly == "no") { echo 'checked="checked"'; }?>><label for="wptbmultisiteadminonly2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('No','wp-topbar'); ?></span></label>
 						</p>						
 					</td>
 					<td>
-						<p class="sub"><em>If you are using MultiSite, this will allow you to control if only the Network Admins will have access to the Admin Pages.<br/>The Admin must have the <code>manage_network_plugins</code> role assigned.  Default is <code>No</code></em></p>
+						<p class="sub"><em><?php _e('If you are using MultiSite, this will allow you to control if only the Network Admins will have access to the Admin Pages.<br/>The Admin must have the <code>manage_network_plugins</code> role assigned.  Default is <code>No</code>','wp-topbar'); ?></em></p>
 					</td>
 				</tr>
 				<tr>
@@ -232,10 +235,10 @@ function wptb_network_settings() {
 		<table>
 		<tr>
 			<td style="valign:top; width:500px;"><p class="submit">
-				<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbGlobalSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
+				<input type="submit" style="<?php echo $wptb_submit_style; ?>" name="update_wptbGlobalSettings" value="<?php _e('Update Settings', 'wp-topbar') ?>" />
 			</td>
 			<td style="valign:top;">
-				<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
+				<input type="button" class="button" style="<?php echo $wptb_button_style; ?>" value="<?php _e('Back to Top', 'wp-topbar') ?>" onClick="parent.location='#Top'">
 			</td>
 		</tr>
 		</table>
@@ -245,10 +248,10 @@ function wptb_network_settings() {
 	</div> <!-- end of Close Button Settings -->
 						
 	<div class="postbox">
-	<h3><a name="Debug">Server/Install Info</a></h3>
+	<h3><a name="Debug"><?php _e('Server/Install Info','wp-topbar'); ?></a></h3>
 	<div class="inside">
 		<ul>
-			<li><strong>Database/Column Check:</strong></br>
+			<li><strong><?php _e('Database/Column Check','wp-topbar'); ?>:</strong></br>
 <?php
 
 
@@ -283,15 +286,15 @@ function wptb_network_settings() {
 	echo "</br>";
 	?>
 				</li>
-				<li><strong>Time Check:</strong></br>
+				<li><strong><?php _e('Time Check','wp-topbar'); ?>:</strong></br>
 	<?php
 	$wptb_current_time=current_time('timestamp', 1);
-	echo 'Server Timezone:   <strong>',date_default_timezone_get(),'</strong></br>';
-	echo 'Current Time:      <strong>',date('m/d/Y H:i (e)',$wptb_current_time),'</strong></br>';		
+	echo __('Server Timezone','wp-topbar').':   <strong>',date_default_timezone_get(),'</strong></br>';
+	echo __('Current Time','wp-topbar').':      <strong>',date('m/d/Y H:i (e)',$wptb_current_time),'</strong></br>';		
 	echo "</br>";
 	?>
 				</li>
-				<li><strong>Multisite Check:</strong></br>
+				<li><strong><?php _e('Multisite Check','wp-topbar'); ?>:</strong></br>
 	<?php
 	if ( is_multisite() ) 
 		echo "Multisite:		<strong>Yes</strong><br>"; 
@@ -325,11 +328,11 @@ function wptb_update_NetworkSettings() {
 	if ( isset($_POST [ 'wptbmultisiteadminonly' ]) ) {
 		$wptbMultiSuperAdminOnly = $_POST [ 'wptbmultisiteadminonly' ];
 	}
-	$wptbNetworkGlobalOptions = array(
+	$wptbGSNetworkGlobalOptions = array(
 	  'multisite_super_admin_only'	=> $wptbMultiSuperAdminOnly
 	);
 	
-	update_site_option( 'wptb_network_global_options' , $wptbNetworkGlobalOptions );
+	update_site_option( 'wptb_network_global_options' , $wptbGSNetworkGlobalOptions );
 	
 }	// End of wptb_update_GlobalSettings
 

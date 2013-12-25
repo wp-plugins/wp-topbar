@@ -3,7 +3,11 @@
 /*
 export Functions
 
+i18n Compatible
+
 */
+
+
 //=========================================================================			
 // Export Options
 //=========================================================================			
@@ -34,10 +38,10 @@ function wptb_display_export_options() {
 	
 	<div class="wrap">
     <div id="icon-options-general" class="icon32"><br/></div>
-    <h2>Export Options</h2>
+    <h2><?php _e('Export Options','wp-topbar'); ?></h2>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
-  	      <p>Select the <strong>Export Options</strong> buttons to create either a CSV, SQL (insert) or JSON file for download.   Future versions will include an inport functions.</br></br>
-  			Note: Any PHP text you have entered may cause the CSV export to break a single TopBar into multiple rows in the CSV file.
+  	      <p><?php _e('Select the <strong>Export Options</strong> buttons to create either a CSV, SQL (insert) or JSON file for download.   Future versions will include an import functions.','wp-topbar'); ?></br></br>
+  			<?php _e('Note: Any PHP options you have entered may cause the CSV export to break a single TopBar into multiple rows in the CSV file.','wp-topbar'); ?>
   			</br>	      
   	      
   	      </p> 
@@ -47,9 +51,9 @@ function wptb_display_export_options() {
 		</div>
 	    <form method="post"    action="<?php echo $url;?>">
 	        <p class="submit">
-	            <input type="submit" name="wptbExportJSON" class="button-primary" value="Export Options in JSON Format" />
-	            <input type="submit" name="wptbExportSQL"  class="button-primary"  value="Export Options in SQL Format" />
-	            <input type="submit" name="wptbExportCSV"  class="button-primary"  value="Export Options in CSV Format" />
+	            <input type="submit" name="wptbExportJSON" class="button-primary" value="<?php _e('Export Options in JSON Format','wp-topbar'); ?>" />
+	            <input type="submit" name="wptbExportSQL"  class="button-primary"  value="<?php _e('Export Options in SQL Format','wp-topbar'); ?>" />
+	            <input type="submit" name="wptbExportCSV"  class="button-primary"  value="<?php _e('Export Options in CSV Format','wp-topbar'); ?>" />
 	        </p>
 	    </form>
 	</div>
@@ -254,9 +258,12 @@ function wptb_export_options_sql() {
 				case 'display_time':
 				case 'scroll_amount': 
 				case 'bottom_border_height':
+				case 'scroll_amount':
 				case 'font_size':
 				case 'padding_top':
 				case 'padding_bottom':
+				case 'margin_left':
+				case 'margin_right':
 				case 'margin_top':
 				case 'margin_bottom':
 						$export_output .= $column_value;

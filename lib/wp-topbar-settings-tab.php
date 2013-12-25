@@ -2,6 +2,9 @@
 
 /*
 Close Options Tab
+
+i18n Compatible
+
 */
 
 
@@ -22,22 +25,22 @@ function wptb_globalsettings_options() {
 	
 	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
 	
-	$wptbRotateTopbars 			= $wptbGlobalOptions [ 'rotate_topbars' ];
-	$wptbRotateDisplayTime 		= $wptbGlobalOptions [ 'rotate_display_time' ];
-	$wptbRotateStartDelay 		= $wptbGlobalOptions [ 'rotate_start_delay' ];
-	$wptbRotateOrder 			= $wptbGlobalOptions [ 'rotate_order' ];
-	$wptbRotateCount 			= $wptbGlobalOptions [ 'rotate_count' ];
-	$wptbRotateHideLastTopBar 	= $wptbGlobalOptions [ 'rotate_hide_last' ];
-		
-		
+	$wptbGSRotateTopbars 		= $wptbGlobalOptions [ 'rotate_topbars' ];
+	$wptbGSRotateDisplayTime 	= $wptbGlobalOptions [ 'rotate_display_time' ];
+	$wptbGSRotateStartDelay		= $wptbGlobalOptions [ 'rotate_start_delay' ];
+	$wptbGSRotateOrder 			= $wptbGlobalOptions [ 'rotate_order' ];
+	$wptbGSRotateCount 			= $wptbGlobalOptions [ 'rotate_count' ];
+	$wptbGSRotateHideLastTopBar = $wptbGlobalOptions [ 'rotate_hide_last' ];
+	$wptbGSCustomSamplesPath	= $wptbGlobalOptions [ 'custom_samples_path' ];
+	
 	?>
 	
 	<div class="postbox">
 										
-	<h3><a name="CloseButton">Global Settings</a></h3>
+	<h3><a name="CloseButton"><?php _e('Global Settings','wp-topbar'); ?></a></h3>
 										
 	<div class="inside">
-		<p class="sub"><em>This page contains the Global Settings that effect all TopBars.</em>
+		<p class="sub"><em><?php _e('This page contains the Global Settings that effect all TopBars.','wp-topbar'); ?></em>
 		<br>
 		</p>
 		
@@ -47,96 +50,113 @@ function wptb_globalsettings_options() {
 					<td colspan="3"><hr></td>
 				</tr>
 				<tr valign="top">
-					<td width="150">Rotate TopBars:</label></td>
-					<td>
+					<td width="150"><?php _e('Rotate TopBars','wp-topbar'); ?>:</label></td>
+					<td width="300">
 					 	<p id="radio1" class="ui-button ui-button-wptbset">
-							<input type="radio" id="wptbrotatetopbars1" name="wptbrotatetopbars" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbRotateTopbars == "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptbrotatetopbars1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
-							<input type="radio" id="wptbrotatetopbars2" name="wptbrotatetopbars" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbRotateTopbars == "no") { _e('checked="checked"', "wptb"); }?>><label for="wptbrotatetopbars2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
+							<input type="radio" id="wptbrotatetopbars1" name="wptbrotatetopbars" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbGSRotateTopbars == "yes") { echo 'checked="checked"'; }?>><label for="wptbrotatetopbars1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Yes','wp-topbar'); ?></span></label>
+							<input type="radio" id="wptbrotatetopbars2" name="wptbrotatetopbars" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbGSRotateTopbars == "no") { echo 'checked="checked"'; }?>><label for="wptbrotatetopbars2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('No','wp-topbar'); ?></span></label>
 						</p>						
 					</td>
 					<td>
-						<p class="sub"><em>TopBars will rotate, after a user set delay.  Note that the Scrollable Option, Close Button and Re-Open options on each TopBar are ignored.  That is, the TopBars that are displayed will not be Scrollable nor can they be Closed (or Reopened).  Default is <code>No</code></em></p>
+						<p class="sub"><em><?php _e('TopBars will rotate, after a user set delay.  Note that the Scrollable Option, Close Button and Re-Open options on each TopBar are ignored.  That is, the TopBars that are displayed will not be Scrollable nor can they be Closed (or Reopened).  Default is <code>No</code>','wp-topbar'); ?></em></p>
 					</td>
 				</tr>
 				<tr valign="top">
-					<td width="150">Rotation Start Delay:</td>
+					<td width="150"><?php _e('Rotation Start Delay','wp-topbar'); ?>:</td>
 					<td>
-						<input type="text" name="wptbrotatestartdelay" id="rotatestartdelay" size="30" value="<?php echo $wptbRotateStartDelay; ?>" >
+						<input type="text" name="wptbrotatestartdelay" id="rotatestartdelay" size="30" value="<?php echo $wptbGSRotateStartDelay; ?>" >
 						<div id="wtpb-rotatestartdelay"></div>
 					</td>
 					<td>
-						<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to delay before displaying each TopBar.  No TopBar will be displayed during this time.  Enter 0 for no delay. Default is <code>1000</code>.</em></p>
+						<p class="sub"><em><?php _e('Enter the amount of time (in milliseconds) for the TopBar to delay before displaying each TopBar.  No TopBar will be displayed during this time.  Enter 0 for no delay. Default is <code>1000</code>','wp-topbar'); ?>.</em></p>
 					</td>
 				</tr>					
 				<tr valign="top">
-					<td width="150">Rotation Display Time:</td>
+					<td width="150"><?php _e('Rotation Display Time','wp-topbar'); ?>:</td>
 					<td>
-						<input type="text" name="wptbrotatedisplaytime" id="rotatedisplaytime" size="30" value="<?php echo $wptbRotateDisplayTime; ?>" >
+						<input type="text" name="wptbrotatedisplaytime" id="rotatedisplaytime" size="30" value="<?php echo $wptbGSRotateDisplayTime; ?>" >
 						<div id="wtpb-rotatedisplaytime"></div>
 					</td>
 					<td>
-						<p class="sub"><em>Enter the amount of time (in milliseconds) for the TopBar to display before rotating for the next TopBar.  Enter 0 for no delay (not recommended!)  Default is <code>9000</code>.</em></p>
+						<p class="sub"><em><?php _e('Enter the amount of time (in milliseconds) for the TopBar to display before rotating for the next TopBar.  Enter 0 for no delay (not recommended!)  Default is <code>9000</code>.','wp-topbar'); ?></em></p>
 					</td>
 				</tr>	
 				<tr valign="top">
-					<td width="150">Rotation Count:</td>
+					<td width="150"><?php _e('Rotation Count','wp-topbar'); ?>:</td>
 					<td>
-						<input type="text" name="wptbrotatecount" id="rotatecount" size="30" value="<?php echo $wptbRotateCount; ?>" >
+						<input type="text" name="wptbrotatecount" id="rotatecount" size="30" value="<?php echo $wptbGSRotateCount; ?>" >
 						<div id="wtpb-rotatecount"></div>
 					</td>
 					<td>
-						<p class="sub"><em>Enter the number of times the TopBar should be shown.  Enter 0 to continuously rotate.  Default is <code>0</code>.</em></p>
+						<p class="sub"><em><?php _e('Enter the number of times the TopBar should be shown.  Enter 0 to continuously rotate.  Default is <code>0</code>.','wp-topbar'); ?></em></p>
 					</td>
 				</tr>					
 				<tr valign="top">
-					<td width="150">Hide Last TopBar on Rotation:</label></td>
+					<td width="150"><?php _e('Hide Last TopBar on Rotation','wp-topbar'); ?>:</label></td>
 					<td>
 					 	<p id="radio2" class="ui-button ui-button-wptbset">
-							<input type="radio" id="wptbrotatehidelast1" name="wptbrotatehidelast" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbRotateHideLastTopBar == "yes") { _e('checked="checked"', "wptb"); }?>><label for="wptbrotatehidelast1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Yes</span></label>
-							<input type="radio" id="wptbrotatehidelast2" name="wptbrotatehidelast" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbRotateHideLastTopBar == "no") { _e('checked="checked"', "wptb"); }?>><label for="wptbrotatehidelast2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">No</span></label>
+							<input type="radio" id="wptbrotatehidelast1" name="wptbrotatehidelast" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbGSRotateHideLastTopBar == "yes") { echo 'checked="checked"'; }?>><label for="wptbrotatehidelast1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Yes','wp-topbar'); ?></span></label>
+							<input type="radio" id="wptbrotatehidelast2" name="wptbrotatehidelast" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbGSRotateHideLastTopBar == "no") { echo 'checked="checked"'; }?>><label for="wptbrotatehidelast2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('No','wp-topbar'); ?></span></label>
 						</p>						
 					</td>
 					<td>
-						<p class="sub"><em>If you have selected to limit the number of TopBars that are shown in rotation, this option determines whether the last TopBar is hidden or stays on the the page.  Default is <code>Yes</code></em></p>
+						<p class="sub"><em><?php _e('If you have selected to limit the number of TopBars that are shown in rotation, this option determines whether the last TopBar is hidden or stays on the the page.  Default is <code>Yes</code>','wp-topbar'); ?></em></p>
 					</td>
 				</tr>						
 				<tr valign="top">
-					<td width="150">Rotate Order:</label></td>
+					<td width="150"><?php _e('Rotate Order','wp-topbar'); ?>:</label></td>
 					<td>
 					 	<p id="radio3" class="ui-button ui-button-wptbset">
-							<input type="radio" id="wptbrotateorder1" name="wptbrotateorder" class="ui-helper-hidden-accessible" value="random" <?php if ($wptbRotateOrder == "random") { _e('checked="checked"', "wptb"); }?>><label for="wptbrotateorder1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">Random Order</span></label>
-							<input type="radio" id="wptbrotateorder2" name="wptbrotateorder" class="ui-helper-hidden-accessible" value="priority" <?php if ($wptbRotateOrder == "priority") { _e('checked="checked"', "wptb"); }?>><label for="wptbrotateorder2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text">By Priority</span></label>
+							<input type="radio" id="wptbrotateorder1" name="wptbrotateorder" class="ui-helper-hidden-accessible" value="random" <?php if ($wptbGSRotateOrder == "random") { echo 'checked="checked"'; }?>><label for="wptbrotateorder1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Random Order','wp-topbar'); ?></span></label>
+							<input type="radio" id="wptbrotateorder2" name="wptbrotateorder" class="ui-helper-hidden-accessible" value="priority" <?php if ($wptbGSRotateOrder == "priority") { echo 'checked="checked"'; }?>><label for="wptbrotateorder2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('By Priority','wp-topbar'); ?></span></label>
 						</p>						
 					</td>
 					<td>
-						<p class="sub"><em>This selects the order that the TopBars will be shown:</br>&nbsp;&nbsp;<strong>Random Order</strong> selects them in a random order. Then rotates through them in that order.</br>&nbsp;&nbsp;<strong>Priority Order</strong> selects them in descending order of priority.</br>&nbsp;Default is <code>Priority Order</code></em></p>
+						<p class="sub"><em><?php _e('This selects the order that the TopBars will be shown:</br>&nbsp;&nbsp;<strong>Random Order</strong> selects them in a random order. Then rotates through them in that order.</br>&nbsp;&nbsp;<strong>Priority Order</strong> selects them in descending order of priority.</br>&nbsp;Default is <code>Priority Order</code>','wp-topbar'); ?></em></p>
 					</td>
 				</tr>				
 				<tr>
 					<td colspan="3"><hr></td>
 				</tr>		
-			</table>
+				<tr valign="top">
+					<th scope="row"><?php _e('Custom Samples URL','wp-topbar'); ?>:</th>
+					<td colspan="3">
+					<input name="wptbcustompath" type="text" size="85" id="custompath" value="<?php echo $wptbGSCustomSamplesPath; ?>" />
+					<br /><em><?php _e('Enter the URL of a directory where a JSON file and related images are stored. These will be included in the Samples Tab.  You must name the JSON file <code>custom_topbars.json</code>','wp-topbar'); ?>.</em>
+					<br><br><?php _e('For example, the Directory could be named:'); ?> <code><?php echo str_ireplace( 'wp-topbar','wp-topbar-samples',str_ireplace( 'https://','http://',plugins_url('/', dirname(__FILE__)) )); ?></code>					
+					<br>
+					<br><?php _e('To create your own Samples, export your existing TopBars in JSON format. Then rename that file to <code>custom_topbars.json</code>. Now move that file, plus any images you need into the directory you entered above.'); 
+					
+					if ($wptbGSCustomSamplesPath != "")	{
+						$file_data2 = file_get_contents( $wptbGSCustomSamplesPath.'custom_topbars.json' );
+						if (! is_array(json_decode($file_data2,2) ) )
+							echo "<br /><strong>".__('Your <code>custom_topbars.json</code> file does not appear to be formatted correctly or is missing.  It does not appear to be a JSON formatted file.'); 
+					}
+					?>
+					</label></td>
+				</tr>				<tr>
+					<td colspan="3"><hr></td>
+				</tr>
+		</table>
 		</div>
 		<table>
 		<tr>
-			<td style="valign:top; width:500px;"><p class="submit">
-				<input type="submit" style="<?php _e( $wptb_submit_style, 'wptb' ); ?>" name="update_wptbGlobalSettings" value="<?php _e('Update Settings', 'wptb') ?>" />
-			</td>
-			<td style="valign:top;">
-				<input type="button" class="button" style="<?php _e( $wptb_button_style , 'wptb' ); ?>" value="<?php _e('Back to Top', 'wptb') ?>" onClick="parent.location='#Top'">
+			<td colspan="3" style="valign:top;"><p class="submit">
+				<input type="submit" style="<?php echo $wptb_submit_style; ?>" name="update_wptbGlobalSettings" value="<?php _e('Update Settings', 'wp-topbar') ?>" />
+				<input type="button" class="button" style="<?php echo $wptb_button_style; ?>" value="<?php _e('Back to Top', 'wp-topbar') ?>" onClick="parent.location='#Top'">
 			</td>
 		</tr>
 		</table>
 		
 		<div class="clear"></div>	
 		</div>
-	</div> <!-- end of Close Button Settings -->
+	</div> <!-- end of Settings -->
 						
 	<div class="postbox">
-	<h3><a name="Debug">Server/Install Info</a></h3>
+	<h3><a name="Debug"><?php _e('Server/Install Info','wp-topbar'); ?></a></h3>
 	<div class="inside">
 		<ul>
-			<li><strong>Database/Column Check:</strong></br>
+			<li><strong><?php _e('Database/Column Check','wp-topbar'); ?>:</strong></br>
 <?php
 
 
@@ -171,29 +191,29 @@ function wptb_globalsettings_options() {
 	echo "</br>";
 	?>
 				</li>
-				<li><strong>Time Check:</strong></br>
+				<li><strong><?php _e('Time Check','wp-topbar'); ?>:</strong></br>
 	<?php
 	$wptb_current_time=current_time('timestamp', 1);
-	echo 'Server Timezone:   <strong>',date_default_timezone_get(),'</strong></br>';
-	echo 'Current Time:      <strong>',date('m/d/Y H:i (e)',$wptb_current_time),'</strong></br>';		
+	echo __('Server Timezone','wp-topbar').':   <strong>',date_default_timezone_get(),'</strong></br>';
+	echo __('Current Time','wp-topbar').':      <strong>',date('m/d/Y H:i (e)',$wptb_current_time),'</strong></br>';		
 	echo "</br>";
 	?>
 				</li>
-				<li><strong>Multisite Check:</strong></br>
+				<li><strong><?php _e('Multisite Check','wp-topbar'); ?>:</strong></br>
 	<?php
 	if ( is_multisite() ) {
-		echo "Multisite:		<strong>Yes</strong><br>"; 
+		echo "Multisite: <strong>Yes</strong><br>"; 
 
-		$wptbNetworkGlobalOptions = get_site_option( 'wptb_network_global_options' );
-		if ( ! isset($wptbNetworkGlobalOptions [ 'multisite_super_admin_only' ] )) {
+		$wptbGSNetworkGlobalOptions = get_site_option( 'wptb_network_global_options' );
+		if ( ! isset($wptbGSNetworkGlobalOptions [ 'multisite_super_admin_only' ] )) {
 			$wptbMultiSuperAdminOnly = "no";
-			$wptbNetworkGlobalOptions = array(
+			$wptbGSNetworkGlobalOptions = array(
 			  'multisite_super_admin_only'	=> $wptbMultiSuperAdminOnly
 			);
-			update_site_option( 'wptb_network_global_options' , $wptbNetworkGlobalOptions );
+			update_site_option( 'wptb_network_global_options' , $wptbGSNetworkGlobalOptions );
 		}
 		else
-			$wptbMultiSuperAdminOnly = $wptbNetworkGlobalOptions [ 'multisite_super_admin_only' ];
+			$wptbMultiSuperAdminOnly = $wptbGSNetworkGlobalOptions [ 'multisite_super_admin_only' ];
 		echo "Super Admin Only:		<strong>".$wptbMultiSuperAdminOnly."</strong></br>";
 		if ( current_user_can( 'manage_network_plugins' )  )  
 			echo "manage_network_plugins:		<strong>Yes</strong><br>"; 

@@ -2,6 +2,9 @@
 
 /*
 DB IO Functions
+
+i18n Compatible
+
 */
 
 
@@ -802,50 +805,70 @@ function wptb_update_GlobalSettings() {
 		
 	if($wptb_debug) 
 		echo '<br><code>WP-TopBar Debug Mode: wptb_update_GlobalSettings()</code>';
+
+	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
 	
+	$wptbGSRotateTopbars 		= $wptbGlobalOptions [ 'rotate_topbars' ];
+	$wptbGSRotateDisplayTime 	= $wptbGlobalOptions [ 'rotate_display_time' ];
+	$wptbGSRotateStartDelay		= $wptbGlobalOptions [ 'rotate_start_delay' ];
+	$wptbGSRotateOrder 			= $wptbGlobalOptions [ 'rotate_order' ];
+	$wptbGSRotateCount 			= $wptbGlobalOptions [ 'rotate_count' ];
+	$wptbGSRotateHideLastTopBar = $wptbGlobalOptions [ 'rotate_hide_last' ];
+	$wptbGSCustomSamplesPath	= $wptbGlobalOptions [ 'custom_samples_path' ];
+			
 	if (isset($_POST['wptbrotatetopbars'])) {
-		$wptbRotateTopbars = $_POST['wptbrotatetopbars'];
+		$wptbGSRotateTopbars = $_POST['wptbrotatetopbars'];
 	}
 	if (isset($_POST['wptbrotatedisplaytime'])) {
 		if (!is_numeric($_POST['wptbrotatedisplaytime'])) {
-			echo '<div class="error"><strong>Rotation Display Time is not numeric. Resetting to 9000.</strong></div>';
-			$wptbRotateDisplayTime = 9000;
+			echo '<div class="error"><strong>'.__('Rotation Display Time is not numeric. Resetting to 9000.','wp-topbar').'</strong></div>';
+			$wptbGSRotateDisplayTime = 9000;
 		} 
 		else
-			$wptbRotateDisplayTime = $_POST['wptbrotatedisplaytime']+0;
+			$wptbGSRotateDisplayTime = $_POST['wptbrotatedisplaytime']+0;
 	}
 	if (isset($_POST['wptbrotatestartdelay'])) {
 		if (!is_numeric($_POST['wptbrotatestartdelay'])) {
-			echo '<div class="error"><strong>Rotation Start Delay is not numeric. Resetting to 1000.</strong></div>';
-			$wptbRotateStartDelay = 1000;
+			echo '<div class="error"><strong>'.__('Rotation Start Delay is not numeric. Resetting to 1000.','wp-topbar').'</strong></div>';
+			$wptbGSRotateStartDelay = 1000;
 		} 
 		else 	
-			$wptbRotateStartDelay = $_POST['wptbrotatestartdelay']+0;
+			$wptbGSRotateStartDelay = $_POST['wptbrotatestartdelay']+0;
 	}
 	
 	if ( isset($_POST [ 'wptbrotateorder' ]) ) {
-		$wptbRotateOrder = $_POST [ 'wptbrotateorder' ] ;
+		$wptbGSRotateOrder = $_POST [ 'wptbrotateorder' ] ;
 	}
 	
 	if ( isset($_POST [ 'wptbrotatecount' ]) ) {
 		if (!is_numeric($_POST['wptbrotatecount'])) {
-			echo '<div class="error"><strong>Rotation Count is not numeric. Resetting to 0.</strong></div>';
-			$wptbRotateCount = 0;
+			echo '<div class="error"><strong>'.__('Rotation Count is not numeric. Resetting to 0.','wp-topbar').'</strong></div>';
+			$wptbGSRotateCount = 0;
 		} 
 		else 
-			$wptbRotateCount = $_POST [ 'wptbrotatecount' ]+0;
+			$wptbGSRotateCount = $_POST [ 'wptbrotatecount' ]+0;
 	}
 	if ( isset($_POST [ 'wptbrotatehidelast' ]) ) {
-		$wptbRotateHideLastTopBar = $_POST [ 'wptbrotatehidelast' ];
+		$wptbGSRotateHideLastTopBar = $_POST [ 'wptbrotatehidelast' ];
 	}
+	if ( isset($_POST [ 'wptbcustompath' ]) ) {
+		$wptbGSCustomSamplesPath = trim( $_POST [ 'wptbcustompath' ] );
+		if ( $wptbGSCustomSamplesPath != "" && substr($wptbGSCustomSamplesPath,-1) != "/" )
+			$wptbGSCustomSamplesPath .= "/";
+	}
+	
+	if ( $wptbGSCustomSamplesPath == "/" )
+		$wptbGSCustomSamplesPath = "";
+
 
 	$wptbGlobalOptions = array(
-	  'rotate_topbars'			=> $wptbRotateTopbars,
-	  'rotate_display_time' 	=> $wptbRotateDisplayTime,
-	  'rotate_start_delay' 		=> $wptbRotateStartDelay,
-	  'rotate_order'			=> $wptbRotateOrder,
-	  'rotate_count'	 		=> $wptbRotateCount,
-	  'rotate_hide_last'		=> $wptbRotateHideLastTopBar
+	  'rotate_topbars'			=> $wptbGSRotateTopbars,
+	  'rotate_display_time' 	=> $wptbGSRotateDisplayTime,
+	  'rotate_start_delay' 		=> $wptbGSRotateStartDelay,
+	  'rotate_order'			=> $wptbGSRotateOrder,
+	  'rotate_count'	 		=> $wptbGSRotateCount,
+	  'rotate_hide_last'		=> $wptbGSRotateHideLastTopBar,
+	  'custom_samples_path'		=> $wptbGSCustomSamplesPath
 	);
 	
 	update_option( "wptb_global_options", $wptbGlobalOptions ); 
@@ -934,17 +957,17 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbpriority'])) {
 	
 		if (!is_numeric($_POST['wptbpriority'])) {
-			echo '<div class="error"><strong>Priority is not numeric. Resetting to 25.</strong></div>';
+			echo '<div class="error"><strong>'.__('Priority is not numeric. Resetting to 25.','wp-topbar').'</strong></div>';
 			$wptbOptions['weighting_points'] = 25;
 		} 
 		else 	
 			$wptbOptions['weighting_points'] = $_POST['wptbpriority']+0;
 			if ( $wptbOptions['weighting_points'] > 100 ) {
-				echo '<div class="error"><strong>Priority is greater than 100. Resetting to 100.</strong></div>';
+				echo '<div class="error"><strong>'.__('Priority is greater than 100. Resetting to 100.','wp-topbar').'</strong></div>';
 				$wptbOptions['weighting_points'] = 100;				
 			}
 			else if ( $wptbOptions['weighting_points'] < 0 ) {
-				echo '<div class="error"><strong>Priority is less than 1. Resetting to 1.</strong></div>';
+				echo '<div class="error"><strong>'.__('Priority is less than 1. Resetting to 1.','wp-topbar').'</strong></div>';
 				$wptbOptions['weighting_points'] = 1;				
 			}
 	}
@@ -993,7 +1016,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbbottomborderheight'])) {
 	
 		if (!is_numeric($_POST['wptbbottomborderheight'])) {
-			echo '<div class="error"><strong>Bottom border height is not numeric. Resetting to 3px.</strong></div>';
+			echo '<div class="error"><strong>'.__('Bottom border height is not numeric. Resetting to 3px.','wp-topbar').'</strong></div>';
 				$wptbOptions['bottom_border_height'] = 3;
 		} 
 		else 	
@@ -1002,7 +1025,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbdelayintime'])) {
 	
 		if (!is_numeric($_POST['wptbdelayintime'])) {
-			echo '<div class="error"><strong>Delay time is not numeric. Resetting to zero.</strong></div>';
+			echo '<div class="error"><strong>'.__('Delay time is not numeric. Resetting to zero.','wp-topbar').'</strong></div>';
 				$wptbOptions['delay_time'] = 0;
 		} 
 		else 	
@@ -1011,7 +1034,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbslidetime'])) {
 	
 		if (!is_numeric($_POST['wptbslidetime'])) {
-			echo '<div class="error"><strong>Slide time is not numeric. Resetting to zero.</strong></div>';
+			echo '<div class="error"><strong>'.__('Slide time is not numeric. Resetting to zero.','wp-topbar').'</strong></div>';
 			$wptbOptions['slide_time'] = 0;
 		} 
 		else 	
@@ -1020,7 +1043,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbdisplaytime'])) {
 	
 		if (!is_numeric($_POST['wptbdisplaytime'])) {
-			echo '<div class="error"><strong>Display time is not numeric. Resetting to zero.</strong></div>';
+			echo '<div class="error"><strong>'.__('Display time is not numeric. Resetting to zero.','wp-topbar').'</strong></div>';
 			$wptbOptions['display_time'] = 0;
 		} 
 		else 	
@@ -1029,7 +1052,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbscrollamount'])) {
 	
 		if (!is_numeric($_POST['wptbscrollamount'])) {
-			echo '<div class="error"><strong>Scroll Amount is not numeric. Resetting to zero.</strong></div>';
+			echo '<div class="error"><strong>'.__('Scroll Amount is not numeric. Resetting to zero.','wp-topbar').'</strong></div>';
 			$wptbOptions['scroll_amount'] = 0;
 		} 
 		else 	
@@ -1048,7 +1071,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbfontsize'])) {
 	
 		if (!is_numeric($_POST['wptbfontsize'])) {
-			echo '<div class="error"><strong>Top padding is not numeric. Resetting to 8px.</strong></div>';
+			echo '<div class="error"><strong>'.__('Font size is not numeric. Resetting to 8px.','wp-topbar').'</strong></div>';
 			$wptbOptions['font_size'] = 8;
 		} 
 		else 	
@@ -1057,7 +1080,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbpaddingtop'])) {
 	
 		if (!is_numeric($_POST['wptbpaddingtop'])) {
-			echo '<div class="error"><strong>Top padding is not numeric. Resetting to 8px.</strong></div>';
+			echo '<div class="error"><strong>'.__('Top padding is not numeric. Resetting to 8px.','wp-topbar').'</strong></div>';
 			$wptbOptions['padding_top'] = 8;
 		} 
 		else 	
@@ -1066,7 +1089,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbpaddingbottom'])) {
 	
 		if (!is_numeric($_POST['wptbpaddingbottom'])) {
-			echo '<div class="error"><strong>Bottom padding is not numeric. Resetting to 8px.</strong></div>';
+			echo '<div class="error"><strong>'.__('Bottom padding is not numeric. Resetting to 8px.','wp-topbar').'</strong></div>';
 			$wptbOptions['padding_bottom'] = 8;
 		} 
 		else 	
@@ -1075,7 +1098,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbmargintop'])) {
 	
 		if (!is_numeric($_POST['wptbmargintop'])) {
-			echo '<div class="error"><strong>Top margin is not numeric. Resetting to 0px.</strong></div>';
+			echo '<div class="error"><strong>'.__('Top margin is not numeric. Resetting to 0px.','wp-topbar').'</strong></div>';
 			$wptbOptions['margin_top'] = 0;
 		} 
 		else 	
@@ -1084,7 +1107,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbmarginbottom'])) {
 	
 		if (!is_numeric($_POST['wptbmarginbottom'])) {
-			echo '<div class="error"><strong>Bottom margin is not numeric. Resetting to 0px.</strong></div>';
+			echo '<div class="error"><strong>'.__('Bottom margin is not numeric. Resetting to 0px.','wp-topbar').'</strong></div>';
 			$wptbOptions['margin_bottom'] = 0;
 		} 
 		else 	
@@ -1093,7 +1116,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbmarginleft'])) {
 	
 		if (!is_numeric($_POST['wptbmarginleft'])) {
-			echo '<div class="error"><strong>left margin is not numeric. Resetting to 0px.</strong></div>';
+			echo '<div class="error"><strong>'.__('Left margin is not numeric. Resetting to 0px.','wp-topbar').'</strong></div>';
 			$wptbOptions['margin_left'] = 0;
 		} 
 		else 	
@@ -1102,7 +1125,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbmarginright'])) {
 	
 		if (!is_numeric($_POST['wptbmarginright'])) {
-			echo '<div class="error"><strong>right margin is not numeric. Resetting to 0px.</strong></div>';
+			echo '<div class="error"><strong>'.__('Right margin is not numeric. Resetting to 0px.','wp-topbar').'</strong></div>';
 			$wptbOptions['margin_right'] = 0;
 		} 
 		else 	

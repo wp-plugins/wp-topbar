@@ -2,6 +2,9 @@
 
 /*
 Uninstall Option Tab
+
+i18n Compatible
+
 */
 
 
@@ -22,13 +25,13 @@ function wptb_uninstall_options() {
 
 
 	if ( is_multisite() ) {
-		$uninstall_buttons = '<input type="submit" name="uninstall_Network_wptbSettings"   class="button-primary" value="Network Uninstall" />
-							  <input type="submit" name="nouninstall_Network_wptbSettings" class="button-primary" value="Cancel" />';
+		$uninstall_buttons = '<input type="submit" name="uninstall_Network_wptbSettings"   class="button-primary" value="'.__('Network Uninstall','wp-topbar').'" />
+							  <input type="submit" name="nouninstall_Network_wptbSettings" class="button-primary" value="'.__('Cancel','wp-topbar').'" />';
 		$url=get_option('siteurl')."/wp-admin/network/?page=wp-topbar.php&amp;action=networkuninstall&amp;noheader=true";
 	}
 	else {
-		$uninstall_buttons = '<input type="submit" name="uninstall_wptbSettings"   class="button-primary" value="Uninstall" />
-							  <input type="submit" name="nouninstall_wptbSettings" class="button-primary" value="Cancel" />';
+		$uninstall_buttons = '<input type="submit" name="uninstall_wptbSettings"   class="button-primary" value="'.__('Uninstall','wp-topbar').'" />
+							  <input type="submit" name="nouninstall_wptbSettings" class="button-primary" value="'.__('Cancel','wp-topbar').'" />';
 		$url=get_option('siteurl')."/wp-admin/?page=wp-topbar.php&amp;action=uninstall&amp;noheader=true";
 	}
 		
@@ -42,12 +45,12 @@ function wptb_uninstall_options() {
 	<div class="wrap">
     <h2>Uninstall Options</h2>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
-This operation deletes ALL TopBar data. If you continue, You will not be able to retrieve or restore your TopBars.</br>
+<?php _e('This operation deletes ALL TopBar data. If you continue, You will not be able to retrieve or restore your TopBars.','wp-topbar'); ?></br>
 <?php 
 	if ( is_multisite() )
-		echo "</br>Since you are on a Multi Site install, this will delete the data for <strong>ALL</strong> blogs.</br>";	
+		echo '</br>'.__('Since you are on a Multi Site install, this will delete the data for <strong>ALL</strong> blogs.','wp-topbar').'</br>';	
 	?>
-<strong></br>If you elect to uninstall, you will be redirected to the WordPress Plugin page so that you can de-activate and uninstall the Plugin.</strong></br>
+<strong></br><?php _e('If you elect to uninstall, you will be redirected to the WordPress Plugin page so that you can de-activate and uninstall the Plugin.','wp-topbar'); ?></strong></br>
   			</br>	      
   	      
   	      </p> 

@@ -2,6 +2,9 @@
 
 /*
 Admin Page
+
+i18n Compatible
+
 */
 
 //=========================================================================		
@@ -22,8 +25,10 @@ Admin Page
 function wptb_admin_notice() {
 		$wptbOptions = get_option('wptbAdminOptions');
 
-		if ( isset( $wptbOptions['enable_topbar'] ) ) 
-		echo '<div class="error"><p><strong>' . sprintf( 'WP TopBar settings need to be updated.  Please go to the <a href="%s">plugin admin page</a> to update the settings.', admin_url( '?page=wp-topbar.php' ) ) . '</strong></p></div>';
+		if ( isset( $wptbOptions['enable_topbar'] ) )
+			echo '<div class="error"><p><strong>'.sprintf( __('WP TopBar settings need to be updated.  Please go to the <a href="%s">plugin admin page</a> to update the settings.', 'wp-topbar'), admin_url( '?page=wp-topbar.php' ) ). '</strong></p></div>';
+
+
 }
 
 
@@ -35,7 +40,8 @@ function wptb_options_page() {
 	global $WPTB_VERSION;
 
 	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
-	$wptbRotateTopbars = $wptbGlobalOptions [ 'rotate_topbars' ];
+	$wptbGSRotateTopbars = $wptbGlobalOptions [ 'rotate_topbars' ];
+	$wptbGSCustomSamplesPath = $wptbGlobalOptions [ 'custom_samples_path' ];
 
 	require_once( dirname(__FILE__).'/wp-topbar-db-io.php');  //database and I-O functions php
 	require_once( dirname(__FILE__).'/wp-topbar-export.php');  //export functions
@@ -105,7 +111,7 @@ function wptb_options_page() {
 		   color: black;
 		   margin-left:auto;
 		   margin-right:auto;
-		   width:130px;
+		   width:230px;
 		   font-size: 10px;
 		   font-family: 'Lucida Grande', Helvetica, Arial, Sans-Serif;
 		   text-decoration: none;
@@ -124,7 +130,7 @@ function wptb_options_page() {
 	if($wptb_debug) {
 		echo '</br><code>WP-TopBar Debug Mode: wptb_options_page() - Action: '.$action.'</code>';
 		echo '</br><code>WP-TopBar Debug Mode: Debug Until:', date('D, d M Y H:i:s (e)',get_transient( 'wptb_debug' )),'</code>';	
-		echo '</br><code>WP-TopBar Debug Mode: Roate TopBars Setting:', $wptbRotateTopbars ,'</code>';	
+		echo '</br><code>WP-TopBar Debug Mode: Roate TopBars Setting:', $wptbGSRotateTopbars ,'</code>';	
 	}
 // check page we are displaying, if > that max possible pages, then reset to max_pages
 
@@ -217,10 +223,10 @@ function wptb_options_page() {
             break;
             
         case 'copysample' :
-    		$file_data = file_get_contents( dirname(__FILE__).'/samples/sample_topbars.json');
-			$data = json_decode($file_data, true);			
-		  	$wptbOptions = wptb_fix_sample_row($data [$wptb_barid - 1]);			
-			wtpb_insert_row($wptbOptions);
+			$data = wptb_get_sample_data();			
+		  	$wptbOptions = $data [$wptb_barid - 1];			
+		  	$wptbOptions['enable_topbar'] = 'false';
+  			wtpb_insert_row($wptbOptions);
 	        wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table'.$current_page);			
         	break;
         	
@@ -330,7 +336,7 @@ function wptb_options_page() {
         case 'insertdefault' :
 			wptb_display_admin_header();
         	wptb_options_tabs('table');
-    		echo '<div class="updated"><p><strong>Inserted default row.</strong></p></div>';
+    		echo '<div class="updated"><p><strong>'.__('Inserted default row.','wp-topbar').'</strong></p></div>';
         	wptb_display_all_TopBars();
             break;        
         case 'samples' :

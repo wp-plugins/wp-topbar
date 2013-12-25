@@ -4,13 +4,15 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.8
-Stable tag: 5.16
+Stable tag: 5.17
 
-Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes schedules! 
+Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler! 
 
 == Description ==
 
 Create **MULTIPLE** TopBars that will be shown at the top (or bottom) of your website.  The Cacheable TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even add your own PHP. You can easily lose track of time getting your TopBars perfect!
+
+Version 5.17 is now i18n compatible -- now just need your help adding new translations. (I did inlcude a Fench translation -- but only about ~10% is actually translated.) You can also now have your own custom TopBars added to the Samples tab (see FAQ for details).
 
 Version 5.14 gives you more Rotation options, makes it easier to enable/disable a TopBar and gives you more control with Network installs.
 
@@ -73,6 +75,10 @@ I've included a sample image for you to try on your website:  wp-topbar_sample_i
 
 == Frequently Asked Questions ==
 
+= I have a new translation  =
+
+Contact me to help with a translation: http://zwebify.com/contact/  I will install at the next update.
+
 = My TopBar is not working. What should I do? =
 Are you upgrading from an old version?   I do my best to allow for clean upgrades.  Just in case, try creating a default TopBar.  If that works, you may have CSS or other incompatabilities on the older TopBar that does not work with the latest version.  
 
@@ -101,7 +107,15 @@ Of course, make a backup of your table first!
 
 (Thanks to samhat for help on this one!)
 
-= How does the Include/Exclude logic (in version 3.10) work behind the scenes? = 
+= How can I have my own custom TopBars show on the Samples tab? = 
+
+First create all the TopBars you want as custom Samples.   Then export the TopBars in the JSON format.   Now, create a location on your server to store the files.   For example ../wp/wp-content/plugins/wp-topbar-samples.   Next rename the export file to custom_topbars.json. Now move that file, plus any images you need into the directory you created.  Finally, go to the General Settings Tab and enter the URL for the directory in the "Custom Samples URL" field.  Make sure you have <code>allow_url_fopen</code> turned on in your php.ini (otherwise, we cannot read the file.)  Now, the TopBar will first display the Standard samples then the TopBars from your custom_topbars.json file.  You can then copy these new TopBars just like the Standard samples.   
+
+= How do the Rotate Toolbars Global Setting work? = 
+
+This new settings will select all the valid TopBars that can be shown on a pageview (e.g. those that match all the control, date/time criteria.)  Then it will rotate through the TopBars in priority order - with the TopBars with the highest priority shown first.   This option will override the use of Close Buttons or Re-open Buttons.  It will also ignore the Scroll Action option.   You can set the delay between TopBars on in the Global Settings tab.
+
+= How does the Include/Exclude logic work behind the scenes? = 
 
 You have four choices to handle include (or exclude) the TopBar from showing:
  Page ID - this only checks the current page's ID against the list you entered.
@@ -111,10 +125,7 @@ You have four choices to handle include (or exclude) the TopBar from showing:
  
 The default is to check by PageId.
 
-= How do the new Rotate Toolbars Global Setting (in version 4.13+) work? = 
-This new settings will select all the valid TopBars that can be shown on a pageview (e.g. those that match all the control, date/time criteria.)  Then it will rotate through the TopBars in priority order - with the TopBars with the highest priority shown first.   This option will override the use of Close Buttons or Re-open Buttons.  It will also ignore the Scroll Action option.   You can set the delay between TopBars on in the Global Settings tab.
-
-= How do the cookies (in version 3.04) work behind the scenes? = 
+= How do the cookies work behind the scenes? = 
 
 If you allow the user to close the TopBar, then the plugin checks to see if you have enabled cookies.   If they are not enabled, it deletes any existing cookies.   If they are enabled, it looks to see if a cookie has been created.  A cookie is only created if the TopBar has been previously closed by the user.  If it finds a cookie, it prevents the TopBar from showing.
 
@@ -122,7 +133,7 @@ If you change the Cookie Value to something new, the TopBar will show up again. 
 
 With Version 4.00+, all TopBars must share the same cookie settings for this to work. You can set the TopBars to be the same by using the new Close Button tab on the main page
 
-= How does the Priority field (in version 4.00+) work? =
+= How does the Priority field work? =
 
 The Plugin randomly selects a valid TopBar to show using this field to skew how they are selected. The TopBar multiplies a random number (between 0 and 1) with the TopBar's Priority value (which is a number between 1 to 100). A higher number means this TopBar will be selected more frequently; a lower number means less frequently. 
 
@@ -169,6 +180,10 @@ IE does not (yet) implement gradients like other browsers.  So, make sure you te
 Go to the Uninstall tab (or if are on a Multi Site install, you first need to login as a Super Admin then select the Uninstall from the TopBar Menu List) and then click the Uninstall button at the bottom of the page.   You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the Plugin
 
 == Upgrade Notice ==
+
+= 5.17 = 
+
+Version 5.17 adds localization support.  Need your help providing translation files. (I did inlcude a Fench translation -- but only about ~10% is actually translated.) Also adds a way to include your own sample TopBars.
 
 = 5.16 = 
 
@@ -343,6 +358,12 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+= 5.17 - 12/25/2013 =
+
+1. CHANGED: 	Re-wrote all the admin pages to add localization (i18n) support. (I did inlcude a Fench translation -- but only about ~10% is actually translated. There is also a machine translated Spanish/Mexican version that needs double checking: DRAFT-wp-topbar-es_MX.po). Contact me to help with a translation: http://zwebify.com/contact/
+2. ADDED:		Ability to add your own TopBars to the Samples tab.  See FAQ for details.
+3. FIXED:		Fixed a few defects throughout the various admin pages.
+4. UPDATED:		Updated the sample_toolbars.json file to account for new options introduced in earlier versions.
 
 = 5.16 - 12/12/2013 =
 
