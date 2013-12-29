@@ -142,9 +142,9 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid, $wptbOptio
 					</td>
 					<td>
 					<?php if ($wptbOptions['enable_topbar'] == "false")
-					echo "<span class='wtpb-off-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/off.png', __FILE__).')"'."></span>";
+					echo "<span class='wptb-off-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/off.png', __FILE__).')"'."></span>";
 				else
-					echo  "<span class='wtpb-on-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/on.png', __FILE__).')"'."></span>";
+					echo  "<span class='wptb-on-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/on.png', __FILE__).')"'."></span>";
 					?>
 					</td>
 				</tr>
@@ -173,9 +173,8 @@ function wptb_display_admin_header() {
 		echo '</br><code>WP-TopBar Debug Mode: wptb_display_admin_header()</code>';
 
 	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
-	$wptbGSCustomSamplesPath	= $wptbGlobalOptions [ 'custom_samples_path' ];
 
-	if ($wptbGSCustomSamplesPath != "" && filter_var($wptbGSCustomSamplesPath, FILTER_VALIDATE_URL) === FALSE ) 
+	if ($wptbGlobalOptions [ 'custom_samples_path' ] != "" && filter_var($wptbGlobalOptions [ 'custom_samples_path' ], FILTER_VALIDATE_URL) === FALSE ) 
 		echo '<div class="error"><strong>'.__('The Custom Samples Directory is not a valid URL. To fix this go to the', 'wp-topbar')." <a href='?page=wp-topbar.php&action=globalsettings'>".__('Global Settings tab','wp-topbar').'</a></strong></div>';
 		
 	?>  
@@ -212,7 +211,6 @@ function wptb_display_admin_header() {
 function wptb_display_common_info($wptbOptions) {
 
 	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
-	$wptbGSRotateTopbars = $wptbGlobalOptions [ 'rotate_topbars' ];
 	
    	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
    	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
@@ -237,14 +235,14 @@ function wptb_display_common_info($wptbOptions) {
 	// Display Warning Messges for any possible incompatible plugin settings.
 	// 
 	
-	if (($wptbGSRotateTopbars == "yes") && ($wptbOptions['scroll_action'] == "on")) 
+	if (($wptbGlobalOptions [ 'rotate_topbars' ] == "yes") && ($wptbOptions['scroll_action'] == "on")) 
 		echo '<div class="error"><strong>'.__('You have allowed the Scroll Action on for this TopBar and have the Rotate TopBars turned on in the Global Settings tab. Scroll Action option is ignored if the TopBars are being rotated. To fix this go to the', 'wp-topbar')." <a href='?page=wp-topbar.php&action=main&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>".__('Main Options tab','wp-topbar').'</a></strong></div>';
 
 
-	if (($wptbGSRotateTopbars == "yes") && ($wptbOptions['allow_close'] == "yes")) 
+	if (($wptbGlobalOptions [ 'rotate_topbars' ] == "yes") && ($wptbOptions['allow_close'] == "yes")) 
 		echo '<div class="error"><strong>'.__('You have allowed the TopBar to be closed and have the Rotate TopBars turned on in the Global Settings tab. Close buttons are ignored if the TopBars are being rotated. To fix this go to the', 'wp-topbar')." <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>".__('Close Button tab','wp-topbar').'</a></strong></div>';
 
-	if (($wptbGSRotateTopbars == "yes") && ($wptbOptions['allow_reopen'] == "yes"))
+	if (($wptbGlobalOptions [ 'rotate_topbars' ] == "yes") && ($wptbOptions['allow_reopen'] == "yes"))
 		echo '<div class="error"><strong>'.__('You have turned on the Re-Open TopBar option and have the Rotate TopBars turned on in the Global Settings tab. Re-open buttons are ignored if the TopBars are being rotated. To fix this go to the', 'wp-topbar')." <a href='?page=wp-topbar.php&action=closebutton&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."#location'>".__('Close Button tab','wp-topbar').'</a></strong></div>';
 
 	if (($wptbOptions['topbar_pos'] == 'footer') && (strpos($wptbOptions['div_css'], "bottom") === false))
@@ -285,7 +283,7 @@ function wptb_display_common_info($wptbOptions) {
 	// end of Warning Messges
 	// 
 
-	if ( $wptbGSRotateTopbars == "yes" ) {				// force these to off/no if Rotate is turned on
+	if ( $wptbGlobalOptions [ 'rotate_topbars' ] == "yes" ) {				// force these to off/no if Rotate is turned on
 		$wptbOptions['scroll_action'] = "off";
 		$wptbOptions['allow_reopen'] = "no";
 		$wptbOptions['allow_close'] = "no";
@@ -375,7 +373,7 @@ function wptb_display_common_info($wptbOptions) {
 			<br/><?php _e('To test the TopBar on your site, you can set the Page IDs (on the','wp-topbar'); ?> <a href="?page=wp-topbar.php&action=control&barid=<?php echo ($wptbOptions['bar_id']+$wptb_barid_prefix); ?>"><?php _e('Control tab','wp-topbar'); ?></a>) <?php _e('to a single page (and not your home page.) Then go to that Page to see how the TopBar is working.'.
 			'<br/> The first black line below represents the top of the screen.  The second black line represents the bottom of the TopBar.</p>','wp-topbar'); ?>
 			<?php 
-			if ( $wptbGSRotateTopbars == "yes" ) 
+			if ( $wptbGlobalOptions [ 'rotate_topbars' ] == "yes" ) 
 				echo __('The <strong>Rotate TopBars</strong> option is turned on in the','wp-topbar')." <a href='?page=wp-topbar.php&action=globalsettings'>".__('Global Settings tab','wp-topbar')."</a>.  ".__('With this turned ON, the Scrollable, Close Button, and Re-Open options are <strong>ignored and turned off</strong>.','wp-topbar').'<br/><br/>';
 			if (isset( $_GET['action'] ) && ( $_GET['action'] == 'phptexttab' ) ) {
 		        echo __('<strong>IF THE TopBar IS NOT RENDERING CORRECTLY</strong> in the Preview section below and is breaking the page, then your custom PHP needs to be fixed','wp-topbar').'</br><ul>'.__('You have two options To fix this this:','wp-topbar').
@@ -530,15 +528,15 @@ function wptb_display_all_TopBars() {
 
 			case "enable_topbar": 
 				if ($item[$column_name] == 'false')								
-					return sprintf( "<span class='wtpb-off-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/off.png', __FILE__).')"'."></span>");
+					return sprintf( "<span class='wptb-off-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/off.png', __FILE__).')"'."></span>");
 				else
-					return sprintf( "<span class='wtpb-on-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/on.png', __FILE__).')"'."></span>");
+					return sprintf( "<span class='wptb-on-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/on.png', __FILE__).')"'."></span>");
 					break;
 			case "show_it": 
 				if ($item[$column_name] == 0 )							
-					return sprintf( "<span class='wtpb-off-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/off.png', __FILE__).')"'."></span>");
+					return sprintf( "<span class='wptb-off-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/off.png', __FILE__).')"'."></span>");
 				else
-					return sprintf( "<span class='wtpb-on-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/on.png', __FILE__).')"'."></span>");
+					return sprintf( "<span class='wptb-on-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/on.png', __FILE__).')"'."></span>");
 					break;
 			case "start_time": 
 			case "end_time": 
@@ -622,9 +620,8 @@ function wptb_display_all_TopBars() {
 		
 		
 		$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
-		$wptbGSRotateTopbars = $wptbGlobalOptions [ 'rotate_topbars' ];
 
-		if ( $wptbGSRotateTopbars == "yes" ) {				// force these to off/no if Rotate is turned on
+		if ( $wptbGlobalOptions [ 'rotate_topbars' ] == "yes" ) {				// force these to off/no if Rotate is turned on
 			$item['scroll_action'] = "off";
 			$item['allow_reopen'] = "no";
 			$item['allow_close'] = "no";
@@ -900,7 +897,7 @@ function wptb_display_all_TopBars() {
 				foreach ($barids as $key => $barid) {
 				  	$wptbOptions=wptb_get_Specific_TopBar($barid);
 		  			$wptbOptions['enable_topbar']='false';
-		  			wtpb_insert_row($wptbOptions);
+		  			wptb_insert_row($wptbOptions);
 		  		}
   				if ($n > 0) {
 		            $wptb_i18n = sprintf( _n('%d row duplicated.', '%d rows duplicated.', $n, 'wp-topbar'), $n );
@@ -1045,11 +1042,12 @@ function wptb_display_all_TopBars() {
 	 //Prepare Table of elements
 	$wp_list_table = new wptb_All_TopBar_Table();
 	$wp_list_table->prepare_items();
+	global $WPTB_DB_VERSION;
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 	$myrows = $wpdb->get_results( 'SELECT * FROM '.$wptb_table_name);
 	if ( $wpdb->num_rows == 0 ){
-		$wptbOptions=wtpb_insert_default_row();
+		$wptbOptions=wptb_insert_default_row($WPTB_DB_VERSION);
 		$wp_list_table->prepare_items();
 		echo '<div class="updated"><p><strong>'.__('All TopBars deleted; created default TopBar.','wp-topbar').'</strong></p></div>';
 	}
@@ -1132,7 +1130,6 @@ function wptb_test_topbar($number_to_show) {
 		echo '</br><code>WP-TopBar Debug Mode: wptb_test_topbar() for ID: '.$number_to_show.'</code>';
 
 	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
-	$wptbGSRotateTopbars = $wptbGlobalOptions [ 'rotate_topbars' ];
 
 	?>
     <div class="wrap">
@@ -1171,7 +1168,7 @@ function wptb_test_topbar($number_to_show) {
 		$wptbOptions=wptb_get_Random_TopBar();
 		if (isset ( $wptbOptions ['bar_id'] ) ) {
 
-			if ( $wptbGSRotateTopbars == "yes" ) {				// force these to off/no if Rotate is turned on
+			if ( $wptbGlobalOptions [ 'rotate_topbars' ] == "yes" ) {				// force these to off/no if Rotate is turned on
 				$wptbOptions['scroll_action'] = "off";
 				$wptbOptions['allow_reopen'] = "no";
 				$wptbOptions['allow_close'] = "no";

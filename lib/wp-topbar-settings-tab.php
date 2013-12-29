@@ -25,14 +25,6 @@ function wptb_globalsettings_options() {
 	
 	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
 	
-	$wptbGSRotateTopbars 		= $wptbGlobalOptions [ 'rotate_topbars' ];
-	$wptbGSRotateDisplayTime 	= $wptbGlobalOptions [ 'rotate_display_time' ];
-	$wptbGSRotateStartDelay		= $wptbGlobalOptions [ 'rotate_start_delay' ];
-	$wptbGSRotateOrder 			= $wptbGlobalOptions [ 'rotate_order' ];
-	$wptbGSRotateCount 			= $wptbGlobalOptions [ 'rotate_count' ];
-	$wptbGSRotateHideLastTopBar = $wptbGlobalOptions [ 'rotate_hide_last' ];
-	$wptbGSCustomSamplesPath	= $wptbGlobalOptions [ 'custom_samples_path' ];
-	
 	?>
 	
 	<div class="postbox">
@@ -53,8 +45,8 @@ function wptb_globalsettings_options() {
 					<td width="150"><?php _e('Rotate TopBars','wp-topbar'); ?>:</label></td>
 					<td width="300">
 					 	<p id="radio1" class="ui-button ui-button-wptbset">
-							<input type="radio" id="wptbrotatetopbars1" name="wptbrotatetopbars" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbGSRotateTopbars == "yes") { echo 'checked="checked"'; }?>><label for="wptbrotatetopbars1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Yes','wp-topbar'); ?></span></label>
-							<input type="radio" id="wptbrotatetopbars2" name="wptbrotatetopbars" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbGSRotateTopbars == "no") { echo 'checked="checked"'; }?>><label for="wptbrotatetopbars2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('No','wp-topbar'); ?></span></label>
+							<input type="radio" id="wptbrotatetopbars1" name="wptbrotatetopbars" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbGlobalOptions [ 'rotate_topbars' ] == "yes") { echo 'checked="checked"'; }?>><label for="wptbrotatetopbars1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Yes','wp-topbar'); ?></span></label>
+							<input type="radio" id="wptbrotatetopbars2" name="wptbrotatetopbars" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbGlobalOptions [ 'rotate_topbars' ] == "no") { echo 'checked="checked"'; }?>><label for="wptbrotatetopbars2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('No','wp-topbar'); ?></span></label>
 						</p>						
 					</td>
 					<td>
@@ -64,8 +56,8 @@ function wptb_globalsettings_options() {
 				<tr valign="top">
 					<td width="150"><?php _e('Rotation Start Delay','wp-topbar'); ?>:</td>
 					<td>
-						<input type="text" name="wptbrotatestartdelay" id="rotatestartdelay" size="30" value="<?php echo $wptbGSRotateStartDelay; ?>" >
-						<div id="wtpb-rotatestartdelay"></div>
+						<input type="text" name="wptbrotatestartdelay" id="rotatestartdelay" size="30" value="<?php echo $wptbGlobalOptions [ 'rotate_start_delay' ]; ?>" >
+						<div id="wptb-rotatestartdelay"></div>
 					</td>
 					<td>
 						<p class="sub"><em><?php _e('Enter the amount of time (in milliseconds) for the TopBar to delay before displaying each TopBar.  No TopBar will be displayed during this time.  Enter 0 for no delay. Default is <code>1000</code>','wp-topbar'); ?>.</em></p>
@@ -74,8 +66,8 @@ function wptb_globalsettings_options() {
 				<tr valign="top">
 					<td width="150"><?php _e('Rotation Display Time','wp-topbar'); ?>:</td>
 					<td>
-						<input type="text" name="wptbrotatedisplaytime" id="rotatedisplaytime" size="30" value="<?php echo $wptbGSRotateDisplayTime; ?>" >
-						<div id="wtpb-rotatedisplaytime"></div>
+						<input type="text" name="wptbrotatedisplaytime" id="rotatedisplaytime" size="30" value="<?php echo $wptbGlobalOptions [ 'rotate_display_time' ]; ?>" >
+						<div id="wptb-rotatedisplaytime"></div>
 					</td>
 					<td>
 						<p class="sub"><em><?php _e('Enter the amount of time (in milliseconds) for the TopBar to display before rotating for the next TopBar.  Enter 0 for no delay (not recommended!)  Default is <code>9000</code>.','wp-topbar'); ?></em></p>
@@ -84,8 +76,8 @@ function wptb_globalsettings_options() {
 				<tr valign="top">
 					<td width="150"><?php _e('Rotation Count','wp-topbar'); ?>:</td>
 					<td>
-						<input type="text" name="wptbrotatecount" id="rotatecount" size="30" value="<?php echo $wptbGSRotateCount; ?>" >
-						<div id="wtpb-rotatecount"></div>
+						<input type="text" name="wptbrotatecount" id="rotatecount" size="30" value="<?php echo $wptbGlobalOptions [ 'rotate_count' ]; ?>" >
+						<div id="wptb-rotatecount"></div>
 					</td>
 					<td>
 						<p class="sub"><em><?php _e('Enter the number of times the TopBar should be shown.  Enter 0 to continuously rotate.  Default is <code>0</code>.','wp-topbar'); ?></em></p>
@@ -95,8 +87,8 @@ function wptb_globalsettings_options() {
 					<td width="150"><?php _e('Hide Last TopBar on Rotation','wp-topbar'); ?>:</label></td>
 					<td>
 					 	<p id="radio2" class="ui-button ui-button-wptbset">
-							<input type="radio" id="wptbrotatehidelast1" name="wptbrotatehidelast" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbGSRotateHideLastTopBar == "yes") { echo 'checked="checked"'; }?>><label for="wptbrotatehidelast1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Yes','wp-topbar'); ?></span></label>
-							<input type="radio" id="wptbrotatehidelast2" name="wptbrotatehidelast" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbGSRotateHideLastTopBar == "no") { echo 'checked="checked"'; }?>><label for="wptbrotatehidelast2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('No','wp-topbar'); ?></span></label>
+							<input type="radio" id="wptbrotatehidelast1" name="wptbrotatehidelast" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbGlobalOptions [ 'rotate_hide_last' ] == "yes") { echo 'checked="checked"'; }?>><label for="wptbrotatehidelast1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Yes','wp-topbar'); ?></span></label>
+							<input type="radio" id="wptbrotatehidelast2" name="wptbrotatehidelast" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbGlobalOptions [ 'rotate_hide_last' ] == "no") { echo 'checked="checked"'; }?>><label for="wptbrotatehidelast2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('No','wp-topbar'); ?></span></label>
 						</p>						
 					</td>
 					<td>
@@ -107,8 +99,8 @@ function wptb_globalsettings_options() {
 					<td width="150"><?php _e('Rotate Order','wp-topbar'); ?>:</label></td>
 					<td>
 					 	<p id="radio3" class="ui-button ui-button-wptbset">
-							<input type="radio" id="wptbrotateorder1" name="wptbrotateorder" class="ui-helper-hidden-accessible" value="random" <?php if ($wptbGSRotateOrder == "random") { echo 'checked="checked"'; }?>><label for="wptbrotateorder1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Random Order','wp-topbar'); ?></span></label>
-							<input type="radio" id="wptbrotateorder2" name="wptbrotateorder" class="ui-helper-hidden-accessible" value="priority" <?php if ($wptbGSRotateOrder == "priority") { echo 'checked="checked"'; }?>><label for="wptbrotateorder2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('By Priority','wp-topbar'); ?></span></label>
+							<input type="radio" id="wptbrotateorder1" name="wptbrotateorder" class="ui-helper-hidden-accessible" value="random" <?php if ($wptbGlobalOptions [ 'rotate_order' ] == "random") { echo 'checked="checked"'; }?>><label for="wptbrotateorder1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Random Order','wp-topbar'); ?></span></label>
+							<input type="radio" id="wptbrotateorder2" name="wptbrotateorder" class="ui-helper-hidden-accessible" value="priority" <?php if ($wptbGlobalOptions [ 'rotate_order' ] == "priority") { echo 'checked="checked"'; }?>><label for="wptbrotateorder2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('By Priority','wp-topbar'); ?></span></label>
 						</p>						
 					</td>
 					<td>
@@ -121,14 +113,14 @@ function wptb_globalsettings_options() {
 				<tr valign="top">
 					<th scope="row"><?php _e('Custom Samples URL','wp-topbar'); ?>:</th>
 					<td colspan="3">
-					<input name="wptbcustompath" type="text" size="85" id="custompath" value="<?php echo $wptbGSCustomSamplesPath; ?>" />
+					<input name="wptbcustompath" type="text" size="85" id="custompath" value="<?php echo $wptbGlobalOptions [ 'custom_samples_path' ]; ?>" />
 					<br /><em><?php _e('Enter the URL of a directory where a JSON file and related images are stored. These will be included in the Samples Tab.  You must name the JSON file <code>custom_topbars.json</code>','wp-topbar'); ?>.</em>
 					<br><br><?php _e('For example, the Directory could be named:'); ?> <code><?php echo str_ireplace( 'wp-topbar','wp-topbar-samples',str_ireplace( 'https://','http://',plugins_url('/', dirname(__FILE__)) )); ?></code>					
 					<br>
 					<br><?php _e('To create your own Samples, export your existing TopBars in JSON format. Then rename that file to <code>custom_topbars.json</code>. Now move that file, plus any images you need into the directory you entered above.'); 
 					
-					if ($wptbGSCustomSamplesPath != "")	{
-						$file_data2 = file_get_contents( $wptbGSCustomSamplesPath.'custom_topbars.json' );
+					if ($wptbGlobalOptions [ 'custom_samples_path' ] != "")	{
+						$file_data2 = file_get_contents( $wptbGlobalOptions [ 'custom_samples_path' ].'custom_topbars.json' );
 						if (! is_array(json_decode($file_data2,2) ) )
 							echo "<br /><strong>".__('Your <code>custom_topbars.json</code> file does not appear to be formatted correctly or is missing.  It does not appear to be a JSON formatted file.'); 
 					}
@@ -152,81 +144,10 @@ function wptb_globalsettings_options() {
 		</div>
 	</div> <!-- end of Settings -->
 						
-	<div class="postbox">
-	<h3><a name="Debug"><?php _e('Server/Install Info','wp-topbar'); ?></a></h3>
-	<div class="inside">
-		<ul>
-			<li><strong><?php _e('Database/Column Check','wp-topbar'); ?>:</strong></br>
 <?php
 
+	wptb_display_debug_info(__('Server/Install Info','wp-topbar'), false);
 
-	global $wpdb;
-	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
-
-	$wptb_bar_text_encoding=$wpdb->get_col(  
-	"
-		SELECT 
-		  COLLATION_NAME
-		  FROM information_schema.COLUMNS
-		  where TABLE_NAME = '".$wptb_table_name."'
-		  	AND COLUMN_NAME = 'bar_text';
-		  	"
-	); 	
-	
-	$wptb_bar_link_text_encoding=$wpdb->get_col(  
-	"
-		SELECT 
-		  COLLATION_NAME
-		  FROM information_schema.COLUMNS
-		  where TABLE_NAME = '".$wptb_table_name."'
-		  	AND COLUMN_NAME = 'bar_link_text';
-		  	"
-	); 	
-	
-	echo "Charset <small><i>(DB_CHARSET)</i></small>: <strong>".DB_CHARSET."</strong></br>";
-	echo "Collation <small><i>(DB_COLLATE)</i></small>: <strong>".DB_COLLATE."</strong></br>";
-	echo "bar_text encoding: <strong>".$wptb_bar_text_encoding[0]."</strong></br>";
-	echo "bar_link_text encoding: <strong>".$wptb_bar_link_text_encoding[0]."</strong></br>";
-	echo "wp-tobar internal db version: <strong>".get_option( "wptb_db_version" )."</strong></br>";
-	echo "</br>";
-	?>
-				</li>
-				<li><strong><?php _e('Time Check','wp-topbar'); ?>:</strong></br>
-	<?php
-	$wptb_current_time=current_time('timestamp', 1);
-	echo __('Server Timezone','wp-topbar').':   <strong>',date_default_timezone_get(),'</strong></br>';
-	echo __('Current Time','wp-topbar').':      <strong>',date('m/d/Y H:i (e)',$wptb_current_time),'</strong></br>';		
-	echo "</br>";
-	?>
-				</li>
-				<li><strong><?php _e('Multisite Check','wp-topbar'); ?>:</strong></br>
-	<?php
-	if ( is_multisite() ) {
-		echo "Multisite: <strong>Yes</strong><br>"; 
-
-		$wptbGSNetworkGlobalOptions = get_site_option( 'wptb_network_global_options' );
-		if ( ! isset($wptbGSNetworkGlobalOptions [ 'multisite_super_admin_only' ] )) {
-			$wptbMultiSuperAdminOnly = "no";
-			$wptbGSNetworkGlobalOptions = array(
-			  'multisite_super_admin_only'	=> $wptbMultiSuperAdminOnly
-			);
-			update_site_option( 'wptb_network_global_options' , $wptbGSNetworkGlobalOptions );
-		}
-		else
-			$wptbMultiSuperAdminOnly = $wptbGSNetworkGlobalOptions [ 'multisite_super_admin_only' ];
-		echo "Super Admin Only:		<strong>".$wptbMultiSuperAdminOnly."</strong></br>";
-		if ( current_user_can( 'manage_network_plugins' )  )  
-			echo "manage_network_plugins:		<strong>Yes</strong><br>"; 
-		else
-			echo "manage_network_plugins:		<strong>No</strong><br>"; 
-	}
-	else
-		echo "Multisite:		<strong>No</strong><br>"; 
-	echo "</br>";	echo "</br>";
-	?>
-				</li>
-	
-	<?php
 }	// End of wptb_globalsettings_options
 
 

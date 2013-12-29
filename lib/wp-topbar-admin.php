@@ -38,27 +38,27 @@ function wptb_options_page() {
 			$wptb_submit_style, $wptb_special_button_style;    
 
 	global $WPTB_VERSION;
-
+	global $WPTB_DB_VERSION;
+	
 	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
-	$wptbGSRotateTopbars = $wptbGlobalOptions [ 'rotate_topbars' ];
-	$wptbGSCustomSamplesPath = $wptbGlobalOptions [ 'custom_samples_path' ];
 
-	require_once( dirname(__FILE__).'/wp-topbar-db-io.php');  //database and I-O functions php
-	require_once( dirname(__FILE__).'/wp-topbar-export.php');  //export functions
-	require_once( dirname(__FILE__).'/wp-topbar-main-tab.php');  //load main options php
-	require_once( dirname(__FILE__).'/wp-topbar-debug-tab.php');  //load debug pages php
-	require_once( dirname(__FILE__).'/wp-topbar-close-tab.php');  //load close pages php
-	require_once( dirname(__FILE__).'/wp-topbar-color-tab.php');  //load color selection pages php
-	require_once( dirname(__FILE__).'/wp-topbar-css-tab.php');  //load CSS pages php
-	require_once( dirname(__FILE__).'/wp-topbar-control-tab.php');  //load control logic pages php
-	require_once( dirname(__FILE__).'/wp-topbar-social-tab.php');  //load social button pages php
-	require_once( dirname(__FILE__).'/wp-topbar-textbar-tab.php');  //load textbar edit pages php
-	require_once( dirname(__FILE__).'/wp-topbar-sample-tab.php');  //load sample pages php
-	require_once( dirname(__FILE__).'/wp-topbar-display-functions.php');  //load admin pages php
-	require_once( dirname(__FILE__).'/wp-topbar-faq-tab.php');  //load faq page php	
-	require_once( dirname(__FILE__).'/wp-topbar-settings-tab.php');  //load global settings pages php
-	require_once( dirname(__FILE__).'/wp-topbar-php-tab.php');  //load php pages php
-	require_once( dirname(__FILE__).'/wp-topbar-uninstall-tab.php');  //load uninstall pages php
+	require_once( dirname(__FILE__).'/wp-topbar-db-io.php');  				//database and I-O functions php
+	require_once( dirname(__FILE__).'/wp-topbar-export.php');  				//export functions
+	require_once( dirname(__FILE__).'/wp-topbar-main-tab.php');  			//load main options php
+	require_once( dirname(__FILE__).'/wp-topbar-debug-tab.php');  			//load debug pages php
+	require_once( dirname(__FILE__).'/wp-topbar-close-tab.php');  			//load close pages php
+	require_once( dirname(__FILE__).'/wp-topbar-color-tab.php'); 			//load color selection pages php
+	require_once( dirname(__FILE__).'/wp-topbar-css-tab.php');  			//load CSS pages php
+	require_once( dirname(__FILE__).'/wp-topbar-control-tab.php');  		//load control logic pages php
+	require_once( dirname(__FILE__).'/wp-topbar-social-tab.php');  			//load social button pages php
+	require_once( dirname(__FILE__).'/wp-topbar-textbar-tab.php');  		//load textbar edit pages php
+	require_once( dirname(__FILE__).'/wp-topbar-sample-tab.php');  			//load sample pages php
+	require_once( dirname(__FILE__).'/wp-topbar-display-functions.php');  	//load admin pages php
+	require_once( dirname(__FILE__).'/wp-topbar-faq-tab.php');  			//load faq page php	
+	require_once( dirname(__FILE__).'/wp-topbar-settings-tab.php');  		//load global settings pages php
+	require_once( dirname(__FILE__).'/wp-topbar-php-tab.php');  			//load php pages php
+	require_once( dirname(__FILE__).'/wp-topbar-uninstall-tab.php');  		//load uninstall pages php
+	require_once( dirname(__FILE__).'/wp-topbar-admin-debug.php');  		//load admin debug pages php
 	
 	// $wptb_common_style is used by all buttons except the Copy & Special buttons
 		
@@ -130,7 +130,7 @@ function wptb_options_page() {
 	if($wptb_debug) {
 		echo '</br><code>WP-TopBar Debug Mode: wptb_options_page() - Action: '.$action.'</code>';
 		echo '</br><code>WP-TopBar Debug Mode: Debug Until:', date('D, d M Y H:i:s (e)',get_transient( 'wptb_debug' )),'</code>';	
-		echo '</br><code>WP-TopBar Debug Mode: Roate TopBars Setting:', $wptbGSRotateTopbars ,'</code>';	
+		echo '</br><code>WP-TopBar Debug Mode: Roate TopBars Setting:', $wptbGlobalOptions [ 'rotate_topbars' ] ,'</code>';	
 	}
 // check page we are displaying, if > that max possible pages, then reset to max_pages
 
@@ -194,15 +194,18 @@ function wptb_options_page() {
 		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');					
 	}
 	else if ( isset($_POST['wptbInsertBar']) )  {
-		$wptbOptions=wtpb_insert_default_row();
+		$wptbOptions=wptb_insert_default_row($WPTB_DB_VERSION);
 		$action = 'insertdefault';
 	}			
+	else if ( $action == 'admindebug' ) {
+		$wptbOptions = array();	
+	}
 	else if ( $action == 'copysample' ) {
 		$wptbOptions = array();	
 	}
 	else 
 	{
-		wtpb_check_for_plugin_upgrade($wptb_debug);
+		wptb_check_for_plugin_upgrade($wptb_debug, $WPTB_DB_VERSION);
 		if ( isset( $wptb_barid ) )
 			$wptbOptions = wptb_get_Specific_TopBar($wptb_barid);
 		else
@@ -216,6 +219,11 @@ function wptb_options_page() {
 	if($wptb_debug && isset($wptb_barid_prefix)) echo '<br><code>WP-TopBar Debug Mode: BarID Prefix: ',$wptb_barid_prefix,'</code>';
 
     switch ( $action ) :
+        case 'admindebug' :
+			wptb_display_admin_header();
+        	wptb_options_tabs($action);
+        	wptb_admin_debug();
+        	break;
         case 'enable' :
         case 'disable' :
 	        wptb_toggle_enabled($action,$wptb_barid,$wptbOptions);
@@ -226,7 +234,7 @@ function wptb_options_page() {
 			$data = wptb_get_sample_data();			
 		  	$wptbOptions = $data [$wptb_barid - 1];			
 		  	$wptbOptions['enable_topbar'] = 'false';
-  			wtpb_insert_row($wptbOptions);
+  			wptb_insert_row($wptbOptions);
 	        wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table'.$current_page);			
         	break;
         	
@@ -235,7 +243,7 @@ function wptb_options_page() {
   			// then the redirect will work!  Also, debug is forced off to ensure no output occurs before redirect
   			$wptbOptions=wptb_get_Specific_TopBar($wptb_barid);
   			$wptbOptions['enable_topbar']='false';
-  			wtpb_insert_row($wptbOptions);
+  			wptb_insert_row($wptbOptions);
 			global $wpdb;
 			// store number of rows affected for 5 minutes to display on next refresh
 			set_transient( 'wptb_inserted_rows', $wpdb->rows_affected, 5*60 );

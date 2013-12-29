@@ -91,23 +91,23 @@ function wptb_get_sample_data() {
 		echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data()</code>';
 
   	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
-	$wptbGSCustomSamplesPath = $wptbGlobalOptions [ 'custom_samples_path' ];
+	$wptbGlobalOptions [ 'custom_samples_path' ] = $wptbGlobalOptions [ 'custom_samples_path' ];
 
 	$file_data1 = file_get_contents( dirname(__FILE__).'/samples/sample_topbars.json');
     $raw_data = wptb_fix_all_rows(json_decode($file_data1, true), plugins_url('', __FILE__).'/samples/', 0);
 	
-    if ( $wptbGSCustomSamplesPath != "") {
+    if ( $wptbGlobalOptions [ 'custom_samples_path' ] != "") {
 		if($wptb_debug)
-			echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data() - loading: ['.$wptbGSCustomSamplesPath.'custom_topbars.json'.']</code>';
-		$file_data2 = file_get_contents( $wptbGSCustomSamplesPath.'custom_topbars.json' );
+			echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data() - loading: ['.$wptbGlobalOptions [ 'custom_samples_path' ].'custom_topbars.json'.']</code>';
+		$file_data2 = file_get_contents( $wptbGlobalOptions [ 'custom_samples_path' ].'custom_topbars.json' );
 			if($wptb_debug) {
 				echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data() - Type Custom File '.gettype($file_data2).'</code>';
 				echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data() - Type JSON Decon '.gettype(json_decode($file_data2,2)).'</code>';
 		}
 		if ( is_array(json_decode($file_data2, true)) ) {
 			if($wptb_debug)
-				echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data() - fixing: ['.$wptbGSCustomSamplesPath.'custom_topbars.json'.']</code>';
-		    $raw_data2 = wptb_fix_all_rows(json_decode($file_data2, true), $wptbGSCustomSamplesPath, count($raw_data));
+				echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data() - fixing: ['.$wptbGlobalOptions [ 'custom_samples_path' ].'custom_topbars.json'.']</code>';
+		    $raw_data2 = wptb_fix_all_rows(json_decode($file_data2, true), $wptbGlobalOptions [ 'custom_samples_path' ], count($raw_data));
 			$raw_data  = array_merge($raw_data, $raw_data2);
 		}
 	}
@@ -115,7 +115,7 @@ function wptb_get_sample_data() {
 	if($wptb_debug)
 		echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data(): Number of rows returning '.count($raw_data).'</code>';
 	
-//		echo '['.file_get_contents( $wptbGSCustomSamplesPath.'custom_topbars.json').']';
+//		echo '['.file_get_contents( $wptbGlobalOptions [ 'custom_samples_path' ].'custom_topbars.json').']';
 //		var_dump($file_data2);
 //		echo "</br>";
 //		echo "Number of rows: ".count($file_data)."</br>";
@@ -435,7 +435,7 @@ function wptb_display_Sample_TopBars() {
 				foreach ($barids as $key => $barid) {
 				  	$wptbOptions = $data [$barid - 1];			
 				  	$wptbOptions['enable_topbar'] = 'false';
-		  			wtpb_insert_row($wptbOptions);
+		  			wptb_insert_row($wptbOptions);
 		  		}
 				if ($n > 0) {
 			        $wptb_i18n = sprintf( _n('%d row copied. Go to the All TopBars tab to see them.', '%d rows copied. Go to the All TopBars tab to see them.', $n, 'wp-topbar'), $n );
@@ -552,8 +552,8 @@ function wptb_display_Sample_TopBars() {
 	 //Prepare Table of elements
 	$wp_list_table = new wptb_Sample_TopBar_Table();
 	$wp_list_table->prepare_items();
+
   	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
-	$wptbGSCustomSamplesPath = $wptbGlobalOptions [ 'custom_samples_path' ];
 
 	?>
 	
@@ -564,8 +564,8 @@ function wptb_display_Sample_TopBars() {
         
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p><?php _e('You can copy one row (by hovering over the TopBar and clicking the Copy TopBar link.)  Or you can copy multiple samples by clicking on their checkboxes and then using the drop down box on the Bulk Options to copy those TopBars.','wp-topbar'); ?></p> 
-            <?php if ( $wptbGSCustomSamplesPath != "") 
-            			echo __('Attempting to load custom TopBars from this location:','wp-topbar').' <code>'.htmlspecialchars($wptbGSCustomSamplesPath).'custom_topbars.json</code>';
+            <?php if ( $wptbGlobalOptions [ 'custom_samples_path' ] != "") 
+            			echo __('Attempting to load custom TopBars from this location:','wp-topbar').' <code>'.htmlspecialchars($wptbGlobalOptions [ 'custom_samples_path' ]).'custom_topbars.json</code>';
     	  		  echo '<br>'.__('To load your own Custom Samples Topbars, go to the', 'wp-topbar')." <a href='?page=wp-topbar.php&action=globalsettings'>".__('Global Settings tab','wp-topbar').'</a>';
  ?>
         </div>

@@ -40,7 +40,7 @@ function wptb_main_options($wptbOptions) {
 					<td width="150" id="prioritytop"><?php _e('Priority','wp-topbar'); ?>:</td>
 					<td width="300">
 						<input type="text" name="wptbpriority" id="priority" size="4" value="<?php echo $wptbOptions['weighting_points']; ?>" >
-						<div id="wtpb-priority"></div>
+						<div id="wptb-priority"></div>
 					</td>
 					<td>
 							<p class="sub"><em><?php _e('Enter the relative priority (1 to 100) for the TopBar to show.  A higher number means this TopBar will be selected more frequently; a lower number means less frequently.  (See the FAQ for more details.) Default is <code>25</code>.','wp-topbar'); ?></em></p>
@@ -80,7 +80,7 @@ function wptb_main_options($wptbOptions) {
 					<td width="150"><?php _e('Scroll Amount','wp-topbar'); ?>:</td>
 					<td>
 						<input type="text" name="wptbscrollamount" id="scrollamount" size="30" value="<?php echo $wptbOptions['scroll_amount']; ?>" >
-						<div id="wtpb-scroll-amount"></div>
+						<div id="wptb-scroll-amount"></div>
 					</td>
 					<td>
 							<p class="sub"><em><?php _e('This option allows you to adjust how far the user has to scroll the page before the Scrollable TopBar appears.   Selecting 0 (zero) will display the TopBar immediately after the user scrolls the page.</br></br>Default is <code>0</code>.','wp-topbar'); ?></em></p>
@@ -93,7 +93,7 @@ function wptb_main_options($wptbOptions) {
 					<td width="150"><?php _e('Start Delay','wp-topbar'); ?>:</td>
 					<td>
 						<input type="text" name="wptbdelayintime" id="delayintime" size="30" value="<?php echo $wptbOptions['delay_time']; ?>" >
-						<div id="wtpb-delayintime"></div>
+						<div id="wptb-delayintime"></div>
 					</td>
 					<td>
 							<p class="sub"><em><?php _e('Enter the amount of time (in milliseconds) for the TopBar to delay before appearing.  Enter 0 for no delay.','wp-topbar'); ?></em></p>
@@ -103,7 +103,7 @@ function wptb_main_options($wptbOptions) {
 					<td width="150"><?php _e('Slide Time','wp-topbar'); ?>:</td>
 					<td>
 						<input type="text" name="wptbslidetime" id="slidetime" size="30" value="<?php echo $wptbOptions['slide_time']; ?>" >
-						<div id="wtpb-slidetime"></div>
+						<div id="wptb-slidetime"></div>
 					</td>
 					<td>
 							<p class="sub"><em><?php _e('Enter the amount of time (in milliseconds) for the TopBar to take to slide down on the page.  Enter 0 for no delay.','wp-topbar'); ?></em></p>
@@ -113,7 +113,7 @@ function wptb_main_options($wptbOptions) {
 					<td width="150"><?php _e('Display Time','wp-topbar'); ?>:</td>
 					<td>
 						<input type="text" name="wptbdisplaytime" id="displaytime" size="30" value="<?php echo $wptbOptions['display_time']; ?>" >
-						<div id="wtpb-displaytime"></div>
+						<div id="wptb-displaytime"></div>
 					</td>
 					<td>
 							<p class="sub"><em><?php _e('Enter the amount of time (in milliseconds) for the TopBar to remain on the page.  Enter 0 for the TopBar to not disappear.','wp-topbar'); ?></em></p>
@@ -126,7 +126,7 @@ function wptb_main_options($wptbOptions) {
 					<td width="150"><?php _e('Bottom border height (px)','wp-topbar'); ?>:</td>
 					<td>
 						<input type="text" name="wptbbottomborderheight" id="bottomborderheight" size="5" value="<?php echo $wptbOptions['bottom_border_height']; ?>" >
-						<div id="wtpb-bottomborderheight"></div>
+						<div id="wptb-bottomborderheight"></div>
 					</td>
 					<td>
 							<p class="sub"><em><?php _e('Enter the height of the bottom of the border.  Default is <code>3px</code>','wp-topbar'); ?></em></p>
@@ -139,7 +139,7 @@ function wptb_main_options($wptbOptions) {
 					<td width="150"><?php _e('Top padding (px)','wp-topbar'); ?>:</td>
 					<td>
 						<input type="text" name="wptbpaddingtop" id="paddingtop" size="5" value="<?php echo $wptbOptions['padding_top']; ?>" >
-						<div id="wtpb-paddingtop"></div>
+						<div id="wptb-paddingtop"></div>
 					</td>
 					<td>
 							<p class="sub"><em><?php _e('Enter the top padding.  Default is <code>8px</code>','wp-topbar'); ?></em></p>
@@ -149,7 +149,7 @@ function wptb_main_options($wptbOptions) {
 					<td width="150"><?php _e('Bottom padding (px)','wp-topbar'); ?>:</td>
 					<td>
 						<input type="text" name="wptbpaddingbottom" id="paddingbottom" size="5" value="<?php echo $wptbOptions['padding_bottom']; ?>" >
-						<div id="wtpb-paddingbottom"></div>
+						<div id="wptb-paddingbottom"></div>
 					</td>
 					<td>
 							<p class="sub"><em><?php _e('Enter the bottom padding.  Default is <code>8px</code>','wp-topbar'); ?></em></p>
@@ -162,7 +162,7 @@ function wptb_main_options($wptbOptions) {
 					<td width="150"><?php _e('Top margin (px)','wp-topbar'); ?>:</td>
 					<td>
 						<input type="text" name="wptbmargintop" id="margintop" size="5" value="<?php echo $wptbOptions['margin_top']; ?>" >
-						<div id="wtpb-margintop"></div>
+						<div id="wptb-margintop"></div>
 					</td>
 					<td>
 							<p class="sub"><em><?php _e('Enter the top margin.  Default is <code>0px</code>','wp-topbar'); ?></em></p>
@@ -172,7 +172,7 @@ function wptb_main_options($wptbOptions) {
 					<td width="150"><?php _e('Bottom margin (px)','wp-topbar'); ?>:</td>
 					<td>
 						<input type="text" name="wptbmarginbottom" id="marginbottom" size="5" value="<?php echo $wptbOptions['margin_bottom']; ?>" >
-						<div id="wtpb-marginbottom"></div>
+						<div id="wptb-marginbottom"></div>
 					</td>
 					<td>
 							<p class="sub"><em><?php _e('Enter the bottom margin.  Default is <code>0px</code>','wp-topbar'); ?></em></p>
@@ -182,7 +182,7 @@ function wptb_main_options($wptbOptions) {
 					<td width="150"><?php _e('Left margin (px)','wp-topbar'); ?>:</td>
 					<td>
 						<input type="text" name="wptbmarginleft" id="marginleft" size="5" value="<?php echo $wptbOptions['margin_left']; ?>" >
-						<div id="wtpb-marginleft"></div>
+						<div id="wptb-marginleft"></div>
 					</td>
 					<td>
 							<p class="sub"><em><?php _e('Enter the left margin.  Default is <code>0px</code>','wp-topbar'); ?></em></p>
@@ -192,7 +192,7 @@ function wptb_main_options($wptbOptions) {
 					<td width="150"><?php _e('Right margin (px)','wp-topbar'); ?>:</td>
 					<td>
 						<input type="text" name="wptbmarginright" id="marginright" size="5" value="<?php echo $wptbOptions['margin_right']; ?>" >
-						<div id="wtpb-marginright"></div>
+						<div id="wptb-marginright"></div>
 					</td>
 					<td>
 							<p class="sub"><em>;<?php _e('Enter the right margin.  Default is <code>0px</code>;','wp-topbar'); ?></em></p>

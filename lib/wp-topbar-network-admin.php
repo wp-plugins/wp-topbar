@@ -33,8 +33,9 @@ function wptb_network_options_page() {
 	
 	$wptbOptions = "";
 
-	require_once( dirname(__FILE__).'/wp-topbar-faq-tab.php');  //load faq page php	
-	require_once( dirname(__FILE__).'/wp-topbar-uninstall-tab.php');  //load uninstall pages php
+	require_once( dirname(__FILE__).'/wp-topbar-faq-tab.php');  		//load faq page php	
+	require_once( dirname(__FILE__).'/wp-topbar-uninstall-tab.php'); 	//load uninstall pages php
+	require_once( dirname(__FILE__).'/wp-topbar-admin-debug.php');  	//load admin debug pages php
 
 	
 	// $wptb_common_style is used by all buttons except the Copy & Special buttons
@@ -128,6 +129,10 @@ function wptb_network_options_page() {
 
     switch ( $action ) :
 
+        case 'admindebug' :
+			wptb_display_network_admin_header();
+        	wptb_admin_debug();
+        	break;
         case 'networkfaq' :
 			wptb_display_network_admin_header();
             wptb_faq_page($wptbOptions,false);
@@ -246,70 +251,11 @@ function wptb_network_settings() {
 		<div class="clear"></div>	
 		</div>
 	</div> <!-- end of Close Button Settings -->
+
 						
-	<div class="postbox">
-	<h3><a name="Debug"><?php _e('Server/Install Info','wp-topbar'); ?></a></h3>
-	<div class="inside">
-		<ul>
-			<li><strong><?php _e('Database/Column Check','wp-topbar'); ?>:</strong></br>
-<?php
-
-
-	global $wpdb;
-	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
-
-	$wptb_bar_text_encoding=$wpdb->get_col(  
-	"
-		SELECT 
-		  COLLATION_NAME
-		  FROM information_schema.COLUMNS
-		  where TABLE_NAME = '".$wptb_table_name."'
-		  	AND COLUMN_NAME = 'bar_text';
-		  	"
-	); 	
-	
-	$wptb_bar_link_text_encoding=$wpdb->get_col(  
-	"
-		SELECT 
-		  COLLATION_NAME
-		  FROM information_schema.COLUMNS
-		  where TABLE_NAME = '".$wptb_table_name."'
-		  	AND COLUMN_NAME = 'bar_link_text';
-		  	"
-	); 	
-	
-	echo "Charset <small><i>(DB_CHARSET)</i></small>: <strong>".DB_CHARSET."</strong></br>";
-	echo "Collation <small><i>(DB_COLLATE)</i></small>: <strong>".DB_COLLATE."</strong></br>";
-	if (isset($wptb_bar_text_encoding[0])) echo "bar_text encoding: <strong>".$wptb_bar_text_encoding[0]."</strong></br>";
-	if (isset($wptb_bar_link_encoding[0])) echo "bar_link_text encoding: <strong>".$wptb_bar_link_text_encoding[0]."</strong></br>";
-	echo "wp-tobar internal db version: <strong>".get_option( "wptb_db_version" )."</strong></br>";
-	echo "</br>";
-	?>
-				</li>
-				<li><strong><?php _e('Time Check','wp-topbar'); ?>:</strong></br>
-	<?php
-	$wptb_current_time=current_time('timestamp', 1);
-	echo __('Server Timezone','wp-topbar').':   <strong>',date_default_timezone_get(),'</strong></br>';
-	echo __('Current Time','wp-topbar').':      <strong>',date('m/d/Y H:i (e)',$wptb_current_time),'</strong></br>';		
-	echo "</br>";
-	?>
-				</li>
-				<li><strong><?php _e('Multisite Check','wp-topbar'); ?>:</strong></br>
-	<?php
-	if ( is_multisite() ) 
-		echo "Multisite:		<strong>Yes</strong><br>"; 
-	else
-		echo "Multisite:		<strong>No</strong><br>"; 
-	if ( current_user_can( 'manage_network_plugins' )  )  
-		echo "manage_network_plugins:		<strong>Yes</strong><br>"; 
-	else
-		echo "manage_network_plugins:		<strong>No</strong><br>"; 
-	echo "</br>";
-	?>
-				</li>
-	
 	<?php	
 
+	wptb_display_debug_info(__('Server/Install Info','wp-topbar'),false);	
 	
 	
 }	// End of wptb_network_settings

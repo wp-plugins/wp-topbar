@@ -106,7 +106,7 @@ function wptb_control_options($wptbOptions) {
 					<td colspan="3"><hr></td>
 				</tr>				
 				<tr valign="top">
-					<td>','wp-topbar'); ?>Show TopBar on<br>Home Page','wp-topbar'); ?>:</label><p>
+					<td><?php _e('Show TopBar on<br>Home Page','wp-topbar'); ?>:</label><p>
 					<td>
 						<br>
 						

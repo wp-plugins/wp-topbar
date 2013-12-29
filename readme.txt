@@ -4,39 +4,48 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.8
-Stable tag: 5.17
+Stable tag: 5.18
 
 Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler! 
 
 == Description ==
 
-Create **MULTIPLE** TopBars that will be shown at the top (or bottom) of your website.  The Cacheable TopBars are randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even add your own PHP. You can easily lose track of time getting your TopBars perfect!
+What is a TopBar?  It is a special message/image that you can show at the top (or bottom) of your website.  WP-TopBar allows you to create an **unlimited** number of TopBars.   They are cachable and randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even easy to add your own PHP and CSS. 
 
-Version 5.17 is now i18n compatible -- now just need your help adding new translations. (I did inlcude a Fench translation -- but only about ~10% is actually translated.) You can also now have your own custom TopBars added to the Samples tab (see FAQ for details).
+Version 5.17+ is now i18n compatible -- now I just need your help adding new translations. (I did inlcude a Fench translation -- but only about ~10% is actually translated.) You can also now have your own custom TopBars added to the Samples tab (see FAQ for details).
 
 Version 5.14 gives you more Rotation options, makes it easier to enable/disable a TopBar and gives you more control with Network installs.
 
-Version 5.13 gives you a new Global Settings page.  You can now select to **rotate** through all valid TopBars on each pageview.
+Version 5.13 adds a new Global Settings page.  You can now select to **rotate** through all valid TopBars on each pageview.
 
-Version 5.11 gives you an new option to show the TopBar on mobile devices, not mobile devices, or all devices.
+You can create an unlimited number of TopBars that:
+<ol>
+	<li>Have their own color, CSS styling, and buttons (for Facebook, LinkedIn, Google+, etc.)</li>
+	<li>Have a bacground image</li>
+	<li>Have a close button</li>
+	<li>Have a re-open button that shows after a TopBar is closed</li>
+	<li>Have custom CSS or PHP that is executed with each TopBar.  Of course, that can be super dangerous if you enter PHP code that is invalid -- you could break your website.  That option should only be used by **Advanced Swimmers** only.</li>
+</ol>
 
-Version 5.10 allows you to enter additional custom HTML to the TopBar.  You have three different places where you can provide even more customization for your TopBar.  Now you can set your own event triggers or custom codes
+You can have the Plugin show only **one*TopBar*** or display ***every*** valid TopBar that you've create (they are rotated in and out).
 
-Version 5.0 now allows the user to re-open a TopBar, adds more Social buttons (and you can place them before or after the TopBar.)  You can also see some Sample ToolBars that shows how you can use the plugin. It also gives you a way to supress live preview (see FAQ for &nopreview option) to help find broken, custom PHP.  Also, there a several more warning messages as the TopBar tries to tell you if you may have an incompatible setting.
+TopBars can be:
+<ol>
+	<li>Scheduled based on time</li>
+	<li>Shown only for mobile, non-mobile or all users</li>
+	<li>Shown only on the home page -- or not shown on the home page</li>
+	<li>Shown only for certain categories -- or excluded from certain categories</li>
+	<li>Shown only on certain Pages -- or excluded from certain Pages</li>
+	<li>Shown only when the user scrolls the page down </li>
+	<li>Given a Priority -- to ensure that more important messages are shown more frequently</li>
+</ol>
 
-Version 4.17 adds the ability to display the TopBar only when the user scrolls the page. 
 
-New with Verison 4.15+ is the ability to add custom PHP to be executed when the TopBars are created.  Of course, that can be super dangerous if you enter PHP code that is invalid -- you could break your website.  That option should only be used by **Advanced Swimmers** only.
-
-Version 4.10+ now statically creates the TopBar to allow you to take advantage of caching plugins.
-
-There was a **Superduper major re-write with Version 4.0.**  Refactored all the functions to use its own database table instead of WordPress options.  This allows you to create an unlimited number of TopBars.  This version is leaner, faster, smarter.   Quick links are added throughout to make editing your TopBars a breeze.
-
-Want to see how this TopBar looks?   You can test how your TopBars show up to allow you to adjusting the selection factors on the fly.  You can even get a sampling of how 10 pageviews would render the TopBar -- *great for A/B testing*.
+The TopBars are always statically created to take advantage of caching plugins.
 
 Want to create a lot of TopBars -- you can copy the existing ones with just a few clicks.   Know SQL?  You can even export the TopBars in three different formats (JSON, CSV or SQL).    Sorry, **no support** is given if you import directly to the database.
 
-With so many option pages, I only included a few screen images.  More images can be found on [Zwebify.com](http://zwebify.com/WordPress-plugins/)
+With so many option pages, I only included a few screen images.  More images can be found on [Zwebify.com](http://zwebify.com/wp-topbar/)
 
 Here is a crazy-long list of options you have for each TopBar -- and this is not even complete!
 
@@ -54,7 +63,7 @@ Here is a crazy-long list of options you have for each TopBar -- and this is not
 	<li>Retrict the Topbar to show on only certain categories (or to not show on those categories)</li>
 	<li>Add social buttons to the TopBar</li>
 	<li>Add a Close Button</li>
-	<li>Option to execute your own PHP code before (or after) the TopBar is created</li>
+	<li>Option to execute your own PHP or CSS code before (or after) the TopBar is created</li>
 	<li>Has explicit support for qTranslate -- translates the top bar text fields and link field.</li>
 	<li>You can have unlimited number of TopBars -- the plugin randomly selects one (based on individual weightings) to show </li>
 	<li>The TopBars are generated in such a way to support cacheing (e.g. W3 Total Cache, WP Super Cache)</li>
@@ -180,6 +189,10 @@ IE does not (yet) implement gradients like other browsers.  So, make sure you te
 Go to the Uninstall tab (or if are on a Multi Site install, you first need to login as a Super Admin then select the Uninstall from the TopBar Menu List) and then click the Uninstall button at the bottom of the page.   You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the Plugin
 
 == Upgrade Notice ==
+
+= 5.18 = 
+
+Refactored the jQuery functions to make the code cleaner, animations work a bit smoother (for Close/Reopen Buttons) and eliminate unnecessary calls.   Updated the Activation logic to perform upgrade check.  Fixed a few defects and other code cleanup.
 
 = 5.17 = 
 
@@ -357,6 +370,13 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+= 5.18 - 12/30/2013 =
+
+1. FIXED:		Activation logic now fully works to update the plugin tables/options when needed.
+2. CHANGED:		Renamed some PHP functions and variables to assist in debugging.
+3. CHANGED: 	Refactored the jQuery functions to make the code cleaner, animations work a bit smoother and eliminate unnecessary calls.
+4. ADDED:		Added new &action=admindebug option to help me debug Plugin issues
 
 = 5.17 - 12/25/2013 =
 

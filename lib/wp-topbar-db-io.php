@@ -76,6 +76,8 @@ function wptb_get_Specific_TopBar($wptb_barid) {
 	if($wptb_debug) 
 		echo '<br><code>WP-TopBar Debug Mode: wptb_get_Specific_TopBar('.$wptb_barid.')</code>';
 
+	global $WPTB_DB_VERSION;
+	
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 
@@ -91,7 +93,7 @@ function wptb_get_Specific_TopBar($wptb_barid) {
 			echo '<br><code>WP-TopBar Debug Mode: Table '.$wptb_table_name.' does not exist - creating it</code>';
 
 		wptb_create_table();				
-		$wptbOptions=wtpb_insert_default_row();
+		$wptbOptions=wptb_insert_default_row($WPTB_DB_VERSION);
 	}
 	else {
 		if ( $wptb_barid == 0)
@@ -102,7 +104,7 @@ function wptb_get_Specific_TopBar($wptb_barid) {
 		if ( $wpdb->num_rows == 0 ) {
 			if($wptb_debug)
 				echo '<br><code>WP-TopBar Debug Mode: Now rows found in Table: '.$wptb_table_name.' - using defaults</code>';
-			$wptbOptions=wtpb_insert_default_row();
+			$wptbOptions=wptb_insert_default_row($WPTB_DB_VERSION);
 		}
 		else
 			foreach ($myrows[0] as $key => $option)
@@ -305,16 +307,12 @@ function wptb_create_table() {
 //
 //=========================================================================		
 
-function wtpb_set_default_settings() {
+function wptb_set_default_settings($WPTB_DB_VERSION) {
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
 	
 	if($wptb_debug) 
-		echo '<br><code>WP-TopBar Debug Mode: wtpb_set_default_settings()</code>';
-
-	global $WPTB_VERSION;
-	global $WPTB_DB_VERSION;
-
+		echo '<br><code>WP-TopBar Debug Mode: wptb_set_default_settings()</code>';
 
 	return array(
 	 	'weighting_points'=> 25,				 	
@@ -437,7 +435,7 @@ function wtpb_set_default_settings() {
 		'social_icon10_position' => 'right'
 		);
 
-}	// End of wtpb_set_default_settings
+}	// End of wptb_set_default_settings
 
 //=========================================================================		
 //
@@ -445,7 +443,7 @@ function wtpb_set_default_settings() {
 //
 //=========================================================================		
 
-function wtpb_insert_default_row() {
+function wptb_insert_default_row($WPTB_DB_VERSION) {
 
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
@@ -453,13 +451,13 @@ function wtpb_insert_default_row() {
 	$wptb_debug=get_transient( 'wptb_debug' );	
 	
 	if($wptb_debug) 
-		echo '<br><code>WP-TopBar Debug Mode: wtpb_insert_default_row() in table: '.$wptb_table_name.'</code>';
+		echo '<br><code>WP-TopBar Debug Mode: wptb_insert_default_row() in table: '.$wptb_table_name.'</code>';
 
-	$rows_affected = $wpdb->insert( $wptb_table_name, wtpb_set_default_settings() );
+	$rows_affected = $wpdb->insert( $wptb_table_name, wptb_set_default_settings($WPTB_DB_VERSION) );
 	
-	return wtpb_set_default_settings();
+	return wptb_set_default_settings($WPTB_DB_VERSION);
 
-}	// End of wtpb_insert_default_row
+}	// End of wptb_insert_default_row
 
 //=========================================================================		
 //
@@ -467,19 +465,20 @@ function wtpb_insert_default_row() {
 //
 //=========================================================================		
 
-function wtpb_insert_row($wptbOptions) {
+function wptb_insert_row($wptbOptions) {
 
+	global $WPTB_DB_VERSION;
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
 	
 	if($wptb_debug) 
-		echo '<br><code>WP-TopBar Debug Mode: wtpb_insert_row() in table: '.$wptb_table_name.'</code>';
+		echo '<br><code>WP-TopBar Debug Mode: wptb_insert_row() in table: '.$wptb_table_name.'</code>';
 	
 	// set any missing default values (this may occur if user using an old version of wp-topbar)
 	
-	$wptbDefaultValues=wtpb_set_default_settings();
+	$wptbDefaultValues=wptb_set_default_settings($WPTB_DB_VERSION);
 	
 	foreach ( $wptbDefaultValues as $option_name => $value ) {
 		if (! isset( $wptbOptions[$option_name] ))  $wptbOptions[$option_name] = $value;
@@ -608,7 +607,7 @@ function wtpb_insert_row($wptbOptions) {
 		) );
 
 
-}	// End of wtpb_insert_row
+}	// End of wptb_insert_row
 
 //=========================================================================		
 //
@@ -619,17 +618,18 @@ function wtpb_insert_row($wptbOptions) {
 
 function wptb_update_row($wptbOptions) {
 
+	global $WPTB_DB_VERSION;
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
 	
 	if($wptb_debug) 
-		echo '<br><code>WP-TopBar Debug Mode: wtpb_update_row() #:'. $wptbOptions[ 'bar_id' ].' in table: '.$wptb_table_name.'</code>';
+		echo '<br><code>WP-TopBar Debug Mode: wptb_update_row() #:'. $wptbOptions[ 'bar_id' ].' in table: '.$wptb_table_name.'</code>';
 
 	// set any missing default values (this may occur if user using an old version of wp-topbar)
 	
-	$wptbDefaultValues=wtpb_set_default_settings();
+	$wptbDefaultValues=wptb_set_default_settings($WPTB_DB_VERSION);
 	foreach ( $wptbDefaultValues as $option_name => $value ) {
 		if (! isset( $wptbOptions[$option_name] ))  $wptbOptions[$option_name] = $value;
 	}
@@ -808,68 +808,49 @@ function wptb_update_GlobalSettings() {
 
 	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
 	
-	$wptbGSRotateTopbars 		= $wptbGlobalOptions [ 'rotate_topbars' ];
-	$wptbGSRotateDisplayTime 	= $wptbGlobalOptions [ 'rotate_display_time' ];
-	$wptbGSRotateStartDelay		= $wptbGlobalOptions [ 'rotate_start_delay' ];
-	$wptbGSRotateOrder 			= $wptbGlobalOptions [ 'rotate_order' ];
-	$wptbGSRotateCount 			= $wptbGlobalOptions [ 'rotate_count' ];
-	$wptbGSRotateHideLastTopBar = $wptbGlobalOptions [ 'rotate_hide_last' ];
-	$wptbGSCustomSamplesPath	= $wptbGlobalOptions [ 'custom_samples_path' ];
-			
 	if (isset($_POST['wptbrotatetopbars'])) {
-		$wptbGSRotateTopbars = $_POST['wptbrotatetopbars'];
+		$wptbGlobalOptions [ 'rotate_topbars' ] = $_POST['wptbrotatetopbars'];
 	}
 	if (isset($_POST['wptbrotatedisplaytime'])) {
 		if (!is_numeric($_POST['wptbrotatedisplaytime'])) {
 			echo '<div class="error"><strong>'.__('Rotation Display Time is not numeric. Resetting to 9000.','wp-topbar').'</strong></div>';
-			$wptbGSRotateDisplayTime = 9000;
+			$wptbGlobalOptions [ 'rotate_display_time' ] = 9000;
 		} 
 		else
-			$wptbGSRotateDisplayTime = $_POST['wptbrotatedisplaytime']+0;
+			$wptbGlobalOptions [ 'rotate_display_time' ] = $_POST['wptbrotatedisplaytime']+0;
 	}
 	if (isset($_POST['wptbrotatestartdelay'])) {
 		if (!is_numeric($_POST['wptbrotatestartdelay'])) {
 			echo '<div class="error"><strong>'.__('Rotation Start Delay is not numeric. Resetting to 1000.','wp-topbar').'</strong></div>';
-			$wptbGSRotateStartDelay = 1000;
+			$wptbGlobalOptions [ 'rotate_start_delay' ] = 1000;
 		} 
 		else 	
-			$wptbGSRotateStartDelay = $_POST['wptbrotatestartdelay']+0;
+			$wptbGlobalOptions [ 'rotate_start_delay' ] = $_POST['wptbrotatestartdelay']+0;
 	}
 	
 	if ( isset($_POST [ 'wptbrotateorder' ]) ) {
-		$wptbGSRotateOrder = $_POST [ 'wptbrotateorder' ] ;
+		$wptbGlobalOptions [ 'rotate_order' ]  = $_POST [ 'wptbrotateorder' ] ;
 	}
 	
 	if ( isset($_POST [ 'wptbrotatecount' ]) ) {
 		if (!is_numeric($_POST['wptbrotatecount'])) {
 			echo '<div class="error"><strong>'.__('Rotation Count is not numeric. Resetting to 0.','wp-topbar').'</strong></div>';
-			$wptbGSRotateCount = 0;
+			$wptbGlobalOptions [ 'rotate_count' ] = 0;
 		} 
 		else 
-			$wptbGSRotateCount = $_POST [ 'wptbrotatecount' ]+0;
+			$wptbGlobalOptions [ 'rotate_count' ] = $_POST [ 'wptbrotatecount' ]+0;
 	}
 	if ( isset($_POST [ 'wptbrotatehidelast' ]) ) {
-		$wptbGSRotateHideLastTopBar = $_POST [ 'wptbrotatehidelast' ];
+		$wptbGlobalOptions [ 'rotate_hide_last' ] = $_POST [ 'wptbrotatehidelast' ];
 	}
 	if ( isset($_POST [ 'wptbcustompath' ]) ) {
-		$wptbGSCustomSamplesPath = trim( $_POST [ 'wptbcustompath' ] );
-		if ( $wptbGSCustomSamplesPath != "" && substr($wptbGSCustomSamplesPath,-1) != "/" )
-			$wptbGSCustomSamplesPath .= "/";
+		$wptbGlobalOptions [ 'custom_samples_path' ] = trim( $_POST [ 'wptbcustompath' ] );
+		if ( $wptbGlobalOptions [ 'custom_samples_path' ] != "" && substr($wptbGlobalOptions [ 'custom_samples_path' ],-1) != "/" )
+			$wptbGlobalOptions [ 'custom_samples_path' ] .= "/";
 	}
 	
-	if ( $wptbGSCustomSamplesPath == "/" )
-		$wptbGSCustomSamplesPath = "";
-
-
-	$wptbGlobalOptions = array(
-	  'rotate_topbars'			=> $wptbGSRotateTopbars,
-	  'rotate_display_time' 	=> $wptbGSRotateDisplayTime,
-	  'rotate_start_delay' 		=> $wptbGSRotateStartDelay,
-	  'rotate_order'			=> $wptbGSRotateOrder,
-	  'rotate_count'	 		=> $wptbGSRotateCount,
-	  'rotate_hide_last'		=> $wptbGSRotateHideLastTopBar,
-	  'custom_samples_path'		=> $wptbGSCustomSamplesPath
-	);
+	if ( $wptbGlobalOptions [ 'custom_samples_path' ] == "/" )
+		$wptbGlobalOptions [ 'custom_samples_path' ] = "";
 	
 	update_option( "wptb_global_options", $wptbGlobalOptions ); 
 
@@ -1243,9 +1224,9 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if ( (get_magic_quotes_gpc() ) &&  ( $wptb_debug ) )
 		echo '<br><code>WP-TopBar Debug Mode: Magic Quotes is on</code>';
 
-	$wtpbtextfields = array( '1' => 'custom_css_bar',  '2' => 'bar_text',  '3' => 'custom_css_text', '4' => 'bar_link_text', '5' => 'close_button_css', '6' => 'reopen_button_css' , '7' => 'div_css');
+	$wptbtextfields = array( '1' => 'custom_css_bar',  '2' => 'bar_text',  '3' => 'custom_css_text', '4' => 'bar_link_text', '5' => 'close_button_css', '6' => 'reopen_button_css' , '7' => 'div_css');
 
-  	foreach( $wtpbtextfields as $number => $field ) {
+  	foreach( $wptbtextfields as $number => $field ) {
 		if (get_magic_quotes_gpc())
 			$wptbOptions[$field] 	 = (str_replace('"',"'",stripslashes($wptbOptions[$field])));
 		else
@@ -1255,8 +1236,8 @@ function wptb_update_TopBarSettings($wptb_barid) {
 
 // for these -- need to make sure the user is not using single quotes - -that breaks the plugin.
     
-    $wtpbtextfields = array('1' => 'div_custom_html' , '2' => 'bar_custom_html' , '3' => 'bar_link_custom_html');
-  	foreach( $wtpbtextfields as $number => $field ) {
+    $wptbtextfields = array('1' => 'div_custom_html' , '2' => 'bar_custom_html' , '3' => 'bar_link_custom_html');
+  	foreach( $wptbtextfields as $number => $field ) {
 		if (get_magic_quotes_gpc())
 			$wptbOptions[$field] 	 = (str_replace("'",'"',stripslashes($wptbOptions[$field])));
 		else
@@ -1310,10 +1291,8 @@ function wptb_update_TopBarSettings($wptb_barid) {
 // 5.06 - added margin_left, margin_right fields
 //=========================================================================			
 	
-function wtpb_check_for_plugin_upgrade($wptb_display_errors) { 
+function wptb_check_for_plugin_upgrade($wptb_display_errors, $WPTB_DB_VERSION) { 
 		
-	global $WPTB_VERSION;
-	global $WPTB_DB_VERSION;
 	global $wpdb;
 	
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
@@ -1323,7 +1302,7 @@ function wtpb_check_for_plugin_upgrade($wptb_display_errors) {
 	$wptb_debug=get_transient( 'wptb_debug' );	
 
 	if($wptb_debug) 
-			echo '<br><code>WP-TopBar Debug Mode: wtpb_check_for_plugin_upgrade()</code>';
+			echo '<br><code>WP-TopBar Debug Mode: wptb_check_for_plugin_upgrade()</code>';
 
 
 	$wptbOptions = get_option('wptbAdminOptions');
@@ -1336,7 +1315,7 @@ function wtpb_check_for_plugin_upgrade($wptb_display_errors) {
 		if (! isset($wptbOptions['enable_image']) )
 			$wptbOptions['enable_image'] = "false";    // default row has this turned on, so turn off since older version may not have this field
 								
-		wtpb_insert_row($wptbOptions);	
+		wptb_insert_row($wptbOptions);	
 		delete_option('wptbAdminOptions');
 	}
 	else {
@@ -1344,45 +1323,42 @@ function wtpb_check_for_plugin_upgrade($wptb_display_errors) {
 			if( $wpdb->get_var("show tables like '".$wptb_table_name."'") != $wptb_table_name ) {
 				if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: No Table - Creating and adding default row.</code>';
 				wptb_create_table();				
-				wtpb_insert_default_row();
+				wptb_insert_default_row($WPTB_DB_VERSION);
 			}
 			else {
 				// OK, they are using a DB, now check to see if needs to be updated				
-				$installed_ver = get_option( "wptb_db_version" );
+				$installed_ver = get_option( 'wptb_db_version' );
 				if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Installed DB: '.$installed_ver.'</code>';
-				if( $installed_ver != $WPTB_DB_VERSION ) {
+				if( ! isset($installed_ver) || $installed_ver != $WPTB_DB_VERSION ) {
 					if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Upgrading DB to '.$WPTB_DB_VERSION.'</code>';
 					wptb_create_table();
-					wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERSION);
 				}
 			}
 	}
 	
 
 	// force this check to make sure all values are set to default values
-	wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERSION);
+	wptb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERSION);
 
 			
 	if($wptb_debug) {
 		if($wptb_display_errors) {
-			echo '<br><code>WP-TopBar Debug Mode: in wtpb_check_for_plugin_upgrade</code>' ;
-			echo '<br><code>WP-TopBar Debug Mode: Plugin Version: ',$WPTB_VERSION,'</code>';
+			echo '<br><code>WP-TopBar Debug Mode: in wptb_check_for_plugin_upgrade</code>' ;
+			echo '<br><code>WP-TopBar Debug Mode: DB Version: ',$WPTB_DB_VERSION,'</code>';
 		}
 		else {
-			error_log( 'WP-TopBar Debug Mode: in wtpb_check_for_plugin_upgrade' );
-			error_Log( 'WP-TopBar Debug Mode: Plugin Version: '.$WPTB_VERSION);
+			error_log( 'WP-TopBar Debug Mode: in wptb_check_for_plugin_upgrade' );
+			error_Log( 'WP-TopBar Debug Mode: DB Version: '.$WPTB_DB_VERSION);
 		}
 	}
 	
 	$wpdb->show_errors();
 		
 	
-} // End of function wtpb_check_for_plugin_upgrade 	
+} // End of function wptb_check_for_plugin_upgrade 	
 	
-function wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERSION) { 
+function wptb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERSION) { 
 
-	global $WPTB_VERSION;
-	global $WPTB_DB_VERSION;
 	global $wpdb;
 
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
@@ -1392,9 +1368,9 @@ function wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERS
 	$wptb_debug=get_transient( 'wptb_debug' );	
 
 	if($wptb_debug) 
-			echo '<br><code>WP-TopBar Debug Mode: wtpb_check_table_for_default_values()</code>';
+			echo '<br><code>WP-TopBar Debug Mode: wptb_check_table_for_default_values()</code>';
 
-	$wptb_db_version=$wpdb->get_col(  
+	$wptb_verson_in_db=$wpdb->get_col(  
 	"
 	SELECT      min(wptb_version)
 	FROM        ".$wptb_table_name."
@@ -1403,15 +1379,15 @@ function wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERS
 
 //	wptb_create_table();
 
-	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: MIN DB Version in Table: ',$wptb_db_version[0],'</code>';
+	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: MIN DB Version in Table: ',$wptb_verson_in_db[0],'</code>';
 	
-	if ( $wptb_db_version[0] != $WPTB_DB_VERSION ) {
+	if ( $wptb_verson_in_db[0] != $WPTB_DB_VERSION ) {
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Version Upgrade Needed</code>';
 		$myrows = $wpdb->get_results( 'SELECT * FROM '.$wptb_table_name, ARRAY_A);
 		if ( $wpdb->num_rows == 0 )
-			$wptbOptions=wtpb_insert_default_row();
+			$wptbOptions=wptb_insert_default_row($WPTB_DB_VERSION);
 		else {
-			$wptbDefaultValues=wtpb_set_default_settings();
+			$wptbDefaultValues=wptb_set_default_settings($WPTB_DB_VERSION);
 			$wptbDefaultValues[ 'enable_image' ] = false;  // default row has this turned on, so turn off since older version may not have this field
 			if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Checking Rows</code>';
 
@@ -1436,27 +1412,26 @@ function wtpb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERS
 	}
 	
 		
+	
+	$wpdb->show_errors();
+		
+	update_option( 'wptb_db_version', $WPTB_DB_VERSION );
+	
 	if($wptb_debug) {
 		if($wptb_display_errors) 
-			echo '<br><code>WP-TopBar Debug Mode: end of wtpb_check_for_plugin_upgrade</code>' ;
+			echo '<br><code>WP-TopBar Debug Mode: version is now set to: '.	get_option( 'wptb_db_version' ).'</code>' ;
 		else
-			error_log( 'WP-TopBar Debug Mode: end of wtpb_check_for_plugin_upgrade' );
-	}
-	
-		$wpdb->show_errors();
-	
-	
-	update_option( "wptb_db_version", $WPTB_DB_VERSION );
-	if($wptb_debug) {
-		if($wptb_display_errors) 
-			echo '<br><code>WP-TopBar Debug Mode: version is now set to: '.	get_option( "wptb_db_version" ).'</code>' ;
-		else
-			error_log( 'WP-TopBar Debug Mode: version is now set to: '.	get_option( "wptb_db_version" ) );
+			error_log( 'WP-TopBar Debug Mode: version is now set to: '.	get_option( 'wptb_db_version' ) );
 	}
 
+	if($wptb_debug) {
+		if($wptb_display_errors) 
+			echo '<br><code>WP-TopBar Debug Mode: end of wptb_check_table_for_default_values</code>' ;
+		else
+			error_log( 'WP-TopBar Debug Mode: end of wptb_check_table_for_default_values' );
+	}
 	
-	
-} // End of function wtpb_check_table_for_default_values 	
+} // End of function wptb_check_table_for_default_values 	
 
 
 

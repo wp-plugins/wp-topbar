@@ -45,7 +45,7 @@ $wptb_debug=get_transient( 'wptb_debug' );
 					<td width="150"><?php _e('Font size','wp-topbar'); ?> (px):</td>
 					<td>
 						<input type="text" name="wptbfontsize" id="fontsize" size="5" value="<?php echo $wptbOptions['font_size']; ?>" >
-						<div id="wtpb-fontsize"></div>
+						<div id="wptb-fontsize"></div>
 						</br>
 						<p class="sub"><em><?php _e('Enter the font size.  Default is','wp-topbar'); ?><code> 14px</code></em></p>
 					</td>
