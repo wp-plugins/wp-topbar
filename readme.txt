@@ -19,18 +19,18 @@ Version 5.14 gives you more Rotation options, makes it easier to enable/disable 
 Version 5.13 adds a new Global Settings page.  You can now select to **rotate** through all valid TopBars on each pageview.
 
 You can create an unlimited number of TopBars that:
-<ol>
+<ul>
 	<li>Have their own color, CSS styling, and buttons (for Facebook, LinkedIn, Google+, etc.)</li>
 	<li>Have a bacground image</li>
 	<li>Have a close button</li>
 	<li>Have a re-open button that shows after a TopBar is closed</li>
 	<li>Have custom CSS or PHP that is executed with each TopBar.  Of course, that can be super dangerous if you enter PHP code that is invalid -- you could break your website.  That option should only be used by **Advanced Swimmers** only.</li>
-</ol>
+</ul>
 
 You can have the Plugin show only **one*TopBar*** or display ***every*** valid TopBar that you've create (they are rotated in and out).
 
 TopBars can be:
-<ol>
+<ul>
 	<li>Scheduled based on time</li>
 	<li>Shown only for mobile, non-mobile or all users</li>
 	<li>Shown only on the home page -- or not shown on the home page</li>
@@ -38,14 +38,15 @@ TopBars can be:
 	<li>Shown only on certain Pages -- or excluded from certain Pages</li>
 	<li>Shown only when the user scrolls the page down </li>
 	<li>Given a Priority -- to ensure that more important messages are shown more frequently</li>
-</ol>
+	<li>More details on the selection logic can be found on [here](http://zwebify.com/wp-topbar/wp-topbar-selection-logic/)
+</ul>
 
 
 The TopBars are always statically created to take advantage of caching plugins.
 
 Want to create a lot of TopBars -- you can copy the existing ones with just a few clicks.   Know SQL?  You can even export the TopBars in three different formats (JSON, CSV or SQL).    Sorry, **no support** is given if you import directly to the database.
 
-With so many option pages, I only included a few screen images.  More images can be found on [Zwebify.com](http://zwebify.com/wp-topbar/)
+With so many option pages, I only included a few screen images.  More images can be found on [zWebify.com](http://zwebify.com/wp-topbar/)
 
 Here is a crazy-long list of options you have for each TopBar -- and this is not even complete!
 
