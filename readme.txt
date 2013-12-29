@@ -24,7 +24,7 @@ You can create an unlimited number of TopBars that:
 	<li>Have a bacground image</li>
 	<li>Have a close button</li>
 	<li>Have a re-open button that shows after a TopBar is closed</li>
-	<li>Have custom CSS or PHP that is executed with each TopBar.  Of course, that can be super dangerous if you enter PHP code that is invalid -- you could break your website.  That option should only be used by **Advanced Swimmers** only.</li>
+	<li>Have custom CSS or PHP that is executed with each TopBar.  Of course, that can be super dangerous if you enter PHP code that is invalid -- you could break your website.  That option should only be used by Advanced Swimmers only.</li>
 </ul>
 
 You can have the Plugin show only **one*TopBar*** or display ***every*** valid TopBar that you've create (they are rotated in and out).
@@ -38,8 +38,8 @@ TopBars can be:
 	<li>Shown only on certain Pages -- or excluded from certain Pages</li>
 	<li>Shown only when the user scrolls the page down </li>
 	<li>Given a Priority -- to ensure that more important messages are shown more frequently</li>
-	<li>More details on the selection logic can be found on [here](http://zwebify.com/wp-topbar/wp-topbar-selection-logic/)
 </ul>
+More details on the selection logic can be found on [here.](http://zwebify.com/wp-topbar/wp-topbar-selection-logic/)
 
 
 The TopBars are always statically created to take advantage of caching plugins.
