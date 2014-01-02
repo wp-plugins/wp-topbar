@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.8
-Stable tag: 5.18
+Stable tag: 5.19
 
 Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler! 
 
@@ -191,6 +191,10 @@ Go to the Uninstall tab (or if are on a Multi Site install, you first need to lo
 
 == Upgrade Notice ==
 
+= 5.19 = 
+
+Fixes defect for those TopBars that had a Close Button and had a Display Time of greater than zero.
+
 = 5.18 = 
 
 Refactored the jQuery functions to make the code cleaner, animations work a bit smoother (for Close/Reopen Buttons) and eliminate unnecessary calls.   Updated the Activation logic to perform upgrade check.  Fixed a few defects and other code cleanup.
@@ -371,6 +375,11 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 
 == Changelog ==
+
+= 5.19 = 1/02/2014 =
+
+1  FIXED:	Fixes defect for those TopBars that had a Close Button and had a Display Time of greater than zero.
+2. FIXED:	Fixed display issue on Global Settings screen.
 
 = 5.18 - 12/30/2013 =
 

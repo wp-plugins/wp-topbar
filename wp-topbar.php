@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.18
+Version: 5.19
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 Text Domain: wp-topbar
@@ -27,7 +27,7 @@ Text Domain: wp-topbar
 */
 
 
-$WPTB_VERSION = "5.18";
+$WPTB_VERSION = "5.19";
 $WPTB_DB_VERSION = "5.06";  // rev this only when the database structure changes -- also update below in TWO places!
 
 if( ! class_exists( 'wptb' ) ):
@@ -931,7 +931,7 @@ jQuery(document).ready(function() {
 						if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
 							$html_part_4_out .= wptb::wptb_build_reopenable_1_js($wptbOptions, $wptbTopBarNumber+1);
 						else if ($wptbOptions['allow_close'] == 'yes')	{
-							$html_part_4_out .= 'function close_wptopbar'.($wptbTopBarNumber+1).'() { jQuery("#wptbheadline'.($wptbTopBarNumber+1).'").slideUp("fast");';
+							$html_part_4_out .= 'function close_wptopbar'.($wptbTopBarNumber+1).'() { jQuery("#wptbheadline'.($wptbTopBarNumber+1).'").stop().slideUp(200);';
 							if ( $wptbOptions['respect_cookie'] == 'always' ) 
 								$html_part_4_out .= wptb::wptb_build_cookie_js($wptbOptions, ($wptbTopBarNumber+1));
 							$html_part_4_out .= "}";
