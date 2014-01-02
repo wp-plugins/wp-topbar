@@ -378,7 +378,7 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 = 5.19 = 1/02/2014 =
 
-1  FIXED:	Fixes defect for those TopBars that had a Close Button and had a Display Time of greater than zero.
+1. FIXED:	Fixes defect for those TopBars that had a Close Button and had a Display Time of greater than zero. 
 2. FIXED:	Fixed display issue on Global Settings screen.
 
 = 5.18 - 12/30/2013 =
