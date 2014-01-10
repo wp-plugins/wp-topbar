@@ -130,7 +130,7 @@ function wptb_options_page() {
 	if($wptb_debug) {
 		echo '</br><code>WP-TopBar Debug Mode: wptb_options_page() - Action: '.$action.'</code>';
 		echo '</br><code>WP-TopBar Debug Mode: Debug Until:', date('D, d M Y H:i:s (e)',get_transient( 'wptb_debug' )),'</code>';	
-		echo '</br><code>WP-TopBar Debug Mode: Roate TopBars Setting:', $wptbGlobalOptions [ 'rotate_topbars' ] ,'</code>';	
+		echo '</br><code>WP-TopBar Debug Mode: Rotate TopBars Setting:', $wptbGlobalOptions [ 'rotate_topbars' ] ,'</code>';	
 	}
 // check page we are displaying, if > that max possible pages, then reset to max_pages
 

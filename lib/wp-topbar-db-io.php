@@ -27,10 +27,10 @@ function wptb_get_Random_TopBar() {
 
 	$sql="SELECT * FROM ".$wptb_table_name." 
 			WHERE  `enable_topbar` =  'true'
-				AND COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0), 
+				AND COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 0)."',  '%Y-%m-%d %H:%i' ), 0), 
 											COALESCE(STR_TO_DATE( `start_time_utc`,  '%m/%d/%Y %H:%i'     ), 0)),0) <= 0 
 				AND	COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  `end_time_utc` ,  '%m/%d/%Y %H:%i'       ), 0), 					
-											COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0)),0) <=0
+											COALESCE(STR_TO_DATE(  '".current_time('mysql', 0)."',  '%Y-%m-%d %H:%i' ), 0)),0) <=0
 			ORDER BY ( `weighting_points` * RAND() ) DESC LIMIT 1
 			";		
 
@@ -132,15 +132,16 @@ function wptb_check_time($wptb_barid) {
 				FROM ".$wptb_table_name."	
 
 				WHERE `bar_id` = ".$wptb_barid."
-				AND COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0), 
+				AND COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 0)."',  '%Y-%m-%d %H:%i' ), 0), 
 											COALESCE(STR_TO_DATE( `start_time_utc`,  '%m/%d/%Y %H:%i'     ), 0)),0) <= 0 
 				AND	COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  `end_time_utc` ,  '%m/%d/%Y %H:%i'       ), 0), 					
-											COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0)),0) <=0
+											COALESCE(STR_TO_DATE(  '".current_time('mysql', 0)."',  '%Y-%m-%d %H:%i' ), 0)),0) <=0
 		";
 				
 
 	$myrows = $wpdb->get_results( $sql, ARRAY_A );
 	
+//	echo "<pre>"; print_r($myrows); echo "</pre>";
 //	echo "</div><br>".$sql."<br>";
 //	echo "<br>rows found=".$wpdb->num_rows."<br>";
 		
@@ -1043,11 +1044,13 @@ function wptb_update_TopBarSettings($wptb_barid) {
 								
 		$wptbOptions['start_time'] = $_POST['wptbstarttime'];
 		$wptbOptions['start_time_utc'] = $_POST['wptbstarttime'];
+//		$wptbOptions['start_time_utc'] = get_gmt_from_date(date('Y-m-d H:i:s (z)',strtotime($_POST['wptbstarttime'])));;
 	}
 	if (isset($_POST['wptbendtime'])) {
 
 		$wptbOptions['end_time'] = $_POST['wptbendtime'];
 		$wptbOptions['end_time_utc'] = $_POST['wptbendtime'];
+//		$wptbOptions['end_time_utc'] = get_gmt_from_date(date('Y-m-d H:i:s (z)',strtotime($_POST['wptbendtime'])));;
 	}
 	if (isset($_POST['wptbfontsize'])) {
 	
@@ -1328,6 +1331,7 @@ function wptb_check_for_plugin_upgrade($wptb_display_errors, $WPTB_DB_VERSION) {
 			else {
 				// OK, they are using a DB, now check to see if needs to be updated				
 				$installed_ver = get_option( 'wptb_db_version' );
+				if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Found Table:'.$wptb_table_name.'</code>';
 				if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Installed DB: '.$installed_ver.'</code>';
 				if( ! isset($installed_ver) || $installed_ver != $WPTB_DB_VERSION ) {
 					if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Upgrading DB to '.$WPTB_DB_VERSION.'</code>';
@@ -1381,7 +1385,10 @@ function wptb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERS
 
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: MIN DB Version in Table: ',$wptb_verson_in_db[0],'</code>';
 	
+	$wptb_do_update=false;
+	
 	if ( $wptb_verson_in_db[0] != $WPTB_DB_VERSION ) {
+		$wptb_do_update=true;
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Version Upgrade Needed</code>';
 		$myrows = $wpdb->get_results( 'SELECT * FROM '.$wptb_table_name, ARRAY_A);
 		if ( $wpdb->num_rows == 0 )
@@ -1414,16 +1421,19 @@ function wptb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERS
 		
 	
 	$wpdb->show_errors();
-		
-	update_option( 'wptb_db_version', $WPTB_DB_VERSION );
 	
-	if($wptb_debug) {
-		if($wptb_display_errors) 
-			echo '<br><code>WP-TopBar Debug Mode: version is now set to: '.	get_option( 'wptb_db_version' ).'</code>' ;
-		else
-			error_log( 'WP-TopBar Debug Mode: version is now set to: '.	get_option( 'wptb_db_version' ) );
+	if ($wptb_do_update) {
+		
+		update_option( 'wptb_db_version', $WPTB_DB_VERSION );
+	
+		if($wptb_debug) {
+			if($wptb_display_errors) 
+				echo '<br><code>WP-TopBar Debug Mode: version is now set to: '.	get_option( 'wptb_db_version' ).'</code>' ;
+			else
+				error_log( 'WP-TopBar Debug Mode: version is now set to: '.	get_option( 'wptb_db_version' ) );
+		}
 	}
-
+		
 	if($wptb_debug) {
 		if($wptb_display_errors) 
 			echo '<br><code>WP-TopBar Debug Mode: end of wptb_check_table_for_default_values</code>' ;

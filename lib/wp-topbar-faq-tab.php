@@ -94,6 +94,12 @@ See the Priority question above to see how they are selected.  The TopBar will s
 The Final check is to see if the TopBar has cookie controls (see above).  If the user is allowed to close the TopBar and cookies are enabled, then we look for a cookie.  If one is found, and it matches the cookie value, then the TopBar is not shown.
 </br>
 </br>
+<li><strong>What TimeZone should I use when I enter Start/Stop Times?</strong></li>
+You should enter the time in the same timezone that WordPress is setup to use.  (See the WordPress|Settings|General tab).</br>  
+</br>
+The TopBar also prints the current WordPress time on the Control Tab right next to the Start option field.  Use that to guide how you should enter the time in.
+</br>
+</br>
 <li><strong>What Social Button Icons are provided?</strong></li>
 Look in this directory (<code><?PHP echo str_ireplace( 'https://','http://',plugins_url('/icon/', __FILE__) ) ?></code>) and you'll find two folders,  one with PNG files and one with a selection of PSD files.  Thanks to <a href="http://ElegantThemes.com" target="_blank">ElegantThemes.com</a> for providing the icon files!
 </br>

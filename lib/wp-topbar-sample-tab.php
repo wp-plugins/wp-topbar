@@ -96,10 +96,11 @@ function wptb_get_sample_data() {
 	$file_data1 = file_get_contents( dirname(__FILE__).'/samples/sample_topbars.json');
     $raw_data = wptb_fix_all_rows(json_decode($file_data1, true), plugins_url('', __FILE__).'/samples/', 0);
 	
-    if ( $wptbGlobalOptions [ 'custom_samples_path' ] != "") {
+    if ( $wptbGlobalOptions [ 'custom_samples_path' ] != "" ) {
 		if($wptb_debug)
 			echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data() - loading: ['.$wptbGlobalOptions [ 'custom_samples_path' ].'custom_topbars.json'.']</code>';
-		$file_data2 = file_get_contents( $wptbGlobalOptions [ 'custom_samples_path' ].'custom_topbars.json' );
+
+			$file_data2 = file_get_contents( $wptbGlobalOptions [ 'custom_samples_path' ].'custom_topbars.json' );
 			if($wptb_debug) {
 				echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data() - Type Custom File '.gettype($file_data2).'</code>';
 				echo '</br><code>WP-TopBar Debug Mode: wptb_get_sample_data() - Type JSON Decon '.gettype(json_decode($file_data2,2)).'</code>';

@@ -140,11 +140,15 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid, $wptbOptio
 						<input type="radio" id="wptbenabletopbar2" name="wptbenabletopbar" class="ui-helper-hidden-accessible" value="false" <?php if ($wptbOptions['enable_topbar'] == "false") { echo 'checked="checked"'; }?>><label for="wptbenabletopbar2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('No','wp-topbar'); ?></span></label>
 					</p>
 					</td>
+					<td width="50">
+					</td>
 					<td>
-					<?php if ($wptbOptions['enable_topbar'] == "false")
-					echo "<span class='wptb-off-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/off.png', __FILE__).')"'."></span>";
-				else
-					echo  "<span class='wptb-on-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/on.png', __FILE__).')"'."></span>";
+						<?php 
+					echo "<strong>".__("Time Check:")."</strong></td><td>";
+					if (wptb_check_time($wptbOptions [ 'bar_id' ]))
+						echo  "<span class='wptb-on-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/on.png', __FILE__).')"'."></span>";
+					else
+						echo "<span class='wptb-off-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/off.png', __FILE__).')"'."></span>";
 					?>
 					</td>
 				</tr>
@@ -975,10 +979,10 @@ function wptb_display_all_TopBars() {
 		$query = "SELECT *,  ((start_delta <= 0 ) AND (end_delta <=0 )) as show_it, concat(bar_text, '<br/>',bar_link_text) as text_line
 				  		FROM (
 					
-			SELECT 	*,	COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0), 
+			SELECT 	*,	COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 0)."',  '%Y-%m-%d %H:%i' ), 0), 
 												COALESCE(STR_TO_DATE(  `start_time_utc`,  '%m/%d/%Y %H:%i'     ), 0)),0) as start_delta, 
 						COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  `end_time_utc` ,  '%m/%d/%Y %H:%i'       ), 0), 					
-												COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0)),0) as end_delta
+												COALESCE(STR_TO_DATE(  '".current_time('mysql', 0)."',  '%Y-%m-%d %H:%i' ), 0)),0) as end_delta
 						
 						FROM ".$wptb_table_name."
 						ORDER BY ".$orderby." ".$order."
@@ -1209,17 +1213,31 @@ function wptb_test_topbar($number_to_show) {
 	
 function wptb_debug_display_TopBar_Options($wptbOptions) {
 
-	$wptb_current_time=current_time('timestamp', 1);
+	$wptb_current_time_gmt    =current_time('timestamp', 1);
+	$wptb_current_time_local  =current_time('timestamp', 0);
+	$wptb_current_time_mysql  =strtotime(current_time('mysql', 0));
 
+	echo '</br><code>WP-TopBar Debug Mode: wptb_debug_display_TopBar_Options() for ID: '.$wptbOptions[ 'bar_id' ].'</code>';	
 	echo '<br/><code>WP-TopBar Debug Mode: Server Timezone:',date_default_timezone_get(),'</code>';
-	echo '<br/><code>WP-TopBar Debug Mode: Current Time&nbsp:',$wptb_current_time,'-',date('Y-m-d H:i:s (e)',$wptb_current_time),'</code>';				
-	echo '<br/><code>WP-TopBar Debug Mode: Starting Time:',$wptbOptions['start_time_utc'],'-',$wptbOptions['start_time'],'-',date('Y-m-d H:i:s (e)',$wptbOptions['start_time_utc']),'</code>';
-	echo '<br/><code>WP-TopBar Debug Mode: Ending Time&nbsp&nbsp:',$wptbOptions['end_time_utc'],'-',$wptbOptions['end_time'],'-',date('Y-m-d H:i:s (e)',$wptbOptions['end_time_utc']),'</code>';
-	
+	echo '<br/><code>WP-TopBar Debug Mode: WordPress GMT Offset: ',get_option( 'gmt_offset', 0 ),'</code>';
+	echo '<br/><code>WP-TopBar Debug Mode: Current Time (Local):',$wptb_current_time_local,'-',date('Y-m-d H:i:s',$wptb_current_time_local),'</code>';				
+	echo '<br/><code>WP-TopBar Debug Mode: Current Time (GMT):&nbsp;&nbsp;',$wptb_current_time_gmt,'-',date('Y-m-d H:i:s',$wptb_current_time_gmt),'</code>';				
+	echo '<br/><code>WP-TopBar Debug Mode: Current Time (MySQL):',$wptb_current_time_mysql,'-',date('Y-m-d H:i:s',$wptb_current_time_mysql),'</code>';				
+	echo '<br/><code>WP-TopBar Debug Mode: Starting Time:</code>',
+		 '<br/><code>WP-TopBar Debug Mode: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$wptbOptions['start_time'],' (As entered)</code>',
+		 '<br/><code>WP-TopBar Debug Mode: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.date('Y-m-d H:i:s',strtotime($wptbOptions['start_time'])),' (Formatted)</code>',
+		 '<br/><code>WP-TopBar Debug Mode: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$wptbOptions['start_time_utc'],' (UTC-As Entered)</code>',
+		 '<br/><code>WP-TopBar Debug Mode:  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.strtotime($wptbOptions['start_time_utc']),' (UTC-time)</code>';
+	echo '<br/><code>WP-TopBar Debug Mode: Ending Time:</code>',
+		 '<br/><code>WP-TopBar Debug Mode: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$wptbOptions['end_time'],' (As entered)</code>',
+		 '<br/><code>WP-TopBar Debug Mode: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.date('Y-m-d H:i:s',strtotime($wptbOptions['end_time'])),' (Formatted)</code>',
+		 '<br/><code>WP-TopBar Debug Mode: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$wptbOptions['end_time_utc'],' (UTC-As Entered)</code>',
+		 '<br/><code>WP-TopBar Debug Mode: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.strtotime($wptbOptions['end_time_utc']),' (UTC-time)</code>';
+		 
 	if ($wptbOptions['start_time_utc'] == 0) 
 		echo '<br/><code>WP-TopBar Debug Mode: Start Time is zero</code>';
 	else
-		if (($wptb_current_time - $wptbOptions['start_time_utc']) >= 0)
+		if (($wptb_current_time_mysql - strtotime($wptbOptions['start_time_utc'])) >= 0)
 			echo '<br/><code>WP-TopBar Debug Mode: Start Time is before or equal Current Time</code>';
 		else
 			echo '<br/><code>WP-TopBar Debug Mode: Start Time is in the future</code>';
@@ -1227,9 +1245,9 @@ function wptb_debug_display_TopBar_Options($wptbOptions) {
 	if ($wptbOptions['end_time_utc'] == 0) 
 		echo '<br/><code>WP-TopBar Debug Mode: End Time is zero</code>';
 	else {
-		if ($wptbOptions['start_time_utc'] > $wptbOptions['end_time_utc']) 
+		if ($wptbOptions['start_time_utc'] > strtotime($wptbOptions['end_time_utc'] )) 
 			echo '<br/><code>WP-TopBar Debug Mode: End Time is before Start Time - Error - TopBar will <strong>NOT</strong> display</code>';
-		if (($wptbOptions['end_time_utc'] - $wptb_current_time) >= 0)
+		if (strtotime(($wptbOptions['end_time_utc']) - $wptb_current_time_mysql) >= 0)
 			echo '<br/><code>WP-TopBar Debug Mode: End Time is after or equal to Current Time</code>';
 		else
 			echo '<br/><code>WP-TopBar Debug Mode: End Time is in the past</code>';

@@ -43,7 +43,11 @@ function wptb_control_options($wptbOptions) {
 						<div class="ui-front" id="wptb_start_time"></div>				    
 					</td>
 					<td>
-							<p class="sub"><em><?php _e('Pick the date/time for the TopBar to start showing.  Default is <code>Blank</code>.','wp-topbar'); ?></em></p>
+							<p class="sub"><em><?php _e('Pick the date/time for the TopBar to start showing.  Default is <code>Blank</code>.','wp-topbar'); 
+									echo "<br/>".__("You must use your WordPress Server Time when you set these options.")."<strong><br/>".__("When this page was rendered, the WordPress time was: ").current_time('mysql', 0)."</strong>";
+								
+								
+							?></em></p>
 					</td>
 				</tr>							
 				<tr valign="top">

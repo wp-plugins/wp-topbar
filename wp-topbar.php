@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.19
+Version: 5.20
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 Text Domain: wp-topbar
@@ -27,7 +27,7 @@ Text Domain: wp-topbar
 */
 
 
-$WPTB_VERSION = "5.19";
+$WPTB_VERSION = "5.20";
 $WPTB_DB_VERSION = "5.06";  // rev this only when the database structure changes -- also update below in TWO places!
 
 if( ! class_exists( 'wptb' ) ):
@@ -44,7 +44,7 @@ class wptb {
 		//=========================================================================			
 		//Actions and Filters, if on plugin admin page	
 		//=========================================================================	
-		    	
+			
 		if (is_admin() )	 { // make sure we are on the admin page to minimize scripts loaded on the website
 			
 			add_action('plugins_loaded', array( __CLASS__, 'wptb_load_translation_files' ) );
@@ -80,9 +80,9 @@ class wptb {
 	
 	public static function wptb_admin_init() {
 
-		require_once( dirname(__FILE__).'/lib/wp-topbar-admin.php');  			//load admins page php
-		require_once( dirname(__FILE__).'/lib/wp-topbar-network-admin.php');  	//load network admins page php
-		require_once( dirname(__FILE__).'/lib/wp-topbar-admin-debug.php');  	//load debug page php
+		require_once( dirname(__FILE__).'/lib/wp-topbar-admin.php');			//load admins page php
+		require_once( dirname(__FILE__).'/lib/wp-topbar-network-admin.php');	//load network admins page php
+		require_once( dirname(__FILE__).'/lib/wp-topbar-admin-debug.php');		//load debug page php
 
 		//Actions
 		add_action( 'admin_menu', array( __CLASS__, 'wptb_register_options_menu' ) ); 
@@ -94,7 +94,7 @@ class wptb {
 			add_action( 'admin_notices', 'wptb_admin_notice' );
 
 		}
-		require_once( dirname(__FILE__).'/lib/wp-topbar-pointer.php');  		//load pointer pages php
+		require_once( dirname(__FILE__).'/lib/wp-topbar-pointer.php');			//load pointer pages php
 			
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'wptb_enqueue_admin_scripts' ) );
 		add_action( 'admin_enqueue_scripts', 'wptb_pointer_load' );
@@ -113,7 +113,8 @@ class wptb {
 	//=========================================================================	
 	
 	public static function wptb_enqueue_jquery() {
-    		wp_enqueue_script('jquery');     
+		
+		wp_enqueue_script('jquery'); 
 		
 	} // End of function wptb_enqueue_jquery
 
@@ -128,9 +129,9 @@ class wptb {
 			wp_enqueue_script( 'jquery' );			
 
 			wp_enqueue_script( 'jquery-ui-core' );
-		    wp_enqueue_script( 'jquery-ui-slider' );
-		    wp_enqueue_script( 'jquery-ui-datepicker' );
-		    wp_enqueue_script( 'jquery-ui-button' );
+			wp_enqueue_script( 'jquery-ui-slider' );
+			wp_enqueue_script( 'jquery-ui-datepicker' );
+			wp_enqueue_script( 'jquery-ui-button' );
 
 			wp_enqueue_script( 'media-upload' );
 
@@ -173,7 +174,7 @@ class wptb {
 	
 	
 	//=========================================================================			
-	//Debug & Cookie Check.  If &debug is appended to URL, then set transient variable for 60 seconds
+	//Debug & Cookie Check. If &debug is appended to URL, then set transient variable for 60 seconds
 	// this is checked by admin page and if set, echos debug statements
 	// e.g. .../?page=wp-topbar.php&debug
 	//=========================================================================			
@@ -181,9 +182,9 @@ class wptb {
 	public static function wptb_debug_check() {	
 		
 		if ((isset($_GET['page']) && $_GET['page'] == 'wp-topbar.php') &&
-	        isset( $_GET['debug'] ) && current_user_can( 'manage_options' ) ) {
-		        set_transient( 'wptb_debug', gettimeofday(true), 60 );
-	    }
+			isset( $_GET['debug'] ) && current_user_can( 'manage_options' ) ) {
+				set_transient( 'wptb_debug', gettimeofday(true), 60 );
+		}
 	} // End of function wptb_debug_check	
 
 
@@ -192,10 +193,12 @@ class wptb {
 	//=========================================================================			
 	
 	public static function wptb_plugin_action_links($links) {
+	
 		$wptb_settings_link = '<a href="'.admin_url( 'admin.php?page=wp-topbar.php' ).'">Settings</a> | ';
 		$wptb_settings_link .= '<a href="'.admin_url( 'admin.php?page=wp-topbar.php&action=uninstall' ).'">Uninstall</a>';
 		array_unshift($links, $wptb_settings_link);
 		return $links;
+		
 	} // End of function wptb_plugin_action_links
 	
 	
@@ -204,11 +207,13 @@ class wptb {
 	//=========================================================================			
 	
 	public static function wptb_plugin_donate_link($links, $file) {
+	
 		if ($file == plugin_basename(__FILE__)) {
 				$donate_link = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J" target="_blank">Donate</a>';
 				$links[] = $donate_link;
-			}
-			return $links;
+		}
+		return $links;
+			
 	} // End of function wptb_plugin_donate_link
 	
 	
@@ -219,7 +224,7 @@ class wptb {
 	public static function wptb_register_options_menu() { //create custom top-level menu 
 	
 		if ( is_multisite() ) { // check if on multi-site and if so, check if plugin shows only on Admin pages
-			if ( ! current_user_can( 'manage_network_plugins' )  ) {
+			if ( ! current_user_can( 'manage_network_plugins' ) ) {
 				$wptbGSNetworkGlobalOptions = get_site_option( 'wptb_network_global_options' );
 				if (( isset($wptbGSNetworkGlobalOptions [ 'multisite_super_admin_only' ] )) && ($wptbGSNetworkGlobalOptions [ 'multisite_super_admin_only' ] == "yes"))
 					return;
@@ -230,9 +235,10 @@ class wptb {
 		
 		$tabs = array( 'table' => __('All TopBars','wp-topbar'), 'globalsettings' => __('Global Settings','wp-topbar'), 'testpriority' => __('Test Priority','wp-topbar'), 'bulkclosebutton'=> __('Close Button','wp-topbar'), 'export' => __('Export Options','wp-topbar'), 'mainfaq' => __('FAQ','wp-topbar') );
 
-	    foreach( $tabs as $menu => $title ) {            
-         	add_submenu_page( 'wp-topbar.php', 'wp-topbar-'.$menu, $title,  'manage_options', 'wp-topbar.php&action='.$menu, 'wptb_options_page' );
-        }
+		foreach( $tabs as $menu => $title ) {
+			add_submenu_page( 'wp-topbar.php', 'wp-topbar-'.$menu, $title, 'manage_options', 'wp-topbar.php&action='.$menu, 'wptb_options_page' );
+		}
+		
 	} // End of function wptb_register_options_menu 	
 	
 	//=========================================================================			
@@ -245,21 +251,21 @@ class wptb {
 		
 		$tabs = array( 'networksettings' => __('Global Settings','wp-topbar'), 'networkuninstall' => __('Uninstall','wp-topbar'), 'networkfaq' => __('FAQ','wp-topbar') );
 
-	    foreach( $tabs as $menu => $title ) {            
-         	add_submenu_page( 'wp-topbar.php', 'wp-topbar-'.$menu, $title,  'manage_options', 'wp-topbar.php&action='.$menu, 'wptb_network_options_page' );
-        }
+		foreach( $tabs as $menu => $title ) {
+					add_submenu_page( 'wp-topbar.php', 'wp-topbar-'.$menu, $title, 'manage_options', 'wp-topbar.php&action='.$menu, 'wptb_network_options_page' );
+		}
 	} // End of function wptb_register_network_options_menu 	
 	
 	//=========================================================================			
 	// Run this when plugin is activiated 
 	//=========================================================================			
 		
-	public static function wptb_activate_plugin() {   
+	public static function wptb_activate_plugin() { 
 	
 			
-		$WPTB_DB_VERSION = "5.06";									  // for some reason, this global variable is not beting set during activation.
-		require_once( dirname(__FILE__).'/lib/wp-topbar-db-io.php');  //database and I-O functions php
-		wptb_check_for_plugin_upgrade(false, $WPTB_DB_VERSION);		  // do not echo out parameters if debugging
+		$WPTB_DB_VERSION = "5.06";										// for some reason, this global variable is not beting set during activation.
+		require_once( dirname(__FILE__).'/lib/wp-topbar-db-io.php');	//database and I-O functions php
+		wptb_check_for_plugin_upgrade(false, $WPTB_DB_VERSION);			// do not echo out parameters if debugging
 		
 	
 	} // End of function wptb_activate_plugin 	
@@ -269,7 +275,7 @@ class wptb {
 	// Get Global Settings, set them if they do not exist
 	//=========================================================================			
 		
-	public static function wptb_get_GlobalSettings() {   
+	public static function wptb_get_GlobalSettings() { 
 
 		$wptbGlobalOptions = get_option( "wptb_global_options" );
 		
@@ -342,19 +348,19 @@ class wptb {
 		
 	public static function wptb_activate_TopBar_html_js() {
 
-		$WPTB_DB_VERSION = "5.06";									  // for some reason, this global variable is not beting set during activation.
+		$WPTB_DB_VERSION = "5.06";									// for some reason, this global variable is not beting set during activation.
 
-		// check for options using the old method, if used - honor it.  otherwise get a TopBar from the database	
+		// check for options using the old method, if used - honor it. Otherwise get a TopBar from the database	
 		$wptbOptions = get_option('wptbAdminOptions');
 
 		if ( isset( $wptbOptions['enable_topbar'] ) ) { // force database upgrade if still using options 
 			echo '<!-- WP-TopBar_'.$WPTB_VERSION.' :: still using options table (version '.$wptbOptions['wptb_version'].') Forcing Conversion -->';
-			require_once( dirname(__FILE__).'/lib/wp-topbar-db-io.php');  //database and I-O functions php
-			wptb_check_for_plugin_upgrade(false, $WPTB_DB_VERSION);	// do not echo out parameters if debugging
+			require_once( dirname(__FILE__).'/lib/wp-topbar-db-io.php'); 	//database and I-O functions php
+			wptb_check_for_plugin_upgrade(false, $WPTB_DB_VERSION);			// do not echo out parameters if debugging
 		}
 		wptb::wptb_build_cacheable_html_js();
 		
-	}  // end function wptb_activate_TopBar_html_js
+	} // end function wptb_activate_TopBar_html_js
 
 
 	//=========================================================================		
@@ -399,7 +405,7 @@ class wptb {
 		}
 		return true;
 
-	}  // end function wptb_inject_TopBar_html_js	
+	} // end function wptb_inject_TopBar_html_js	
 
 
 	
@@ -423,14 +429,14 @@ class wptb {
 
 		if ( ! ( is_home() && ( $wptbOptions['show_homepage'] == "always" ) ) ) {	
 
-			if (     is_user_logged_in()   && ( $wptbOptions['only_logged_in'] == "no"  )) { return false; } 
-			if (  ( !is_user_logged_in() ) && ( $wptbOptions['only_logged_in'] == "yes" )) { return false; } 
+			if (    is_user_logged_in()   && ( $wptbOptions['only_logged_in'] == "no"  )) { return false; } 
+			if ( ( !is_user_logged_in() ) && ( $wptbOptions['only_logged_in'] == "yes" )) { return false; } 
 
 			if ( $wptbOptions['include_pages'] == 0 )
 				$page_id_found = true;
 			else {
 				$page_id_found = false;
-				if ( $wptbOptions['include_logic'] != 'cat_only' ) {   //skip this logic if we are only checking categories
+				if ( $wptbOptions['include_logic'] != 'cat_only' ) {	//skip this logic if we are only checking categories
 					if ( in_array( $thePostID, explode( ',', $wptbOptions['include_pages'] ) ) )
 						 $page_id_found = true;
 					if ( $wptbOptions['invert_include'] == 'yes' )
@@ -442,11 +448,11 @@ class wptb {
 				$category_id_found = true; 
 			else {
 				$category_id_found = false;
-				if ( $wptbOptions['include_logic'] != 'page_only' ) {   //skip this logic if we are only checking pages
+				if ( $wptbOptions['include_logic'] != 'page_only' ) {	 //skip this logic if we are only checking pages
 					foreach((get_the_category($thePostID)) as $category) {
 						if ( in_array( $category->cat_ID, explode( ',', $wptbOptions['include_categories'] ) ) ) {
-							  $category_id_found = true;
-							  break;
+							$category_id_found = true;
+							break;
 						}
 					}
 					if ( $wptbOptions['invert_categories'] == 'yes' )
@@ -482,13 +488,13 @@ class wptb {
 
 		$wptb_cookie = "wptopbar_".$wptbOptions['bar_id'].'_'.COOKIEHASH;
 		
-		if  ( ( $wptbOptions['allow_close'] == 'yes' ) && 
-			  ( $wptbOptions['respect_cookie'] == 'always' ) && 
-			  ( isset ($_COOKIE[$wptb_cookie])) &&
-			  ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value']) ) {
+		if ( ( $wptbOptions['allow_close'] == 'yes' ) && 
+			 ( $wptbOptions['respect_cookie'] == 'always' ) && 
+			 ( isset ($_COOKIE[$wptb_cookie])) &&
+			 ( $_COOKIE[$wptb_cookie] == $wptbOptions['cookie_value']) ) {
 			echo '<!-- WP-TopBar_'.$WPTB_VERSION.' :: '. $wptbOptions['wptb_version'].' :: Valid Cookie ['.$wptb_cookie.'] Present ('.$_COOKIE[$wptb_cookie].')- not showing TopBar #: '.$wptbOptions['bar_id'].'-->
 ';
-			return false;  
+			return false;
 		}
 		
 		// if we have the mobile_check field set, then check to see if the user is coming from a mobile device then process it appropriately
@@ -503,7 +509,7 @@ class wptb {
 				
 			case 'not_mobile':
 			
-				if (  wp_is_mobile() ) {return false;}		
+				if ( wp_is_mobile() ) {return false;}		
 				break;
 				
 			case 'all_devices':
@@ -520,10 +526,10 @@ class wptb {
 	
 	
 	//=========================================================================		
-	// Code to display the TopBar.  Also used on the admin (debug) pages
+	// Code to display the TopBar. Also used on the admin (debug) pages
 	// 
 	// Parm $wptbaddslashes:
-	//	True = then call addslashes to the string  
+	//	True = then call addslashes to the string
 	//=========================================================================		
 	
 	public static function wptb_display_TopBar($wptb_visibility, $wptbOptions, $wptbaddslashes, $wptbTopBarNumber, $wptbReopen) {
@@ -531,13 +537,13 @@ class wptb {
 
 		if ( $wptbaddslashes ) {
 
-			$wptbtextfields = array( '1' => 'custom_css_bar',  '2' => 'bar_text',  '3' => 'custom_css_text', '4' => 'bar_link_text', '5' => 'close_button_css', '6' => 'reopen_button_css' , '7' => 'div_css' );
+			$wptbtextfields = array( '1' => 'custom_css_bar', '2' => 'bar_text', '3' => 'custom_css_text', '4' => 'bar_link_text', '5' => 'close_button_css', '6' => 'reopen_button_css' , '7' => 'div_css' );
 		
-		  	foreach( $wptbtextfields as $number => $field ) {
-		  			$wptbOptions[$field] = addslashes($wptbOptions[$field]);
-		    }			
+			foreach( $wptbtextfields as $number => $field ) {
+					$wptbOptions[$field] = addslashes($wptbOptions[$field]);
+			}			
 		
-			for ($i=1; $i<=10; $i++)  {
+			for ($i=1; $i<=10; $i++) {
 				if ( isset($wptbOptions['social_icon'.$i.'_css']) )	
 					$wptbOptions['social_icon'.$i.'_css'] = addslashes($wptbOptions['social_icon'.$i.'_css']);
 			}
@@ -560,7 +566,7 @@ class wptb {
 			echo "background: {$wptbOptions['bar_color']};";
 		else 
 		 	echo "background-color: {$wptbOptions['bar_color']};background-image: url({$wptbOptions['bar_image']}); background-position:center;"; 
-		echo 'margin:  '.$wptbOptions['margin_top'],'px '.$wptbOptions['margin_right'].'px '.$wptbOptions['margin_bottom'].'px '.$wptbOptions['margin_left'].'px ;';
+		echo 'margin: '.$wptbOptions['margin_top'],'px '.$wptbOptions['margin_right'].'px '.$wptbOptions['margin_bottom'].'px '.$wptbOptions['margin_left'].'px ;';
 		echo 'text-align:',$wptbOptions['text_align'],';','font-size: ',$wptbOptions['font_size'],'px; ';	
 		echo 'padding-top:',$wptbOptions['padding_top'],'px;','padding-bottom:',$wptbOptions['padding_bottom'],'px;'; 	
 		echo 'color:',$wptbOptions['text_color'],'; display:block;';
@@ -577,9 +583,9 @@ class wptb {
 		}			
 
 // Left Social Buttons
-		for ($i=1; $i<=10; $i++)  {
+		for ($i=1; $i<=10; $i++) {
 			if ( ($wptbOptions['social_icon'.$i.''] == 'on') && ($wptbOptions['social_icon'.$i.'_image'] !== '') && ($wptbOptions['social_icon'.$i.'_position'] == 'left') )
-				echo '<a href="'.$wptbOptions['social_icon'.$i.'_link'].'" target="_'.$wptbOptions['social_icon'.$i.'_link_target'].'"><img  src="'.$wptbOptions['social_icon'.$i.'_image'].'" style="'.trim($wptbOptions['social_icon'.$i.'_css']).'"/></a>';
+				echo '<a href="'.$wptbOptions['social_icon'.$i.'_link'].'" target="_'.$wptbOptions['social_icon'.$i.'_link_target'].'"><img src="'.$wptbOptions['social_icon'.$i.'_image'].'" style="'.trim($wptbOptions['social_icon'.$i.'_css']).'"/></a>';
 		}
 
 // bar & link		
@@ -591,9 +597,9 @@ class wptb {
 		echo $wptbOptions['bar_link_text'].'</a>'; 
 
 // Right Social Buttons		
-		for ($i=1; $i<=10; $i++)  {
+		for ($i=1; $i<=10; $i++) {
 			if ( ($wptbOptions['social_icon'.$i.''] == 'on') && ($wptbOptions['social_icon'.$i.'_image'] !== '') && ($wptbOptions['social_icon'.$i.'_position'] !== 'left') )
-				echo '<a href="'.$wptbOptions['social_icon'.$i.'_link'].'" target="_'.$wptbOptions['social_icon'.$i.'_link_target'].'"><img  src="'.$wptbOptions['social_icon'.$i.'_image'].'" style="'.trim($wptbOptions['social_icon'.$i.'_css']).'"/></a>';
+				echo '<a href="'.$wptbOptions['social_icon'.$i.'_link'].'" target="_'.$wptbOptions['social_icon'.$i.'_link_target'].'"><img src="'.$wptbOptions['social_icon'.$i.'_image'].'" style="'.trim($wptbOptions['social_icon'.$i.'_css']).'"/></a>';
 		}
 			
 // Close Button			
@@ -613,10 +619,10 @@ class wptb {
 		echo '</div>';
 		
 // Reopen Button 		
-		if ($wptbReopen)  {
+		if ($wptbReopen) {
 		echo '<div id="wptb-open-close-bar-stub'.$wptbTopBarNumber.'" class="wptbbar-stub'.$wptbTopBarNumber.'" style="'.$wptbOptions['reopen_button_css'].'"><a class="show-notify" onclick="wptbbar_show'.$wptbTopBarNumber.'();"><img class="wptbbar-down-arrow" align="middle" border="0" src="'.$wptbOptions['reopen_button_image'].'" /></div>';
 		}
-	}  // end function wptb_display_TopBar
+	} // end function wptb_display_TopBar
 	
 	
 	//=========================================================================		
@@ -629,7 +635,7 @@ class wptb {
 		return 'document.cookie="'.$wptb_cookie.'"'."+'=;expires=Thu, 01-Jan-70 00:00:01 GMT;';".'';
 					
 		
-	}  // end function wptb_destory_cookie_js
+	} // end function wptb_destory_cookie_js
 	
 	
 	//=========================================================================		
@@ -649,7 +655,7 @@ class wptb {
 
 		return $html_out;
 		
-	}  // end function wptb_build_cookie_js
+	} // end function wptb_build_cookie_js
 				
 	//=========================================================================		
 	//Build Original TopBar
@@ -665,7 +671,7 @@ class wptb {
 		
 		return $html_out;
 		
-	}  // end function wptb_build_original_js
+	} // end function wptb_build_original_js
 				
 	//=========================================================================		
 	//Build Scrollable TopBar
@@ -686,7 +692,7 @@ class wptb {
 
 		return $html_out;
 		
-	}  // end function wptb_build_scrollable_js
+	} // end function wptb_build_scrollable_js
 
 	//=========================================================================		
 	//Builds the javascript to close/Reopen the TopBar (part 1)
@@ -695,34 +701,34 @@ class wptb {
 
 	public static function wptb_build_reopenable_1_js($wptbOptions, $wptbTopBarNumber) {
 
-	return  "
+	return "
 var wptbshow_open_button".$wptbTopBarNumber." = false;
 						 
 function wptbbar_show".$wptbTopBarNumber."() { 
-    if(wptbshow_open_button".$wptbTopBarNumber.") {
-      jQuery('.wptbbar-stub".$wptbTopBarNumber."').slideUp('fast', function() {
-        jQuery('.wptbbar".$wptbTopBarNumber."').slideDown(".$wptbOptions['slide_time'].");
-      }); 
-    }
-    else {
-      jQuery('.wptbbar".$wptbTopBarNumber."').delay(".$wptbOptions['delay_time'].").slideDown(".$wptbOptions['slide_time'].");
-    }
+	if(wptbshow_open_button".$wptbTopBarNumber.") {
+	  jQuery('.wptbbar-stub".$wptbTopBarNumber."').slideUp('fast', function() {
+	  	jQuery('.wptbbar".$wptbTopBarNumber."').slideDown(".$wptbOptions['slide_time'].");
+	  }); 
+	}
+	else {
+		jQuery('.wptbbar".$wptbTopBarNumber."').delay(".$wptbOptions['delay_time'].").slideDown(".$wptbOptions['slide_time'].");
+	}
 }
 
 function wptbbar_hide".$wptbTopBarNumber."() { 
-    jQuery('.wptbbar".$wptbTopBarNumber."').slideUp('fast', function() {
-      jQuery('.wptbbar-stub".$wptbTopBarNumber."').slideDown(".$wptbOptions['slide_time'].");
+	jQuery('.wptbbar".$wptbTopBarNumber."').slideUp('fast', function() {
+		jQuery('.wptbbar-stub".$wptbTopBarNumber."').slideDown(".$wptbOptions['slide_time'].");
 
-      wptbshow_open_button".$wptbTopBarNumber." = true;
-    }); 
+		wptbshow_open_button".$wptbTopBarNumber." = true;
+	}); 
 
-    if( jQuery(window).width() > 1024 ) {
-      jQuery('body').animate({'marginTop': '0px'}, 250); // if width greater than 1024 pull up the body
-    }
+	if( jQuery(window).width() > 1024 ) {
+		jQuery('body').animate({'marginTop': '0px'}, 250); // if width greater than 1024 pull up the body
+	}
 }
 ";
 
-	}  // end function wptb_build_reopenable_1_js
+	} // end function wptb_build_reopenable_1_js
 
 	//=========================================================================		
 	//Builds the javascript to close/Reopen the TopBar (part 2)
@@ -737,7 +743,7 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 		
 		return $html_out;
 		
-	}  // end function wptb_build_reopenable_2_js
+	} // end function wptb_build_reopenable_2_js
 
 
 	//=========================================================================		
@@ -767,7 +773,7 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 ';
 	
 
-	}  // end function wptb_build_random_logic_js
+	} // end function wptb_build_random_logic_js
 
 	//=========================================================================		
 	//Builds the rotation JavaScript
@@ -849,7 +855,7 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 		$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();		
 		
 		$wptb_debug=get_transient( 'wptb_debug' );	
-	
+		
 		if($wptb_debug)
 			echo '<br><code>WP-TopBar Debug Mode: wptb_build_cacheable_html_js() - Getting TopBars in Random Order</code>';
 	
@@ -858,10 +864,10 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 	
 		$sql="SELECT * FROM ".$wptb_table_name." 
 				WHERE  `enable_topbar` =  'true'
-					AND COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0), 
+					AND COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 0)."',  '%Y-%m-%d %H:%i' ), 0), 
 												COALESCE(STR_TO_DATE( `start_time_utc`,  '%m/%d/%Y %H:%i'     ), 0)),0) <= 0 
 					AND	COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  `end_time_utc` ,  '%m/%d/%Y %H:%i'       ), 0), 					
-												COALESCE(STR_TO_DATE(  '".current_time('mysql', 1)."',  '%Y-%m-%d %H:%i' ), 0)),0) <=0
+												COALESCE(STR_TO_DATE(  '".current_time('mysql', 0)."',  '%Y-%m-%d %H:%i' ), 0)),0) <=0
 		";
 		if ( $wptbGlobalOptions [ 'rotate_order' ] == "random" )
 			$sql.="		ORDER BY RAND()
@@ -908,7 +914,7 @@ jQuery(document).ready(function() {
 			
 				$wptb_rows_processed++;
 				
-			    foreach ($one_row as $key => $option){
+				foreach ($one_row as $key => $option){
 					$wptbOptions[$key] = $option;
 				}
 
@@ -918,12 +924,12 @@ jQuery(document).ready(function() {
 					$wptbOptions['allow_close'] = "no";
 				}
 				
-				$row_selected =  ( wptb::wptb_inject_TopBar_html_js($wptbOptions, $wptbTopBarNumber + 1) );
+				$row_selected = ( wptb::wptb_inject_TopBar_html_js($wptbOptions, $wptbTopBarNumber + 1) );
 											
 				if ( $row_selected ) {			
 					if ( $wptbGlobalOptions [ 'rotate_topbars' ] == "no" ) {
 					
-						if  ( !( $cookie_destroyed ) && $wptbOptions['respect_cookie'] == 'ignore')  {
+						if ( !( $cookie_destroyed ) && $wptbOptions['respect_cookie'] == 'ignore') {
 							$cookie_destroyed = true;
 							$html_cookie_out .= wptb::wptb_destory_cookie_js($wptbOptions['bar_id']);
 						}
@@ -941,7 +947,7 @@ jQuery(document).ready(function() {
 							$html_part_3_out .= wptb::wptb_build_reopenable_2_js($wptbOptions, ($wptbTopBarNumber+1));			
 						else if ( $wptbOptions['scroll_action'] != "on" ) 
 							$html_part_3_out .= wptb::wptb_build_original_js($wptbOptions, ($wptbTopBarNumber+1));
-						else  
+						else
 							$html_part_3_out .= wptb::wptb_build_scrollable_js($wptbOptions, ($wptbTopBarNumber+1));
 
 						$html_part_2_out .= '

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.8
-Stable tag: 5.19
+Stable tag: 5.20
 
 Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler! 
 
@@ -157,6 +157,12 @@ See the Priority question above to see how they are selected. The TopBar will se
 
 The Final check is to see if the TopBar has cookie controls (see above). If the user is allowed to close the TopBar and cookies are enabled, then we look for a cookie. If one is found, and it matches the cookie value, then the TopBar is not shown.
 
+= What TimeZone should I use when I enter Start/Stop Times =
+
+You should enter the time in the same timezone that WordPress is setup to use.  (See the WordPress|Settings|General tab).  
+
+We also print the current WordPress time on the Control Tab right next to the Start option field.  Use that to guide how you should enter the time in.
+
 = What CSS ID's are available? =
 
 Use "#topbar"
@@ -190,6 +196,10 @@ IE does not (yet) implement gradients like other browsers.  So, make sure you te
 Go to the Uninstall tab (or if are on a Multi Site install, you first need to login as a Super Admin then select the Uninstall from the TopBar Menu List) and then click the Uninstall button at the bottom of the page.   You'll be sent to the WordPress Plugins page. Now deactivate and uninstall the Plugin
 
 == Upgrade Notice ==
+
+= 5.20 = 
+
+Fixes defect related to how the Start/Stop times worked.  Minor UI changes to help you see when a TopBar will display due to Start/Stop times.
 
 = 5.19 = 
 
@@ -376,6 +386,15 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+
+= 5.20 - 1/09/2014 =
+
+1. FIXED:	  Fixes defect related to start/stop time (thanks to mommysplurge for helping find and test that one!)
+2. UPDATED:   timepicker.js updated to version 1.43 - http://trentrichardson.com/examples/timepicker/
+3. ADDED:	  Added Time Check indicator to the top of every Options tab to help you know if Time will stop the TopBar from displaying.
+4. ADDED:     Now prints out the current WordPress time on the Control Tab to help you know what timezone we use when checking time.
+5. UPDATED:	  Added FAQ entry related to TimeZone processing
+ 
 = 5.19 - 1/02/2014 =
 
 1. FIXED:	Fixes defect for those TopBars that had a Close Button and had a Display Time of greater than zero. 

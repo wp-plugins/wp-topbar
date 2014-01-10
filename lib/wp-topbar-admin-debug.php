@@ -159,9 +159,13 @@ function wptb_display_debug_info($wptb_title,$wptb_show_rotate) {
 	
 	echo "<li><strong>".__('Time Check','wp-topbar').":</strong></br>";
 	
-	$wptb_current_time=current_time('timestamp', 1);
-	echo __('Server Timezone','wp-topbar').':   <strong>',date_default_timezone_get(),'</strong></br>';
-	echo __('Current Time','wp-topbar').':      <strong>',date('m/d/Y H:i (e)',$wptb_current_time),'</strong></br>';		
+	$wptb_current_time_local  =current_time('timestamp', 0);
+	$wptb_current_time_gmt=current_time('timestamp', 1);
+
+	echo __('Server Timezone','wp-topbar').':&nbsp;<strong>',date_default_timezone_get(),'</strong></br>';
+	echo __('Current Time','wp-topbar').':&nbsp;<strong>',date('m/d/Y H:i',$wptb_current_time_local),'</strong></br>';		
+	echo __('Current Time (GMT)','wp-topbar').':&nbsp;<strong>',date('m/d/Y H:i',$wptb_current_time_gmt),'</strong></br>';		
+	echo __('WordPress GMT Offset').':&nbsp;<strong>'.get_option( 'gmt_offset', 0 ).'</strong></br>';
 	echo "</br>";
 	echo "</li>";
 	echo "<li><strong>".__('Multisite Check','wp-topbar').":</strong></br>";
