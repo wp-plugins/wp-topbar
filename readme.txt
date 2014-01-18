@@ -12,6 +12,8 @@ Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website
 
 What is a TopBar?  It is a special message/image that you can show at the top (or bottom) of your website.  WP-TopBar allows you to create an **unlimited** number of TopBars.   They are cachable and randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even easy to add your own PHP and CSS. 
 
+Version 5.21 changed how the HTML is generated to make it quicker to startup and also eaiser to use more complicated custom PHP... all behind the scenes.  Now you can enter in custom PHP like this and it works! (of course, You'll need to style it with CSS to make it pretty!):  echo do_shortcode('[gallery id="123"]');  
+
 Version 5.17+ is now i18n compatible -- now I just need your help adding new translations. (I did inlcude a Fench translation -- but only about ~10% is actually translated.) You can also now have your own custom TopBars added to the Samples tab (see FAQ for details).
 
 Version 5.14 gives you more Rotation options, makes it easier to enable/disable a TopBar and gives you more control with Network installs.
@@ -215,7 +217,7 @@ Changed how the HTML is generated to make it quicker to startup and also eaiser 
 = 5.21 - 1/17/2014 =
 
 1. ADDED: 	  Added sliderAccess.js to allow Date/Time to be picked via a TouchScrren - http://trentrichardson.com/examples/jQuery-SliderAccess/
-2. CHANGED:	  How the prepend() function works to insert the HTML. Instead of prepending the HTML, we just move the HTML to the "body" div.  This should fix all errors with custom PHP that needs a new line or carriage return.
+2. CHANGED:	  How the prepend() function works to insert the HTML. Instead of prepending the HTML, we just move the HTML to the "body" div.  This should fix all errors with custom PHP that needs a new line or carriage return.  Now you can enter in custom PHP like this and it works! (of course, You'll need to style it with CSS to make it pretty!):  echo do_shortcode('[gallery id="123"]');  
 3. CHANGED:   The priority of when the HTML is generated from very late to a default add_action() priority.
 4. FIXED:	  Minor defect with cookie processing.
 
