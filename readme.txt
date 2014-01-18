@@ -201,7 +201,7 @@ Go to the Uninstall tab (or if are on a Multi Site install, you first need to lo
 
 = 5.21 = 
 
-Changed how the HTML is generated to make it quicker to startup and also eaiser to use more complicated custom PHP... all behind the scenes.  Now you can enter in custom PHP like this and it works! (of course, You'll need to style it with CSS to make it pretty!):  echo do_shortcode('[gallery id="123"]');  
+Changed how the HTML is generated to make it quicker to startup and also eaiser to use more complicated custom PHP... all behind the scenes.  Now you can enter in custom PHP like this and it works! -  echo do_shortcode('[gallery id="123"]');  
 
 == Screenshots ==
 
