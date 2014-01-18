@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.8
-Stable tag: 5.20
+Stable tag: 5.21
 
 Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler! 
 
@@ -197,183 +197,9 @@ Go to the Uninstall tab (or if are on a Multi Site install, you first need to lo
 
 == Upgrade Notice ==
 
-= 5.20 = 
+= 5.21 = 
 
-Fixes defect related to how the Start/Stop times worked.  Minor UI changes to help you see when a TopBar will display due to Start/Stop times.
-
-= 5.19 = 
-
-Fixes defect for those TopBars that had a Close Button and had a Display Time of greater than zero.
-
-= 5.18 = 
-
-Refactored the jQuery functions to make the code cleaner, animations work a bit smoother (for Close/Reopen Buttons) and eliminate unnecessary calls.   Updated the Activation logic to perform upgrade check.  Fixed a few defects and other code cleanup.
-
-= 5.17 = 
-
-Version 5.17 adds localization support.  Need your help providing translation files. (I did inlcude a Fench translation -- but only about ~10% is actually translated.) Also adds a way to include your own sample TopBars.
-
-= 5.16 = 
-
-Version 5.16 supports WordPress 3.8, and fixes some pesky defects. 
-
-= 5.15 = 
-
-Fixed simple defect that prevented the Network settings option for working correctly.   
-
-= 5.14 = 
-
-Added more rotate options, added Network settings, major clean-up to the Uninstall option, squashed a few bugs.
-
-= 5.13 = 
-
-Added ability to rotate through the TopBars on each pageview, changed to use the to built-in jQueryUI libraries, added new options to adjust the left/right margins, minor defect fixes.  Also made it easier to enable/disable a TopBar.
-
-= 5.12 = 
-
-Version 5.12 fixes Strict Standards error messages and other defects.
-
-= 5.11 = 
-
-Version 5.11 supports WordPress 3.7, added control option to control showing of TopBar on mobile devices. 
-
-= 5.10 = 
-
-Added features to allow you to enter custom HTML giving you even more control. Renamed CSS tab to 'CSS & HTML' tab. 
-
-= 5.06 = 
-
-Defect fix for toolbars that use the re-openable option.
-
-= 5.05 = 
-
-Version 5.05 supports WordPress 3.6.1, improves the setup documentation, moves Start/Stop time to Control Tab for UI consistency.
-
-= 5.04 = 
-
-Added option to only show the TopBar on the Home Page.  Fixes a few defects.
-
-= 5.03 = 
-
-Version 5.03 adds option to start the TopBar in the closed position and fixed minor bugs.
-
-= 5.02 = 
-
-Version 5.02 adds Sample ToolBars tab, adds Scoll Amount field and fixes minor bugs.
-
-= 5.01 = 
-
-Version 5.01 supports WordPress 3.5.2 and fixes minor bugs.
-
-= 5.0 = 
-
-Version 5.0 adds ability to reopen a TopBar, fixes a couple of defects and enhances how custom PHP is supported.  Changed TopBar to use a DIV container instead of a P container. Double check how your TopBars now render after upgrading.  Added six more Social Buttons.  See Changelog for all updates.
-
-= 4.17 = 
-
-Version 4.17 adds a new Scrolling option, has some defect fixes and JavaScript updates.
-
-= 4.16 = 
-
-Minor fix to SQL/CSV Export function.
-
-= 4.15 = 
-
-Now can add custom PHP to the TopBar.  Also now has the ability to select TopBars based on whether the user is logged in.
-
-= 4.14 = 
-
-Fixed issue where sometimes the html link would sometimes not display correctly.
-
-= 4.13 = 
-
-Changed to use WordPress' embedded jQuery UI & new Color Picker (on WP 3.5+), cleaned up CSS Options Page and other fixes.
-
-= 4.12 = 
-
-Fixed issues that sometimes causes the plugin to not activate correctly.
-
-= 4.11 = 
-
-Version 4.11 supports WordPress 3.5.1, updates jQuery UI to latest version, and fixes minor bugs.
-
-= 4.10 = 
-
-Version 4.10 supports WordPress 3.5, fixes several defects, and now supports caching.
-
-= 4.03 = 
-
-Version 4.03 supports WordPress 3.4.2, adds security features, and fixes a few bugs.
-
-= 4.02 = 
-
-Version 4.02 adds warning to update settings after upgrade and fixes a defect.
-
-= 4.01 = 
-
-Version 4.01 add explicit support for the qtranslate plugin and a tab to bulk change all Close Button settings.
-
-= 4.00 = 
-
-Version 4.00 Converted to using database to store MULTIPLE (yahoo!) TopBars.  Refactored to be leaner, faster, and smarter.  Your old TopBar will be imported into the new database.
-
-= 3.10 = 
-
-Version 3.10 supports WordPress 3.4 and adds the capability to restrict the TopBar from showing by category.   You can also explicitly manage how it shows up on the Home Page.   Moved Control logic to its own options page.
-
-= 3.09 = 
-
-Version 3.09 fixed for use with multisite (network) and added submenus to the Admin bar.
-
-= 3.08 = 
-
-Version 3.08 changes how special characters are handles in the user defined CSS/text fields.
-
-= 3.07 = 
-
-Version 3.07 changes how the way jQuery is called to better support more installations.
-
-= 3.06 = 
-
-Version 3.06 adds the ability to add Social Icons to the TopBar.  
-
-= 3.05 = 
-
-Version 3.05 has a new admin page and fixes a few errors.  
-
-= 3.04 = 
-
-Version 3.04 fixes corrupts SVN files.
-
-= 3.03 = 
-
-Version 3.03 allows users to close the TopBar.
-
-= 3.02 = 
-
-Version 3.02 changed date/time picker to a GPL version to conform to WordPress licensing.
-
-= 3.01 = 
-
-Fixes bug in posting pages.
-
-= 3.00 = 
-
-Version 3.0 adds the ability to set a start/end time for the TopBar to show.  It was re-worked to be smaller and faster.
-
-= 2.1 = 
-
-Version 2.1 is a minor bug fix for when the TopBar is in the footer and you are trying to exclude pages.
-
-= 2.0 = 
-
-More options added -- should not change how your TopBar works since the new defaults are set to be how the TopBar previously operated.
-
-= 1.5 = 
-
-This version provides even more control over how the TopBar is placed. Test, Test Test it carefully on your beta site before upgrading.
-
-
+Changed how the HTML is generated to make it quicker to startup and also eaiser to use more complicated custom PHP... all behind the scenes.  Now you can enter in custom PHP like this and it works! (of course, You'll need to style it with CSS to make it pretty!):  echo do_shortcode('[gallery id="123"]');  
 
 == Screenshots ==
 
@@ -386,6 +212,12 @@ This version provides even more control over how the TopBar is placed. Test, Tes
 
 == Changelog ==
 
+= 5.21 - 1/17/2014 =
+
+1. ADDED: 	  Added sliderAccess.js to allow Date/Time to be picked via a TouchScrren - http://trentrichardson.com/examples/jQuery-SliderAccess/
+2. CHANGED:	  How the prepend() function works to insert the HTML. Instead of prepending the HTML, we just move the HTML to the "body" div.  This should fix all errors with custom PHP that needs a new line or carriage return.
+3. CHANGED:   The priority of when the HTML is generated from very late to a default add_action() priority.
+4. FIXED:	  Minor defect with cookie processing.
 
 = 5.20 - 1/09/2014 =
 
