@@ -144,7 +144,7 @@ class wptb {
 			wp_register_script( 'wptb_timepicker_js', plugins_url('/lib/js/jquery-ui-timepicker-addon.js', __FILE__), array('jquery') );
 			wp_enqueue_script(  'wptb_timepicker_js' );
 			
-			wp_register_script( 'wptb_slideraccess_js', plugins_url('/lib/js/jquery-ui-slideraccess.js', __FILE__), array('jquery','wptb_timepicker_js') );
+			wp_register_script( 'wptb_slideraccess_js', plugins_url('/lib/js/jquery-ui-sliderAccess.js', __FILE__), array('jquery','wptb_timepicker_js') );
 			wp_enqueue_script(  'wptb_slideraccess_js' );
 
 			wp_register_script( 'wptb_admin_js', plugins_url('/lib/js/wp-topbar-admin.js', __FILE__), array('jquery') );
