@@ -126,9 +126,25 @@ function wptb_globalsettings_options() {
 					}
 					?>
 					</label></td>
-				</tr>				<tr>
+				</tr>				
+				<tr>
 					<td colspan="3"><hr></td>
 				</tr>
+				<tr valign="top">
+					<td width="150"><?php _e('Show TopBar Overview on Admin Pages','wp-topbar'); ?>:</label></td>
+					<td>
+					 	<p id="radio4" class="ui-button ui-button-wptbset">
+							<input type="radio" id="wptbshowoverview1" name="wptbshowoverview" class="ui-helper-hidden-accessible" value="on" <?php if ($wptbGlobalOptions [ 'show_overview' ] == "on") { echo 'checked="checked"'; }?>><label for="wptbshowoverview1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('On','wp-topbar'); ?></span></label>
+							<input type="radio" id="wptbshowoverview2" name="wptbshowoverview" class="ui-helper-hidden-accessible" value="off" <?php if ($wptbGlobalOptions [ 'show_overview' ] == "off") { echo 'checked="checked"'; }?>><label for="wptbshowoverview2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Off','wp-topbar'); ?></span></label>
+						</p>						
+					</td>
+					<td>
+						<p class="sub"><em><?php _e("If you don't need the Overview shown, you can turn off the Overview section on the Admin pages.  Default is <code>on</code>",'wp-topbar'); ?></em></p>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3"><hr></td>
+				</tr>	
 		</table>
 		</div>
 		<table>

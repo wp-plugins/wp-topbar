@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 3.8.1
-Stable tag: 5.21
+Stable tag: 5.22
 
 Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler! 
 
@@ -199,9 +199,9 @@ Go to the Uninstall tab (or if are on a Multi Site install, you first need to lo
 
 == Upgrade Notice ==
 
-= 5.21 = 
+= 5.22 = 
 
-Changed how the HTML is generated to make it quicker to startup and also eaiser to use more complicated custom PHP... all behind the scenes.  Now you can enter in custom PHP like this and it works! -  echo do_shortcode('[gallery id="123"]');  
+Changed the All Tables and Samples Tabs to make it easier to find and select your TopBars.  Add Global option to remove Overview section to save screen space.
 
 == Screenshots ==
 
@@ -214,12 +214,18 @@ Changed how the HTML is generated to make it quicker to startup and also eaiser 
 
 == Changelog ==
 
+= 5.22 - 1/25/2014 =
+
+1. VALIDATED: Version 5.22 supports WordPress 3.8.1
+2. UPDATED:	Changed the All Tables & Sample Tabs to use Foo Tables for a better experience - http://fooplugins.com/plugins/footable-jquery/
+3. ADDED:		Global option to turn off the Overview section to save screen space on the Admin pages.
+
 = 5.21 - 1/17/2014 =
 
-1. ADDED: 	  Added sliderAccess.js to allow Date/Time to be picked via a TouchScrren - http://trentrichardson.com/examples/jQuery-SliderAccess/
-2. CHANGED:	  How the prepend() function works to insert the HTML. Instead of prepending the HTML, we just move the HTML to the "body" div.  This should fix all errors with custom PHP that needs a new line or carriage return.  Now you can enter in custom PHP like this and it works! (of course, You'll need to style it with CSS to make it pretty!):  echo do_shortcode('[gallery id="123"]');  
-3. CHANGED:   The priority of when the HTML is generated from very late to a default add_action() priority.
-4. FIXED:	  Minor defect with cookie processing.
+1. ADDED:		Added sliderAccess.js to allow Date/Time to be picked via a TouchScrren - http://trentrichardson.com/examples/jQuery-SliderAccess/
+2. CHANGED:	How the prepend() function works to insert the HTML. Instead of prepending the HTML, we just move the HTML to the "body" div.  This should fix all errors with custom PHP that needs a new line or carriage return.  Now you can enter in custom PHP like this and it works! (of course, You'll need to style it with CSS to make it pretty!):  echo do_shortcode('[gallery id="123"]');  
+3. CHANGED:	The priority of when the HTML is generated from very late to a default add_action() priority.
+4. FIXED:	  	Minor defect with cookie processing.
 
 = 5.20 - 1/09/2014 =
 

@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.21
+Version: 5.22
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 Text Domain: wp-topbar
@@ -27,7 +27,7 @@ Text Domain: wp-topbar
 */
 
 
-$WPTB_VERSION = "5.21";
+$WPTB_VERSION = "5.22";
 $WPTB_DB_VERSION = "5.06";  // rev this only when the database structure changes -- also update below in TWO places!
 
 if( ! class_exists( 'wptb' ) ):
@@ -149,12 +149,34 @@ class wptb {
 
 			wp_register_script( 'wptb_admin_js', plugins_url('/lib/js/wp-topbar-admin.js', __FILE__), array('jquery') );
 			wp_enqueue_script(  'wptb_admin_js' );
+			wp_localize_script( 'wptb_admin_js', 'MyAjax', array( 'ajaxurl' => admin_url( '?page=wp-topbar.php' ) ) );
+
 			
 			wp_register_style( 'wptb_jquery_ui_css', plugins_url('/lib/css/jquery-ui-1.10.3.custom.min.css', __FILE__) );
 			wp_enqueue_style(  'wptb_jquery_ui_css' );
 			wp_register_style( 'wptb_timepicker_css', plugins_url('/lib/css/jquery-ui-timepicker-addon.css', __FILE__) );
 			wp_enqueue_style(  'wptb_timepicker_css' );		
+			
+			// FooTable stuff
+			
+			wp_register_script( 'footable_js', plugins_url('/lib/js/footable.js', __FILE__), array('jquery') );
+			wp_register_script( 'footable_filter_js', plugins_url('/lib/js/footable.filter.js', __FILE__), array('jquery') );
+			wp_register_script( 'footable_paginate_js', plugins_url('/lib/js/footable.paginate.js', __FILE__), array('jquery') );
+			wp_register_script( 'footable_sort_js', plugins_url('/lib/js/footable.sort.js', __FILE__), array('jquery') );
+			wp_register_script( 'footable_striping_js', plugins_url('/lib/js/footable.striping.js', __FILE__), array('jquery') );
+			
+			wp_enqueue_script(  'footable_js' );
+			wp_enqueue_script(  'footable_filter_js' );
+			wp_enqueue_script(  'footable_paginate_js' );
+			wp_enqueue_script(  'footable_sort_js' );
+			wp_enqueue_script(  'footable_striping_js' );
+			
+			wp_register_style( 'footable_css', plugins_url('/lib/css/footable.core.min.css', __FILE__) );
+			wp_register_style( 'footable_standalone_css',  plugins_url('/lib/css/footable.standalone.min.css', __FILE__) );
 
+			wp_enqueue_style( 'footable_css' );
+			wp_enqueue_style( 'footable_standalone_css' ); 
+			
 			global $wp_version; // get current verison of WordPress
 			
 			if ( version_compare( $wp_version, "3.8", '<' ) ) {
@@ -290,6 +312,7 @@ class wptb {
 			$wptbGlobalOptions [ 'rotate_count' ]		 = 0;
 			$wptbGlobalOptions [ 'rotate_hide_last' ]	 = "yes";
 			$wptbGlobalOptions [ 'custom_samples_path' ] = "";
+			$wptbGlobalOptions [ 'show_overview' ] 		 = "on";
 			
 			// setup GlobalOptions for the first time
 			$wptbGlobalOptions = array(
@@ -299,7 +322,8 @@ class wptb {
 			  'rotate_order'			=> $wptbGlobalOptions [ 'rotate_order' ],
 			  'rotate_count'	 		=> $wptbGlobalOptions [ 'rotate_count' ],
 			  'rotate_hide_last'		=> $wptbGlobalOptions [ 'rotate_hide_last' ],
-			  'custom_samples_path'		=> $wptbGlobalOptions [ 'custom_samples_path' ]
+			  'custom_samples_path'		=> $wptbGlobalOptions [ 'custom_samples_path' ],
+			  'show_overview'			=> $wptbGlobalOptions [ 'show_overview' ]
 			 );
 
 			update_option( "wptb_global_options", $wptbGlobalOptions );
@@ -336,7 +360,10 @@ class wptb {
 			$wptbGlobalOptions [ 'custom_samples_path' ] = "";
 			$wptbUpdateGlobalOptions = true;
 		}
-
+		if ( ! isset($wptbGlobalOptions [ 'show_overview' ]) ) {
+			$wptbGlobalOptions [ 'show_overview' ] = "on";
+			$wptbUpdateGlobalOptions = true;
+		}
 		if ($wptbUpdateGlobalOptions)
 			update_option( "wptb_global_options", $wptbGlobalOptions );
 	

@@ -133,7 +133,7 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid, $wptbOptio
     			<table>
 
 				<tr valign="middle">
-					<td width="150"><strong><?php _e('Enable TopBar','wp-topbar'); ?>:</strong></td>
+					<td width="100"><strong><?php _e('Enable TopBar','wp-topbar'); ?>:</strong></td>
 					<td>
 				 	<p id="radio0" class="ui-button ui-button-wptbset">
 						<input type="radio" id="wptbenabletopbar1" name="wptbenabletopbar" class="ui-helper-hidden-accessible" value="true" <?php if ($wptbOptions['enable_topbar'] == "true") { echo 'checked="checked"'; }?>><label for="wptbenabletopbar1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Yes','wp-topbar'); ?></span></label>
@@ -146,11 +146,40 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid, $wptbOptio
 						<?php 
 					echo "<strong>".__("Time Check:")."</strong></td><td>";
 					if (wptb_check_time($wptbOptions [ 'bar_id' ]))
-						echo  "<span class='wptb-on-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/on.png', __FILE__).')"'."></span>";
+						echo "<td data-value='0'><img title='Time Settings OK!' src='".plugins_url('/images/on.png', __FILE__)."'></td>";
 					else
-						echo "<span class='wptb-off-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/off.png', __FILE__).')"'."></span>";
+						echo "<td data-value='0'><img title='Time Settings preventing TopBar from showing' src='".plugins_url('/images/off.png', __FILE__)."'></td>";
 					?>
 					</td>
+					<td width="50">
+					</td>					
+					<td>
+					<?php
+					echo "<strong>".__("Restrictions:")."</strong></td><td>";
+					if ($wptbOptions['only_logged_in'] == "yes" ) 
+						echo "<img title='Logged in Only' src='".plugins_url('/images/users_logged_in.png', __FILE__)."'>";
+					else if ($wptbOptions['only_logged_in'] == "no" ) 
+						echo "<img title='Not Lgged in Only' src='".plugins_url('/images/users_not_logged_in.png', __FILE__)."'>";
+					else 
+						echo "<img title='All Users' src='".plugins_url('/images/users_all.png', __FILE__)."'>";
+			
+					if ($wptbOptions['mobile_check'] == "only_mobile" ) 
+						echo "<img title='Mobile Devices Only' src='".plugins_url('/images/devices_mobile.png', __FILE__)."'>";
+					else if ($wptbOptions['mobile_check'] == "not_mobile" ) 
+						echo "<img title='Not Mobile Devices Only' src='".plugins_url('/images/devices_not_mobile.png', __FILE__)."'>";
+					else 
+						echo "<img title='All Devices' src='".plugins_url('/images/devices_all.png', __FILE__)."'>";
+			
+					if ($wptbOptions['show_homepage'] == "always" ) 
+						echo "<img title='Always on the Home Page' src='".plugins_url('/images/home_always.png', __FILE__)."'>";
+					else if ($wptbOptions['show_homepage'] == "never" ) 
+						echo "<img title='Never on the Home Page' src='".plugins_url('/images/home_never.png', __FILE__)."'>";
+					else if ($wptbOptions['show_homepage'] == "conditionally" ) 
+						echo "<img title='Conditionally on the Home Page' src='".plugins_url('/images/home_conditionally.png', __FILE__)."'>";
+					else 
+						echo "<img title='Only on the Home Page' src='".plugins_url('/images/home_only.png', __FILE__)."'>";
+				?>
+				</td>
 				</tr>
 				</table>
 	</div>
@@ -420,8 +449,392 @@ __('Go into your database tool (usually using phpMyAdmin), find the wp-topbar ta
 //  Display the All topbars table
 //
 //=========================================================================		
-
 function wptb_display_all_TopBars() {
+
+	wptb_display_all_TopBarsFooTable();
+//	wptb_display_all_TopBarsWP();
+
+}
+
+function wptb_display_all_TopBarsFooTable() {
+
+	$wptb_debug=get_transient( 'wptb_debug' );	
+
+	if($wptb_debug)
+		echo '</br><code>WP-TopBar Debug Mode: wptb_display_all_TopBars()</code>';
+
+	 //Prepare Table of elements
+
+	global $WPTB_DB_VERSION;
+	global $wpdb;
+
+	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
+	
+   	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+   	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+   	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+
+
+	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
+	$wptb_rows = $wpdb->get_results( 'SELECT * FROM '.$wptb_table_name);
+	$wptb_num_rows = $wpdb->num_rows;
+	if ( $wptb_num_rows == 0 ){
+		$wptbOptions=wptb_insert_default_row($WPTB_DB_VERSION);
+		echo '<div class="updated"><p><strong>'.__('All TopBars deleted; created default TopBar.','wp-topbar').'</strong></p></div>';
+		$wptb_num_rows=1;
+	}
+	$query = "SELECT *,  ((start_delta <= 0 ) AND (end_delta <=0 )) as show_it, concat(bar_text, '<br/>',bar_link_text) as text_line
+			  		FROM (
+				
+		SELECT 	*,	COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 0)."',  '%Y-%m-%d %H:%i' ), 0), 
+											COALESCE(STR_TO_DATE(  `start_time_utc`,  '%m/%d/%Y %H:%i'     ), 0)),0) as start_delta, 
+					COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  `end_time_utc` ,  '%m/%d/%Y %H:%i'       ), 0), 					
+											COALESCE(STR_TO_DATE(  '".current_time('mysql', 0)."',  '%Y-%m-%d %H:%i' ), 0)),0) as end_delta
+					
+					FROM ".$wptb_table_name."
+					ORDER BY bar_id asc
+					) as Table1;";
+
+	$data = $wpdb->get_results($query, ARRAY_A);   	
+	?>
+	
+<style media="screen" type="text/css">
+	.wptbactions {
+	    visibility:hidden;
+	}
+</style>
+	
+	
+    <div class="wrap">
+        
+        <div id="icon-options-general" class="icon32"><br/></div>
+        <h2><?php _e('Listing of all TopBars','wp-topbar'); ?></h2>
+        <?php 	if ( ! isset($wptbGlobalOptions [ 'show_overview' ]) || $wptbGlobalOptions [ 'show_overview' ] == "on") { ?>
+        <table style="background:white;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
+			<tr valign="top" >
+			<td width="400" bgcolor="#bcfbc5" align="center">
+			<strong><?php _e('Overview','wp-topbar'); ?></strong>
+			</td>
+			<td width="5">
+			</td>
+			<td bgcolor="#e2f8b9" align="center">
+	        <strong><?php _e('Step-by-Step','wp-topbar'); ?></strong>
+			</td>
+ 			</tr>	
+			<tr valign="top" >
+			<td width="400">
+            <?php _e('Select a TopBar to edit.  You can also enable, disable, bulk duplicate or delete your TopBars from here.'.
+	        '<br /><br />Use the','wp-topbar'); ?> <strong><a href='?page=wp-topbar.php&action=testpriority'><?php _e('Test Priority tab','wp-topbar'); ?></a></strong> <?php _e('to see how the plugin will randomly select 10 TopBars.'.
+	        '<br /><br />The table below shows you the Priority and Start/Stop times for each TopBar.  It also tells you if a TopBar will show based on the current time and if that TopBar is enabled.   It will also show you if it will show only for logged in users or all users.'.
+			'<br /><br />Use the','wp-topbar'); ?> <strong><a href='?page=wp-topbar.php&action=globalsettings'><?php _e('Global Settings tab','wp-topbar'); ?></a></strong> <?php _e('to affect how all TopBars are processed.','wp-topbar'); ?> 
+			</td>
+			<td width="5" bgcolor="grey">
+			</td>
+			<td>
+	        <?php _e('1.  Select the TopBar to edit by hovering over the row and selecting the Main Options link.'.   
+	        '<br />&nbsp&nbsp&nbsp&nbsp<strong>OR</strong>'.
+	        '<br />&nbsp&nbsp&nbsp&nbspHit the <strong>Create Default Row</strong> button below to insert a default TopBar at end of the table.  Find it and edit it.'.
+	        '<br />&nbsp&nbsp&nbsp&nbsp<strong>OR</strong>'.
+	        '<br />&nbsp&nbsp&nbsp&nbspGo to the','wp-topbar'); ?> <strong><a href="?page=wp-topbar.php&action=samples"><?php _e('Sample TopBar tab','wp-topbar'); ?></a></strong> <?php _e('(above) and select one or more TopBars to add to the table below.'. 
+	        '<br />2.  Change the various options to configure the TopBar, using the Tabs to setup how the TopBar looks.  Explore each tab to see all the options.'.
+	        '<br />3.  Go back to the Main Options tab and toggle the Enable switch to allow the TopBar to be shown.'.
+	        '<br />4.  Go back to the All TopBars tab to add more TopBars. Add and customize as many TopBars as you need.'.
+	        '<br />5.  Now, every time a web page is displayed, the plugin builds all of the TopBars that match the Control Tab and Time criteria.'.
+	     	'<br />&nbsp&nbsp&nbsp&nbspA TopBar is randomly selected (although, the Priority Weighting can be used to give one TopBar more preference than another.)'.  
+	     	'<br />&nbsp&nbsp&nbsp&nbspThey are built in such a way that your cacheing plugin will cache the results.','wp-topbar'); ?><td>
+			</td>
+ 			</tr>	
+		</table>
+		<?php } ?>
+
+		<p class="submit">
+		<input type="submit" class="button-primary" name=wptbInsertBar value="<?php _e('Create Default Row', 'wp-topbar') ?>" />
+		</p>
+ <div class="tab-pane active" id="demo">
+      <p >
+		<strong>Bulk Actions</strong>: <select id="selectOpt">
+		<option></option>
+		<?php 
+			echo '<option value="bulkdelete">'.__('Delete','wp-topbar')."</option>";
+			echo '<option value="bulkduplicate">'.__('Duplicate','wp-topbar')."</option>";
+			echo '<option value="bulkenable">'.__('Enable','wp-topbar')."</option>";
+			echo '<option value="bulkdisable">'.__('Disable','wp-topbar')."</option>";
+			echo '<option value="bulkincrease">'.__('Increase Priority by 10','wp-topbar')."</option>";
+			echo '<option value="bulkdecrease">'.__('Decrease Priority by 10','wp-topbar')."</option>";
+         ?>  
+        </select>
+        <button type="button" onclick="processCheckBoxes()">Apply</button>
+&nbsp;&nbsp;&nbsp;
+        <strong>Search</strong>: <input id="filter" type="text">
+        <form id="topbar-filter" name="addform" method="get">
+  	    <table data-filter="#filter" data-filter-disable-enter="true" data-page-size="20" id="footable">		
+	    <thead>
+			<tr>
+		        <th data-sort-ignore="true" data-ignore="true"><input type="checkbox" id="chk_new"  onclick="checkAll('chk');" ></th>
+				<th data-class="expand">ID</th>
+		        <th data-sort-ignore="true" data-ignore="true"></th>
+		        <?php 
+				echo "<th>".__('Priority')."</th>";
+				echo "<th>".__('Start<br/>Time')."</th>";
+				echo "<th>".__('End<br/>Time')."</th>";
+				echo "<th>".__('Time<br/>Check')."</th>";
+				echo "<th>".__('Enabled')."</th>";
+				echo '<th data-sort-ignore="true" data-ignore="true">'.__('Restrictions')."</th>";
+				echo "<th>".__('Sample')."</th>";
+				?>
+			</tr>
+		</thead>
+		<tbody>
+		
+    <?php 
+
+	foreach ( $data as $wptbOptions ) {	
+			
+		echo '<tr class="wptbrow" style="vertical-align: top;">';
+		echo '<td data-ignore="true"><input type="checkbox"  class="wptbCheckBox" value="'.($wptbOptions['bar_id']+0).'"></td>';
+		echo '<td data-type="numeric" data-value="'.($wptbOptions['bar_id']+0).'">'.$wptbOptions['bar_id']."</td>";
+		echo '<td data-ignore="true">';	
+		
+        $tabs = array( 'main' => __('Main&nbspOptions','wp-topbar'),  'control' => __('Control','wp-topbar'),  'topbartext' => __('TopBar&nbspText&nbsp&&nbspImage','wp-topbar'),  'topbarcss' => __('TopBar&nbspCSS&nbsp&&nbspHTML','wp-topbar'), 'colorselection' => __('Color&nbspSelection','wp-topbar'),'closebutton' => __('Close&nbspButton','wp-topbar'), 'socialbuttons' => __('Social&nbspButtons','wp-topbar'),'phptexttab' => __('PHP','wp-topbar'), 'debug' => __('Debug','wp-topbar') );    
+
+        //Build row actions
+		$options = "<option>Actions...</option>";
+		
+        if ( $wptbOptions['enable_topbar'] == "false" ) {
+	        $actions = sprintf('<a href="?page=%s&amp;action=%s&amp;barid=%s&amp;noheader=true">'.__('Enable','wp-topbar').'</a>',$_REQUEST['page'],'enable',($wptbOptions['bar_id']+$wptb_barid_prefix))."<br/>";
+	        $options .= "<option value='".sprintf('?page=%s&amp;action=%s&amp;barid=%s&amp;noheader=true',$_REQUEST['page'],'enable',($wptbOptions['bar_id']+$wptb_barid_prefix))."'>".__('Enable','wp-topbar')."</options>";
+        }
+        else {
+	        $actions = sprintf('<a href="?page=%s&amp;action=%s&amp;barid=%s&amp;noheader=true">'.__('Disable','wp-topbar').'</a>',$_REQUEST['page'],'disable',($wptbOptions['bar_id']+$wptb_barid_prefix))."<br/>";	        
+	        $options .= "<option value='".sprintf('?page=%s&amp;action=%s&amp;barid=%s&amp;noheader=true',$_REQUEST['page'],'disable',($wptbOptions['bar_id']+$wptb_barid_prefix))."'>".__('Disable','wp-topbar')."</options>";	        
+        }
+                
+        $actions .= sprintf('<a href="?page=%s&amp;action=%s&amp;barid=%s&amp;noheader=true">'.__('Duplicate','wp-topbar').'</a>',$_REQUEST['page'],'duplicate',($wptbOptions['bar_id']+$wptb_barid_prefix))."<br/>";
+        $options .= "<option value='".sprintf('?page=%s&amp;action=%s&amp;barid=%s&amp;noheader=true',$_REQUEST['page'],'duplicate',($wptbOptions['bar_id']+$wptb_barid_prefix))."'>".__('Duplicate','wp-topbar').'</options>';
+
+        foreach( $tabs as $tab => $name ) {
+        	$actions .= sprintf('<a href="?page=%s&amp;action=%s&amp;barid=%s">%s</a>',$_REQUEST['page'],$tab,($wptbOptions['bar_id']+$wptb_barid_prefix), $name)."<br/>";
+	        $options .= "<option value='".sprintf('?page=%s&amp;action=%s&amp;barid=%s',$_REQUEST['page'],$tab,($wptbOptions['bar_id']+$wptb_barid_prefix))."'>".$name.'</options>';
+        }
+
+		echo '<select class="rowoptions">'.$options.'</select>';
+
+//		echo '<p class="wptbactions">'.sprintf('%1$s',$actions).'</p>';
+        		
+		echo '</td>';
+		
+		echo '<td width="100" data-type="numeric" data-value="'.($wptbOptions['weighting_points']+0).'">'.$wptbOptions['weighting_points']."<br/><img height='22px' width='".($wptbOptions['weighting_points']+0)."%' src='".plugins_url('/images/priority.png', __FILE__)."' /></td>";		
+		
+		if ($wptbOptions['start_time'] == 0) 
+			echo '<td data-value="0">N/A</td>';
+		else 
+			echo '<td data-value="'.date('Y-m-d-H:i:s',strtotime($wptbOptions['start_time'])).'">'.$wptbOptions['start_time'].'</td>';
+
+		if ($wptbOptions['end_time'] == 0) 
+			echo '<td data-value="9999-99-99-24:00:00:00">N/A</td>';
+		else 
+			echo '<td data-value="'.date('Y-m-d-H:i:s',strtotime($wptbOptions['end_time'])).'">'.$wptbOptions['end_time'].'</td>';
+		
+		
+		if ($wptbOptions['show_it'] == 0 )							
+			echo "<td data-value='0'><img title='Time Settings preventing TopBar from showing' src='".plugins_url('/images/off.png', __FILE__)."'></td>";
+		else
+			echo "<td data-value='1'><img title='Time Settings OK!' src='".plugins_url('/images/on.png', __FILE__)."'></td>";
+			
+		if ($wptbOptions['enable_topbar'] == 'false')								
+			echo "<td data-value='0'><img title='Disabled' src='".plugins_url('/images/off.png', __FILE__)."'></td>";
+		else
+			echo "<td data-value='1'><img title='Enabled' src='".plugins_url('/images/on.png', __FILE__)."'></td>";
+
+		echo '<td width="96">';
+		if ($wptbOptions['only_logged_in'] == "yes" ) 
+			echo "<img title='Logged in Only' src='".plugins_url('/images/users_logged_in.png', __FILE__)."'>";
+		else if ($wptbOptions['only_logged_in'] == "no" ) 
+			echo "<img title='Not Lgged in Only' src='".plugins_url('/images/users_not_logged_in.png', __FILE__)."'>";
+		else 
+			echo "<img title='All Users' src='".plugins_url('/images/users_all.png', __FILE__)."'>";
+
+		if ($wptbOptions['mobile_check'] == "only_mobile" ) 
+			echo "<img title='Mobile Devices Only' src='".plugins_url('/images/devices_mobile.png', __FILE__)."'>";
+		else if ($wptbOptions['mobile_check'] == "not_mobile" ) 
+			echo "<img title='Not Mobile Devices Only' src='".plugins_url('/images/devices_not_mobile.png', __FILE__)."'>";
+		else 
+			echo "<img title='All Devices' src='".plugins_url('/images/devices_all.png', __FILE__)."'>";
+
+		if ($wptbOptions['show_homepage'] == "always" ) 
+			echo "<img title='Always on the Home Page' src='".plugins_url('/images/home_always.png', __FILE__)."'>";
+		else if ($wptbOptions['show_homepage'] == "never" ) 
+			echo "<img title='Never on the Home Page' src='".plugins_url('/images/home_never.png', __FILE__)."'>";
+		else if ($wptbOptions['show_homepage'] == "conditionally" ) 
+			echo "<img title='Conditionally on the Home Page' src='".plugins_url('/images/home_conditionally.png', __FILE__)."'>";
+		else 
+			echo "<img title='Only on the Home Page' src='".plugins_url('/images/home_only.png', __FILE__)."'>";
+		echo '</td>';
+	
+		echo '<td>';
+
+		if ( $wptbGlobalOptions [ 'rotate_topbars' ] == "yes" ) {				// force these to off/no if Rotate is turned on
+			$$wptbOptions['scroll_action'] = "off";
+			$wptbOptions['allow_reopen'] = "no";
+			$wptbOptions['allow_close'] = "no";
+		}		
+				
+		if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
+			wptb::wptb_display_TopBar('',$wptbOptions, false, 1, true);
+		else 
+			wptb::wptb_display_TopBar('',$wptbOptions, false, 1, false);		
+		
+		echo '</td>';
+		
+		echo '</div></tr>';
+	}
+
+	?>
+		</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="5">
+				<div class="pagination pagination-centered hide-if-no-paging"></div>
+			</td>
+		</tr>
+	</tfoot>		
+	</table>
+    <p style='font-style:italic; text-align:right;'>
+	<?php echo sprintf( _n('%d TopBar', '%d TopBars', $wptb_num_rows, 'wp-topbar'), $wptb_num_rows ); ?>
+	</p>
+
+	
+    </form>
+    </div>	
+    </div>	
+	
+	<?php
+
+
+} 
+    
+
+function wptb_process_FOO_bulk_action() {
+
+    $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : array();
+
+   	switch ( $action ) {
+	case "bulkincrease":	
+			global $wpdb;
+			$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
+            $barids = isset($_REQUEST['barid']) ? $_REQUEST['barid'] : array();
+
+            if (!empty($barids)) {
+                $wpdb->query("UPDATE $wptb_table_name SET `weighting_points` = `weighting_points`+10 WHERE bar_id IN($barids)");
+                $n = $wpdb->rows_affected;
+                $wpdb->query("UPDATE $wptb_table_name SET `weighting_points` = 100 WHERE `weighting_points` > 100");
+	  				if ($n > 0) {
+		            $wptb_i18n = sprintf( _n('%d row changed priority by +10.', '%d rows changed priority by +10.', $n, 'wp-topbar'), $n );
+	                $wptb_message='<div class="updated"><p><strong>'.$wptb_i18n.'</strong></p></div>';		              
+//    				set_transient( 'wptb_message', $wptb_message, 60 );	
+					echo $wptb_message;
+	  				}	
+            }
+			break;
+
+	case "bulkdecrease":	
+			global $wpdb;
+			$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
+            $barids = isset($_REQUEST['barid']) ? $_REQUEST['barid'] : array();
+
+            if (!empty($barids)) {
+                $wpdb->query("UPDATE $wptb_table_name SET `weighting_points` = `weighting_points`-10 WHERE bar_id IN($barids)");
+                $n = $wpdb->rows_affected;
+                $wpdb->query("UPDATE $wptb_table_name SET `weighting_points` = 1 WHERE `weighting_points` < 1");
+	  				if ($n > 0) {
+		            $wptb_i18n = sprintf( _n('%d row changed priority by -10.', '%d rows changed priority by -10.', $n, 'wp-topbar'), $n );
+	                $wptb_message='<div class="updated"><p><strong>'.$wptb_i18n.'</strong></p></div>';		
+//    				set_transient( 'wptb_message', $wptb_message, 60 );	
+					echo $wptb_message;
+	  				}
+            }
+			break;
+							
+	case "bulkdisable":	
+			global $wpdb;
+			$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
+            $barids = isset($_REQUEST['barid']) ? $_REQUEST['barid'] : array();
+
+            if (!empty($barids)) {
+                $wpdb->query("UPDATE $wptb_table_name SET `enable_topbar` = 'false' WHERE bar_id IN($barids)");
+                $n = $wpdb->rows_affected;
+	  				if ($n > 0) {
+		            $wptb_i18n = sprintf( _n('%d row disabled.', '%d rows disabled.', $n, 'wp-topbar'), $n );
+	                $wptb_message='<div class="updated"><p><strong>'.$wptb_i18n.'</strong></p></div>';		
+//    				set_transient( 'wptb_message', $wptb_message, 60 );	
+					echo $wptb_message;
+	  				}
+            }
+			break;
+
+	case "bulkenable": 
+			global $wpdb;
+			$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
+            $barids = isset($_REQUEST['barid']) ? $_REQUEST['barid'] : array();
+
+            if (!empty($barids)) {
+                $wpdb->query("UPDATE $wptb_table_name SET `enable_topbar` = 'true' WHERE bar_id IN($barids)");
+                $n = $wpdb->rows_affected;
+	  				if ($n > 0) {
+		            $wptb_i18n = sprintf( _n('%d row enabled.', '%d rows enabled.', $n, 'wp-topbar'), $n );
+	                $wptb_message='<div class="updated"><p><strong>'.$wptb_i18n.'</strong></p></div>';		
+//    				set_transient( 'wptb_message', $wptb_message, 60 );	
+					echo $wptb_message;
+	  				}	            }
+			break;
+
+	case "bulkdelete": 
+			global $wpdb;
+			$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
+	        $barids = isset($_REQUEST['barid']) ? $_REQUEST['barid'] : array();
+
+	        if (!empty($barids)) {
+	            $wpdb->query("DELETE FROM $wptb_table_name WHERE `bar_id` IN($barids)");
+	            $n = $wpdb->rows_affected;
+	  				if ($n > 0) {
+		            $wptb_i18n = sprintf( _n('%d row deleted.', '%d rows deleted.', $n, 'wp-topbar'), $n );
+	                $wptb_message='<div class="updated"><p><strong>'.$wptb_i18n.'</strong></p></div>';
+//    				set_transient( 'wptb_message', $wptb_message, 60 );	
+					echo $wptb_message;
+				}
+	         }
+			break;
+			
+	case "bulkduplicate":
+			$barid = isset($_REQUEST['barid']) ? $_REQUEST['barid'] : array();
+			$barids = explode(",", $barid);
+            $n = count($barids);
+            if (is_array($barids)) {
+				foreach ($barids as $key => $barid) {
+				  	$wptbOptions=wptb_get_Specific_TopBar($barid);
+		  			$wptbOptions['enable_topbar']='false';
+		  			wptb_insert_row($wptbOptions);
+		  		}
+		  	}
+			if ($n > 0) {
+            $wptb_i18n = sprintf( _n('%d row duplicated.', '%d rows duplicated.', $n, 'wp-topbar'), $n );
+            $wptb_message='<div class="updated"><p><strong>'.$wptb_i18n.'</strong></p></div>';		
+//    				set_transient( 'wptb_message', $wptb_message, 60 );	
+				echo $wptb_message;
+			}	  
+	}
+}
+
+
+	 
+
+
+//=========================================================================		
+//  Display the All topbars table
+//
+//=========================================================================		
+
+function wptb_display_all_TopBarsWP() {
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
 
@@ -475,6 +888,7 @@ function wptb_display_all_TopBars() {
 			'end_time' => __('End Time','wp-topbar'),
 			'show_it' => __('Time Check','wp-topbar'),
 			'enable_topbar' => __('Enabled?','wp-topbar'),
+			'show_homepage' => __('Home Page Check?', 'wp-topbar'),
 			'only_logged_in' => __('Logged In Users Only?','wp-topbar'),
 			'mobile_check' => __('Mobile?','wp-topbar')
 //			'text_line' => 'Bar and Link Text'
@@ -510,19 +924,19 @@ function wptb_display_all_TopBars() {
 			case "text_line": return stripslashes($item[$column_name]);
 			case "only_logged_in":
 				if ($item[$column_name] == "yes" ) 
-					return __('Only Logged In','wp-topbar');					
+					return "<img title='Logged in Only' src='".plugins_url('/images/users_logged_in.png', __FILE__)."'>";
 				else if ($item[$column_name] == "no" ) 
-					return __('Only NOT Logged In','wp-topbar');	
+					return "<img title='Not Lgged in Only' src='".plugins_url('/images/users_not_logged_in.png', __FILE__)."'>";
 				else 
-					return __('All Users','wp-topbar');
+					return "<img title='All Users' src='".plugins_url('/images/users_all.png', __FILE__)."'>";
 				break;			
 			case "mobile_check":
 				if ($item[$column_name] == "only_mobile" ) 
-					return __('Only Mobile Devices','wp-topbar');					
+					return "<img title='Mobile Devices Only' src='".plugins_url('/images/devices_mobile.png', __FILE__)."'>";
 				else if ($item[$column_name] == "not_mobile" ) 
-					return __('Not on Mobile Devices','wp-topbar');	
+					return "<img title='Not Mobile Devices Only' src='".plugins_url('/images/devices_not_mobile.png', __FILE__)."'>";
 				else 
-					return __('All Devices','wp-topbar');				
+					return "<img title='All Devices' src='".plugins_url('/images/devices_all.png', __FILE__)."'>";
 				break;	
 			case "weighting_points": 
 				$width=$item[$column_name]+0;
@@ -531,17 +945,28 @@ function wptb_display_all_TopBars() {
 				return;
 
 			case "enable_topbar": 
-				if ($item[$column_name] == 'false')								
-					return sprintf( "<span class='wptb-off-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/off.png', __FILE__).')"'."></span>");
+				if ($item[$column_name] == 'false')	
+				
+					return "<img title='Disabled' src='".plugins_url('/images/off.png', __FILE__)."'>";
 				else
-					return sprintf( "<span class='wptb-on-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/on.png', __FILE__).')"'."></span>");
-					break;
+					return "<img title='Enabled' src='".plugins_url('/images/on.png', __FILE__)."'>";
+				break;
 			case "show_it": 
-				if ($item[$column_name] == 0 )							
-					return sprintf( "<span class='wptb-off-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/off.png', __FILE__).')"'."></span>");
+				if ($item[$column_name] == 0 )
+					return "<img title='Time Settings preventing TopBar from showing' src='".plugins_url('/images/off.png', __FILE__)."'>";
 				else
-					return sprintf( "<span class='wptb-on-button'".'style="display: block;width: 32px;height: 32px;color:red;background:url('.plugins_url('/images/on.png', __FILE__).')"'."></span>");
-					break;
+					return "<img title='Time Settings OK!' src='".plugins_url('/images/on.png', __FILE__)."'>";
+				break;
+			case 'show_homepage':
+				if ($item[$column_name] == "always" ) 
+					return "<img title='Always on the Home Page' src='".plugins_url('/images/home_always.png', __FILE__)."'>";
+				else if ($item[$column_name] == "never" ) 
+					return "<img title='Never on the Home Page' src='".plugins_url('/images/home_never.png', __FILE__)."'>";
+				else if ($item[$column_name] == "conditionally" ) 
+					return "<img title='Conditionally on the Home Page' src='".plugins_url('/images/home_conditionally.png', __FILE__)."'>";
+				else 
+					return "<img title='Only on the Home Page' src='".plugins_url('/images/home_only.png', __FILE__)."'>";			
+				break;
 			case "start_time": 
 			case "end_time": 
 			
@@ -620,7 +1045,7 @@ function wptb_display_all_TopBars() {
 		echo '</tr>';
 		echo '<tr' . $row_class .  '>';
 		echo '<td>&nbsp</td>';
-		echo '<td style="border-top: thin solid black; border-bottom: thin solid black;  border-left: thin solid black; border-right: thin solid black;" colspan="8">';
+		echo '<td style="border-top: thin solid black; border-bottom: thin solid black;  border-left: thin solid black; border-right: thin solid black;" colspan="9">';
 		
 		
 		$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
@@ -1049,8 +1474,9 @@ function wptb_display_all_TopBars() {
 	global $WPTB_DB_VERSION;
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
-	$myrows = $wpdb->get_results( 'SELECT * FROM '.$wptb_table_name);
-	if ( $wpdb->num_rows == 0 ){
+	$wptb_rows = $wpdb->get_results( 'SELECT * FROM '.$wptb_table_name);
+	$wptb_num_rows = $wpdb->num_rows;
+	if ( $wptb_num_rows == 0 ){
 		$wptbOptions=wptb_insert_default_row($WPTB_DB_VERSION);
 		$wp_list_table->prepare_items();
 		echo '<div class="updated"><p><strong>'.__('All TopBars deleted; created default TopBar.','wp-topbar').'</strong></p></div>';

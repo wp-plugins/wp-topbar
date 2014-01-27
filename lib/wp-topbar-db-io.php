@@ -844,9 +844,13 @@ function wptb_update_GlobalSettings() {
 	if ( isset($_POST [ 'wptbrotatehidelast' ]) ) {
 		$wptbGlobalOptions [ 'rotate_hide_last' ] = $_POST [ 'wptbrotatehidelast' ];
 	}
+	if ( isset($_POST [ 'wptbshowoverview' ]) ) {
+		$wptbGlobalOptions [ 'show_overview' ] = $_POST [ 'wptbshowoverview' ];
+	}	
 	if ( isset($_POST [ 'wptbcustompath' ]) ) {
-		$wptbGlobalOptions [ 'custom_samples_path' ] = trim( $_POST [ 'wptbcustompath' ] );
-		if ( $wptbGlobalOptions [ 'custom_samples_path' ] != "" && substr($wptbGlobalOptions [ 'custom_samples_path' ],-1) != "/" )
+		$wptbGlobalOptions [ 'custom_samples_path' ] = trim( $_POST [ 'wptbcustompath' ] );	
+	
+	if ( $wptbGlobalOptions [ 'custom_samples_path' ] != "" && substr($wptbGlobalOptions [ 'custom_samples_path' ],-1) != "/" )
 			$wptbGlobalOptions [ 'custom_samples_path' ] .= "/";
 	}
 	

@@ -130,8 +130,147 @@ function wptb_get_sample_data() {
 //  Display the Sample topbars table
 //
 //=========================================================================		
-
 function wptb_display_Sample_TopBars() {
+
+//	wptb_display_Sample_TopBarsWP()
+	wptb_display_Sample_TopBarsFoo();
+}
+
+function wptb_display_Sample_TopBarsFoo() {
+
+	$wptb_debug=get_transient( 'wptb_debug' );	
+
+	if($wptb_debug)
+		echo '</br><code>WP-TopBar Debug Mode: wptb_display_all_TopBars()</code>';
+
+	 //Prepare Table of elements
+
+	global $WPTB_DB_VERSION;
+	global $wpdb;
+
+	$wptbGlobalOptions = wptb::wptb_get_GlobalSettings();
+	
+   	$wptb_barid_prefix=get_transient( 'wptb_barid_prefix' );	
+   	if (!$wptb_barid_prefix) $wptb_barid_prefix=rand(100000,899999);
+   	set_transient( 'wptb_barid_prefix', $wptb_barid_prefix, 60*60*24 );
+
+
+	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
+    $data = wptb_get_sample_data();       		
+   	
+	?>
+	
+<style media="screen" type="text/css">
+	.wptbactions {
+	    visibility:hidden;
+	}
+</style>
+	
+	
+     <div class="wrap">
+        
+        <div id="icon-options-general" class="icon32"><br/></div>
+        <h2><?php _e('Sample TopBars','wp-topbar'); ?></h2>
+        
+        <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
+            <p><?php _e('You can copy one row (by hovering over the TopBar and clicking the Copy TopBar link.)  Or you can copy multiple samples by clicking on their checkboxes and then using the drop down box on the Bulk Options to copy those TopBars.','wp-topbar'); ?></p> 
+            <?php if ( $wptbGlobalOptions [ 'custom_samples_path' ] != "") 
+            			echo __('Attempting to load custom TopBars from this location:','wp-topbar').' <code>'.htmlspecialchars($wptbGlobalOptions [ 'custom_samples_path' ]).'custom_topbars.json</code>';
+    	  		  echo '<br>'.__('To load your own Custom Samples Topbars, go to the', 'wp-topbar')." <a href='?page=wp-topbar.php&action=globalsettings'>".__('Global Settings tab','wp-topbar').'</a>';
+ ?>
+        </div>        
+	</div>
+    
+ <div class="tab-pane active" id="demo">
+      <p >
+		<strong>Bulk Actions</strong>: <select id="selectOpt">
+		<option></option>
+		<?php 
+			echo '<option value="bulkcopy">'.__('Copy to TopBar Table','wp-topbar')."</option>";
+         ?>  
+        </select>
+        <button type="button" onclick="processCheckBoxes()">Apply</button>
+&nbsp;&nbsp;&nbsp;
+        <strong>Search</strong>: <input id="filter" type="text">
+        <form id="topbar-filter" name="addform" method="get">
+  	    <table data-filter="#filter" data-filter-disable-enter="true" data-page-size="20" id="footable">		
+	    <thead>
+			<tr>
+		        <th data-sort-ignore="true" data-ignore="true"><input type="checkbox" id="chk_new"  onclick="checkAll('chk');" ></th>
+				<th data-class="expand">ID</th>
+		        <th data-sort-ignore="true" data-ignore="true"></th>
+				<?php echo "<th>".__('Sample')."</th>"; ?>
+			</tr>
+		</thead>
+		<tbody>
+		
+    <?php 
+
+	foreach ( $data as $wptbOptions ) {	
+			
+		echo '<tr class="wptbrow" style="vertical-align: top;">';
+		echo '<td data-ignore="true"><input type="checkbox"  class="wptbCheckBox" value="'.($wptbOptions['bar_id']+0).'"></td>';
+		echo '<td data-type="numeric" data-value="'.($wptbOptions['bar_id']+0).'">'.$wptbOptions['bar_id']."</td>";
+		echo '<td data-ignore="true">';	
+				echo sprintf('<a href="?page=%s&amp;action=%s&amp;barid=%s&amp;noheader=true">Copy&nbspTopbar</a>',$_REQUEST['page'],'copysample',($wptbOptions['bar_id']+$wptb_barid_prefix));		
+		echo '</td>';
+		echo '<td>';
+
+		if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
+			wptb::wptb_display_TopBar('',$wptbOptions, false, 1, true);
+		else 
+			wptb::wptb_display_TopBar('',$wptbOptions, false, 1, false);		
+		
+		echo '</td>';
+		
+		echo '</tr>';
+	}
+
+	?>
+		</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="5">
+				<div class="pagination pagination-centered hide-if-no-paging"></div>
+			</td>
+		</tr>
+	</tfoot>		
+	</table>
+
+	
+    </form>
+    </div>	
+    </div>	
+	
+	<?php
+
+
+} 
+   function wptb_process_Sample_bulk_action() {
+
+	    $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : array();
+	
+	   	switch ( $action ) {
+				
+		case "bulkcopy":
+	        $data = wptb_get_sample_data();       		
+			$barid = isset($_REQUEST['barid']) ? $_REQUEST['barid'] : array();
+			$barids = explode(",", $barid);
+            $n = count($barids);
+			foreach ($barids as $key => $barid) {
+			  	$wptbOptions = $data [$barid - 1];			
+			  	$wptbOptions['enable_topbar'] = 'false';
+	  			wptb_insert_row($wptbOptions);
+	  		}
+			if ($n > 0) {
+		        $wptb_i18n = sprintf( _n('%d row copied.', '%d rows copied.', $n, 'wp-topbar'), $n );
+		        echo '<div class="updated"><p><strong>'.$wptb_i18n.'</strong></p></div>';		
+			}	  
+
+		}
+    }
+    
+   function wptb_display_Sample_TopBarsWP() {
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
 

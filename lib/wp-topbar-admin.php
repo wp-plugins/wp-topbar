@@ -357,9 +357,35 @@ function wptb_options_page() {
         	wptb_options_tabs('table');
         	wptb_display_all_TopBars();
 			break;
+		case 'bulkdelete':
+		case 'bulkduplicate':	
+		case 'bulkenable':	
+		case 'bulkdisable':	
+		case 'bulkincrease':	
+		case 'bulkdecrease':
+			wptb_process_FOO_bulk_action();	
+	        $action = 'table';    
+			wptb_display_admin_header();
+        	wptb_options_tabs('table');
+        	wptb_display_all_TopBars();
+    		break;
+    	case 'bulkcopy':
+    		wptb_process_Sample_bulk_action();
+	        $action = 'table';    
+			wptb_display_admin_header();
+        	wptb_options_tabs('table');
+        	wptb_display_all_TopBars();
+    		break;    		
         default :
 			wptb_display_admin_header();
         	wptb_options_tabs('table');
+			$wptb_message=get_transient( 'wptb_message' );
+        	if ( $wptb_message ) {
+	        	echo $wptb_message;
+	        	delete_transient( 'wptb_message' );	        	
+        	}		
+        	
+        	
         	wptb_display_all_TopBars();
             break;
         endswitch;
