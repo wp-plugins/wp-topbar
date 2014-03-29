@@ -3,20 +3,18 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
-Tested up to: 3.9
-Stable tag: 5.23
+Tested up to: 3.8.1
+Stable tag: 5.22
 
 Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler! 
 
 == Description ==
 
-What is a TopBar?  It is a special message/image that you can show at the top (or bottom) of your website.  WP-TopBar allows you to create an **unlimited** number of TopBars.   They are cacheable and randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even easy to add your own PHP and CSS. 
+What is a TopBar?  It is a special message/image that you can show at the top (or bottom) of your website.  WP-TopBar allows you to create an **unlimited** number of TopBars.   They are cachable and randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even easy to add your own PHP and CSS. 
 
-Version 5.23 adds a new option to force to the TopBar to stay fixed on the top of the page when it is scrolled.  For non-scrollable TopBars, it will push the page down and not overlay the top of your webpage.
+Version 5.21 changed how the HTML is generated to make it quicker to startup and also eaiser to use more complicated custom PHP... all behind the scenes.  Now you can enter in custom PHP like this and it works! (of course, You'll need to style it with CSS to make it pretty!):  echo do_shortcode('[gallery id="123"]');  
 
-Version 5.21 changed how the HTML is generated to make it quicker to startup and also easier to use more complicated custom PHP... all behind the scenes.  Now you can enter in custom PHP like this and it works! (of course, You'll need to style it with CSS to make it pretty!):  echo do_shortcode('[gallery id="123"]');  
-
-Version 5.17+ is now i18n compatible -- now I just need your help adding new translations. (I did include a French translation -- but only about ~10% is actually translated.) You can also now have your own custom TopBars added to the Samples tab (see FAQ for details).
+Version 5.17+ is now i18n compatible -- now I just need your help adding new translations. (I did inlcude a Fench translation -- but only about ~10% is actually translated.) You can also now have your own custom TopBars added to the Samples tab (see FAQ for details).
 
 Version 5.14 gives you more Rotation options, makes it easier to enable/disable a TopBar and gives you more control with Network installs.
 
@@ -171,13 +169,15 @@ We also print the current WordPress time on the Control Tab right next to the St
 
 Use "#topbar"
 
-= What if I want to fix the TopBar to the top of the page? = 
+= What if I fix the TopBar to the top or bottom of the page? = 
 
-Use the Force TopBar to Be Fixed On Top of Page (on the Main Options Tab).
+Use this CSS to fix the TopBar to the bottom of the page: 
+	position:fixed; bottom: 0; padding: 0; margin: 0; width: 100%; z-index: 99999;
 
-= What if I want to create my own Default TopBar? =
+Or this to fix the TopBar to the top of the page (adjust the top value to be the height of your TopBar):
+	position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;
 
-See the file SAMPLE_wptb_custom_default_values.php for instructions on how to do that.
+Note that by putting your TopBar in a Fixed Position, you will overlay the content of your website by the TopBar.
 
 = How to Find the Page ID = 
 
@@ -191,7 +191,7 @@ To test the TopBar on your site, you can set the Page IDs (in Main Options) to a
 
 = Why does my TopBar look odd on Internet Explorer? = 
 
-IE does not (yet) implement gradients like other browsers.  So, make sure you test your TopBar on all the major browsers.
+IE does not (yet) implement gradients like other browsers.  So, make sure you test your TopBar on all the major browswers.
 
 = How dow I uninstall? = 
 
@@ -199,9 +199,9 @@ Go to the Uninstall tab (or if are on a Multi Site install, you first need to lo
 
 == Upgrade Notice ==
 
-= 5.23 = 
+= 5.22 = 
 
-Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed on the top of the page when it is scrolled.   
+Changed the All Tables and Samples Tabs to make it easier to find and select your TopBars.  Add Global option to remove Overview section to save screen space.
 
 == Screenshots ==
 
@@ -214,99 +214,90 @@ Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed
 
 == Changelog ==
 
-= 5.23 - 3/28/2014 =
-
-1. CHANGED: Refactored how the plugin handles slashes when the PHP option for Magic Quotes is turned off.
-2. ADDED: New option on the Main Options tab to force the TopBar to stay on the top of the page when the page is scrolled. Make sure to remove "position:fixed" for the smoothest animation. (thanks to markob17 for the idea!)
-3. ADDED: More status icons (for close, reopen, scroll, Force Fixed, and if the TopBars are shown in rotation.
-4. ADDED: The ability to have your own custom default topbar.  See the file SAMPLE_wptb_custom_default_values.php for instructions on how to do that.
-5. UPDATED: timepicker.js updated to version 1.4.4 - http://trentrichardson.com/examples/timepicker/
-6. FIXED: Various fixes for 3.9 
-
 = 5.22 - 1/25/2014 =
 
 1. VALIDATED: Version 5.22 supports WordPress 3.8.1
-2. UPDATED: Changed the All Tables & Sample Tabs to use Foo Tables for a better experience - http://fooplugins.com/plugins/footable-jquery/
-3. ADDED: Global option to turn off the Overview section to save screen space on the Admin pages.
+2. UPDATED:	Changed the All Tables & Sample Tabs to use Foo Tables for a better experience - http://fooplugins.com/plugins/footable-jquery/
+3. ADDED:		Global option to turn off the Overview section to save screen space on the Admin pages.
 
 = 5.21 - 1/17/2014 =
 
-1. ADDED: Added sliderAccess.js to allow Date/Time to be picked via a TouchScreen - http://trentrichardson.com/examples/jQuery-SliderAccess/
+1. ADDED:		Added sliderAccess.js to allow Date/Time to be picked via a TouchScrren - http://trentrichardson.com/examples/jQuery-SliderAccess/
 2. CHANGED:	How the prepend() function works to insert the HTML. Instead of prepending the HTML, we just move the HTML to the "body" div.  This should fix all errors with custom PHP that needs a new line or carriage return.  Now you can enter in custom PHP like this and it works! (of course, You'll need to style it with CSS to make it pretty!):  echo do_shortcode('[gallery id="123"]');  
 3. CHANGED:	The priority of when the HTML is generated from very late to a default add_action() priority.
-4. FIXED: Minor defect with cookie processing.
+4. FIXED:	  	Minor defect with cookie processing.
 
 = 5.20 - 1/09/2014 =
 
-1. FIXED: Fixes defect related to start/stop time (thanks to mommysplurge for helping find and test that one!)
-2. UPDATED: timepicker.js updated to version 1.43 - http://trentrichardson.com/examples/timepicker/
-3. ADDED: Added Time Check indicator to the top of every Options tab to help you know if Time will stop the TopBar from displaying.
-4. ADDED: Now prints out the current WordPress time on the Control Tab to help you know what timezone we use when checking time.
-5. UPDATED: Added FAQ entry related to TimeZone processing
+1. FIXED:	  Fixes defect related to start/stop time (thanks to mommysplurge for helping find and test that one!)
+2. UPDATED:   timepicker.js updated to version 1.43 - http://trentrichardson.com/examples/timepicker/
+3. ADDED:	  Added Time Check indicator to the top of every Options tab to help you know if Time will stop the TopBar from displaying.
+4. ADDED:     Now prints out the current WordPress time on the Control Tab to help you know what timezone we use when checking time.
+5. UPDATED:	  Added FAQ entry related to TimeZone processing
  
 = 5.19 - 1/02/2014 =
 
-1. FIXED: Fixes defect for those TopBars that had a Close Button and had a Display Time of greater than zero. 
-2. FIXED: Fixed display issue on Global Settings screen where Rotation Count was not being displayed.
+1. FIXED:	Fixes defect for those TopBars that had a Close Button and had a Display Time of greater than zero. 
+2. FIXED:	Fixed display issue on Global Settings screen where Rotation Count was not being displayed.
 
 = 5.18 - 12/30/2013 =
 
-1. FIXED: Activation logic now fully works to update the plugin tables/options when needed.
-2. CHANGED: Renamed some PHP functions and variables to assist in debugging.
-3. CHANGED: Refactored the jQuery functions to make the code cleaner, animations work a bit smoother and eliminate unnecessary calls.
-4. ADDED: Added new &action=admindebug option to help me debug Plugin issues
+1. FIXED:		Activation logic now fully works to update the plugin tables/options when needed.
+2. CHANGED:		Renamed some PHP functions and variables to assist in debugging.
+3. CHANGED: 	Refactored the jQuery functions to make the code cleaner, animations work a bit smoother and eliminate unnecessary calls.
+4. ADDED:		Added new &action=admindebug option to help me debug Plugin issues
 
 = 5.17 - 12/25/2013 =
 
-1. CHANGED: Re-wrote all the admin pages to add localization (i18n) support. (I did inlcude a Fench translation -- but only about ~10% is actually translated. There is also a machine translated Spanish/Mexican version that needs double checking: DRAFT-wp-topbar-es_MX.po). Contact me to help with a translation: http://zwebify.com/contact/
-2. ADDED: Ability to add your own TopBars to the Samples tab.  See FAQ for details.
-3. FIXED: Fixed a few defects throughout the various admin pages.
-4. UPDATED: Updated the sample_toolbars.json file to account for new options introduced in earlier versions.
+1. CHANGED: 	Re-wrote all the admin pages to add localization (i18n) support. (I did inlcude a Fench translation -- but only about ~10% is actually translated. There is also a machine translated Spanish/Mexican version that needs double checking: DRAFT-wp-topbar-es_MX.po). Contact me to help with a translation: http://zwebify.com/contact/
+2. ADDED:		Ability to add your own TopBars to the Samples tab.  See FAQ for details.
+3. FIXED:		Fixed a few defects throughout the various admin pages.
+4. UPDATED:		Updated the sample_toolbars.json file to account for new options introduced in earlier versions.
 
 = 5.16 - 12/12/2013 =
 
-1. VALIDATED: Version 5.16 supports WordPress 3.8
-2. FIXED: How the Mobile_User selection logic (thanks to faderdesign!)
-3. FIXED: &debug now works again
-4. FIXED: Fixed the date/time check error message (thanks to tandy22!)
+1. VALIDATED: 	Version 5.16 supports WordPress 3.8
+2. FIXED:		How the Mobile_User selection logic (thanks to faderdesign!)
+3. FIXED:		&debug now works again
+4. FIXED:		Fixed the date/time check error message (thanks to tandy22!)
 
 = 5.15 - 12/09/2013 =
 
-1. FIXED: Defect in new code for Network Plugin control.  (thanks again to Itookmyprozac!)
+1. FIXED		Defect in new code for Network Plugin control.  (thanks again to Itookmyprozac!)
 
 = 5.14 - 12/08/2013 =
 
-1. ADDED: More rotate options: limit the number of rotations, hide/show last TopBar and add random order (thanks to orensbruli & traemccombs)
-2. ADDED: Control settings for Network installations (thanks to Itookmyprozac for the idea!)
-3. FIXED: Uninstall options are refactored to insure all data is deleted in a Network installation
-4. CHANGED: Removed work-around for WordPress core defect (#23684 - fixed in 3.8) see http://core.trac.wordpress.org/ticket/23684
-5. CHANGED: Moved Enable option to be at the top of most of the TopBar tabs - makes it easier to enable/disable a TopBar	.
+1. ADDED:		More rotate options: limit the number of rotations, hide/show last TopBar and add random order (thanks to orensbruli & traemccombs)
+2. ADDED: 		Control settings for Network installations (thanks to Itookmyprozac for the idea!)
+3. FIXED:       Uninstall options are refactored to insure all data is deleted in a Network installation
+4. CHANGED:     Removed work-around for WordPress core defect (#23684 - fixed in 3.8) see http://core.trac.wordpress.org/ticket/23684
+5. CHANGED:     Moved Enable option to be at the top of most of the TopBar tabs - makes it easier to enable/disable a TopBar	.
 
 = 5.13 - 12/02/2013 =
 
-1. FIXED: Plugin changed to use the to built-in jQueryUI libraries.
-2. FIXED: Removed one last Strict Standards (PHP) error messages
-3. ADDED: Ability to adjust left/right margins on the TopBar (thanks to tobywallis for the idea!)
-4. ADDED: Ability to Rotate through your TopBars on one pageview (thanks to traemccombs for the idea!)
+1. FIXED:		Plugin changed to use the to built-in jQueryUI libraries.
+2. FIXED: 		Removed one last Strict Standards (PHP) error messages
+3. ADDED:       Ability to adjust left/right margins on the TopBar (thanks to tobywallis for the idea!)
+4. ADDED:		Ability to Rotate through your TopBars on one pageview (thanks to traemccombs for the idea!)
 
 = 5.12 - 11/02/2013 =
 
-1. VALIDATED: Version 5.12 supports WordPress 3.7.1
-2. FIXED: Removes Strict Standards (PHP) error messages (thanks to BackuPs for your help!)
-3. FIXED: Added logic to deal with slashes for the new HTML fields
-4. ADDED: Added Pointers to show new features in 5.10 / 5.11 
-5. FIXED: Defect on Test Priority Tab that did not allow you to edit the TopBar correctly
+1. VALIDATED: 	Version 5.12 supports WordPress 3.7.1
+2. FIXED: 		Removes Strict Standards (PHP) error messages (thanks to BackuPs for your help!)
+3. FIXED:       Added logic to deal with slashes for the new HTML fields
+4. ADDED:       Added Pointers to show new features in 5.10 / 5.11 
+5. FIXED:       Defect on Test Priority Tab that did not allow you to edit the TopBar correctly
 
 = 5.11 - 10/25/2013 =
 
-1. VALIDATED: Version 5.11 supports WordPress 3.7
-2. ADDED: New control option to check for Mobie devices using wp_is_mobile() 
-3. FIXED: Defect related to how the plugin handles upgrades to the next version
+1. VALIDATED: 	Version 5.11 supports WordPress 3.7
+2. ADDED: 		New control option to check for Mobie devices using wp_is_mobile() 
+3. FIXED:		Defect related to how the plugin handles upgrades to the next version
 
 = 5.10 - 10/20/2013 =
 
-1. ADDED: Three new custom HTML fields and Renamed CSS tab to 'CSS & HTML' tab. 
-2. FIXED: Minor defect fixes to the debug code
+1. ADDED: 	Three new custom HTML fields and Renamed CSS tab to 'CSS & HTML' tab. 
+2. FIXED:	Minor defect fixes to the debug code
 
 = 5.06 - 09/25/2013 =
 
@@ -315,83 +306,83 @@ Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed
 = 5.05 - 09/13/2013 =
 
 1. VALIDATED: Version 5.05 supports WordPress 3.6.1
-2. CHANGED: Moved Start/Stop time to Control Tab to have all the attributes that can effect when a TopBar is shown all on one Tab.
+2. CHANGED:  Moved Start/Stop time to Control Tab to have all the attributes that can effect when a TopBar is shown all on one Tab.
 
 = 5.04 - 08/30/2013 =
 
-1. ADDED: Added option to only show the TopBar on the Home Page.  Thanks to Liltiger for the idea.
-2. UPDATED: timepicker.js and CSS updated to version 1.4 - http://trentrichardson.com/examples/timepicker/
-3. FIXED: Fixed a Social Button target defect - thanks to leslie.
-3. CHANGED: On social tab, do not display image size if PHP is not setup to allow remote URL fopens.  Thanks to ericd for discovering this.
+1. ADDED:     Added option to only show the TopBar on the Home Page.  Thanks to Liltiger for the idea.
+2. UPDATED:   timepicker.js and CSS updated to version 1.4 - http://trentrichardson.com/examples/timepicker/
+3. FIXED:     Fixed a Social Button target defect - thanks to leslie.
+3. CHANGED:   On social tab, do not display image size if PHP is not setup to allow remote URL fopens.  Thanks to ericd for discovering this.
 
 = 5.03 - 08/01/2013 =
 
 1. VALIDATED: Version 5.03 supports WordPress 3.6
-2. ADDED: Added code to set default values for existing TopBars (useful when adding new user defined fields)
-3. ADDED: Added Reopen Position field.  Thanks to Lisa L. for the idea.
-4. FIXED: Fixed Custom CSS for the link defect. Thanks to carolemagouirk for finding it!
+2. ADDED:     Added code to set default values for existing TopBars (useful when adding new user defined fields)
+3. ADDED:     Added Reopen Position field.  Thanks to Lisa L. for the idea.
+4. FIXED:	  Fixed Custom CSS for the link defect. Thanks to carolemagouirk for finding it!
 
 = 5.02 - 07/21/2013 =
 
-1. FIXED: Defect related to checking CSS of social buttons
-2. FIXED: Defects related bulk duplication of rows
-3. FIXED: CSS issue that caused the browser to jump to the top of the screen when a button was selected
-4. ADDED: New Sample TopBars
-5. ADDED: Added Scroll Amount field to fine tune the Srcoll Action option.  Thanks to ellefrost for the idea.
+1. FIXED:     Defect related to checking CSS of social buttons
+2. FIXED:     Defects related bulk duplication of rows
+3. FIXED:     CSS issue that caused the browser to jump to the top of the screen when a button was selected
+4. ADDED:     New Sample TopBars
+5. ADDED:     Added Scroll Amount field to fine tune the Scoll Action option.  Thanks to ellefrost for the idea.
 
 = 5.01 - 06/22/2013 =
 
 1. VALIDATED: Version 5.01 supports WordPress 3.5.2
-2. FIXED: Defects related to re-open button options, added more warning messages for using re-open options
-3. UPDATED: Updated FAQ to describe how to create your own menus.
+2. FIXED:     Defects related to re-open button options, added more warning messages for using re-open options
+3. UPDATED:   Updated FAQ to describe how to create your own menus.
 
 = 5.0 - 06/19/2013 =
 
-1. ADDED: Added ability to reopen a TopBar.
-2. CHANGED: Now the TopBar uses the Bar Color even if you have an image set.  Double check how TopBars now render if you use an image!!
-3. FIXED: Change the TopBar to use a real container (div instead of p) to fix custom PHP issues. Please double check how TopBars now render.
-4. CHANGED: Updated jQuery Theme to make buttons/sliders easier to see
-5. UPDATED: Finished adding slider bars to the Main Options tab to select numbers
-6. ADDED: Added a way to suppress live preview (see FAQ for "&nopreview" option) to help find broken custom PHP
-7. UPDATED: Default TopBar uses a new sample image and "position fixed"
-8. CHANGED: Changed CSS Option A to add "background-repeat: no-repeat;"
-9. ADDED: Added more warning messages for possible incompatible options selected by the user
-10. ADDED: Added six more Social Buttons - and the ability to place them before/after the TopBar
-11. ADDED: Added Uninstall Option
-12. FIXED: Fixed how the plugin handled conversion from pre-database versions
-13. UPDATED: Updated the FAQ with more current information
-14. CHANGED: Moved Font & Text Alignment options to the TextBar Tab
-15. FIXED: How the Close Button works to be more reliable
+1. ADDED:     Added ability to reopen a TopBar.
+2. CHANGED:   Now the TopBar uses the Bar Color even if you have an image set.  Double check how TopBars now render if you use an image!!
+3. FIXED:     Change the TopBar to use a real container (div instead of p) to fix custom PHP issues. Please double check how TopBars now render.
+4. CHANGED:   Updated jQuery Theme to make buttons/sliders easier to see
+5. UPDATED:   Finished adding slider bars to the Main Options tab to select numbers
+6. ADDED:     Added a way to suppress live preview (see FAQ for "&nopreview" option) to help find broken custom PHP
+7. UPDATED:   Default TopBar uses a new sample image and "positon fixed"
+8. CHANGED:   Changed CSS Option A to add "background-repeat: no-repeat;"
+9. ADDED:     Added more warning messages for possible incompatible options selected by the user
+10. ADDED:    Added six more Social Buttons - and the ability to place them before/after the TopBar
+11. ADDED:    Added Uninstall Option
+12. FIXED:    Fixed how the plugin handled conversion from pre-database versions
+13. UPDATED:  Updated the FAQ with more current information
+14. CHANGED:  Moved Font & Text Alignment options to the TextBar Tab
+15. FIXED:    How the Close Button works to be more reliable
 
 = 4.17 - 06/01/2013 = 
 
-1. UPDATED: timepicker.js updated to version 1.3 - http://trentrichardson.com/examples/timepicker/
-2. FIXED: More fixes to the SQL/CSV Export functions
-3. UPDATED: Jazzed up the UI a bit
-4. CHANGED: Updated to JQueryUI to 1.10.3
-5. ADDED: Option to display only when user scrolls the page
-6. ADDED: Included WordPress Pointers to highlight new functionality, which can be permanently dismissed once read
-7. CHANGED: Changed the DEFAULT TopBar to not be "fixed" to the top of the page.  This will push the page down instead of overlaying it.
-8. CHANGED: Cleaned up the plugin's folder structure
+1. UPDATED:   timepicker.js updated to version 1.3 - http://trentrichardson.com/examples/timepicker/
+2. FIXED:     More fixes to the SQL/CSV Export functions
+3. UPDATED:	  Jazzed up the UI a bit
+4. CHANGED:   Updated to JQueryUI to 1.10.3
+5. ADDED:     Option to display only when user scrolls the page
+6. ADDED:     Included WordPress Pointers to highlight new functionality, which can be permanently dismissed once read
+7. CHANGED:   Changed the DEFAULT TopBar to not be "fixed" to the top of the page.  This will push the page down instead of overlaying it.
+8. CHANGED:   Cleaned up the plugin's folder structure
 
 
 = 4.16 - 05/16/2013 = 
 
-1. FIXED: SQL/CSV Export Function adjusted to account for new fields.
+1. FIXED:  SQL/CSV Export Function adjusted to account for new fields.
 
 
 = 4.15 - 05/03/2013 = 
 
-1. ADDED: Added PHP options that can be added to the TopBar.  USE AT OWN RISK
-2. ADDED: Added ability to select TopBars based on whether the user is logged in
+1. ADDED:   Added PHP options that can be added to the TopBar.  USE AT OWN RISK
+2. ADDED:   Added ability to select TopBars based on whether the user is logged in
 3. CHANGED: Now loads own version of JQueryUI (1.10.2) since the DatePicker was not consistently being loaded correctly
 
 
 = 4.14 - 03/08/2013 = 
 
-1. FIXED: Fixed issue where sometimes the html link would sometimes not display correctly
-2. CHANGED: Added display of database charset/collation to help debug multi-lingual issues
-3. CHANGED: To use embedded version of jQuery DatePicker
+1. FIXED:    Fixed issue where sometimes the html link would sometimes not display correctly
+2. CHANGED:  Added display of database charset/collation to help debug multi-lingual issues
+3. CHANGED:  To use embedded version of jQuery DatePicker
 
 = 4.13 - 02/9/2013 =
 
@@ -400,33 +391,33 @@ Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed
 3. UPDATED: timepicker.js updated to version 1.2 (future proof for jQueryUI 1.10 compatability) - http://trentrichardson.com/examples/timepicker/
 4. CHANGED: CSS Options page changed to try to make it clearer how the various CSS options work
 5. CHANGED: Removed URL check on the TopBar link so that qtranslate will process the link correctly
-6. FIXED: Minor display of error messages that check the div_css field
+6. FIXED:   Minor display of error messages that check the div_css field
 
 = 4.12 - 01/28/2013 =
 
-1. FIXED: Issue that sometimes causes the plugin to not activate correctly.  Finally found it by using the Bitnami WordPress Stack - http://bitnami.org/stack/WordPress
-2. FIXED: Plugin deletion messages
+1. FIXED:   Issue that sometimes causes the plugin to not activate correctly.  Finally found it by using the Bitnami WordPress Stack - http://bitnami.org/stack/WordPress
+2. FIXED:   Plugin deletion messages
 3. CHANGED: Removed the option to delete a TopBar from Options pages. Use the All Tables view and Delete using the Bulk Actions drop down list
 
 = 4.11 - 01/26/2013 =
 
 1. VALIDATED: Version 4.11 supports WordPress 3.5.1
-2. UPDATED: jQuery UI to version 1.9.2
-3. FIXED: Streamlined JavaScript when only one TopBar is selected
-4. FIXED: Logic when no TopBars are selected
+2. UPDATED:   jQuery UI to version 1.9.2
+3. FIXED:     Streamlined JavaScript when only one TopBar is selected
+4. FIXED:     Logic when no TopBars are selected
 
 = 4.10 - 12/10/2012 =
 
 1. VALIDATED: Version 4.10 supports WordPress 3.5
-2. FIXED: Several defects found in 3.5 testing
-3. NEW: Now supports caching plugins by generating HTML for all possible TopBars and using JavaScript to randomly select a TopBar
+2. FIXED:     Several defects found in 3.5 testing
+3. NEW:       Now supports caching plugins by generating HTML for all possible TopBars and using JavaScript to randomly select a TopBar
 
 = 4.03 - 9/10/2012 =
 
 1. VALIDATED: Version 4.04 supports WordPress 3.4.2
-2. NEW: Adds security features (nonces) to the admin pages (Thanks to Blake Entrekin)
-3. FIXED: How the CSS for the link is rendered
-4. FIXED: Enable/disable social buttons work again
+2. NEW:       Adds security features (nonces) to the admin pages (Thanks to Blake Entrekin)
+3. FIXED:     How the CSS for the link is rendered
+4. FIXED:     Enable/disable social buttons work again
 
 = 4.02 - 8/31/2012 =
 
@@ -435,10 +426,10 @@ Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed
 
 = 4.01 - 7/04/2012 =
 
-1. NEW: Adds explicit support for the qtranslate plugin
-2. FIX: No longer calls exception when the user has not set a default topbar
-3. ADDED: Tab on main page to allow you to bulk set the Close Button settings
-4. FIX: WordPress Export Functions -- workaround for core defect?
+1. NEW:    Adds explicit support for the qtranslate plugin
+2. FIX:    No longer calls exception when the user has not set a default topbar
+3. ADDED:  Tab on main page to allow you to bulk set the Close Button settings
+4. FIX:    WordPress Export Functions -- workaround for core defect?
 
 = 4.00 - 7/01/2012 = 
 
@@ -447,15 +438,15 @@ Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed
 = 3.10 - 6/05/2012 = 
 
 1. VALIDATED: Version 3.10 supports WordPress 3.4
-2. FIXED: Removed PSD icons files to make plugin smaller to install
-3. NEW: Adds the capability to restrict the TopBar from showing by category
-4. NEW: You can also explicitly manage how it shows up on the Home Page
-5. NEW: Moved Page ID and new Category ID/Home Page control logic to its own options page
-6. CHANGED: The labels and descriptions on the options page for selecting the Page ID include/exclude logic. 
+2. FIXED:     Removed PSD icons files to make plugin smaller to install
+3. NEW:       Adds the capability to restrict the TopBar from showing by category
+4. NEW:       You can also excplicity manage how it shows up on the Home Page
+5. NEW:       Moved Page ID and new Category ID/Home Page control logic to its own options page
+6. CHANGED:   The labels and descriptions on the options page for selecting the Page ID include/exclude logic. 
  
 = 3.09 - 4/26/2012 = 
 
-1. NEW: Added submenus to the Admin bar.
+1. NEW:   Added submenus to the Admin bar.
 2. FIXED: Code to support multisite (network) installs.
 
 = 3.08 - 4/18/2012 = 
@@ -474,7 +465,7 @@ Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed
 = 3.05 - 3/31/2012 = 
 
 1. FIXED: javascript error if "footer" is chosen as placement of TopBar
-2. NEW: Redesigned admin page
+2. NEW:   Redesigned admin page
 
 = 3.04 - 3/30/2012 = 
 
@@ -482,7 +473,7 @@ Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed
 
 = 3.03 - 3/29/2012 = 
 
-1. NEW: Allow users to close the TopBar
+1. NEW:   Allow users to close the TopBar
 2. FIXED: Moved HTML out of HEAD tags and into the BODY tags
 
 = 3.02 - 3/22/2012 = 
@@ -495,7 +486,7 @@ Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed
 
 = 3.0 - 3/17/2012 = 
 
-1. NEW: Added start/end times to limit when the TopBar shows.
+1. NEW:   Added start/end times to limit when the TopBar shows.
 2. FIXED: Updated deprecated functions
 3. FIXED: Tightened code and made the code smaller 
 4. FIXED: Enqueues javascript, if necessary
@@ -506,22 +497,22 @@ Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed
 
 = 2.0 - 12/26/2011 = 
 
-1. NEW: Added option to make the TopBar disappear after a set amount of time.
-2. NEW: Added copy buttons to copy code samples.
-3. NEW: Added option to invert the Include Pages list to make it actually exclude pages.
+1. NEW:   Added option to make the TopBar disappear after a set amount of time.
+2. NEW:   Added copy buttons to copy code samples.
+3. NEW:   Added option to invert the Include Pages list to make it actually exclude pages.
 4. FIXED: Cleaned up code to make it tighter.
 
 = 1.5 - 12/23/2011 = 
 
 1. FIXED: Moved TopBar to the Body instead of the Header and fixed missing close DIV.  That MAY break your site -- test carefully.
-2. NEW: Adds additional Link option (target) which allows you to change how the link opens.
-3. NEW: Added option to put TopBar at the footer. (Thanks, candace88, for the idea!)
-4. NEW: Added and new DIV-level CSS. 
+2. NEW:   Adds additional Link option (target) which allows you to change how the link opens.
+3. NEW:   Added option to put TopBar at the footer. (Thanks, candace88, for the idea!)
+4. NEW:   Added and new DIV-level CSS. 
 
 = 1.4 - 12/10/2011 = 
 
-1. NEW: Added options to change the margin of the TopBar.
-2. FIXED: Cleaned up the code.
+1. NEW:       Added options to change the margin of the TopBar.
+2. FIXED:     Cleaned up the code.
 3. VALIDATED: Version 1.4 supports WordPress 3.3
 
 = 1.3 - 12/05/2011 = 

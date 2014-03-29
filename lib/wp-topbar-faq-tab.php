@@ -108,12 +108,14 @@ Look in this directory (<code><?PHP echo str_ireplace( 'https://','http://',plug
 Use <code>#topbar</code>
 </br>  
 </br>
-<li><strong>What if I want to have the TopBar stationary at the top of the page?</strong></li>
-Use the Force TopBar to Be Fixed On Top of Page (on the <a <?php if ( $wptbShowLinks ) echo 'href="?page=wp-topbar.php&action=main&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'"'; ?>>Main Options tab</a>).
+<li><strong>What if I want to have the TopBar stationary at the top or bottom of the page?</strong></li>
+Use this CSS to fix the TopBar to the bottom of the page: </br>
+</br>	<code>position:fixed; bottom: 0; padding: 0; margin: 0; width: 100%; z-index: 99999;</code></br>
 </br>
+Or this to fix the TopBar to the top of the page (adjust the top value to be the height of your TopBar):</br>
+</br>	<code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code></br>
 </br>
-<li><strong>What if I want to create my own Default TopBar?</strong></li>
-See the file at <code><?PHP echo str_ireplace( 'https://','http://',plugins_url('/SAMPLE_wptb_custom_default_values.php', __FILE__) ) ?></code> for instructions on how to do that.
+Note that by putting your TopBar in a Fixed Position, you will overlay the content of your website by the TopBar.
 </br>
 </br>
 <li><strong>How do I add a Menu to the TopBar</strong></li>

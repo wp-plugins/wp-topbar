@@ -71,7 +71,7 @@ $wptb_debug=get_transient( 'wptb_debug' );
 				<tr valign="top">
 					<td width="150"><?php _e('Message','wp-topbar'); ?>:</label></td>
 					<td>
-						<input type="text" name="wptbbartext" id="bbartext" size="85" value="<?php echo wptb::wptb_stripslashes($wptbOptions['bar_text']); ?>" >
+						<input type="text" name="wptbbartext" id="bbartext" size="85" value="<?php echo stripslashes($wptbOptions['bar_text']); ?>" >
 					</td>
 				</tr>
 				<tr>
@@ -80,13 +80,13 @@ $wptb_debug=get_transient( 'wptb_debug' );
 				<tr valign="top">
 					<td width="150"><?php _e('Link Text','wp-topbar'); ?>:</label></td>
 					<td>
-						<input type="text" name="wptblinktext" id="linktext" size="85" value="<?php echo wptb::wptb_stripslashes($wptbOptions['bar_link_text']); ?>" >
+						<input type="text" name="wptblinktext" id="linktext" size="85" value="<?php echo stripslashes($wptbOptions['bar_link_text']); ?>" >
 					</td>
 				</tr>
 				<tr valign="top">
 					<td width="150"><?php _e('Link','wp-topbar'); ?>:</label></td>
 					<td>
-						<input type="text" name="wptblinkurl" id="link" size="100" value="<?php echo wptb::wptb_stripslashes($wptbOptions['bar_link']); ?>" >
+						<input type="text" name="wptblinkurl" id="link" size="100" value="<?php echo stripslashes($wptbOptions['bar_link']); ?>" >
 					</td>
 				</tr>
 				<tr valign="top">

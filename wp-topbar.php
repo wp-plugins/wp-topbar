@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.23
+Version: 5.22
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 Text Domain: wp-topbar
@@ -27,8 +27,8 @@ Text Domain: wp-topbar
 */
 
 
-$WPTB_VERSION = "5.23";
-$WPTB_DB_VERSION = "5.07";  // rev this only when the database structure changes -- also update below in TWO places!
+$WPTB_VERSION = "5.22";
+$WPTB_DB_VERSION = "5.06";  // rev this only when the database structure changes -- also update below in TWO places!
 
 if( ! class_exists( 'wptb' ) ):
 class wptb {
@@ -212,19 +212,7 @@ class wptb {
 		}
 	} // End of function wptb_debug_check	
 
-	//=========================================================================			
-	// Standardize stripslashes... check magic quotes here instead at each field
-	//=========================================================================			
-	
-	public static function wptb_stripslashes($value) {	
 
-		if(!get_magic_quotes_gpc() and !function_exists('wp_magic_quotes')) 
-			return ($value);
-		else
-			return stripslashes($value);
-	}
-	
-	
 	//=========================================================================			
 	// Add 'Settings' link to plugin page
 	//=========================================================================			
@@ -300,7 +288,7 @@ class wptb {
 	public static function wptb_activate_plugin() { 
 	
 			
-		$WPTB_DB_VERSION = "5.07";										// for some reason, this global variable is not beting set during activation.
+		$WPTB_DB_VERSION = "5.06";										// for some reason, this global variable is not beting set during activation.
 		require_once( dirname(__FILE__).'/lib/wp-topbar-db-io.php');	//database and I-O functions php
 		wptb_check_for_plugin_upgrade(false, $WPTB_DB_VERSION);			// do not echo out parameters if debugging
 		
@@ -390,7 +378,7 @@ class wptb {
 		
 	public static function wptb_activate_TopBar_html_js() {
 
-		$WPTB_DB_VERSION = "5.07";									// for some reason, this global variable is not beting set during activation.
+		$WPTB_DB_VERSION = "5.06";									// for some reason, this global variable is not beting set during activation.
 
 		// check for options using the old method, if used - honor it. Otherwise get a TopBar from the database	
 		$wptbOptions = get_option('wptbAdminOptions');
@@ -422,7 +410,7 @@ class wptb {
 		else
 			$wptb_class="wptbbarfootdiv";
 
-		echo '<div id="topbar'.$wptbTopBarNumber.'" class="'.$wptb_class.'" style="'.trim($wptbOptions['div_css']).'" '.wptb::wptb_stripslashes($wptbOptions['div_custom_html']).' >';
+		echo '<div id="topbar'.$wptbOptions['bar_id'].'" class="'.$wptb_class.'" style="'.trim($wptbOptions['div_css']).'" '.stripslashes($wptbOptions['div_custom_html']).' >';
 		
 		if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
 			wptb::wptb_display_TopBar('display:none;',$wptbOptions, true, $wptbTopBarNumber, true);
@@ -434,6 +422,8 @@ class wptb {
 		return true;
 
 	} // end function wptb_inject_TopBar_html_js	
+
+
 	
 	
 	//=========================================================================		
@@ -552,6 +542,7 @@ class wptb {
 	}	// End of wptb_check_control_options
 	
 	
+	
 	//=========================================================================		
 	// Code to display the TopBar. Also used on the admin (debug) pages
 	// 
@@ -562,7 +553,7 @@ class wptb {
 	public static function wptb_display_TopBar($wptb_visibility, $wptbOptions, $wptbaddslashes, $wptbTopBarNumber, $wptbReopen) {
 
 
-		if ( $wptbaddslashes && get_magic_quotes_gpc() ) {
+		if ( $wptbaddslashes ) {
 
 			$wptbtextfields = array( '1' => 'custom_css_bar', '2' => 'bar_text', '3' => 'custom_css_text', '4' => 'bar_link_text', '5' => 'close_button_css', '6' => 'reopen_button_css' , '7' => 'div_css' );
 		
@@ -600,25 +591,25 @@ class wptb {
 		echo 'border-bottom-width: ',$wptbOptions['bottom_border_height'],'px;';
 		if ($wptbOptions['custom_css_bar'] != '') 
 				echo trim($wptbOptions['custom_css_bar'])." ";
-		echo '" '.wptb::wptb_stripslashes($wptbOptions['bar_custom_html']).' >';
+		echo '" '.stripslashes($wptbOptions['bar_custom_html']).' >';
 
 // Before Custom PHP
 
 		if ($wptbOptions['php_text_prefix'] != "" ) {
-			eval( wptb::wptb_stripslashes($wptbOptions['php_text_prefix'] ) );
+			eval( stripslashes($wptbOptions['php_text_prefix'] ) );
 		}			
 
 // Left Social Buttons
 		for ($i=1; $i<=10; $i++) {
 			if ( ($wptbOptions['social_icon'.$i.''] == 'on') && ($wptbOptions['social_icon'.$i.'_image'] !== '') && ($wptbOptions['social_icon'.$i.'_position'] == 'left') )
-				echo '<a href="'.wptb::wptb_stripslashes($wptbOptions['social_icon'.$i.'_link']).'" target="_'.$wptbOptions['social_icon'.$i.'_link_target'].'"><img src="'.$wptbOptions['social_icon'.$i.'_image'].'" style="'.wptb::wptb_stripslashes(trim($wptbOptions['social_icon'.$i.'_css'])).'"/></a>';
+				echo '<a href="'.$wptbOptions['social_icon'.$i.'_link'].'" target="_'.$wptbOptions['social_icon'.$i.'_link_target'].'"><img src="'.$wptbOptions['social_icon'.$i.'_image'].'" style="'.trim($wptbOptions['social_icon'.$i.'_css']).'"/></a>';
 		}
 
 // bar & link		
-		echo wptb::wptb_stripslashes($wptbOptions['bar_text']),'<a style="color:',$wptbOptions['link_color'],'; ';
+		echo $wptbOptions['bar_text'],'<a style="color:',$wptbOptions['link_color'],'; ';
 		if ($wptbOptions['custom_css_text'] != '')
 			echo trim($wptbOptions['custom_css_text']);
-		echo '" '.wptb::wptb_stripslashes($wptbOptions['bar_link_custom_html']).' ';
+		echo '" '.stripslashes($wptbOptions['bar_link_custom_html']).' ';
 		echo 'href="',$wptbOptions['bar_link'],'" target="_',$wptbOptions['link_target'],'">';
 		echo $wptbOptions['bar_link_text'].'</a>'; 
 
@@ -638,7 +629,7 @@ class wptb {
 		
 // After Custom PHP		
 		if ($wptbOptions['php_text_suffix'] != "" ) {
-			eval( wptb::wptb_stripslashes($wptbOptions['php_text_suffix'] ) );
+			eval( stripslashes($wptbOptions['php_text_suffix'] ) );
 		}		
 		
 // Close DIV Container
@@ -663,6 +654,25 @@ class wptb {
 		
 	} // end function wptb_destory_cookie_js
 	
+	
+	//=========================================================================		
+	//Build Cookie
+	//=========================================================================		
+	
+	public static function wptb_build_cookie_js($wptbOptions, $wptbTopBarNumber) {	
+		
+		if  ($wptbOptions['respect_cookie'] == 'always') { 
+			$wptb_cookie = "wptopbar_".$wptbOptions['bar_id'].'_'.COOKIEHASH;
+			$html_out = '
+';
+			$html_out .= '		var expDate = new Date('.(date('Y') + 1).', 12, 31 );
+';
+			$html_out .= '		document.cookie="'.$wptb_cookie.'"+"="+escape('.$wptbOptions['cookie_value'].')+";expires="+expDate.toUTCString();';
+		}
+
+		return $html_out;
+		
+	} // end function wptb_build_cookie_js
 				
 	//=========================================================================		
 	//Build Original TopBar
@@ -670,36 +680,14 @@ class wptb {
 	
 	public static function wptb_build_original_js($wptbOptions, $wptbTopBarNumber) {	
 		
-		$html_out  = "		".$wptbTopBarNumber.": function() {";
-
-		if ( isset($wptbOptions['forced_fixed']) && $wptbOptions['forced_fixed'] == "yes" ) 
-				$html_out .="var originalTopMargin".$wptbTopBarNumber." = parseFloat(jQuery('body').css('marginTop'));";
+		$html_out = "		".$wptbTopBarNumber.": function() {jQuery(".'"#wptbheadline'.$wptbTopBarNumber.'").hide().delay('.$wptbOptions['delay_time'].').slideDown('.$wptbOptions['slide_time'].')';
+		if (($wptbOptions['display_time']+0) != 0) 
+			$html_out .= ".delay(".$wptbOptions['display_time'].').slideUp('.$wptbOptions['slide_time'].').hide()';
 		
-		$html_out .="jQuery(".'"#wptbheadline'.$wptbTopBarNumber.'").hide().delay('.$wptbOptions['delay_time'].').slideDown('.$wptbOptions['slide_time'];
-
-		if ( isset($wptbOptions['forced_fixed']) && $wptbOptions['forced_fixed'] == "yes" ) {
-			$html_out .= ", function() {";			
-			$html_out .= "var TopBarHeight = jQuery('#topbar".$wptbTopBarNumber."').height(); var newTopMargin =  originalTopMargin".$wptbTopBarNumber." + TopBarHeight;jQuery('body').css({'margin-top':newTopMargin});";
-			$html_out .= "jQuery('#topbar".$wptbTopBarNumber."').css({position:'fixed'})";
-			$html_out .= ".css({'margin-top':0 - TopBarHeight});})";
-		}
-		else 
-			$html_out .= ')';
-							
-		if (($wptbOptions['display_time']+0) != 0) {
-			$html_out .= ".delay(".$wptbOptions['display_time'].').slideUp('.$wptbOptions['slide_time'];
-			
-			if ( isset($wptbOptions['forced_fixed']) && $wptbOptions['forced_fixed'] == "yes" ) 
-				$html_out .= ",function() {jQuery('body').css({'margin-top':originalTopMargin".$wptbTopBarNumber."});}).hide();}";
-			else
-				$html_out .= ").hide();}";
-		}
-		else 
-			$html_out .= "}";
+		$html_out .= ";}";
 		
-					
 		return $html_out;
-	
+		
 	} // end function wptb_build_original_js
 				
 	//=========================================================================		
@@ -710,63 +698,19 @@ class wptb {
 	
 		if (!isset($wptbOptions[ 'scroll_amount' ]) || !is_numeric($wptbOptions[ 'scroll_amount' ]))
 			$wptbOptions[ 'scroll_amount' ] = 0;
-
-		$html_out = "		".$wptbTopBarNumber.": function() {";
 		
-		if ( isset($wptbOptions['forced_fixed']) && $wptbOptions['forced_fixed'] == "yes" ) 
-			$html_out .= "jQuery('#topbar".$wptbTopBarNumber."').css({position:'fixed'});";
-
-		$html_out .= "jQuery(window).scroll(function(){
+		$html_out = "		".$wptbTopBarNumber.": function() {jQuery(window).scroll(function(){
 				if(jQuery(window).scrollTop()> ".$wptbOptions['scroll_amount'].") {
-					jQuery('#wptbheadline".$wptbTopBarNumber."').slideDown(".$wptbOptions['slide_time'].")
+					jQuery('#wptbheadline".$wptbTopBarNumber."').slideDown(".$wptbOptions['slide_time'].");	
 				} else {
-					jQuery('#wptbheadline".$wptbTopBarNumber."').fadeOut('slow')
+					jQuery('#wptbheadline".$wptbTopBarNumber."').fadeOut('slow');
 				}
-			});}"; 
+		});}"; 		
 
 		return $html_out;
 		
 	} // end function wptb_build_scrollable_js
 
-
-	//=========================================================================		
-	//Builds the javascript to Close the TopBar
-	//=========================================================================		
-
-
-	public static function wptb_build_closeable_js($wptbOptions, $wptbTopBarNumber) {
-	
-		$html_out = 'function close_wptopbar'.($wptbTopBarNumber).'() { ';
-		
-		if ( isset($wptbOptions['forced_fixed']) && $wptbOptions['forced_fixed'] == "yes" ) {
-				$html_out .= "var currentTopMargin = parseFloat(jQuery('body').css('marginTop'));";
-				$html_out .= "var newTopMargin =  currentTopMargin - jQuery('#topbar".$wptbTopBarNumber."').height();jQuery('body').css({'margin-top':newTopMargin});";
-		}
-
-		$html_out .= 'jQuery("#wptbheadline'.($wptbTopBarNumber).'").stop().slideUp(200';
-		
-		if ( isset($wptbOptions['forced_fixed']) && $wptbOptions['forced_fixed'] == "yes" ) 		
-			$html_out .= ",function() {jQuery('body').css({'margin-top':newTopMargin});})";
-		else 
-			$html_out .=');';
-
-		if  ($wptbOptions['respect_cookie'] == 'always') { 
-			$wptb_cookie = "wptopbar_".$wptbOptions['bar_id'].'_'.COOKIEHASH;
-			$html_out .= '
-';
-			$html_out .= '		var expDate = new Date('.(date('Y') + 1).', 12, 31 );
-';
-			$html_out .= '		document.cookie="'.$wptb_cookie.'"+"="+escape('.$wptbOptions['cookie_value'].')+";expires="+expDate.toUTCString();';
-		}
-
-		$html_out .= "}";
-		
-		return $html_out;
-
-
-	} // end function wptb_build_closeable_js
-	
-		
 	//=========================================================================		
 	//Builds the javascript to close/Reopen the TopBar (part 1)
 	//=========================================================================		
@@ -774,64 +718,23 @@ class wptb {
 
 	public static function wptb_build_reopenable_1_js($wptbOptions, $wptbTopBarNumber) {
 
-	if ( isset($wptbOptions['forced_fixed']) && $wptbOptions['forced_fixed'] == "yes" ) 
-		$html_out ="
-var originalTopMargin".$wptbTopBarNumber." = parseFloat(jQuery('body').css('marginTop'));";
-
-
-	$html_out .= "
+	return "
 var wptbshow_open_button".$wptbTopBarNumber." = false;
 						 
 function wptbbar_show".$wptbTopBarNumber."() { 
 	if(wptbshow_open_button".$wptbTopBarNumber.") {
-	  jQuery('.wptbbar-stub".$wptbTopBarNumber."').slideUp('fast', function() {";
-	  
-	 $html_out .= "
-	  	jQuery('.wptbbar".$wptbTopBarNumber."').slideDown(".$wptbOptions['slide_time'];
-	 
-	if ( isset($wptbOptions['forced_fixed']) && $wptbOptions['forced_fixed'] == "yes" ) {		
-	
-		$html_out .= ",function() {jQuery('#topbar".$wptbTopBarNumber."').css({position:'fixed'});";
-		$html_out .= "var TopBarHeight = jQuery('#topbar".$wptbTopBarNumber."').height(); var newTopMargin =  originalTopMargin".$wptbTopBarNumber." + TopBarHeight;jQuery('body').css({'margin-top':newTopMargin});";
-		$html_out .= "jQuery('#topbar".$wptbTopBarNumber."').css({'margin-top':0 - TopBarHeight})})";
-	}
-	else 
-		$html_out .=');';
-	  	
-	 $html_out .= "
+	  jQuery('.wptbbar-stub".$wptbTopBarNumber."').slideUp('fast', function() {
+	  	jQuery('.wptbbar".$wptbTopBarNumber."').slideDown(".$wptbOptions['slide_time'].");
 	  }); 
 	}
 	else {
-		jQuery('.wptbbar".$wptbTopBarNumber."').delay(".$wptbOptions['delay_time'].").slideDown(".$wptbOptions['slide_time'];
-		
-	if ( isset($wptbOptions['forced_fixed']) && $wptbOptions['forced_fixed'] == "yes" ) {
-		$html_out .= ",function() {jQuery('#topbar".$wptbTopBarNumber."').css({position:'fixed'});";
-		$html_out .= "var TopBarHeight = jQuery('#topbar".$wptbTopBarNumber."').height(); var newTopMargin =  originalTopMargin".$wptbTopBarNumber." + TopBarHeight;jQuery('body').css({'margin-top':newTopMargin});";
-		$html_out .= "jQuery('#topbar".$wptbTopBarNumber."').css({'margin-top':0 - TopBarHeight})})";
-    }
-    else
-    	$html_out .= ")";
-	
-		
-	$html_out .=";
+		jQuery('.wptbbar".$wptbTopBarNumber."').delay(".$wptbOptions['delay_time'].").slideDown(".$wptbOptions['slide_time'].");
 	}
 }
 
 function wptbbar_hide".$wptbTopBarNumber."() { 
-	var TopBarHeight = jQuery('#topbar".$wptbTopBarNumber."').height(); 
-	jQuery('.wptbbar".$wptbTopBarNumber."').slideUp('fast', function() {";
-	
-	if ( isset($wptbOptions['forced_fixed']) && $wptbOptions['forced_fixed'] == "yes" ) {		
-		$html_out .= "jQuery('body').css({'margin-top':originalTopMargin".$wptbTopBarNumber."});";
-		$html_out .= "
-		jQuery('.wptbbar-stub".$wptbTopBarNumber."').css({'margin-top':TopBarHeight}).slideDown(".$wptbOptions['slide_time'].");";
-	}
-	else
-		$html_out .= "
-		jQuery('.wptbbar-stub".$wptbTopBarNumber."').slideDown(".$wptbOptions['slide_time'].");";
-	
-		
-	$html_out .= "
+	jQuery('.wptbbar".$wptbTopBarNumber."').slideUp('fast', function() {
+		jQuery('.wptbbar-stub".$wptbTopBarNumber."').slideDown(".$wptbOptions['slide_time'].");
 
 		wptbshow_open_button".$wptbTopBarNumber." = true;
 	}); 
@@ -842,15 +745,11 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 }
 ";
 
-	return $html_out;
-	
 	} // end function wptb_build_reopenable_1_js
-
 
 	//=========================================================================		
 	//Builds the javascript to close/Reopen the TopBar (part 2)
 	//=========================================================================		
-	
 	
 	public static function wptb_build_reopenable_2_js ($wptbOptions, $wptbTopBarNumber) {	
 		
@@ -1057,9 +956,13 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 							
 						if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
 							$html_part_4_out .= wptb::wptb_build_reopenable_1_js($wptbOptions, $wptbTopBarNumber+1);
-						else if ($wptbOptions['allow_close'] == 'yes')	
-							$html_part_4_out .= wptb::wptb_build_closeable_js($wptbOptions, $wptbTopBarNumber+1);
-							
+						else if ($wptbOptions['allow_close'] == 'yes')	{
+							$html_part_4_out .= 'function close_wptopbar'.($wptbTopBarNumber+1).'() { jQuery("#wptbheadline'.($wptbTopBarNumber+1).'").stop().slideUp(200);';
+							if ( $wptbOptions['respect_cookie'] == 'always' ) 
+								$html_part_4_out .= wptb::wptb_build_cookie_js($wptbOptions, ($wptbTopBarNumber+1));
+							$html_part_4_out .= "}";
+						}
+
 						if (isset($wptbOptions['allow_reopen']) && ($wptbOptions['allow_reopen']) == "yes")
 							$html_part_3_out .= wptb::wptb_build_reopenable_2_js($wptbOptions, ($wptbTopBarNumber+1));			
 						else if ( $wptbOptions['scroll_action'] != "on" ) 

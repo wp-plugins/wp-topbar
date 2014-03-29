@@ -85,7 +85,7 @@ function wptb_socialbutton_options($wptbOptions) {
 //link
 				echo '	
 				<br>'.__('Social Icon','wp-topbar').' '.$i.' '.__('Link','wp-topbar').':&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="text" name="wptbsocialicon'.$i.'link" id="link" size="100" value="'.wptb::wptb_stripslashes($wptbOptions['social_icon'.$i.'_link']).'" >';
+					<input type="text" name="wptbsocialicon'.$i.'link" id="link" size="100" value="'.stripslashes($wptbOptions['social_icon'.$i.'_link']).'" >';
 //link target				
 				echo '	
 				<br>'.__('Social Icon','wp-topbar').' '.$i.' '.__('Link Target','wp-topbar').':&nbsp;&nbsp;&nbsp;&nbsp;
@@ -109,7 +109,7 @@ function wptb_socialbutton_options($wptbOptions) {
 //css					
 				echo '
 				<br>'.__('Social Icon','wp-topbar').' '.$i.' '.__('CSS','wp-topbar').':&nbsp;&nbsp;&nbsp;&nbsp;
-					<textarea name="wptbsocialicon'.$i.'css" id="wptb_socialicon'.$i.'_css" rows="2" cols="100">'.wptb::wptb_stripslashes($wptbOptions['social_icon'.$i.'_css']).'</textarea>';
+					<textarea name="wptbsocialicon'.$i.'css" id="wptb_socialicon'.$i.'_css" rows="2" cols="100">'.$wptbOptions['social_icon'.$i.'_css'].'</textarea>';
 					
 // position 
 
