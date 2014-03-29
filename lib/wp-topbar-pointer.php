@@ -71,12 +71,12 @@ function wptb_register_pointer( $p ) {
    // ALIGN: How do we want out custom pointer to align to the element it is attached to. Options are 'left', 'right', 'center'
 
  
-    $p['514pointer1'] = array(
-        'target' => '.wptb-globalsettings',
+    $p['523apointer1'] = array(
+        'target' => '.wptb-table',
         'options' => array(
             'content' => sprintf( '<h3> %1$s </h3> <p> %2$s </p>',
-                __( 'New Features in Versions 5.13+!' ,'wp-topbar'),
-                __( 'Now with even <strong>more</strong> Rotation options!</br></br>Tired of showing only one TopBar? With the new Global Settings Tab, you can now rotate through all available TopBars for each pageview. See the <strong>Global Settings tab</strong>.','wp-topbar')
+                __( 'New Feature in Version 5.23!' ,'wp-topbar'),
+                __( 'Version 5.23 adds a new option on the <strong>Main Options</strong> tab of each TopBar to force to the TopBar to stay fixed on the top of the page when it is scrolled.<br/><br/>For non-scrollable TopBars, it will push the page down and not overlay the top of your webpage.<br/><br/>The Opton is named <code>Force TopBar to Be Fixed On Top of Page</code>','wp-topbar')
             ),
             'position' => array( 'edge' => 'top', 'align' => 'left' )
         )

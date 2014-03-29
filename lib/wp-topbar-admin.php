@@ -22,6 +22,7 @@ i18n Compatible
 // Options Page
 //=========================================================================			
 
+
 function wptb_admin_notice() {
 		$wptbOptions = get_option('wptbAdminOptions');
 
@@ -59,6 +60,7 @@ function wptb_options_page() {
 	require_once( dirname(__FILE__).'/wp-topbar-php-tab.php');  			//load php pages php
 	require_once( dirname(__FILE__).'/wp-topbar-uninstall-tab.php');  		//load uninstall pages php
 	require_once( dirname(__FILE__).'/wp-topbar-admin-debug.php');  		//load admin debug pages php
+	require_once( dirname(__FILE__).'/wp-topbar-all-tab.php');  			//load all options pages php
 	
 	// $wptb_common_style is used by all buttons except the Copy & Special buttons
 		
@@ -120,12 +122,14 @@ function wptb_options_page() {
 
 // check action options, deaault = 'table'
 
+	$wptb_debug=get_transient( 'wptb_debug' );	
+
     if ( isset ( $_GET['action'] ) )
         $action = $_GET['action'];
-    else
+    else {
         $action = 'table';    
-
-	$wptb_debug=get_transient( 'wptb_debug' );	
+		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: WP-TopBar Debug Mode: Re-setting action to: ',$action,'</code>';
+	}
 
 	if($wptb_debug) {
 		echo '</br><code>WP-TopBar Debug Mode: wptb_options_page() - Action: '.$action.'</code>';
@@ -181,17 +185,17 @@ function wptb_options_page() {
 		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');
 		exit;
 	}
-	else if ( isset (  $_POST['wptbExportJSON'] ) ) {			
+	else if ( isset (  $_POST['wptbExportJSON'] ) ) {	
 		wptb_export_options_json();
-		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');
+//		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');   // fix for 3.9
 	}
 	else if ( isset (  $_POST['wptbExportCSV'] ) ) {
 		wptb_export_options_csv();
-		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');					
+//		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');	// fix for 3.9				
 	}
 	else if ( isset (  $_POST['wptbExportSQL'] ) ) {
 		wptb_export_options_sql();
-		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');					
+//		wp_redirect(get_option('siteurl').'/wp-admin/?page=wp-topbar.php&action=table');	// fix for 3.9	
 	}
 	else if ( isset($_POST['wptbInsertBar']) )  {
 		$wptbOptions=wptb_insert_default_row($WPTB_DB_VERSION);
@@ -223,6 +227,12 @@ function wptb_options_page() {
 			wptb_display_admin_header();
         	wptb_options_tabs($action);
         	wptb_admin_debug();
+        	break;
+		case 'all' :
+			wptb_display_admin_header();
+			wptb_bar_edit_options_tabs($action,$wptb_barid, $wptbOptions);
+        	wptb_display_common_info($wptbOptions);        	
+        	wptb_all_options($wptbOptions);
         	break;
         case 'enable' :
         case 'disable' :

@@ -73,7 +73,7 @@ function wptb_php_options($wptbOptions) {
 				<tr valign="top">
 					<td width="150"><?php _e('Enter any PHP to use BEFORE the TopBar is generated','wp-topbar'); ?>:</label></td>
 					<td>
-					<textarea name="wptbphptextprefix" id="phptextprefix" rows="10" cols="100"><?php echo stripslashes($wptbOptions['php_text_prefix']); ?></textarea>
+					<textarea name="wptbphptextprefix" id="phptextprefix" rows="10" cols="100"><?php echo wptb::wptb_stripslashes($wptbOptions['php_text_prefix']); ?></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -83,7 +83,7 @@ function wptb_php_options($wptbOptions) {
 				</tr>					<tr valign="top">
 					<td width="150"><?php _e('Enter any PHP to use AFTER the TopBar is generated','wp-topbar'); ?>:</label></td>
 					<td>
-					<textarea name="wptbphptextsuffix" id="phptextsuffix" rows="10" cols="100"><?php echo stripslashes($wptbOptions['php_text_suffix']); ?></textarea>
+					<textarea name="wptbphptextsuffix" id="phptextsuffix" rows="10" cols="100"><?php echo wptb::wptb_stripslashes($wptbOptions['php_text_suffix']); ?></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -104,6 +104,7 @@ if ( is_user_logged_in() ) {
 else echo 'Generate a second link with this code and get your own TopBar <a style="color:#c00000; " href="http://wordpress.org/extend/plugins/wp-topbar/" target="_blank">from the Wordpress plugin repository</br></a>';		
 </textarea>
 					</td>
+				</tr>
 			</table>
 		</div>
 		<table>

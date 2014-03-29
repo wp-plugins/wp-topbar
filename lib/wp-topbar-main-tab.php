@@ -61,6 +61,20 @@ function wptb_main_options($wptbOptions) {
 							<p class="sub"><em><?php _e('Select where you want to TopBar to be located. Default is <code>Above Header</code>','wp-topbar'); ?></em></p>
 					</td>
 				</tr>	
+					<td colspan="3"><hr></td>
+				</tr>
+				<tr valign="top">
+					<td width="150" id="location"><?php _e('Force TopBar to Be Fixed On Top of Page','wp-topbar'); ?>:</td>
+					<td>
+				 	<p id="radio3" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbforcedfixed1" name="wptbforcedfixed" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['forced_fixed'] == "yes") { echo 'checked="checked"'; }?>><label for="wptbforcedfixed1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Yes','wp-topbar'); ?></span></label>
+						<input type="radio" id="wptbforcedfixed2" name="wptbforcedfixed" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['forced_fixed'] == "no") { echo 'checked="checked"'; }?>><label for="wptbforcedfixed2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('No','wp-topbar'); ?></span></label>
+				 	</p>
+					</td>
+					<td>
+							<p class="sub"><em><?php _e('This will force the TopBar to be fixed to the top of the page, regardless of what you put in th Custom CSS settings. For non-scrolling TopBars, this option will also push down your page to ensure th TopBar is always at the top of the page.  This option is ignored if you are Rotating TopBars.  DDefault is <code>No</code>','wp-topbar'); ?></em></p>
+					</td>
+				</tr>					
 				<tr>
 					<td colspan="3"><hr></td>
 				</tr>
@@ -73,7 +87,7 @@ function wptb_main_options($wptbOptions) {
 				 	</p>
 					</td>
 					<td>
-							<p class="sub"><em><?php _e('Only show the TopBar when the user scrolls the page?  If the user scrolls back to the top of the page, the TopBar gracefully fades away.  Note, if this is to On, the TopBar ignores the Display Time value below.</br></br>Also, <strong>it works best</strong> when the CSS has it\'s <code>position</code> fixed: e.g. <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code>.</br></br>Default is <code>Off</code>, this will show the scrollbar even if the user does not scroll the page.  See:','wp-topbar'); ?> <a <?php echo 'href="?page=wp-topbar.php&action=topbarcss&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'#divcss"'; ?>>TopBar CSS & HTML Tab - Option C</a></em></p>
+							<p class="sub"><em><?php _e('Only show the TopBar when the user scrolls the page?  If the user scrolls back to the top of the page, the TopBar gracefully fades away.  Note, if this is to On, the TopBar ignores the Display Time value below.</br></br>Also, <strong>it works best</strong> when the Forced TopBar Option (above) is set to <code>yes</code> or the CSS has the <code>position</code> fixed: e.g. <code>position:fixed; top: 40; padding:0; margin:0; width: 100%; z-index: 99999;</code>.</br></br>Default is <code>Off</code>, this will show the scrollbar even if the user does not scroll the page.  See:','wp-topbar'); ?> <a <?php echo 'href="?page=wp-topbar.php&action=topbarcss&barid='.($wptb_barid_prefix+$wptbOptions['bar_id']).'#divcss"'; ?>>TopBar CSS & HTML Tab - Option C</a></em></p>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -116,7 +130,7 @@ function wptb_main_options($wptbOptions) {
 						<div id="wptb-displaytime"></div>
 					</td>
 					<td>
-							<p class="sub"><em><?php _e('Enter the amount of time (in milliseconds) for the TopBar to remain on the page.  Enter 0 for the TopBar to not disappear.','wp-topbar'); ?></em></p>
+							<p class="sub"><em><?php _e('Enter the amount of time (in milliseconds) for the TopBar to remain on the page.  <strong>This option is ignored if you set the TopBar to be Reopened</strong> Enter 0 for the TopBar to not disappear.','wp-topbar'); ?></em></p>
 					</td>
 				</tr>							
 				<tr>

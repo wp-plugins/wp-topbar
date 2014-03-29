@@ -203,6 +203,7 @@ function wptb_create_table() {
 		allow_reopen VARCHAR(20),
 		reopen_position VARCHAR(20),
 		topbar_pos VARCHAR (20),
+		forced_fixed VARCHAR (20),
 		scroll_action VARCHAR (20),
 		scroll_amount INT,
 		text_color VARCHAR(20),
@@ -315,7 +316,7 @@ function wptb_set_default_settings($WPTB_DB_VERSION) {
 	if($wptb_debug) 
 		echo '<br><code>WP-TopBar Debug Mode: wptb_set_default_settings()</code>';
 
-	return array(
+	$wptbOptions = array(
 	 	'weighting_points'=> 25,				 	
 		'wptb_version' => $WPTB_DB_VERSION,
 		'enable_topbar' => 'false',
@@ -343,6 +344,7 @@ function wptb_set_default_settings($WPTB_DB_VERSION) {
 		'allow_reopen' => 'no',
 		'reopen_position' => 'open',
 		'topbar_pos' => 'header',
+		'forced_fixed' => 'no',
 		'scroll_action' => 'off',
 		'scroll_amount' => '0', 
 		'text_color' => '#000000',
@@ -435,6 +437,11 @@ function wptb_set_default_settings($WPTB_DB_VERSION) {
 		'social_icon9_position'  => 'right',
 		'social_icon10_position' => 'right'
 		);
+		
+	if ( function_exists( 'wptb_custom_default_values'))
+		$wptbOptions = wptb_custom_default_values($wptbOptions);
+			
+	return $wptbOptions;			
 
 }	// End of wptb_set_default_settings
 
@@ -514,6 +521,7 @@ function wptb_insert_row($wptbOptions) {
 		'allow_reopen' => $wptbOptions[ 'allow_reopen' ],
 		'reopen_position' => $wptbOptions[ 'reopen_position' ],
 		'topbar_pos' => $wptbOptions[ 'topbar_pos' ],
+		'forced_fixed' => $wptbOptions[ 'forced_fixed' ], 
 		'scroll_action' => $wptbOptions[ 'scroll_action' ], 
 		'scroll_amount' => $wptbOptions[ 'scroll_amount' ],
 		'text_color' => $wptbOptions[ 'text_color' ],
@@ -663,6 +671,7 @@ function wptb_update_row($wptbOptions) {
 		'allow_reopen' => $wptbOptions[ 'allow_reopen' ],
 		'reopen_position' => $wptbOptions[ 'reopen_position' ],
 		'topbar_pos' => $wptbOptions[ 'topbar_pos' ],
+		'forced_fixed' => $wptbOptions[ 'forced_fixed' ], 
 		'scroll_action' => $wptbOptions[ 'scroll_action' ], 
 		'scroll_amount' => $wptbOptions[ 'scroll_amount' ],
 		'text_color' => $wptbOptions[ 'text_color' ],
@@ -1199,7 +1208,9 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbtopbarpos'])) {
 		$wptbOptions['topbar_pos'] = $_POST['wptbtopbarpos'];
 	}
-
+	if (isset($_POST['wptbforcedfixed'])) {
+		$wptbOptions['forced_fixed'] = $_POST['wptbforcedfixed'];
+	}
 	if (isset($_POST['wptbscrollaction'])) {
 		$wptbOptions['scroll_action'] = $_POST['wptbscrollaction'];
 	}
@@ -1235,7 +1246,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 
   	foreach( $wptbtextfields as $number => $field ) {
 		if (get_magic_quotes_gpc())
-			$wptbOptions[$field] 	 = (str_replace('"',"'",stripslashes($wptbOptions[$field])));
+			$wptbOptions[$field] 	 = (str_replace('"',"'",wptb::wptb_stripslashes($wptbOptions[$field])));
 		else
 			$wptbOptions[$field] 	 = (str_replace('"',"'",$wptbOptions[$field]));
 
@@ -1246,7 +1257,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
     $wptbtextfields = array('1' => 'div_custom_html' , '2' => 'bar_custom_html' , '3' => 'bar_link_custom_html');
   	foreach( $wptbtextfields as $number => $field ) {
 		if (get_magic_quotes_gpc())
-			$wptbOptions[$field] 	 = (str_replace("'",'"',stripslashes($wptbOptions[$field])));
+			$wptbOptions[$field] 	 = (str_replace("'",'"',wptb::wptb_stripslashes($wptbOptions[$field])));
 		else
 			$wptbOptions[$field] 	 = (str_replace("'",'"',$wptbOptions[$field]));
     }
@@ -1257,7 +1268,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
     
 	for ($i=1; $i<=10; $i++)  {
 		if (get_magic_quotes_gpc())
-			$wptbOptions['social_icon'.$i.'_css'] 	 = (str_replace('"',"'",stripslashes($wptbOptions['social_icon'.$i.'_css'])));
+			$wptbOptions['social_icon'.$i.'_css'] 	 = (str_replace('"',"'",wptb::wptb_stripslashes($wptbOptions['social_icon'.$i.'_css'])));
 		else
 			$wptbOptions['social_icon'.$i.'_css'] 	 = (str_replace('"',"'",$wptbOptions['social_icon'.$i.'_css']));
 	
@@ -1296,6 +1307,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 // 5.04 - added custom HTML field
 // 5.05 - added mobile_check field
 // 5.06 - added margin_left, margin_right fields
+// 5.07 - added forced_fixed
 //=========================================================================			
 	
 function wptb_check_for_plugin_upgrade($wptb_display_errors, $WPTB_DB_VERSION) { 
