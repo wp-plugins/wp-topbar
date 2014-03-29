@@ -76,13 +76,12 @@ function wptb_export_options_csv() {
 	// select one row from the database to setup for the get_col_info function to display column names in one row
 	
 	$sql ="SELECT * FROM ".$wptb_table_name." LIMIT 1";
-	$mycols = $wpdb->query( $sql, ARRAY_A );
-	$mycols = $wpdb->get_col_info();
+	$mycols = $wpdb->get_row( $sql, ARRAY_A );
 
 	$export_output = "";
 	
 	foreach ($mycols as $column_name => $column_value) {
-		$export_output .= $column_value.";";
+		$export_output .= $column_name.";";
 	}
 	// trim the trailing end semicolon from the export
 	$export_output = substr($export_output, 0, -1);
@@ -168,25 +167,7 @@ function wptb_export_options_json() {
 	$myrows = $wpdb->get_results( $sql, ARRAY_A );
 	
 	$num_rows=$wpdb->num_rows;
-
-/*
-	$settings = array();
-
-	
-	$j=0;
-	while ( $j < $num_rows ) {	
-		foreach ($myrows[$j] as $column_name => $column_value) {
-			$settings[$j][$column_name] =  $column_value ;
-		}
-		$j++;
-	}
-
-	
-//	if ( ! $settings ) return;
-
-    //$json_output = json_encode( (array) $settings );
-    
-*/    
+ 
     $json_output = json_encode( $myrows );
     
 	$file = 'wp_topbar_export';
@@ -218,14 +199,13 @@ function wptb_export_options_sql() {
 	// select one row from the database to setup for the get_col_info function to display column names in one row
 	
 	$sql ="SELECT * FROM ".$wptb_table_name." LIMIT 1";
-	$mycols = $wpdb->query( $sql, ARRAY_A );
-	$mycols = $wpdb->get_col_info();
+	$mycols = $wpdb->get_row( $sql, ARRAY_A );
 
 	$export_output = "";
 	$insert_columns = "(";
 	
 	foreach ($mycols as $column_name => $column_value) {
-		$insert_columns .= $column_value.", ";
+		$insert_columns .= $column_name.", ";
 	}
 	// trim the trailing end semicolon from the export
 	$insert_columns = substr($insert_columns, 0, -2).")";

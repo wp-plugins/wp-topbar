@@ -154,7 +154,7 @@ function wptb_closebutton_bulk_options() {
 				<tr valign="top">
 					<td width="150"><?php _e('Cookie Value','wp-topbar'); ?>:</label></td>
 					<td>
-						<input type="text" name="wptbcookievalue" id="cookievalue" size="10" value="<?php echo stripslashes($cookie_value); ?>" >
+						<input type="text" name="wptbcookievalue" id="cookievalue" size="10" value="<?php echo wptb::wptb_stripslashes($cookie_value); ?>" >
 					</br>
 					<p class="sub"><em><?php _e('Change this value to force the cookie to reshow.  Default is <code>1</code>','wp-topbar'); ?></em></p>
 					</td>
@@ -165,7 +165,7 @@ function wptb_closebutton_bulk_options() {
 				<tr valign="top">
 					<td width="150"><?php _e('Enter the CSS for the Close Button','wp-topbar'); ?>:</label></td>
 					<td>
-					<textarea name="wptbclosecss" id="closecss" rows="2" cols="100"><?php echo stripslashes($close_button_css); ?></textarea>
+					<textarea name="wptbclosecss" id="closecss" rows="2" cols="100"><?php echo wptb::wptb_stripslashes($close_button_css); ?></textarea>
 					</br>
 					<p class="sub"><em><?php _e('Default is','wp-topbar'); ?> <code>vertical-align:text-bottom;float:right;padding-right:20px;</code></em></p>
 					</td>
@@ -190,7 +190,7 @@ function wptb_closebutton_bulk_options() {
 				<tr valign="top">
 					<td width="150"><?php _e('Enter the CSS for the Reopen Button','wp-topbar'); ?>:</label></td>
 					<td>
-					<textarea name="wptbreopencss" id="reopencss" rows="2" cols="100"><?php echo stripslashes($reopen_button_css); ?></textarea>
+					<textarea name="wptbreopencss" id="reopencss" rows="2" cols="100"><?php echo wptb::wptb_stripslashes($reopen_button_css); ?></textarea>
 					</br>
 					<p class="sub"><em><?php _e('Default is','wp-topbar'); ?> <code>display:none; float:right; left: 0px; width:100%; height: 17px; z-index:9999999; padding-right:10px; margin-right: 10px;color:#fff; width: 35px; height: 33px; text-decoration: none; cursor:pointer;</code></em></p>
 					</td>
@@ -315,7 +315,7 @@ function wptb_closebutton_options($wptbOptions) {
 				<tr valign="top">
 					<td width="150"><?php _e('Cookie Value','wp-topbar'); ?>:</label></td>
 					<td>
-						<input type="text" name="wptbcookievalue" id="cookievalue" size="10" value="<?php echo stripslashes($wptbOptions['cookie_value']); ?>" >
+						<input type="text" name="wptbcookievalue" id="cookievalue" size="10" value="<?php echo wptb::wptb_stripslashes($wptbOptions['cookie_value']); ?>" >
 					<?php	
 						if ( $wptbOptions['past_cookie_values'] != "" ) {
 							echo '<p>'.__('Your previous cookie value was','wp-topbar').': '.$wptbOptions['past_cookie_values'];
@@ -332,7 +332,7 @@ function wptb_closebutton_options($wptbOptions) {
 				<tr valign="top">
 					<td width="150"><?php _e('Enter the CSS for the Close Button','wp-topbar'); ?>:</label></td>
 					<td>
-					<textarea name="wptbclosecss" id="closecss" rows="2" cols="100"><?php echo stripslashes($wptbOptions['close_button_css']); ?></textarea>
+					<textarea name="wptbclosecss" id="closecss" rows="2" cols="100"><?php echo wptb::wptb_stripslashes($wptbOptions['close_button_css']); ?></textarea>
 					</br>
 					<p class="sub"><em><?php _e('Default is','wp-topbar'); ?> <code>vertical-align:text-bottom;float:right;padding-right:20px;</code></em></p>
 					</td>
@@ -358,7 +358,7 @@ function wptb_closebutton_options($wptbOptions) {
 				<tr valign="top">
 					<td width="150"><?php _e('Enter the CSS for the Reopen Button','wp-topbar'); ?>:</label></td>
 					<td>
-					<textarea name="wptbreopencss" id="reopencss" rows="2" cols="100"><?php echo stripslashes($wptbOptions['reopen_button_css']); ?></textarea>
+					<textarea name="wptbreopencss" id="reopencss" rows="2" cols="100"><?php echo wptb::wptb_stripslashes($wptbOptions['reopen_button_css']); ?></textarea>
 					</br>
 					<p class="sub"><em><?php _e('Default is','wp-topbar'); ?> <code>display:none; float:right; left: 0px; width:100%; height: 17px; z-index:9999999; padding-right:10px; margin-right: 10px;color:#fff; width: 35px; height: 33px; text-decoration: none; cursor:pointer;</code></em></p>
 					</td>

@@ -110,7 +110,7 @@ function wptb_control_options($wptbOptions) {
 					<td colspan="3"><hr></td>
 				</tr>				
 				<tr valign="top">
-					<td><?php _e('Show TopBar on<br>Home Page','wp-topbar'); ?>:</label><p>
+					<td><?php _e('Show TopBar on<br>Home Page','wp-topbar'); ?>:</label><p></td>
 					<td>
 						<br>
 						
@@ -166,8 +166,7 @@ function wptb_control_options($wptbOptions) {
 					</td>
 				</tr>
 				<tr valign="top">
-					<td><?php _e('Category ID Criteria','wp-topbar'); ?>:</label><p>
-</td>
+					<td><?php _e('Category ID Criteria','wp-topbar'); ?>:</label><p></td>
 					<td>
 					
 				 	<p id="radio5" class="ui-button ui-button-wptbset">
@@ -183,7 +182,7 @@ function wptb_control_options($wptbOptions) {
 					<td colspan="3"><hr></td>
 				</tr>
 					<tr valign="top">
-					<td><?php _e('Selection Criteria Logic','wp-topbar'); ?>:</label><p>
+					<td><?php _e('Selection Criteria Logic','wp-topbar'); ?>:</label><p></td>
 					<td>
 						</br>
 					 	<p id="radio6" class="ui-button ui-button-wptbset">
