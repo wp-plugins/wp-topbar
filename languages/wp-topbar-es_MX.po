@@ -3,15 +3,15 @@ msgstr ""
 "Project-Id-Version: WP-TopBar v5.23\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-03-29 13:58-0800\n"
-"PO-Revision-Date: 2014-03-29 13:58-0800\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2014-06-24 13:23+0100\n"
+"Last-Translator: jelena kovacevic <jecajeca260@gmail.com>\n"
 "Language-Team: \n"
 "Language: es_MX\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.6.3\n"
+"X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
@@ -67,12 +67,13 @@ msgstr "Desinstalar"
 
 #: lib/wp-topbar-admin-debug.php:35
 msgid "Admin Debug Page"
-msgstr ""
+msgstr "Página de depuración de administración "
 
 #: lib/wp-topbar-admin-debug.php:38
 msgid ""
 "This page contains various settings to help the author debug the Plugin."
 msgstr ""
+"Esta página contiene varios ajustes para ayudar al autor a depurar el Plugin."
 
 # @ wp-topbar
 #: lib/wp-topbar-admin-debug.php:47 lib/wp-topbar-network-admin.php:258
@@ -182,7 +183,7 @@ msgstr "Hora actual"
 
 #: lib/wp-topbar-admin-debug.php:168
 msgid "WordPress GMT Offset"
-msgstr ""
+msgstr "WordPress GMT Offset"
 
 # @ wp-topbar
 #: lib/wp-topbar-admin-debug.php:171
@@ -264,7 +265,7 @@ msgstr ""
 #: lib/wp-topbar-all-tab copy.php:65 lib/wp-topbar-all-tab.php:67
 #: lib/wp-topbar-main-tab.php:67
 msgid "Force TopBar to Be Fixed On Top of Page"
-msgstr ""
+msgstr "Forzar al Topbar que se fije al inicio de la página"
 
 # @ wp-topbar
 #: lib/wp-topbar-all-tab copy.php:67 copy.php:431 copy.php:584 copy.php:598
@@ -302,6 +303,12 @@ msgid ""
 "top of the page.  This option is ignored if you are Rotating TopBars.  "
 "Default is <code>No</code>"
 msgstr ""
+"Esto forzará al TopBar a estar fijo al inicio de la página, "
+"independientemente de lo que ponga en las configuraciones de CSS "
+"personalizadas. Para los TopBars de no scroll, esta opción también moverá su "
+"página para asegurar que el TopBar esté siempre al inicio de la página. Esta "
+"opción es ignorada si está rotando los TopBars. Por Defecto es <code>No</"
+"code>"
 
 # @ wp-topbar
 #: lib/wp-topbar-all-tab copy.php:79 lib/wp-topbar-all-tab.php:81
@@ -514,10 +521,12 @@ msgstr ""
 #: lib/wp-topbar-all-tab copy.php:210 lib/wp-topbar-control-tab.php:47
 msgid "You must use your WordPress Server Time when you set these options."
 msgstr ""
+"Usted debe usar el Tiempo del Servidor de WordPress cuando vaya a configurar "
+"estas opciones."
 
 #: lib/wp-topbar-all-tab copy.php:210 lib/wp-topbar-control-tab.php:47
 msgid "When this page was rendered, the WordPress time was: "
-msgstr ""
+msgstr "Cuando se hizo esta página, el tiempo de WordPress fue:"
 
 # @ wp-topbar
 #: lib/wp-topbar-all-tab copy.php:217 lib/wp-topbar-control-tab.php:54
@@ -646,7 +655,7 @@ msgstr ""
 
 #: lib/wp-topbar-all-tab copy.php:273 lib/wp-topbar-control-tab.php:113
 msgid "Show TopBar on<br>Home Page"
-msgstr ""
+msgstr "Mostrar el TopBar en la <br> Página de Inicio"
 
 # @ wp-topbar
 #: lib/wp-topbar-all-tab copy.php:280 copy.php:288 copy.php:344 copy.php:352
@@ -1080,6 +1089,9 @@ msgid ""
 "page?  Then set the Forced Fixed option (on the Main Tab) to <code>on</code> "
 "See:"
 msgstr ""
+"¿Quiere empujar la página hacia abajo Y tener la barra superior fija en a la "
+"parte superior de la página? A continuación, establezca la opción Forzar "
+"Fijo (en la pestaña Principal) a <code>encendido </code> Ver:"
 
 # @ wp-topbar
 #: lib/wp-topbar-all-tab copy.php:490 lib/wp-topbar-all-tab.php:196
@@ -1744,10 +1756,9 @@ msgid ""
 "for every page refresh that has <code>&debug</code>.  If you have debugging "
 "turned on (in your wp-config.php), then the error messages will also be sent "
 "to the default WordPress logfile for any non-admin page views of your "
-"website. i.e. <code>define('WP_DEBUG', true);</code> and "
-"<code>define('WP_DEBUG_LOG', true);</code></li><li>To turn off the debug "
-"messages, remove the <code>&debug</code> from the URL and wait about one "
-"minute.</li>"
+"website. i.e. <code>define('WP_DEBUG', true);</code> and <code>define"
+"('WP_DEBUG_LOG', true);</code></li><li>To turn off the debug messages, "
+"remove the <code>&debug</code> from the URL and wait about one minute.</li>"
 msgstr ""
 "<li>Puede anexar <code>& depuración</code> después de la URL de wp-topbar "
 "para encender mensajes de depuración. es decir, <code>admin.php?page=wp-"
@@ -1903,7 +1914,7 @@ msgstr "Comprobación en tiempo de"
 
 #: lib/wp-topbar-display-functions.php:160
 msgid "Restrictions:"
-msgstr ""
+msgstr "Restricciones:"
 
 #: lib/wp-topbar-display-functions.php:234
 msgid "The Custom Samples Directory is not a valid URL. To fix this go to the"
@@ -2068,6 +2079,10 @@ msgid ""
 "have the Close Button turned on.  The Close Button has a higher priority and "
 "overrides the Scroll Button setting.  To change this go to the"
 msgstr ""
+"Ha activado la opción de Acción de Scroll en el tab Opciones Principales y "
+"también tiene el Botón Cerrar activado. El Botón Cerrar tiene mayor "
+"prioridad y anula la configuración del Botón de Desplazamiento. Para cambiar "
+"esto, vaya a la"
 
 # @ wp-topbar
 #: lib/wp-topbar-display-functions.php:321
@@ -2737,6 +2752,12 @@ msgid ""
 "top of the page.  This option is ignored if you are Rotating TopBars.  "
 "DDefault is <code>No</code>"
 msgstr ""
+"Esto obligará a la barra superior a fijarse en la parte superior de la "
+"página, sin importar lo que usted ponga en la configuración de estilo CSS "
+"personalizado. Para TopBars sin scroll, esta opción empuja hacia abajo la "
+"página para asegurar que la barra superior esté siempre en la parte superior "
+"de la página. Esta opción se ignora si está rotando los TopBars. El valor "
+"Por Defecto es <code>No</code>"
 
 # @ wp-topbar
 #: lib/wp-topbar-main-tab.php:90
@@ -2906,6 +2927,12 @@ msgid ""
 "down and not overlay the top of your webpage.<br/><br/>The Opton is named "
 "<code>Force TopBar to Be Fixed On Top of Page</code>"
 msgstr ""
+"La versión 5.23 adiciona una nueva opción en el tab <strong>Opciones "
+"Principales</strong> para forzar a cada TopBar a mantenerse fija en la "
+"página cuando se hace scroll. <br/><br/> Para TopBars sin scroll, empujará "
+"la página hacia abajo y no se sobrepondrá al inicio de su página web. <br/"
+"><br/> La Opción se llama <code> Forzar TopBar a estar Fijo En el Inicio de "
+"la Página</code>"
 
 # @ wp-topbar
 #: lib/wp-topbar-pointer.php:88
@@ -3106,13 +3133,16 @@ msgstr ""
 
 #: lib/wp-topbar-settings-tab.php:134
 msgid "Show TopBar Overview on Admin Pages"
-msgstr ""
+msgstr "Mostrar barra superior en las Páginas de Admin"
 
 #: lib/wp-topbar-settings-tab.php:142
 msgid ""
 "If you don't need the Overview shown, you can turn off the Overview section "
 "on the Admin pages.  Default is <code>on</code>"
 msgstr ""
+"Si usted no necesita mostrar el Resumen, se puede desactivar en la sección "
+"Resumen en las páginas de admin. El código Por Defecto es<code>encendido</"
+"code>"
 
 # @ wp-topbar
 #: lib/wp-topbar-social-tab.php:31
