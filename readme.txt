@@ -74,6 +74,9 @@ Here is a crazy-long list of options you have for each TopBar -- and this is not
 	<li>The TopBars are generated in such a way to support cacheing (e.g. W3 Total Cache, WP Super Cache)</li>
 </ol>
 
+Translations provided by:
+Spanish (Latin American) - Andrew Kurtis - http://www.webhostinghub.com/
+
 
 
 == Installation ==
@@ -92,6 +95,9 @@ I've included a sample image for you to try on your website:  wp-topbar_sample_i
 = I have a new translation  =
 
 Contact me to help with a translation: http://zwebify.com/contact/  I will install at the next update.
+
+Current translations are provided by:
+Spanish (Latin American) - Andrew Kurtis - http://www.webhostinghub.com/
 
 = My TopBar is not working. What should I do? =
 Are you upgrading from an old version?   I do my best to allow for clean upgrades.  Just in case, try creating a default TopBar.  If that works, you may have CSS or other incompatabilities on the older TopBar that does not work with the latest version.  
