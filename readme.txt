@@ -225,7 +225,9 @@ Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed
 1. VALIDATED: Version 5.24 supports WordPress 4.0
 2. FIXED: instructions on how to change font on the TopBar
 3. UPDATED: timepicker.js updated to version 1.4.6 - http://trentrichardson.com/examples/timepicker/
-4. ADDED: Translation for Spanish (Latin American) - thanks to Andrew Kurtis - http://www.webhostinghub.com/
+4. FIXED: Defect in reopenable TopBars
+5. ADDED: Translation for Spanish (Latin American) - thanks to Andrew Kurtis - http://www.webhostinghub.com/
+
 
 
 = 5.23 - 3/28/2014 =

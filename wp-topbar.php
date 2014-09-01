@@ -775,8 +775,10 @@ class wptb {
 	public static function wptb_build_reopenable_1_js($wptbOptions, $wptbTopBarNumber) {
 
 	if ( isset($wptbOptions['forced_fixed']) && $wptbOptions['forced_fixed'] == "yes" ) 
-		$html_out ="
+		$html_out = "
 var originalTopMargin".$wptbTopBarNumber." = parseFloat(jQuery('body').css('marginTop'));";
+	else 
+		$html_out = "";
 
 
 	$html_out .= "
