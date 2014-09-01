@@ -3,8 +3,8 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
-Tested up to: 3.9
-Stable tag: 5.23
+Tested up to: 4.0
+Stable tag: 5.24
 
 Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler! 
 
@@ -12,7 +12,7 @@ Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website
 
 What is a TopBar?  It is a special message/image that you can show at the top (or bottom) of your website.  WP-TopBar allows you to create an **unlimited** number of TopBars.   They are cacheable and randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even easy to add your own PHP and CSS. 
 
-Version 5.23 adds a new option to force to the TopBar to stay fixed on the top of the page when it is scrolled.  For non-scrollable TopBars, it will push the page down and not overlay the top of your webpage.
+Version 5.24 has some mionor fixes.  While 5.23 adds a new option to force to the TopBar to stay fixed on the top of the page when it is scrolled.  For non-scrollable TopBars, it will push the page down and not overlay the top of your webpage.
 
 Version 5.21 changed how the HTML is generated to make it quicker to startup and also easier to use more complicated custom PHP... all behind the scenes.  Now you can enter in custom PHP like this and it works! (of course, You'll need to style it with CSS to make it pretty!):  echo do_shortcode('[gallery id="123"]');  
 
@@ -219,6 +219,14 @@ Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed
 
 
 == Changelog ==
+
+= 5.24 - 8/31/2014 =
+
+1. VALIDATED: Version 5.24 supports WordPress 4.0
+2. FIXED: instructions on how to change font on the TopBar
+3. UPDATED: timepicker.js updated to version 1.4.6 - http://trentrichardson.com/examples/timepicker/
+4. ADDED: Translation for Spanish (Latin American) - thanks to Andrew Kurtis - http://www.webhostinghub.com/
+
 
 = 5.23 - 3/28/2014 =
 

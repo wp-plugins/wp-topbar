@@ -61,7 +61,7 @@ function wptb_topbarcss_options($wptbOptions) {
 					<td>
 						<strong><?php _e('Examples','wp-topbar'); ?>:</strong></br>
 						1. <?php _e('To make all text lowercase','wp-topbar'); ?>:&nbsp;&nbsp;&nbsp;<textarea rows="1" cols="50" style="background-color:lightyellow;">text-transform:lowercase;</textarea></br></br>
-						2. <?php _e('To make all text uppercase using the Georgia Font','wp-topbar'); ?>:&nbsp;&nbsp;&nbsp;<textarea rows="1" cols="50" style="background-color:lightyellow;">text-transform:uppercase;font-family:'georgia';padding-right:10px;</textarea></br></br>
+						2. <?php _e('To make all text uppercase using the Georgia Font','wp-topbar'); ?>:&nbsp;&nbsp;&nbsp;<textarea rows="2" cols="50" style="background-color:lightyellow;">text-transform:uppercase;font-family:georgia;padding-right:10px;</textarea></br></br>
 						3. <?php _e('To add a gradient bar','wp-topbar'); ?>:&nbsp;&nbsp;&nbsp;<textarea rows="9" cols="140" style="background-color:lightyellow;">background: rgb(109,179,242);
 background: -moz-linear-gradient(top,  rgba(109,179,242,1) 0%, rgba(84,163,238,1) 50%, rgba(54,144,240,1) 51%, rgba(30,105,222,1) 100%);
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(109,179,242,1)), color-stop(50%,rgba(84,163,238,1)), color-stop(51%,rgba(54,144,240,1)), color-stop(100%,rgba(30,105,222,1)));
