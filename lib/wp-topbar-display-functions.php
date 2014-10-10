@@ -201,6 +201,20 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid, $wptbOptio
 							echo "<img title='TopBar is Forced to Be Fixed On Top of Page' src='".plugins_url('/images/forced.png', __FILE__)."'>";
 						}
 					}
+					if ( isset($wptbOptions['show_type_sticky']) ) { //assume if show_type_sticky is set, all show_types are set
+						if ( $wptbOptions['show_type_sticky']   == "no" ) 
+							echo "<img title='Do not show on Sticky Posts' src='".plugins_url('/images/type_sticky.png', __FILE__)."'>";
+						if ( $wptbOptions['show_type_pages']    == "no" ) 
+							echo "<img title='Do not show on Pages' src='".plugins_url('/images/type_pages.png', __FILE__)."'>";
+						if ( $wptbOptions['show_type_single']   == "no" ) 
+							echo "<img title='Do not show on Posts' src='".plugins_url('/images/type_posts.png', __FILE__)."'>";			
+						if ( $wptbOptions['show_type_archives'] == "no" ) 
+							echo "<img title='Do not show on Archives Pages ' src='".plugins_url('/images/type_archives.png', __FILE__)."'>";
+						if ( $wptbOptions['show_type_search']   == "no" ) 
+							echo "<img title='Do not show on Search Pages' src='".plugins_url('/images/type_search.png', __FILE__)."'>";
+						if ( $wptbOptions['show_type_404']      == "no" ) 
+							echo "<img title='Do not show on a 404 Page' src='".plugins_url('/images/type_404.png', __FILE__)."'>";
+					}
 				?>
 				</td>
 				</tr>
@@ -340,6 +354,8 @@ function wptb_display_common_info($wptbOptions) {
 			echo '<div class="error"><strong>'.sprintf(__('You have enabled an image for Social Button # %d but no image has been entered for this Social Button. To fix this go to the','wp-topbar'),$i)." <a href='?page=wp-topbar.php&action=socialbuttons&barid=".($wptb_barid_prefix+$wptbOptions['bar_id'])."'>".__('Social Buttons tab','wp-topbar').'</a></strong></div>'; 
 	}
 
+	if (isset($wptbOptions['php_text_control']) && ($wptbOptions['php_text_control'])!= ""  ) 
+		echo '<div class="error"><strong>'.__('FYI: You have entered custom PHP in the CONTROL option on the PHP tab, that code could override the selections you have on the Control Tab.', 'wp-topbar' ).'</strong></div>'; 
 
 	// 
 	// end of Warning Messges
@@ -716,6 +732,21 @@ function wptb_display_all_TopBars() {
 					echo $wptb_br."<img title='TopBar is Forced to Be Fixed On Top of Page' src='".plugins_url('/images/forced.png', __FILE__)."'>";
 				}
 		}
+		if ( isset($wptbOptions['show_type_sticky']) ) { //assume if show_type_sticky is set, all show_types are set
+			if ( $wptbOptions['show_type_sticky']   == "no" ) 
+				echo $wptb_br."<img title='Do not show on Sticky Posts' src='".plugins_url('/images/type_sticky.png', __FILE__)."'>";
+			if ( $wptbOptions['show_type_pages']    == "no" ) 
+				echo $wptb_br."<img title='Do not show on Pages' src='".plugins_url('/images/type_pages.png', __FILE__)."'>";
+			if ( $wptbOptions['show_type_single']   == "no" ) 
+				echo $wptb_br."<img title='Do not show on Posts' src='".plugins_url('/images/type_posts.png', __FILE__)."'>";			
+			if ( $wptbOptions['show_type_archives'] == "no" ) 
+				echo $wptb_br."<img title='Do not show on Archives Pages ' src='".plugins_url('/images/type_archives.png', __FILE__)."'>";
+			if ( $wptbOptions['show_type_search']   == "no" ) 
+				echo $wptb_br."<img title='Do not show on Search Pages' src='".plugins_url('/images/type_search.png', __FILE__)."'>";
+			if ( $wptbOptions['show_type_404']      == "no" ) 
+				echo $wptb_br."<img title='Do not show on a 404 Page' src='".plugins_url('/images/type_404.png', __FILE__)."'>";
+		}
+
 		echo '</td>';
 	
 		echo '<td>';

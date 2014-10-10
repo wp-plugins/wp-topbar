@@ -30,6 +30,8 @@ function wptb_control_options($wptbOptions) {
 	<h3><a name="ControlOptions"><?php _e('Control Options','wp-topbar'); ?></a></h3>
 	<div class="inside">
 			<p class="sub"><strong><?php _e('These are the options that allow you to control whether your TopBar will be shown (based on time, category, logged in users, etc.).','wp-topbar'); ?></strong></p>
+			<p class="sub"><em><?php _e('NOTE: The options are generally processed in the order show on the screen.   The first criteria that excludes a page/post from showing will cause the TopBar to stop checking other criteria.','wp-topbar'); ?></em></p>
+
 
 		<div class="table">
 			<table class="form-table">		
@@ -63,51 +65,6 @@ function wptb_control_options($wptbOptions) {
 				</tr>
 				<tr>
 					<td colspan="3"><hr></td>
-				</tr>
-				<tr valign="top">
-					<td><?php _e('Logged In Users','wp-topbar'); ?>:</td>
-					<td>
-						<br>
-						
-					 	<p id="radio1" class="ui-button ui-button-wptbset">
-						<input type="radio" id="wptbonlyloggedin1" name="wptbonlyloggedin" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['only_logged_in'] == "no") { echo 'checked="checked"'; }?>><label for="wptbonlyloggedin1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('A','wp-topbar'); ?></span></label>
-						<input type="radio" id="wptbonlyloggedin2" name="wptbonlyloggedin" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['only_logged_in'] == "yes") { echo 'checked="checked"'; }?>><label for="wptbonlyloggedin2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('B','wp-topbar'); ?></span></label>
-						<input type="radio" id="wptbonlyloggedin3" name="wptbonlyloggedin" class="ui-helper-hidden-accessible" value="all" <?php if ($wptbOptions['only_logged_in'] == "all") { echo 'checked="checked"'; }?>><label for="wptbonlyloggedin3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('C','wp-topbar'); ?></span></label>
-					 	</p>						
-						
-					</td>
-					<td>
-						<p class="sub"><em><?php _e('Select how you want the TopBar to show for users.  Default is to <code>Always</code> show the TopBar, regardless if they are logged in:','wp-topbar'); ?></em>
-						<br><?php _e('A','wp-topbar'); ?>. <?php _e('<strong>Not Logged In</strong> shows the TopBar only for users not logged in.','wp-topbar'); ?>
-						<br><?php _e('B','wp-topbar'); ?>. <?php _e('<strong>Logged In</strong> shows the TopBar only for users logged in.','wp-topbar'); ?>
-						<br><?php _e('C','wp-topbar'); ?>. <?php _e('<strong>Always</strong> shows the TopBar for all users, logged in or not.','wp-topbar'); ?>
-						</p>
-					</td>
-				</tr>				
-				<tr>
-					<td colspan="3"><hr></td>
-				</tr>
-				<tr valign="top">
-					<td><?php _e('Mobile Devices','wp-topbar'); ?>:</td>
-					<td>
-						<br>
-					 	<p id="radio2" class="ui-button ui-button-wptbset">
-						<input type="radio" id="wptbmobilecheck1" name="wptbmobilecheck" class="ui-helper-hidden-accessible" value="only_mobile" <?php if ($wptbOptions['mobile_check'] == "only_mobile") { echo 'checked="checked"'; }?>><label for="wptbmobilecheck1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('A','wp-topbar'); ?></span></label>
-						<input type="radio" id="wptbmobilecheck2" name="wptbmobilecheck" class="ui-helper-hidden-accessible" value="not_mobile" <?php if ($wptbOptions['mobile_check'] == "not_mobile") { echo 'checked="checked"'; }?>><label for="wptbmobilecheck2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('B','wp-topbar'); ?></span></label>
-						<input type="radio" id="wptbmobilecheck3" name="wptbmobilecheck" class="ui-helper-hidden-accessible" value="all_devices" <?php if ($wptbOptions['mobile_check'] == "all_devices") { echo 'checked="checked"'; }?>><label for="wptbmobilecheck3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('C','wp-topbar'); ?></span></label>
-					 	</p>						
-						
-					</td>
-					<td>
-						<p class="sub"><em><?php _e('Select how you want the TopBar to show for mobile users.  Default is to <code>Always</code> show the TopBar, regardless if they are logged in:','wp-topbar'); ?></em>
-						<br><?php _e('A','wp-topbar'); ?>. <?php _e('<strong>Mobile Devices</strong> shows the TopBar only for mobile devices.','wp-topbar'); ?>
-						<br><?php _e('B','wp-topbar'); ?>. <?php _e('<strong>non-Mobile Devices</strong> shows the TopBar only for other devices.','wp-topbar'); ?>
-						<br><?php _e('C','wp-topbar'); ?>. <?php _e('<strong>Always</strong> shows the TopBar for all devices.','wp-topbar'); ?>
-						</p>
-					</td>
-				</tr>								
-				<tr>
-					<td colspan="3"><hr></td>
 				</tr>				
 				<tr valign="top">
 					<td><?php _e('Show TopBar on<br>Home Page','wp-topbar'); ?>:</label><p></td>
@@ -129,6 +86,100 @@ function wptb_control_options($wptbOptions) {
 						<br><?php _e('D','wp-topbar'); ?>. <?php _e('<strong>Only</strong> shows the TopBar on the Home Page and not other pages.','wp-topbar'); ?>
 						</p>
 					</td>
+				</tr>				<tr>
+					<td colspan="3"><hr></td>
+				</tr>
+				<tr valign="top">
+					<td><?php _e('Logged In Users','wp-topbar'); ?>:</td>
+					<td>
+						<br>
+						
+					 	<p id="radio1" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbonlyloggedin1" name="wptbonlyloggedin" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['only_logged_in'] == "no") { echo 'checked="checked"'; }?>><label for="wptbonlyloggedin1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('A','wp-topbar'); ?></span></label>
+						<input type="radio" id="wptbonlyloggedin2" name="wptbonlyloggedin" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['only_logged_in'] == "yes") { echo 'checked="checked"'; }?>><label for="wptbonlyloggedin2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('B','wp-topbar'); ?></span></label>
+						<input type="radio" id="wptbonlyloggedin3" name="wptbonlyloggedin" class="ui-helper-hidden-accessible" value="all" <?php if ($wptbOptions['only_logged_in'] == "all") { echo 'checked="checked"'; }?>><label for="wptbonlyloggedin3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('C','wp-topbar'); ?></span></label>
+					 	</p>						
+						
+					</td>
+					<td>
+						<p class="sub"><em><?php _e('Select how you want the TopBar to show for users.  Default is to <code>Always</code> show the TopBar, regardless if they are logged in:','wp-topbar'); ?></em>
+						<br><?php _e('A','wp-topbar'); ?>. <?php _e('<strong>Not Logged In</strong> shows the TopBar only for users not logged in.','wp-topbar'); ?>
+						<br><?php _e('B','wp-topbar'); ?>. <?php _e('<strong>Logged In</strong> shows the TopBar only for users logged in.','wp-topbar'); ?>
+						<br><?php _e('C','wp-topbar'); ?>. <?php _e('<strong>Always</strong> shows the TopBar for all users, logged in or not.','wp-topbar'); ?>
+						</p>
+					</td>
+				</tr>											
+				<tr>
+					<td colspan="3"><hr></td>
+				</tr>
+				<tr valign="top">
+					<td colspan=2><strong><?php _e('Post/Page Type Criteria','wp-topbar'); ?>:</strong></td>
+				</tr>
+				<tr valign="top">
+					<td><?php _e('Sticky Posts','wp-topbar'); ?>:</td>
+					<td>
+				 	<p id="radio6" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbshowsticky1" name="wptbshowsticky" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['show_type_sticky'] == "yes") { echo 'checked="checked"'; }?>><label for="wptbshowsticky1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Include','wp-topbar'); ?></span></label>
+						<input type="radio" id="wptbshowsticky2" name="wptbshowsticky" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['show_type_sticky'] == "no") { echo 'checked="checked"'; }?>><label for="wptbshowsticky2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Exclude','wp-topbar'); ?></span></label>
+					</p>
+					<td>
+						<p class="sub"><em><?php _e('Select if you want the TopBar to show on Sticky Posts.  Default is <code>Include</code>:<br><code>Include</code> will have the TopBar show on Sticky Posts<br><code>Exclude</code> will have the TopBar to not show up Sticky Posts.','wp-topbar'); ?></em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td><?php _e('Pages','wp-topbar'); ?>:</td>
+					<td>
+				 	<p id="radio4" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbshowpage1" name="wptbshowpages" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['show_type_pages'] == "yes") { echo 'checked="checked"'; }?>><label for="wptbshowpage1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Include','wp-topbar'); ?></span></label>
+						<input type="radio" id="wptbshowpage2" name="wptbshowpages" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['show_type_pages'] == "no") { echo 'checked="checked"'; }?>><label for="wptbshowpage2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Exclude','wp-topbar'); ?></span></label>
+					</p>
+					<td>
+						<p class="sub"><em><?php _e('Select if you want the TopBar to show on Pages.  Default is <code>Include</code>:<br><code>Include</code> will have the TopBar show on Pages<br><code>Exclude</code> will have the TopBar to not show up Pages.','wp-topbar'); ?></em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td><?php _e('Posts','wp-topbar'); ?>:</td>
+					<td>
+				 	<p id="radio5" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbshowposts1" name="wptbshowsingle" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['show_type_single'] == "yes") { echo 'checked="checked"'; }?>><label for="wptbshowposts1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Include','wp-topbar'); ?></span></label>
+						<input type="radio" id="wptbshowposts2" name="wptbshowsingle" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['show_type_single'] == "no") { echo 'checked="checked"'; }?>><label for="wptbshowposts2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Exclude','wp-topbar'); ?></span></label>
+					</p>
+					<td>
+						<p class="sub"><em><?php _e('Select if you want the TopBar to show on Posts.  Default is <code>Include</code>:<br><code>Include</code> will have the TopBar show on Posts<br><code>Exclude</code> will have the TopBar to not show up Posts.','wp-topbar'); ?></em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td><?php _e('Archives','wp-topbar'); ?>:</td>
+					<td>
+				 	<p id="radio7" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbshowarchives1" name="wptbshowarchives" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['show_type_archives'] == "yes") { echo 'checked="checked"'; }?>><label for="wptbshowarchives1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Include','wp-topbar'); ?></span></label>
+						<input type="radio" id="wptbshowarchives2" name="wptbshowarchives" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['show_type_archives'] == "no") { echo 'checked="checked"'; }?>><label for="wptbshowarchives2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Exclude','wp-topbar'); ?></span></label>
+					</p>
+					<td>
+						<p class="sub"><em><?php _e('Select if you want the TopBar to show on Archives.  Default is <code>Include</code>:<br><code>Include</code> will have the TopBar show on Archives<br><code>Exclude</code> will have the TopBar to not show up Archives.','wp-topbar'); ?></em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td><?php _e('Search Results','wp-topbar'); ?>:</td>
+					<td>
+				 	<p id="radio8" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbshowsearch1" name="wptbshowsearch" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['show_type_search'] == "yes") { echo 'checked="checked"'; }?>><label for="wptbshowsearch1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Include','wp-topbar'); ?></span></label>
+						<input type="radio" id="wptbshowsearch2" name="wptbshowsearch" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['show_type_search'] == "no") { echo 'checked="checked"'; }?>><label for="wptbshowsearch2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Exclude','wp-topbar'); ?></span></label>
+					</p>
+					<td>
+						<p class="sub"><em><?php _e('Select if you want the TopBar to show on search results.  Default is <code>Include</code>:<br><code>Include</code> will have the TopBar show on search results<br><code>Exclude</code> will have the TopBar to not show up search results page.','wp-topbar'); ?></em></p>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td><?php _e('404 Pages','wp-topbar'); ?>:</td>
+					<td>
+				 	<p id="radio9" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbshow4041" name="wptbshow404" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['show_type_404'] == "yes") { echo 'checked="checked"'; }?>><label for="wptbshow4041" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Include','wp-topbar'); ?></span></label>
+						<input type="radio" id="wptbshow4042" name="wptbshow404" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['show_type_404'] == "no") { echo 'checked="checked"'; }?>><label for="wptbshow4042" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Exclude','wp-topbar'); ?></span></label>
+					</p>
+					<td>
+						<p class="sub"><em><?php _e('Select if you want the TopBar to show on 404 page.  Default is <code>Include</code>:<br><code>Include</code> will have the TopBar show on 404 page<br><code>Exclude</code> will have the TopBar to not show up a 404 page.','wp-topbar'); ?></em></p>
+					</td>
 				</tr>
 				<tr>
 					<td colspan="3"><hr></td>
@@ -145,7 +196,7 @@ function wptb_control_options($wptbOptions) {
 				<tr valign="top">
 					<td><?php _e('Page ID Criteria','wp-topbar'); ?>:</td>
 					<td>
-				 	<p id="radio4" class="ui-button ui-button-wptbset">
+				 	<p id="radio10" class="ui-button ui-button-wptbset">
 						<input type="radio" id="wptbinvertinclude1" name="wptbinvertinclude" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['invert_include'] == "no") { echo 'checked="checked"'; }?>><label for="wptbinvertinclude1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Include','wp-topbar'); ?></span></label>
 						<input type="radio" id="wptbinvertinclude2" name="wptbinvertinclude" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['invert_include'] == "yes") { echo 'checked="checked"'; }?>><label for="wptbinvertinclude2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Exclude','wp-topbar'); ?></span></label>
 					</p>
@@ -169,7 +220,7 @@ function wptb_control_options($wptbOptions) {
 					<td><?php _e('Category ID Criteria','wp-topbar'); ?>:</label><p></td>
 					<td>
 					
-				 	<p id="radio5" class="ui-button ui-button-wptbset">
+				 	<p id="radio11" class="ui-button ui-button-wptbset">
 						<input type="radio" id="wptbinvertcategories1" name="wptbinvertcategories" class="ui-helper-hidden-accessible" value="no" <?php if ($wptbOptions['invert_categories'] == "no") { echo 'checked="checked"'; }?>><label for="wptbinvertcategories1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Include','wp-topbar'); ?></span></label>
 						<input type="radio" id="wptbinvertcategories2" name="wptbinvertcategories" class="ui-helper-hidden-accessible" value="yes" <?php if ($wptbOptions['invert_categories'] == "yes") { echo 'checked="checked"'; }?>><label for="wptbinvertcategories2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('Exclude','wp-topbar'); ?></span></label>
 					</p>					
@@ -185,7 +236,7 @@ function wptb_control_options($wptbOptions) {
 					<td><?php _e('Selection Criteria Logic','wp-topbar'); ?>:</label><p></td>
 					<td>
 						</br>
-					 	<p id="radio6" class="ui-button ui-button-wptbset">
+					 	<p id="radio12" class="ui-button ui-button-wptbset">
 						<input type="radio" id="wptbincludelogic1" name="wptbincludelogic" class="ui-helper-hidden-accessible" value="page_only" <?php if ($wptbOptions['include_logic'] == "page_only") { echo 'checked="checked"'; }?>><label for="wptbincludelogic1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('A','wp-topbar'); ?></span></label>
 						<input type="radio" id="wptbincludelogic2" name="wptbincludelogic" class="ui-helper-hidden-accessible" value="cat_only" <?php if ($wptbOptions['include_logic'] == "cat_only") { echo 'checked="checked"'; }?>><label for="wptbincludelogic2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('B','wp-topbar'); ?></span></label>
 						<input type="radio" id="wptbincludelogic3" name="wptbincludelogic" class="ui-helper-hidden-accessible" value="boolean_and" <?php if ($wptbOptions['include_logic'] == "boolean_and") { echo 'checked="checked"'; }?>><label for="wptbincludelogic3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('C','wp-topbar'); ?></span></label>
@@ -201,6 +252,28 @@ function wptb_control_options($wptbOptions) {
 						</p>
 					</td>
 				</tr>
+				<tr>
+					<td colspan="3"><hr></td>
+				</tr>
+				<tr valign="top">
+					<td><?php _e('Mobile Devices','wp-topbar'); ?>:</td>
+					<td>
+						<br>
+					 	<p id="radio2" class="ui-button ui-button-wptbset">
+						<input type="radio" id="wptbmobilecheck1" name="wptbmobilecheck" class="ui-helper-hidden-accessible" value="only_mobile" <?php if ($wptbOptions['mobile_check'] == "only_mobile") { echo 'checked="checked"'; }?>><label for="wptbmobilecheck1" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-left" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('A','wp-topbar'); ?></span></label>
+						<input type="radio" id="wptbmobilecheck2" name="wptbmobilecheck" class="ui-helper-hidden-accessible" value="not_mobile" <?php if ($wptbOptions['mobile_check'] == "not_mobile") { echo 'checked="checked"'; }?>><label for="wptbmobilecheck2" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('B','wp-topbar'); ?></span></label>
+						<input type="radio" id="wptbmobilecheck3" name="wptbmobilecheck" class="ui-helper-hidden-accessible" value="all_devices" <?php if ($wptbOptions['mobile_check'] == "all_devices") { echo 'checked="checked"'; }?>><label for="wptbmobilecheck3" class="ui-button ui-button-wptb ui-widget ui-state-default ui-button ui-button-wptb-text-only ui-corner-right" role="button" aria-disabled="false"><span class="ui-button ui-button-wptb-text"><?php _e('C','wp-topbar'); ?></span></label>
+					 	</p>						
+						
+					</td>
+					<td>
+						<p class="sub"><em><?php _e('Select how you want the TopBar to show for mobile users.  Default is to <code>Always</code> show the TopBar, regardless if they are logged in:','wp-topbar'); ?></em>
+						<br><?php _e('A','wp-topbar'); ?>. <?php _e('<strong>Mobile Devices</strong> shows the TopBar only for mobile devices.','wp-topbar'); ?>
+						<br><?php _e('B','wp-topbar'); ?>. <?php _e('<strong>non-Mobile Devices</strong> shows the TopBar only for other devices.','wp-topbar'); ?>
+						<br><?php _e('C','wp-topbar'); ?>. <?php _e('<strong>Always</strong> shows the TopBar for all devices.','wp-topbar'); ?>
+						</p>
+					</td>
+				</tr>					
 			</table>
 		</div>
 		<table>

@@ -36,9 +36,14 @@ function wptb_php_options($wptbOptions) {
 		'</br></br>How does this work?  The code entered in the fields below are evaluated (using the php <code>eval()</code> function).'.
 		'</br></br>The plugin works by generating each TopBar in a single <code>&lt;div&gt;....&lt;/div&gt;</code> container.'.
 		'</br>The "BEFORE" code you enter below is evaluated <strong>after</strong> the starting <code>&lt;div&gt;</code> tag.'.
-		'</br>While the "AFTER" code you enter below is evaluated <strong>before</strong> the closing <code>&lt;/div&gt;</code> tag.'.
-		'</br>'.
-		'</br>Enter any invalid PHP code, and you can BREAK your website.  Do not enter the code in PHP tags, i.e. <code>&lt;?php  echo "Hi!";  ?&gt;</code>.'.
+		'</br>While the "AFTER" code you enter below is evaluated <strong>before</strong> the closing <code>&lt;/div&gt;</code> tag'); ?>
+		
+		</br>
+		<p class="sub"><em><?php _e('The new "CONTROL" code is used to select which TopBars are selected to be shown. It gives you even more control on which TopBars are chosen to be displayed.  Follow the instructions below on how to use it.'); ?>
+	
+		</br>
+		
+		<p class="sub"><em><?php _e('Enter any invalid PHP code, and you can BREAK your website.  Do not enter the code in PHP tags, i.e. <code>&lt;?php  echo "Hi!";  ?&gt;</code>.'.
 		'</br>You just enter any valid PHP, for example: <code>echo "Hello World!";</code>.'.
 		'</br>Do you want to enter HTML instead of PHP?  Just exit and and reenter PHP mode though using the appropriate PHP tags, e.g. <code>echo "In PHP mode!"; ?&gt; <strong>enter HTML here</strong> &lt?php echo "Back in PHP mode!";</code>.'.
 		'</br></br><strong>Make sure to always end in PHP mode!</strong>'.
@@ -70,27 +75,6 @@ function wptb_php_options($wptbOptions) {
 					<h3><strong><?php _e('USE AT YOUR OWN RISK','wp-topbar'); ?></strong></h3>
 					</td>
 				</tr>	
-				<tr valign="top">
-					<td width="150"><?php _e('Enter any PHP to use BEFORE the TopBar is generated','wp-topbar'); ?>:</label></td>
-					<td>
-					<textarea name="wptbphptextprefix" id="phptextprefix" rows="10" cols="100"><?php echo wptb::wptb_stripslashes($wptbOptions['php_text_prefix']); ?></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-					<hr>
-					</td>
-				</tr>					<tr valign="top">
-					<td width="150"><?php _e('Enter any PHP to use AFTER the TopBar is generated','wp-topbar'); ?>:</label></td>
-					<td>
-					<textarea name="wptbphptextsuffix" id="phptextsuffix" rows="10" cols="100"><?php echo wptb::wptb_stripslashes($wptbOptions['php_text_suffix']); ?></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-					<hr>
-					</td>
-				</tr>	
 				<tr>
 					<td colspan="2">
 					<?php _e('Sample PHP code to use in the "BEFORE" code: Check if a user is logged in, if so then customize the TopBar text -- otherwise add a second topbar','wp-topbar'); ?>:
@@ -105,6 +89,59 @@ else echo 'Generate a second link with this code and get your own TopBar <a styl
 </textarea>
 					</td>
 				</tr>
+				<tr valign="top">
+					<td width="150" colspan="2"><strong><?php _e('Enter any PHP to use BEFORE the TopBar is generated','wp-topbar'); ?>:</strong></label></td>
+				</tr>
+				<tr valign="top" >
+					<td colspan="2">
+					<textarea name="wptbphptextprefix" id="phptextprefix" rows="10" cols="150"><?php echo wptb::wptb_stripslashes($wptbOptions['php_text_prefix']); ?></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					<hr>
+					</td>
+				</tr>					
+				<tr valign="top">
+					<td width="150" colspan="2"><strong><?php _e('Enter any PHP to use AFTER the TopBar is generated','wp-topbar'); ?>:</strong></label></td>
+				</tr>
+				<tr valign="top" >
+					<td colspan="2">
+					<textarea name="wptbphptextsuffix" id="phptextsuffix" rows="10" cols="150"><?php echo wptb::wptb_stripslashes($wptbOptions['php_text_suffix']); ?></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					<hr>
+					</td>
+				</tr>					
+				<tr valign="top">
+					<td width="150" colspan="2"><strong><?php _e('Enter any PHP function to Control if the the TopBar is selected to be shown. Have your function set <code>$wptbControlExit = true;</code> if you want the TopBar to not be selected.  This OVERRIDES every other control option available on the Control tab.','wp-topbar'); ?></strong></label></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					<?php _e('Sample PHP code to use for the "CONTROL" code: Use this to only display this TopBar only between 7PM an 10PM, use this code','wp-topbar'); ?>:
+					</br>
+					<textarea rows="7" cols="150" style="background:lightyellow">
+//$hour = date("H", current_time('timestamp', 1));     // use GMT time
+$hour = date("H", current_time('timestamp', 0));       // use local time
+					
+if  ( ( ($hour >= 19) && ($hour < 22) ) )
+	$wptbControlExit = false;
+else
+	$wptbControlExit = true;</textarea>
+					</td>
+				</tr>
+				<tr valign="top" >
+					<td colspan="2">
+					<textarea name="wptbphptextcontrol" id="phptextcontrol" rows="10" cols="150"><?php echo wptb::wptb_stripslashes($wptbOptions['php_text_control']); ?></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					<hr>
+					</td>
+				</tr>	
 			</table>
 		</div>
 		<table>

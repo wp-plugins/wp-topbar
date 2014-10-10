@@ -71,12 +71,12 @@ function wptb_register_pointer( $p ) {
    // ALIGN: How do we want out custom pointer to align to the element it is attached to. Options are 'left', 'right', 'center'
 
  
-    $p['523apointer1'] = array(
+    $p['525apointer1'] = array(
         'target' => '.wptb-table',
         'options' => array(
             'content' => sprintf( '<h3> %1$s </h3> <p> %2$s </p>',
-                __( 'New Feature in Version 5.23!' ,'wp-topbar'),
-                __( 'Version 5.23 adds a new option on the <strong>Main Options</strong> tab of each TopBar to force to the TopBar to stay fixed on the top of the page when it is scrolled.<br/><br/>For non-scrollable TopBars, it will push the page down and not overlay the top of your webpage.<br/><br/>The Opton is named <code>Force TopBar to Be Fixed On Top of Page</code>','wp-topbar')
+                __( 'New Features in Version 5.25!' ,'wp-topbar'),
+                __( 'Version 5.25 adds more options to control which TopBars are shown.<br/><br/>You can now have the TopBar excluded from sticky posts, pages, archives, and more - found on the Control Tab for each TopBar.<br/><br/>There is also a new PHP option to give you more granular control around which TopBars are selected to show — of course, use at your own risk - found on the PHP Tab for each TopBar','wp-topbar')
             ),
             'position' => array( 'edge' => 'top', 'align' => 'left' )
         )

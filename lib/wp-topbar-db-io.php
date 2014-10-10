@@ -187,8 +187,9 @@ function wptb_create_table() {
 		show_homepage VARCHAR(20),
 		only_logged_in VARCHAR(20),
 		mobile_check VARCHAR(20),
-		php_text_prefix TEXT,
-		php_text_suffix TEXT,
+		php_text_prefix  TEXT,
+		php_text_suffix  TEXT,
+		php_text_control TEXT,
 		delay_time INT,
 		slide_time INT,  
 		display_time INT,
@@ -235,6 +236,12 @@ function wptb_create_table() {
 		div_custom_html TEXT,
 		bar_custom_html TEXT,
 		bar_link_custom_html TEXT,
+		show_type_sticky   VARCHAR(20),
+		show_type_pages    VARCHAR(20), 
+		show_type_archives VARCHAR(20),
+		show_type_search   VARCHAR(20),
+		show_type_404      VARCHAR(20), 
+		show_type_single   VARCHAR(20),
 		social_icon1 VARCHAR(20),
 		social_icon2 VARCHAR(20),
 		social_icon3 VARCHAR(20),
@@ -328,8 +335,9 @@ function wptb_set_default_settings($WPTB_DB_VERSION) {
 		'show_homepage' => 'conditionally',
 		'only_logged_in' => 'all',
 		'mobile_check' => 'all_devices',
-		'php_text_prefix' => '',
-		'php_text_suffix' => '',
+		'php_text_prefix'  => '',
+		'php_text_suffix'  => '',
+		'php_text_control' => '',
 		'delay_time' => '5000',
 		'slide_time' => '200',
 		'display_time' => '0',
@@ -376,6 +384,12 @@ function wptb_set_default_settings($WPTB_DB_VERSION) {
 		'bar_custom_html' => '',
 		'bar_link_custom_html' => '',
 		'div_custom_html' => '',
+		'show_type_sticky'   => 'yes',
+		'show_type_pages'    => 'yes',
+		'show_type_archives' => 'yes',
+		'show_type_search'   => 'yes',
+		'show_type_404'      => 'yes',
+		'show_type_single'   => 'yes',
 		'social_icon1'  => 'off',
 		'social_icon2'  => 'off', 
 		'social_icon3'  => 'off',
@@ -505,8 +519,9 @@ function wptb_insert_row($wptbOptions) {
 		'show_homepage' => $wptbOptions[ 'show_homepage' ],
 		'only_logged_in' => $wptbOptions[ 'only_logged_in' ],
 		'mobile_check' => $wptbOptions[ 'mobile_check' ],
-		'php_text_prefix' => $wptbOptions[ 'php_text_prefix' ],
-		'php_text_suffix' => $wptbOptions[ 'php_text_suffix' ],
+		'php_text_prefix'  => $wptbOptions[ 'php_text_prefix' ],
+		'php_text_suffix'  => $wptbOptions[ 'php_text_suffix' ],
+		'php_text_control' => $wptbOptions[ 'php_text_control' ],
 		'delay_time' => $wptbOptions[ 'delay_time' ],
 		'slide_time' => $wptbOptions[ 'slide_time' ],
 		'display_time' => $wptbOptions[ 'display_time' ],
@@ -553,6 +568,12 @@ function wptb_insert_row($wptbOptions) {
 		'bar_custom_html' => $wptbOptions [ 'bar_custom_html' ],
 		'bar_link_custom_html' => $wptbOptions [ 'bar_link_custom_html' ],
 		'div_custom_html' => $wptbOptions [ 'div_custom_html' ],
+		'show_type_sticky'   => $wptbOptions['show_type_sticky'],
+		'show_type_pages'    => $wptbOptions['show_type_pages'],
+		'show_type_archives' => $wptbOptions['show_type_archives'],
+		'show_type_search'   => $wptbOptions['show_type_search'],
+		'show_type_404'      => $wptbOptions['show_type_404'],
+		'show_type_single'   => $wptbOptions['show_type_single'],
 		'social_icon1' => $wptbOptions[ 'social_icon1' ],
 		'social_icon2' => $wptbOptions[ 'social_icon2' ], 
 		'social_icon3' => $wptbOptions[ 'social_icon3' ],
@@ -655,8 +676,9 @@ function wptb_update_row($wptbOptions) {
 		'show_homepage' => $wptbOptions[ 'show_homepage' ],
 		'only_logged_in' => $wptbOptions[ 'only_logged_in' ],
 		'mobile_check' => $wptbOptions[ 'mobile_check' ],
-		'php_text_prefix' => $wptbOptions[ 'php_text_prefix' ],
-		'php_text_suffix' => $wptbOptions[ 'php_text_suffix' ],
+		'php_text_prefix'  => $wptbOptions[ 'php_text_prefix' ],
+		'php_text_suffix'  => $wptbOptions[ 'php_text_suffix' ],
+		'php_text_control' => $wptbOptions[ 'php_text_control' ],
 		'delay_time' => $wptbOptions[ 'delay_time' ],
 		'slide_time' => $wptbOptions[ 'slide_time' ],
 		'display_time' => $wptbOptions[ 'display_time' ],
@@ -703,6 +725,12 @@ function wptb_update_row($wptbOptions) {
 		'bar_custom_html' =>      preg_replace("/\n|\r/", " ",trim($wptbOptions [ 'bar_custom_html' ])),
 		'bar_link_custom_html' => preg_replace("/\n|\r/", " ",trim($wptbOptions [ 'bar_link_custom_html' ])),
 		'div_custom_html' =>      preg_replace("/\n|\r/", " ",trim($wptbOptions [ 'div_custom_html' ])),
+		'show_type_sticky'   => $wptbOptions['show_type_sticky'],
+		'show_type_pages'    => $wptbOptions['show_type_pages'],
+		'show_type_archives' => $wptbOptions['show_type_archives'],
+		'show_type_search'   => $wptbOptions['show_type_search'],
+		'show_type_404'      => $wptbOptions['show_type_404'],
+		'show_type_single'   => $wptbOptions['show_type_single'],
 		'social_icon1' => $wptbOptions[ 'social_icon1' ],
 		'social_icon2' => $wptbOptions[ 'social_icon2' ], 
 		'social_icon3' => $wptbOptions[ 'social_icon3' ],
@@ -1008,6 +1036,9 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbphptextsuffix'])) {
 		$wptbOptions['php_text_suffix'] = $_POST['wptbphptextsuffix'];
 	}	
+	if (isset($_POST['wptbphptextcontrol'])) {
+		$wptbOptions['php_text_control'] = $_POST['wptbphptextcontrol'];
+	}	
 	if (isset($_POST['wptbbottomborderheight'])) {
 	
 		if (!is_numeric($_POST['wptbbottomborderheight'])) {
@@ -1214,6 +1245,24 @@ function wptb_update_TopBarSettings($wptb_barid) {
 	if (isset($_POST['wptbscrollaction'])) {
 		$wptbOptions['scroll_action'] = $_POST['wptbscrollaction'];
 	}
+	if (isset($_POST['wptbshowsticky'])) {
+		$wptbOptions['show_type_sticky'] = $_POST['wptbshowsticky'];
+	}
+	if (isset($_POST['wptbshowpages'])) {
+		$wptbOptions['show_type_pages'] = $_POST['wptbshowpages'];
+	}
+	if (isset($_POST['wptbshowarchives'])) {
+		$wptbOptions['show_type_archives'] = $_POST['wptbshowarchives'];
+	}
+	if (isset($_POST['wptbshowsearch'])) {
+		$wptbOptions['show_type_search'] = $_POST['wptbshowsearch'];
+	}
+	if (isset($_POST['wptbshow404'])) {
+		$wptbOptions['show_type_404'] = $_POST['wptbshow404'];
+	}
+	if (isset($_POST['wptbshowsingle'])) {
+		$wptbOptions['show_type_single'] = $_POST['wptbshowsingle'];
+	}
 		
 	// need to check the make sure we are the right tab to correctly handle the toggle buttons on the Social Buttons Tab
 	
@@ -1308,6 +1357,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 // 5.05 - added mobile_check field
 // 5.06 - added margin_left, margin_right fields
 // 5.07 - added forced_fixed
+// 5.08 - added php_text_control & show_type_sticky, posts, archive, pages, 404, search
 //=========================================================================			
 	
 function wptb_check_for_plugin_upgrade($wptb_display_errors, $WPTB_DB_VERSION) { 
@@ -1405,7 +1455,7 @@ function wptb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERS
 	
 	if ( $wptb_verson_in_db[0] != $WPTB_DB_VERSION ) {
 		$wptb_do_update=true;
-		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Version Upgrade Needed</code>';
+		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Version Upgrade Needed to '.$WPTB_DB_VERSION.'</code>';
 		$myrows = $wpdb->get_results( 'SELECT * FROM '.$wptb_table_name, ARRAY_A);
 		if ( $wpdb->num_rows == 0 )
 			$wptbOptions=wptb_insert_default_row($WPTB_DB_VERSION);

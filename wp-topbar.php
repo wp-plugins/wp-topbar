@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.24
+Version: 5.25
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 Text Domain: wp-topbar
@@ -27,8 +27,8 @@ Text Domain: wp-topbar
 */
 
 
-$WPTB_VERSION = "5.24";
-$WPTB_DB_VERSION = "5.07";  // rev this only when the database structure changes -- also update below in TWO places!
+$WPTB_VERSION = "5.25";
+$WPTB_DB_VERSION = "5.08";  // rev this only when the database structure changes -- also update below in TWO places!
 
 if( ! class_exists( 'wptb' ) ):
 class wptb {
@@ -300,7 +300,7 @@ class wptb {
 	public static function wptb_activate_plugin() { 
 	
 			
-		$WPTB_DB_VERSION = "5.07";										// for some reason, this global variable is not beting set during activation.
+		$WPTB_DB_VERSION = "5.08";										// for some reason, this global variable is not beting set during activation.
 		require_once( dirname(__FILE__).'/lib/wp-topbar-db-io.php');	//database and I-O functions php
 		wptb_check_for_plugin_upgrade(false, $WPTB_DB_VERSION);			// do not echo out parameters if debugging
 		
@@ -390,7 +390,7 @@ class wptb {
 		
 	public static function wptb_activate_TopBar_html_js() {
 
-		$WPTB_DB_VERSION = "5.07";									// for some reason, this global variable is not beting set during activation.
+		$WPTB_DB_VERSION = "5.08";									// for some reason, this global variable is not beting set during activation.
 
 		// check for options using the old method, if used - honor it. Otherwise get a TopBar from the database	
 		$wptbOptions = get_option('wptbAdminOptions');
@@ -451,14 +451,32 @@ class wptb {
 				$thePostID = $wp_query->post->ID;
 		}
 		
-		if (   is_home() && ( $wptbOptions['show_homepage'] == "never" ) ) { return false; }			
-		if ( ! is_home() && ( $wptbOptions['show_homepage'] == "only"  ) ) { return false; }		
-	
+		
+		if ( isset($wptbOptions['php_text_control']) &&  $wptbOptions['php_text_control'] != "" ) {
+			$wptbControlExit = false;
+			eval( wptb::wptb_stripslashes($wptbOptions['php_text_control'] ) );
+			echo $wptbControlExit;
+			if ( $wptbControlExit === true ) return false;
+		}			
 
+		
+		
+		if (   is_home() && ( $wptbOptions['show_homepage'] == "never" ) ) { return false; } // never on home page
+		if ( ! is_home() && ( $wptbOptions['show_homepage'] == "only"  ) ) { return false; } // only on home page
+		
 		if ( ! ( is_home() && ( $wptbOptions['show_homepage'] == "always" ) ) ) {	
 
 			if (    is_user_logged_in()   && ( $wptbOptions['only_logged_in'] == "no"  )) { return false; } 
 			if ( ( !is_user_logged_in() ) && ( $wptbOptions['only_logged_in'] == "yes" )) { return false; } 
+
+			if ( isset($wptbOptions['show_type_sticky']) ) { //assume if show_type_sticky is set, all show_types are set
+				if ( is_sticky()  && ( $wptbOptions['show_type_sticky']   == "no" ) ) { return false; } // sticky pages
+				if ( is_page()    && ( $wptbOptions['show_type_pages']    == "no" ) ) { return false; } // pages
+				if ( is_single()  && ( $wptbOptions['show_type_single']   == "no" ) )  { return false; } // posts
+				if ( is_archive() && ( $wptbOptions['show_type_archives'] == "no" ) ) { return false; } // archives
+				if ( is_search()  && ( $wptbOptions['show_type_search']   == "no" ) ) { return false; } // search page
+				if ( is_404()     && ( $wptbOptions['show_type_404']      == "no" ) ) { return false; } // 404 page
+			}
 
 			if ( $wptbOptions['include_pages'] == 0 )
 				$page_id_found = true;
