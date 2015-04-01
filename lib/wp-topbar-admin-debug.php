@@ -53,7 +53,6 @@ function wptb_display_debug_info($wptb_title,$wptb_show_rotate) {
 
 
 	global $wpdb;
-	global $current_blog;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 	$wptb_options_table_name = $wpdb->prefix . "options";
 
@@ -66,7 +65,7 @@ function wptb_display_debug_info($wptb_title,$wptb_show_rotate) {
 	}
 	else {
 		$wptb_table_exists = true;
-		$wptb_rows = $wpdb->get_results( 'SELECT * FROM '.$wptb_table_name, ARRAY_A);
+		$wptb_rows = $wpdb->get_results( 'SELECT * FROM `'.$wptb_table_name.'`', ARRAY_A);
 		$wptb_num_of_rows=$wpdb->num_rows; 
 	}
 
@@ -85,7 +84,32 @@ function wptb_display_debug_info($wptb_title,$wptb_show_rotate) {
 	echo '<h3><a name="Debug">'.$wptb_title."</a></h3>";
 	echo '<div class="inside">';
 	echo "<ul>";
+
+
+	echo "<li><strong>".__('Server Check','wp-topbar').':</strong></br>';				
+   	echo 'Server Type: <strong>' . esc_html( $_SERVER['SERVER_SOFTWARE'] ) . '</strong><br>';
+	echo 'Operating System: <strong>' . PHP_OS . '</strong><br>';  
+	echo 'PHP Version: <strong>' . PHP_VERSION . '</strong><br>';  	
+	if (ini_get('allow_url_fopen') == 1)
+    	echo __('fopen setting is ').'<strong>'.__('ON').'</strong><br>';
+	else 
+	    echo __('fopen setting is').'<strong>'.__('OFF').'</strong><br>';
+	if  ( get_magic_quotes_gpc() ) 
+   		echo "PHP Magic Quotes is <strong>ON</strong><br>";
+   	else
+   		echo "PHP Magic Quotes is <strong>OFF</strong><br>";  			
+	echo "</li>";		
+	echo "</br>";
+	
+	echo "<li><strong>".'Wordpress Check'.":</strong></br>";	
+	echo "Wordpress Version: <strong>".get_bloginfo( 'version' )."</strong></br>";
+	echo "URL: <strong>".home_url()."</strong></br>";
+	echo "Charset: <strong>".get_bloginfo( 'charset' )."</strong></br>";
+	echo "</li>";		
+	echo "</br>";
+
 	echo "<li><strong>".__('Database/Column Check','wp-topbar').":</strong></br>";
+	echo 'MySQL Database Server Version: <strong>'.$wpdb->get_var( $wpdb->prepare( "SELECT VERSION() AS %s", 'version' ) ).'</strong><br>';
 	echo "Charset <small><i>(DB_CHARSET)</i></small>: <strong>".DB_CHARSET."</strong></br>";
 	echo "Collation <small><i>(DB_COLLATE)</i></small>: <strong>".DB_COLLATE."</strong></br>";
 	echo "Collation encoding: <strong>".$wptb_table_encoding[1]."</strong></br>";
@@ -94,6 +118,8 @@ function wptb_display_debug_info($wptb_title,$wptb_show_rotate) {
 	echo "</br>";
 		
 	echo "<li><strong>".__('Table Check','wp-topbar').":</strong></br>";
+	echo '$wpdb->base_prefix: <strong>'.$wpdb->base_prefix."</strong></br>";
+	echo '$wpdb->prefix: <strong>'.$wpdb->prefix."</strong></br>";
 	echo "Table Name: <strong>".$wptb_table_name."</strong></br>";
 	if ( $wptb_table_exists )
 		echo "Number of rows in databse: <strong>".$wptb_num_of_rows."</strong></br>";
@@ -118,14 +144,14 @@ function wptb_display_debug_info($wptb_title,$wptb_show_rotate) {
 		echo "Plugin is <strong>not</strong> using the DB Options (wptb_db_version) </br>";
 
 	if  ( get_option( "wptb_global_options") )
-		echo "Plugin is <strong>using</strong> the new Global Options (wptb_global_options) </br>";
+		echo "Plugin is <strong>using</strong> the Global Options (wptb_global_options) </br>";
 	else
-		echo "Plugin is <strong>not</strong> using the new Global Options (wptb_global_options) </br>";
+		echo "Plugin is <strong>not</strong> using the Global Options (wptb_global_options) </br>";
 		 
 	if ( get_site_option( 'wptb_network_global_options' ) )
-		echo "Plugin is <strong>using</strong> the new <strong>Network</strong> Global Options (wptb_network_global_options) </br>";
+		echo "Plugin is <strong>using</strong> the <strong>Network</strong> Global Options (wptb_network_global_options) </br>";
 	else
-		echo "Plugin is <strong>not</strong> using the new <strong>Network</strong> Options (wptb_network_global_options) </br>";
+		echo "Plugin is <strong>not</strong> using the <strong>Network</strong> Options (wptb_network_global_options) </br>";
 	
 	echo "</br>";
 	echo "</li>";
@@ -145,18 +171,6 @@ function wptb_display_debug_info($wptb_title,$wptb_show_rotate) {
 		echo "</li>";
 	}
 	
-	echo "<li><strong>".__('Server Check','wp-topbar').':</strong></br>';				
-	if (ini_get('allow_url_fopen') == 1)
-    	echo __('fopen setting is ').'<strong>'.__('ON').'</strong><br>';
-	else 
-	    echo __('fopen setting is').'<strong>'.__('OFF').'</strong><br>';
-	if  ( get_magic_quotes_gpc() ) 
-   		echo "PHP Magic Quotes is <strong>ON</strong><br>";
-   	else
-   		echo "PHP Magic Quotes is <strong>OFF</strong><br>";  			
-	echo "</br>";
-	echo "</li>";
-	
 	echo "<li><strong>".__('Time Check','wp-topbar').":</strong></br>";
 	
 	$wptb_current_time_local  =current_time('timestamp', 0);
@@ -171,11 +185,31 @@ function wptb_display_debug_info($wptb_title,$wptb_show_rotate) {
 	echo "<li><strong>".__('Multisite Check','wp-topbar').":</strong></br>";
 	if ( is_multisite() ) {
 		echo "Multisite: <strong>Yes</strong><br>"; 
-		echo "Blog ID:".$current_blog->blog_id."</br>";
+		
+		if ( defined( "SUBDOMAIN_INSTALL" ) && SUBDOMAIN_INSTALL )
+			echo "wp-config.php - SUBDOMAIN_INSTALL: <strong>True</strong><br>"; 
+		else
+			echo "wp-config.php - SUBDOMAIN_INSTALL: <strong>False</strong><br>"; 
+
+		if ( defined( "DOMAIN_CURRENT_SITE" ) )
+			echo "wp-config.php - DOMAIN_CURRENT_SITE: <strong>".DOMAIN_CURRENT_SITE."</strong><br>";
+			
+		if ( defined( "PATH_CURRENT_SITE" ) )
+			echo "wp-config.php - PATH_CURRENT_SITE: <strong>".PATH_CURRENT_SITE."</strong><br>";
+			
+		if ( defined( "SITE_ID_CURRENT_SITE" ) )
+			echo "wp-config.php - SITE_ID_CURRENT_SITE: <strong>".SITE_ID_CURRENT_SITE."</strong><br>";
+			
+		if ( defined( "BLOG_ID_CURRENT_SITE" ) )
+			echo "wp-config.php - BLOG_ID_CURRENT_SITE: <strong>".BLOG_ID_CURRENT_SITE."</strong><br>";		
+			
+		echo '$wpdb->blogid: <strong>'.$wpdb->blogid."</strong></br>";
+		echo '$wpdb->siteid: <strong>'.$wpdb->siteid."</strong></br>";
 		$wptbGSNetworkGlobalOptions=get_site_option( 'wptb_network_global_options' );
-		if ( isset($wptbGSNetworkGlobalOptions [ 'multisite_super_admin_only' ] )) {
-			echo "Super Admin Only:<strong>".$wptbGSNetworkGlobalOptions [ 'multisite_super_admin_only' ]."</strong></br>";
-		}	
+		if ( isset($wptbGSNetworkGlobalOptions [ 'multisite_super_admin_only' ] )) 
+			echo "Super Admin Only: <strong>".$wptbGSNetworkGlobalOptions [ 'multisite_super_admin_only' ]."</strong></br>";
+		else
+			echo "Super Admin Only: <strong>[Option is not set]</strong></br>";			
 		
 		if ( current_user_can( 'manage_network_plugins' )  )  
 			echo "Current user can <code>manage_network_plugins</code>: <strong>Yes</strong><br>"; 

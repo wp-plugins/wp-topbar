@@ -142,7 +142,7 @@ function wptb_options_page() {
         $current_page = $_GET['paged'];
 		global $wpdb;
 		$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
-		$query = "SELECT * FROM ".$wptb_table_name;
+		$query = "SELECT * FROM `".$wptb_table_name."`";
 		$wpdb->get_results($query, ARRAY_A);   
 		$max_pages = intval( ( $wpdb->num_rows ) / 10) + 1;
 		if ($current_page > $max_pages) $current_page = $max_pages;

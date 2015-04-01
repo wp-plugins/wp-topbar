@@ -25,7 +25,7 @@ function wptb_get_Random_TopBar() {
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
 
-	$sql="SELECT * FROM ".$wptb_table_name." 
+	$sql="SELECT * FROM `".$wptb_table_name."` 
 			WHERE  `enable_topbar` =  'true'
 				AND COALESCE(TIMESTAMPDIFF( MINUTE, 	COALESCE(STR_TO_DATE(  '".current_time('mysql', 0)."',  '%Y-%m-%d %H:%i' ), 0), 
 											COALESCE(STR_TO_DATE( `start_time_utc`,  '%m/%d/%Y %H:%i'     ), 0)),0) <= 0 
@@ -1402,6 +1402,8 @@ function wptb_check_for_plugin_upgrade($wptb_display_errors, $WPTB_DB_VERSION) {
 				if( ! isset($installed_ver) || $installed_ver != $WPTB_DB_VERSION ) {
 					if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Upgrading DB to '.$WPTB_DB_VERSION.'</code>';
 					wptb_create_table();
+					update_option( 'wptb_db_version', $WPTB_DB_VERSION );	// ADDED this line of code for multisite issue
+
 				}
 			}
 	}

@@ -3,8 +3,8 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
-Tested up to: 4.1
-Stable tag: 5.25
+Tested up to: 4.1.1
+Stable tag: 5.26
 
 Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler! 
 
@@ -207,9 +207,9 @@ Go to the Uninstall tab (or if are on a Multi Site install, you first need to lo
 
 == Upgrade Notice ==
 
-= 5.23 = 
+= 5.26 = 
 
-Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed on the top of the page when it is scrolled.   
+Various fixes for multisite installations.   
 
 == Screenshots ==
 
@@ -221,6 +221,12 @@ Various fixes for 3.9 and adds a new option to force to the TopBar to stay fixed
 
 
 == Changelog ==
+
+= 5.26 - 3/31/2015 =
+
+1. FIXED: Made some changes to better account for multisite installations (thanks AWOL!)
+2. ADDED: Added more detail on the debug pages to show more information about multisite installations
+
 
 = 5.25 - 10/03/2014 =
 

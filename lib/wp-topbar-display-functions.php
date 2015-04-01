@@ -514,7 +514,7 @@ function wptb_display_all_TopBars() {
 
 
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
-	$wptb_rows = $wpdb->get_results( 'SELECT * FROM '.$wptb_table_name);
+	$wptb_rows = $wpdb->get_results( 'SELECT * FROM `'.$wptb_table_name.'`');
 	$wptb_num_rows = $wpdb->num_rows;
 	if ( $wptb_num_rows == 0 ){
 		$wptbOptions=wptb_insert_default_row($WPTB_DB_VERSION);
