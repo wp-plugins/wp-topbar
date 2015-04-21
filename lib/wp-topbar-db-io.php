@@ -92,7 +92,7 @@ function wptb_get_Specific_TopBar($wptb_barid) {
 		if($wptb_debug)
 			echo '<br><code>WP-TopBar Debug Mode: Table '.$wptb_table_name.' does not exist - creating it</code>';
 
-		wptb_create_table();				
+		wptb_create_table($WPTB_DB_VERSION);				
 		$wptbOptions=wptb_insert_default_row($WPTB_DB_VERSION);
 	}
 	else {
@@ -159,7 +159,7 @@ function wptb_check_time($wptb_barid) {
 // Creates Table
 //=========================================================================			
 	
-function wptb_create_table() { 
+function wptb_create_table($WPTB_DB_VERSION) { 
 
 	$wptb_debug=get_transient( 'wptb_debug' );	
 	
@@ -171,8 +171,8 @@ function wptb_create_table() {
 	global $wpdb;
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";	
 
-//	if($wptb_debug)
-//		echo '<br><code>WP-TopBar Debug Mode: Creating Table:'.$wptb_table_name.'</code>';
+	if($wptb_debug)
+		echo '<br><code>WP-TopBar Debug Mode: Creating Table:'.$wptb_table_name.' at DB Version'.$WPTB_DB_VERSION.'</code>';
 		
 	$sql = "CREATE TABLE ". $wptb_table_name. " ( 
 		bar_id BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -306,6 +306,9 @@ function wptb_create_table() {
 		) ;";
 	
 	dbDelta($sql);	
+	
+	update_option( 'wptb_db_version', $WPTB_DB_VERSION );
+
 
 
 }	// End of wptb_create_table
@@ -1379,8 +1382,7 @@ function wptb_check_for_plugin_upgrade($wptb_display_errors, $WPTB_DB_VERSION) {
 	// if options are set, then convert to using a database else check to see if database is in use
 	if ( isset( $wptbOptions['enable_topbar'] ) ) {
 		if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Found wptbAdminOptions - Converting to Table</code>';
-		wptb_create_table();			
-		
+		wptb_create_table($WPTB_DB_VERSION);			
 		if (! isset($wptbOptions['enable_image']) )
 			$wptbOptions['enable_image'] = "false";    // default row has this turned on, so turn off since older version may not have this field
 								
@@ -1391,7 +1393,7 @@ function wptb_check_for_plugin_upgrade($wptb_display_errors, $WPTB_DB_VERSION) {
 			if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: No wptbAdminOptions - Looking for Table:'.$wptb_table_name.'</code>';
 			if( $wpdb->get_var("show tables like '".$wptb_table_name."'") != $wptb_table_name ) {
 				if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: No Table - Creating and adding default row.</code>';
-				wptb_create_table();				
+				wptb_create_table($WPTB_DB_VERSION);				
 				wptb_insert_default_row($WPTB_DB_VERSION);
 			}
 			else {
@@ -1401,9 +1403,7 @@ function wptb_check_for_plugin_upgrade($wptb_display_errors, $WPTB_DB_VERSION) {
 				if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Installed DB: '.$installed_ver.'</code>';
 				if( ! isset($installed_ver) || $installed_ver != $WPTB_DB_VERSION ) {
 					if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: Upgrading DB to '.$WPTB_DB_VERSION.'</code>';
-					wptb_create_table();
-					update_option( 'wptb_db_version', $WPTB_DB_VERSION );	// ADDED this line of code for multisite issue
-
+					wptb_create_table($WPTB_DB_VERSION);
 				}
 			}
 	}
@@ -1449,8 +1449,6 @@ function wptb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERS
 	"
 	); 
 
-//	wptb_create_table();
-
 	if($wptb_debug) echo '<br><code>WP-TopBar Debug Mode: MIN DB Version in Table: ',$wptb_verson_in_db[0],'</code>';
 	
 	$wptb_do_update=false;
@@ -1485,9 +1483,7 @@ function wptb_check_table_for_default_values($wptb_display_errors, $WPTB_DB_VERS
 		}
 
 	}
-	
 		
-	
 	$wpdb->show_errors();
 	
 	if ($wptb_do_update) {
