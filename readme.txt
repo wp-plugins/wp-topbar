@@ -4,13 +4,15 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
 Tested up to: 4.2
-Stable tag: 5.27
+Stable tag: 5.28
 
 Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler! 
 
 == Description ==
 
 What is a TopBar?  It is a special message/image that you can show at the top (or bottom) of your website.  WP-TopBar allows you to create an **unlimited** number of TopBars.   They are cacheable and randomly selected based on the criteria you select, including start time, stop time and more.  You can provide a weighting to skew selected TopBars to show up more often.  It is super-duper customizable, even easy to add your own PHP and CSS. 
+
+Version 5.28 refactored how the TopBar handles cookies to be more compatible with caching plugins.
 
 Version 5.25 adds more options to control which TopBars are shown. You can now have the TopBar excluded from sticky posts, pages, archives, and more.  There is also a new PHP option to give you more granular control around which TopBars are selected to show — of course, use at your own risk.
 
@@ -151,9 +153,9 @@ The default is to check by PageId.
 
 If you allow the user to close the TopBar, then the plugin checks to see if you have enabled cookies.   If they are not enabled, it deletes any existing cookies.   If they are enabled, it looks to see if a cookie has been created.  A cookie is only created if the TopBar has been previously closed by the user.  If it finds a cookie, it prevents the TopBar from showing.
 
-If you change the Cookie Value to something new, the TopBar will show up again.  This is useful if you want to force the TopBar to show on new content.  Make sure to select something you haven't used before.  A good idea is to increment the value by one every time you want to force the TopBar to show.
+If you change the Cookie Value to something new, the TopBar will show up again.  This is useful if you want to force the TopBar to show on new content.  Make sure to select something you haven't used before.  A good idea is to increment the value by one every time you want to force the TopBar to show.  If you use a caching plugin, make sure to clear the cache after you change the value.
 
-With Version 4.00+, all TopBars must share the same cookie settings for this to work. You can set the TopBars to be the same by using the new Close Button tab on the main page
+With Version 4.28+, all TopBars can have their out cookie value.  You can also set the TopBars to be the same by using the Close Button tab on the main page
 
 = How does the Priority field work? =
 
@@ -207,9 +209,9 @@ Go to the Uninstall tab (or if are on a Multi Site install, you first need to lo
 
 == Upgrade Notice ==
 
-= 5.27 = 
+= 5.28 = 
 
-Various fixes for internal updates.   
+Refactored how the TopBar handles cookies to be more compatible with Caching plugins.   
 
 == Screenshots ==
 
@@ -221,6 +223,12 @@ Various fixes for internal updates.
 
 
 == Changelog ==
+
+= 5.28 - 6/13/2015 =
+
+1. CHANGED: Refactored how the plugin handles cookies to be more compatible with Caching plugin (thanks to Eric W.) 
+2. CHANGED: How cookies are created to account for differences between Chrome and Safari
+3. UPDATED: timepicker.js updated to version 1.5.3 - http://trentrichardson.com/examples/timepicker/
 
 = 5.27 - 4/20/2015 =
 

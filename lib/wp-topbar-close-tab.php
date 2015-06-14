@@ -156,7 +156,7 @@ function wptb_closebutton_bulk_options() {
 					<td>
 						<input type="text" name="wptbcookievalue" id="cookievalue" size="10" value="<?php echo wptb::wptb_stripslashes($cookie_value); ?>" >
 					</br>
-					<p class="sub"><em><?php _e('Change this value to force the cookie to reshow.  Default is <code>1</code>','wp-topbar'); ?></em></p>
+					<p class="sub"><em><?php _e('Change this value to force the cookie to reshow - if you are using a Caching Plugin, you might need to flush your Cache.  Default is <code>1</code>','wp-topbar'); ?></em></p>
 					</td>
 				</tr>				
 				<tr>
@@ -322,7 +322,7 @@ function wptb_closebutton_options($wptbOptions) {
 						}
 					?>
 					</br>
-					<p class="sub"><em><?php _e('Change this value to force the cookie to reshow.  Default is <code>1</code>','wp-topbar'); ?></em></p>
+					<p class="sub"><em><?php _e('Change this value to force the cookie to reshow - if you are using a Caching Plugin, you might need to flush your Cache.  Default is <code>1</code>','wp-topbar'); ?></em></p>
 					<p class="sub"><em><?php _e('See the:','wp-topbar'); ?><a href='?page=wp-topbar.php&action=faq&barid=<?php echo ($wptb_barid_prefix+$wptbOptions['bar_id']); ?>'><?php _e('FAQ','wp-topbar'); ?></a>.</em></p>
 					</td>
 				</tr>				
