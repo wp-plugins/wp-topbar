@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.28
+Version: 5.29
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 Text Domain: wp-topbar
@@ -27,8 +27,8 @@ Text Domain: wp-topbar
 */
 
 
-$WPTB_VERSION = "5.28";
-$WPTB_DB_VERSION = "5.08";  // rev this only when the database structure changes -- also update below in TWO places!
+$WPTB_VERSION = "5.29";
+$WPTB_DB_VERSION = "5.09";  // rev this only when the database structure changes -- also update below in TWO places!
 
 if( ! class_exists( 'wptb' ) ):
 class wptb {
@@ -300,7 +300,7 @@ class wptb {
 	public static function wptb_activate_plugin() { 
 	
 			
-		$WPTB_DB_VERSION = "5.08";										// for some reason, this global variable is not beting set during activation.
+		$WPTB_DB_VERSION = "5.09";										// for some reason, this global variable is not beting set during activation.
 		require_once( dirname(__FILE__).'/lib/wp-topbar-db-io.php');	//database and I-O functions php
 		wptb_check_for_plugin_upgrade(false, $WPTB_DB_VERSION);			// do not echo out parameters if debugging
 		
@@ -390,7 +390,7 @@ class wptb {
 		
 	public static function wptb_activate_TopBar_html_js() {
 
-		$WPTB_DB_VERSION = "5.08";									// for some reason, this global variable is not beting set during activation.
+		$WPTB_DB_VERSION = "5.09";									// for some reason, this global variable is not beting set during activation.
 
 		// check for options using the old method, if used - honor it. Otherwise get a TopBar from the database	
 		$wptbOptions = get_option('wptbAdminOptions');

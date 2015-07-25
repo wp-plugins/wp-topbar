@@ -1361,6 +1361,7 @@ function wptb_update_TopBarSettings($wptb_barid) {
 // 5.06 - added margin_left, margin_right fields
 // 5.07 - added forced_fixed
 // 5.08 - added php_text_control & show_type_sticky, posts, archive, pages, 404, search
+// 5.09 - no change, just force an update to overcome an issue with WordPress 4.2.3
 //=========================================================================			
 	
 function wptb_check_for_plugin_upgrade($wptb_display_errors, $WPTB_DB_VERSION) { 

@@ -3,8 +3,8 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
-Tested up to: 4.2.2
-Stable tag: 5.28
+Tested up to: 4.2.3
+Stable tag: 5.29
 
 Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler! 
 
@@ -209,9 +209,9 @@ Go to the Uninstall tab (or if are on a Multi Site install, you first need to lo
 
 == Upgrade Notice ==
 
-= 5.28 = 
+= 5.29 = 
 
-Refactored how the TopBar handles cookies to be more compatible with Caching plugins.   
+Force a check on the wp-topbar tables to overcome an issue with WordPress 4.2.3
 
 == Screenshots ==
 
@@ -223,6 +223,10 @@ Refactored how the TopBar handles cookies to be more compatible with Caching plu
 
 
 == Changelog ==
+
+= 5.29 - 7/24/2015 =
+
+1. FIXED: force a check on the wp-topbar tables to overcome an issue with WordPress 4.2.3
 
 = 5.28 - 6/13/2015 =
 
