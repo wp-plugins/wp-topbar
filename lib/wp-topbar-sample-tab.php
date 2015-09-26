@@ -169,7 +169,7 @@ function wptb_display_Sample_TopBars() {
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p><?php _e('You can copy one row (by hovering over the TopBar and clicking the Copy TopBar link.)  Or you can copy multiple samples by clicking on their checkboxes and then using the drop down box on the Bulk Options to copy those TopBars.','wp-topbar'); ?></p> 
             <?php if ( $wptbGlobalOptions [ 'custom_samples_path' ] != "") 
-            			echo __('Attempting to load custom TopBars from this location:','wp-topbar').' <code>'.htmlspecialchars($wptbGlobalOptions [ 'custom_samples_path' ]).'custom_topbars.json</code>';
+            			echo __('Attempting to load custom TopBars from this location','wp-topbar').': <code>'.htmlspecialchars($wptbGlobalOptions [ 'custom_samples_path' ]).'custom_topbars.json</code>';
     	  		  echo '<br>'.__('To load your own Custom Samples Topbars, go to the', 'wp-topbar')." <a href='?page=wp-topbar.php&action=globalsettings'>".__('Global Settings tab','wp-topbar').'</a>';
  ?>
         </div>        

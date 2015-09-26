@@ -147,7 +147,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', end
 					<p><strong><?php _e('Example','wp-topbar'); ?>:</strong></p><p>	
 					<textarea rows="1" cols="80" style="background-color:lightyellow;">rel="lightbox"</textarea>
 					</p>
-					<strong><?php _e('Enter HTML Option B Here:','wp-topbar'); ?></strong></br>
+					<strong><?php _e('Enter HTML Option B Here','wp-topbar'); ?>:</strong></br>
 					<textarea name="wptblinkcustomhtml" id="htmlb" rows="5" cols="100"><?php echo wptb::wptb_stripslashes($wptbOptions['bar_link_custom_html']); ?></textarea>
 					</td>
 				</tr>	

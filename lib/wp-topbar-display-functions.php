@@ -146,7 +146,7 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid, $wptbOptio
 					</td>
 					<td>
 						<?php 
-					echo "<strong>".__("Time Check:")."</strong></td><td>";
+					echo "<strong>".__("Time Check").":</strong></td><td>";
 					if (wptb_check_time($wptbOptions [ 'bar_id' ]))
 						echo "<td data-value='0'><img title='Time Settings OK!' src='".plugins_url('/images/clock_on.png', __FILE__)."'></td>";
 					else

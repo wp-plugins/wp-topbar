@@ -3,8 +3,8 @@ Contributors: rfgoetz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQQURY7VW2B2J
 Tags: topbar, header bar,beforesite, heads up, fixed bar, link, heads up bar,attention, quick notice, bar, notification bar, popup, self promotion, toolbar, top of the page, plugin, important, message, php
 Requires at least: 3.2.1
-Tested up to: 4.2.3
-Stable tag: 5.29
+Tested up to: 4.3.1
+Stable tag: 5.31
 
 Create MULTIPLE, ROTATABLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler! 
 
@@ -209,9 +209,10 @@ Go to the Uninstall tab (or if are on a Multi Site install, you first need to lo
 
 == Upgrade Notice ==
 
-= 5.29 = 
+= 5.31 = 
 
-Force a check on the wp-topbar tables to overcome an issue with WordPress 4.2.3
+Updated the French translation & Dutch translations - from https://www.transifex.com/wp-translations/wp-topbar
+
 
 == Screenshots ==
 
@@ -223,6 +224,20 @@ Force a check on the wp-topbar tables to overcome an issue with WordPress 4.2.3
 
 
 == Changelog ==
+
+
+= 5.31 - 9/25/2015 =
+
+1. UPDATED: Updated the French & Dutch translations - from https://www.transifex.com/wp-translations/wp-topbar
+2. VALIDATED: Version 5.31 supports WordPress 4.3.1
+
+
+= 5.30 - 9/4/2015 =
+
+1. UPDATED: Re-factored how the delay functions when using the Rotate TopBar function (thanks to pppusl).
+2. UPDATED: Updated the French translation & added Brazilian & Dutch translations - from https://www.transifex.com/wp-translations/wp-topbar
+3. VALIDATED: Version 5.30 supports WordPress 4.3
+
 
 = 5.29 - 7/24/2015 =
 

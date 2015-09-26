@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WP-TopBar v5.23\n"
+"Project-Id-Version: WP-TopBar v5.30\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-06 19:40-0800\n"
-"PO-Revision-Date: 2014-10-06 19:40-0800\n"
+"POT-Creation-Date: 2015-09-25 16:51-1000\n"
+"PO-Revision-Date: 2015-09-25 16:51-1000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
@@ -34,101 +34,102 @@ msgstr ""
 msgid "Server/Install Info"
 msgstr ""
 
-# @ wp-topbar
-#: lib/wp-topbar-admin-debug.php:88
-msgid "Database/Column Check"
-msgstr ""
-
-#: lib/wp-topbar-admin-debug.php:96
-msgid "Table Check"
-msgstr ""
-
-#: lib/wp-topbar-admin-debug.php:108
-msgid "Options Check"
-msgstr ""
-
-# @ wp-topbar
-#: lib/wp-topbar-admin-debug.php:136
-msgid "Global Settings Check"
-msgstr ""
-
-# @ wp-topbar
-#: lib/wp-topbar-admin-debug.php:137 lib/wp-topbar-settings-tab.php:45
-msgid "Rotate TopBars"
-msgstr ""
-
-# @ wp-topbar
-#: lib/wp-topbar-admin-debug.php:138 lib/wp-topbar-settings-tab.php:67
-msgid "Rotation Display Time"
-msgstr ""
-
-# @ wp-topbar
-#: lib/wp-topbar-admin-debug.php:139 lib/wp-topbar-settings-tab.php:57
-msgid "Rotation Start Delay"
-msgstr ""
-
-#: lib/wp-topbar-admin-debug.php:140
-msgid "Rotation Order"
-msgstr ""
-
-# @ wp-topbar
-#: lib/wp-topbar-admin-debug.php:141 lib/wp-topbar-settings-tab.php:77
-msgid "Rotation Count"
-msgstr ""
-
-#: lib/wp-topbar-admin-debug.php:142
-msgid "Rotation Hide Last"
-msgstr ""
-
-#: lib/wp-topbar-admin-debug.php:143
-msgid "Custom Samples Path"
-msgstr ""
-
-#: lib/wp-topbar-admin-debug.php:148
+#: lib/wp-topbar-admin-debug.php:102
 msgid "Server Check"
 msgstr ""
 
-#: lib/wp-topbar-admin-debug.php:150
+#: lib/wp-topbar-admin-debug.php:107
 msgid "fopen setting is "
 msgstr ""
 
-#: lib/wp-topbar-admin-debug.php:150
+#: lib/wp-topbar-admin-debug.php:107
 msgid "ON"
 msgstr ""
 
-#: lib/wp-topbar-admin-debug.php:152
+#: lib/wp-topbar-admin-debug.php:109
 msgid "fopen setting is"
 msgstr ""
 
-#: lib/wp-topbar-admin-debug.php:152
+#: lib/wp-topbar-admin-debug.php:109
 msgid "OFF"
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-admin-debug.php:160 lib/wp-topbar-debug-tab.php:45
+#: lib/wp-topbar-admin-debug.php:126
+msgid "Database/Column Check"
+msgstr ""
+
+#: lib/wp-topbar-admin-debug.php:135
+msgid "Table Check"
+msgstr ""
+
+#: lib/wp-topbar-admin-debug.php:151
+msgid "Options Check"
+msgstr ""
+
+# @ wp-topbar
+#: lib/wp-topbar-admin-debug.php:179
+msgid "Global Settings Check"
+msgstr ""
+
+# @ wp-topbar
+#: lib/wp-topbar-admin-debug.php:180 lib/wp-topbar-settings-tab.php:45
+msgid "Rotate TopBars"
+msgstr ""
+
+# @ wp-topbar
+#: lib/wp-topbar-admin-debug.php:181 lib/wp-topbar-settings-tab.php:67
+msgid "Rotation Display Time"
+msgstr ""
+
+# @ wp-topbar
+#: lib/wp-topbar-admin-debug.php:182 lib/wp-topbar-settings-tab.php:57
+msgid "Rotation Start Delay"
+msgstr ""
+
+#: lib/wp-topbar-admin-debug.php:183
+msgid "Rotation Order"
+msgstr ""
+
+# @ wp-topbar
+#: lib/wp-topbar-admin-debug.php:184 lib/wp-topbar-settings-tab.php:77
+msgid "Rotation Count"
+msgstr ""
+
+#: lib/wp-topbar-admin-debug.php:185
+msgid "Rotation Hide Last"
+msgstr ""
+
+#: lib/wp-topbar-admin-debug.php:186
+msgid "Custom Samples Path"
+msgstr ""
+
+# @ wp-topbar
+#: lib/wp-topbar-admin-debug.php:191 lib/wp-topbar-debug-tab.php:45
+#: lib/wp-topbar-display-functions.php:149
 msgid "Time Check"
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-admin-debug.php:165
+#: lib/wp-topbar-admin-debug.php:196
 msgid "Server Timezone"
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-admin-debug.php:166
+#: lib/wp-topbar-admin-debug.php:197
 msgid "Current Time"
 msgstr ""
 
-#: lib/wp-topbar-admin-debug.php:167
+#: lib/wp-topbar-admin-debug.php:198
 msgid "Current Time (GMT)"
 msgstr ""
 
-#: lib/wp-topbar-admin-debug.php:168
+#: lib/wp-topbar-admin-debug.php:199
 msgid "WordPress GMT Offset"
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-admin-debug.php:171
+#: lib/wp-topbar-admin-debug.php:202
 msgid "Multisite Check"
 msgstr ""
 
@@ -217,11 +218,11 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: lib/wp-topbar-all-tab.php:74
+#: lib/wp-topbar-all-tab.php:74 lib/wp-topbar-main-tab.php:75
 msgid ""
 "This will force the TopBar to be fixed to the top of the page, regardless of "
-"what you put in th Custom CSS settings. For non-scrolling TopBars, this "
-"option will also push down your page to ensure th TopBar is always at the "
+"what you put in the Custom CSS settings. For non-scrolling TopBars, this "
+"option will also push down your page to ensure the TopBar is always at the "
 "top of the page.  This option is ignored if you are Rotating TopBars.  "
 "Default is <code>No</code>"
 msgstr ""
@@ -461,8 +462,7 @@ msgid "Your previous cookie value was"
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-all-tab.php:266 lib/wp-topbar-close-tab.php:159
-#: lib/wp-topbar-close-tab.php:325
+#: lib/wp-topbar-all-tab.php:266
 msgid ""
 "Change this value to force the cookie to reshow.  Default is <code>1</code>"
 msgstr ""
@@ -562,6 +562,12 @@ msgid ""
 "of cookies, then the plugin will delete the users cookies the next time the "
 "page is loaded.<br><br>To have a consistent user experience, <strong>ALL</"
 "strong> TopBars need to use the same settings."
+msgstr ""
+
+#: lib/wp-topbar-close-tab.php:159 lib/wp-topbar-close-tab.php:325
+msgid ""
+"Change this value to force the cookie to reshow - if you are using a Caching "
+"Plugin, you might need to flush your Cache.  Default is <code>1</code>"
 msgstr ""
 
 # @ wp-topbar
@@ -667,7 +673,7 @@ msgid "You must use your WordPress Server Time when you set these options."
 msgstr ""
 
 #: lib/wp-topbar-control-tab.php:49
-msgid "When this page was rendered, the WordPress time was: "
+msgid "When this page was rendered, the WordPress time was"
 msgstr ""
 
 # @ wp-topbar
@@ -1189,9 +1195,8 @@ msgstr ""
 msgid "Use this add custom HTML to the link tag (&lt;a&gt;)"
 msgstr ""
 
-# @ wp-topbar
 #: lib/wp-topbar-css-tab.php:150
-msgid "Enter HTML Option B Here:"
+msgid "Enter HTML Option B Here"
 msgstr ""
 
 # @ wp-topbar
@@ -1213,92 +1218,92 @@ msgid "Enter HTML Option C Here"
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:854
+#: lib/wp-topbar-db-io.php:857
 msgid "Rotation Display Time is not numeric. Resetting to 9000."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:862
+#: lib/wp-topbar-db-io.php:865
 msgid "Rotation Start Delay is not numeric. Resetting to 1000."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:875
+#: lib/wp-topbar-db-io.php:878
 msgid "Rotation Count is not numeric. Resetting to 0."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:983
+#: lib/wp-topbar-db-io.php:986
 msgid "Priority is not numeric. Resetting to 25."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:989
+#: lib/wp-topbar-db-io.php:992
 msgid "Priority is greater than 100. Resetting to 100."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:993
+#: lib/wp-topbar-db-io.php:996
 msgid "Priority is less than 1. Resetting to 1."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:1045
+#: lib/wp-topbar-db-io.php:1048
 msgid "Bottom border height is not numeric. Resetting to 3px."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:1054
+#: lib/wp-topbar-db-io.php:1057
 msgid "Delay time is not numeric. Resetting to zero."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:1063
+#: lib/wp-topbar-db-io.php:1066
 msgid "Slide time is not numeric. Resetting to zero."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:1072
+#: lib/wp-topbar-db-io.php:1075
 msgid "Display time is not numeric. Resetting to zero."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:1081
+#: lib/wp-topbar-db-io.php:1084
 msgid "Scroll Amount is not numeric. Resetting to zero."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:1102
+#: lib/wp-topbar-db-io.php:1105
 msgid "Font size is not numeric. Resetting to 8px."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:1111
+#: lib/wp-topbar-db-io.php:1114
 msgid "Top padding is not numeric. Resetting to 8px."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:1120
+#: lib/wp-topbar-db-io.php:1123
 msgid "Bottom padding is not numeric. Resetting to 8px."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:1129
+#: lib/wp-topbar-db-io.php:1132
 msgid "Top margin is not numeric. Resetting to 0px."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:1138
+#: lib/wp-topbar-db-io.php:1141
 msgid "Bottom margin is not numeric. Resetting to 0px."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:1147
+#: lib/wp-topbar-db-io.php:1150
 msgid "Left margin is not numeric. Resetting to 0px."
 msgstr ""
 
 # @ wp-topbar
-#: lib/wp-topbar-db-io.php:1156
+#: lib/wp-topbar-db-io.php:1159
 msgid "Right margin is not numeric. Resetting to 0px."
 msgstr ""
 
@@ -1527,10 +1532,6 @@ msgstr ""
 # @ wp-topbar
 #: lib/wp-topbar-display-functions.php:138
 msgid "Enable TopBar"
-msgstr ""
-
-#: lib/wp-topbar-display-functions.php:149
-msgid "Time Check:"
 msgstr ""
 
 #: lib/wp-topbar-display-functions.php:160
@@ -2210,15 +2211,6 @@ msgstr ""
 msgid "Main Options"
 msgstr ""
 
-#: lib/wp-topbar-main-tab.php:75
-msgid ""
-"This will force the TopBar to be fixed to the top of the page, regardless of "
-"what you put in th Custom CSS settings. For non-scrolling TopBars, this "
-"option will also push down your page to ensure th TopBar is always at the "
-"top of the page.  This option is ignored if you are Rotating TopBars.  "
-"DDefault is <code>No</code>"
-msgstr ""
-
 #: lib/wp-topbar-main-tab.php:90
 msgid ""
 "Only show the TopBar when the user scrolls the page?  If the user scrolls "
@@ -2432,7 +2424,7 @@ msgstr ""
 #: lib/wp-topbar-php-tab.php:123
 msgid ""
 "Sample PHP code to use for the \"CONTROL\" code: Use this to only display "
-"this TopBar only between 7PM an 10PM, use this code"
+"this TopBar only between 7PM and 10PM, use this code"
 msgstr ""
 
 #: lib/wp-topbar-pointer.php:78
@@ -2471,7 +2463,7 @@ msgid ""
 msgstr ""
 
 #: lib/wp-topbar-sample-tab.php:172
-msgid "Attempting to load custom TopBars from this location:"
+msgid "Attempting to load custom TopBars from this location"
 msgstr ""
 
 #: lib/wp-topbar-sample-tab.php:173
@@ -2577,7 +2569,7 @@ msgid ""
 msgstr ""
 
 #: lib/wp-topbar-settings-tab.php:118
-msgid "For example, the Directory could be named:"
+msgid "For example, the Directory could be named"
 msgstr ""
 
 #: lib/wp-topbar-settings-tab.php:120

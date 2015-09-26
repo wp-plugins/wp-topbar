@@ -120,7 +120,7 @@ else echo 'Generate a second link with this code and get your own TopBar <a styl
 				</tr>
 				<tr>
 					<td colspan="2">
-					<?php _e('Sample PHP code to use for the "CONTROL" code: Use this to only display this TopBar only between 7PM an 10PM, use this code','wp-topbar'); ?>:
+					<?php _e('Sample PHP code to use for the "CONTROL" code: Use this to only display this TopBar only between 7PM and 10PM, use this code','wp-topbar'); ?>:
 					</br>
 					<textarea rows="7" cols="150" style="background:lightyellow">
 //$hour = date("H", current_time('timestamp', 1));     // use GMT time

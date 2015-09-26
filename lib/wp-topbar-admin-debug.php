@@ -53,6 +53,8 @@ function wptb_display_debug_info($wptb_title,$wptb_show_rotate) {
 
 
 	global $wpdb;
+	global $WPTB_VERSION;
+	
 	$wptb_table_name = $wpdb->prefix . "wp_topbar_data";
 	$wptb_options_table_name = $wpdb->prefix . "options";
 
@@ -60,13 +62,15 @@ function wptb_display_debug_info($wptb_title,$wptb_show_rotate) {
 
 	if( $wpdb->get_var("show tables like '".$wptb_table_name."'") != $wptb_table_name ) {
 		$wptb_table_exists = false;
-		$wptb_bar_text_encoding[0]="Unkown";
-		$wptb_bar_link_text_encoding[0]="Unkown";
+		$wptb_bar_text_encoding[0]="Unknown";
+		$wptb_bar_link_text_encoding[0]="Unknown";
 	}
 	else {
 		$wptb_table_exists = true;
 		$wptb_rows = $wpdb->get_results( 'SELECT * FROM `'.$wptb_table_name.'`', ARRAY_A);
 		$wptb_num_of_rows=$wpdb->num_rows; 
+		$wptb_rows = $wpdb->get_results( 'SELECT * FROM `'.$wptb_table_name.'` WHERE `enable_topbar` = "true"', ARRAY_A);
+		$wptb_enabled_rows=$wpdb->num_rows; 
 	}
 
 	$wptb_table_encoding=$wpdb->get_col(  
@@ -77,7 +81,16 @@ function wptb_display_debug_info($wptb_title,$wptb_show_rotate) {
 		  where TABLE_NAME = '".$wptb_options_table_name."'
 		  	"
 	); 	
-
+	
+	$wptb_columns=$wpdb->get_col(  
+	"
+		SELECT 
+		  COUNT(*)
+		  FROM information_schema.COLUMNS
+		  where TABLE_NAME = '".$wptb_table_name."'
+		  	"
+	); 
+	
 	$wpdb->show_errors();
 	
 	echo '<div class="postbox">';
@@ -103,8 +116,10 @@ function wptb_display_debug_info($wptb_title,$wptb_show_rotate) {
 	
 	echo "<li><strong>".'Wordpress Check'.":</strong></br>";	
 	echo "Wordpress Version: <strong>".get_bloginfo( 'version' )."</strong></br>";
+	echo "Plugin Version: <strong>".$WPTB_VERSION."</strong></br>";
+
 	echo "URL: <strong>".home_url()."</strong></br>";
-	echo "Charset: <strong>".get_bloginfo( 'charset' )."</strong></br>";
+	echo "Charset <small><i>(get_bloginfo)</i></small>: <strong>".get_bloginfo( 'charset' )."</strong></br>";
 	echo "</li>";		
 	echo "</br>";
 
@@ -121,13 +136,15 @@ function wptb_display_debug_info($wptb_title,$wptb_show_rotate) {
 	echo '$wpdb->base_prefix: <strong>'.$wpdb->base_prefix."</strong></br>";
 	echo '$wpdb->prefix: <strong>'.$wpdb->prefix."</strong></br>";
 	echo "Table Name: <strong>".$wptb_table_name."</strong></br>";
-	if ( $wptb_table_exists )
-		echo "Number of rows in databse: <strong>".$wptb_num_of_rows."</strong></br>";
+	if ( get_option( 'wptb_db_version' ))
+		echo "WP-TopBar internal db version: <strong>".get_option( 'wptb_db_version' )."</strong></br>";
+	if ( $wptb_table_exists ) {
+		echo "Number of rows in table: <strong>".$wptb_num_of_rows."</strong> <i>(<strong>".$wptb_enabled_rows."</strong> are enabled)</i></strong></br>";
+		echo "Number of columns in table: <strong>".$wptb_columns[0]."</strong></br>";
+	}
 	else
 		echo "<strong>Table does not exit in database!</strong></br>";
-			if ( get_option( 'wptb_db_version' ))
-		echo "WP-TopBar internal db version: <strong>".get_option( 'wptb_db_version' )."</strong></br>";
-	
+
 	echo "</br>";
 	echo "</li>";		
 

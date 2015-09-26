@@ -4,7 +4,7 @@
 Plugin Name: WP-TopBar
 Plugin URI: http://wordpress.org/extend/plugins/wp-topbar/
 Description:  Create MULTIPLE TopBars that will be shown at the top of your website.  TopBars are selected by a variety of options - includes scheduler, custom PHP, custom CSS and more!
-Version: 5.29
+Version: 5.31
 Author: Bob Goetz
 Author URI: http://zwebify.com/wordpress-plugins/
 Text Domain: wp-topbar
@@ -27,7 +27,7 @@ Text Domain: wp-topbar
 */
 
 
-$WPTB_VERSION = "5.29";
+$WPTB_VERSION = "5.31";
 $WPTB_DB_VERSION = "5.09";  // rev this only when the database structure changes -- also update below in TWO places!
 
 if( ! class_exists( 'wptb' ) ):
@@ -390,7 +390,7 @@ class wptb {
 		
 	public static function wptb_activate_TopBar_html_js() {
 
-		$WPTB_DB_VERSION = "5.09";									// for some reason, this global variable is not beting set during activation.
+		$WPTB_DB_VERSION = "5.09";				// for some reason, this global variable is not being set during activation.
 
 		// check for options using the old method, if used - honor it. Otherwise get a TopBar from the database	
 		$wptbOptions = get_option('wptbAdminOptions');
@@ -923,49 +923,40 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 	} // end function wptb_build_random_logic_js
 
 	//=========================================================================		
-	//Builds the rotation JavaScript
+	//Builds the JavaScript to Rotate the TopBars
 	//=========================================================================		
 	public static function wptb_build_rotational_js($wptbGlobalOptions,$wptbTopBarNumber) {
 
 		if ( $wptbGlobalOptions [ 'rotate_count' ] > 0 ) {
 			$rotation_js = "
 				
-	// execute all TopBars sequentially for a count of ".$wptbGlobalOptions [ 'rotate_count' ]." - Hide Last: ".$wptbGlobalOptions [ 'rotate_hide_last' ]."
+	// execute all TopBars sequentially for a count of ".$wptbGlobalOptions [ 'rotate_count' ]." - Hide Last TopBar? ".$wptbGlobalOptions [ 'rotate_hide_last' ]."
 	
-	var j = 0;
-	var k = 0;
+	var j = 1;
+	var k = 1;
 	var timeoutID;
+	
+	jQuery('#wptbheadline' + j).delay(".$wptbGlobalOptions [ 'rotate_start_delay' ].").slideDown(200);
 	
 	timeoutID = setInterval(function(){wptbRotateTopBars()},".(500+$wptbGlobalOptions [ 'rotate_display_time' ]+$wptbGlobalOptions [ 'rotate_start_delay' ]).");
 		
 	function wptbRotateTopBars() {
-		j++;
-		if (j > ".$wptbTopBarNumber.") {
-			j = 1;
+		if (k < ".$wptbGlobalOptions [ 'rotate_count' ].") {
+			jQuery('#wptbheadline' + j).slideUp(200);		
+			j++;
+			if (j > ".$wptbTopBarNumber.") {
+				j = 1;
+			}	
+			jQuery('#wptbheadline' + j).delay(".($wptbGlobalOptions [ 'rotate_start_delay' ] + 100).").slideDown(200).delay(".$wptbGlobalOptions [ 'rotate_display_time' ].");
+		}
+		else {";
+			if ( $wptbGlobalOptions [ 'rotate_hide_last' ] == "yes" ) 
+				$rotation_js .= "		
+			jQuery('#wptbheadline' + j).slideUp(200);";
+				$rotation_js .= "
+			clearTimeout(timeoutID);
 		}
 		k++;
-";
-			if ( $wptbGlobalOptions [ 'rotate_hide_last' ] == "yes" ) 
-			$rotation_js .= "		if (k <= ".$wptbGlobalOptions [ 'rotate_count' ].") {
-			jQuery('#wptbheadline' + j).delay(".$wptbGlobalOptions [ 'rotate_start_delay' ].").slideDown(200).delay(".$wptbGlobalOptions [ 'rotate_display_time' ].").slideUp(200);
-		}
-		else {
-			clearTimeout(timeoutID);
-		}
-";
-			else {
-				$rotation_js .= "		if (k < ".$wptbGlobalOptions [ 'rotate_count' ].") {
-			jQuery('#wptbheadline' + j).delay(".$wptbGlobalOptions [ 'rotate_start_delay' ].").slideDown(200).delay(".$wptbGlobalOptions [ 'rotate_display_time' ].").slideUp(200);
-		}	
-		else {
-			jQuery('#wptbheadline' + j).delay(".$wptbGlobalOptions [ 'rotate_start_delay' ].").slideDown(200);
-			clearTimeout(timeoutID);
-		}
-		";	
-		
-			}
-
-			$rotation_js .= "	
 	}";			
 		}
 		else { 
@@ -973,18 +964,20 @@ function wptbbar_hide".$wptbTopBarNumber."() {
 				
 	// execute all TopBars sequentially (rotating forever)
 	
-	var j = 0;
-	var k = 0;
+	var j = 1;
 	var timeoutID;
 	
+	jQuery('#wptbheadline' + j).delay(".$wptbGlobalOptions [ 'rotate_start_delay' ].").slideDown(200);
+
 	timeoutID = setInterval(function(){wptbRotateTopBars()},".(500+$wptbGlobalOptions [ 'rotate_display_time' ]+$wptbGlobalOptions [ 'rotate_start_delay' ]).");
 
 	function wptbRotateTopBars() {
+		jQuery('#wptbheadline' + j).slideUp(200);
 		j++;
 		if (j > ".$wptbTopBarNumber.") {
 			j = 1;
 		}
-		jQuery('#wptbheadline' + j).delay(".$wptbGlobalOptions [ 'rotate_start_delay' ].").slideDown(200).delay(".$wptbGlobalOptions [ 'rotate_display_time' ].").slideUp(200);
+		jQuery('#wptbheadline' + j).delay(".($wptbGlobalOptions [ 'rotate_start_delay' ] + 100).").slideDown(200).delay(".$wptbGlobalOptions [ 'rotate_display_time' ].");
 	}";					
 		}
 		

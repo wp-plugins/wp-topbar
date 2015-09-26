@@ -115,7 +115,7 @@ function wptb_globalsettings_options() {
 					<td colspan="3">
 					<input name="wptbcustompath" type="text" size="85" id="custompath" value="<?php echo $wptbGlobalOptions [ 'custom_samples_path' ]; ?>" />
 					<br /><em><?php _e('Enter the URL of a directory where a JSON file and related images are stored. These will be included in the Samples Tab.  You must name the JSON file <code>custom_topbars.json</code>','wp-topbar'); ?>.</em>
-					<br><br><?php _e('For example, the Directory could be named:'); ?> <code><?php echo str_ireplace( 'wp-topbar','wp-topbar-samples',str_ireplace( 'https://','http://',plugins_url('/', dirname(__FILE__)) )); ?></code>					
+					<br><br><?php _e('For example, the Directory could be named'); ?>: <code><?php echo str_ireplace( 'wp-topbar','wp-topbar-samples',str_ireplace( 'https://','http://',plugins_url('/', dirname(__FILE__)) )); ?></code>					
 					<br>
 					<br><?php _e('To create your own Samples, export your existing TopBars in JSON format. Then rename that file to <code>custom_topbars.json</code>. Now move that file, plus any images you need into the directory you entered above.'); 
 					

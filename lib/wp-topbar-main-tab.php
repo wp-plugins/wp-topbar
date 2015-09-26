@@ -72,7 +72,7 @@ function wptb_main_options($wptbOptions) {
 				 	</p>
 					</td>
 					<td>
-							<p class="sub"><em><?php _e('This will force the TopBar to be fixed to the top of the page, regardless of what you put in th Custom CSS settings. For non-scrolling TopBars, this option will also push down your page to ensure th TopBar is always at the top of the page.  This option is ignored if you are Rotating TopBars.  DDefault is <code>No</code>','wp-topbar'); ?></em></p>
+							<p class="sub"><em><?php _e('This will force the TopBar to be fixed to the top of the page, regardless of what you put in the Custom CSS settings. For non-scrolling TopBars, this option will also push down your page to ensure the TopBar is always at the top of the page.  This option is ignored if you are Rotating TopBars.  Default is <code>No</code>','wp-topbar'); ?></em></p>
 					</td>
 				</tr>					
 				<tr>
