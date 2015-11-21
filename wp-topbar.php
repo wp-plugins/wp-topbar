@@ -152,7 +152,7 @@ class wptb {
 			wp_localize_script( 'wptb_admin_js', 'MyAjax', array( 'ajaxurl' => admin_url( '?page=wp-topbar.php' ) ) );
 
 			
-			wp_register_style( 'wptb_jquery_ui_css', plugins_url('/lib/css/jquery-ui-1.10.3.custom.min.css', __FILE__) );
+			wp_register_style( 'wptb_jquery_ui_css', plugins_url('/lib/css/jquery-ui-1.11.4.custom.min.css', __FILE__) );
 			wp_enqueue_style(  'wptb_jquery_ui_css' );
 			wp_register_style( 'wptb_timepicker_css', plugins_url('/lib/css/jquery-ui-timepicker-addon.css', __FILE__) );
 			wp_enqueue_style(  'wptb_timepicker_css' );		

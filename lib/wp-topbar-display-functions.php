@@ -48,7 +48,7 @@ function wptb_options_tabs( $current = 'table' ) {
     echo '<h2>';
 	foreach ($links as $i => $value) {
         echo $value;
-		if ( $i == "5") echo "<br/>";
+		if ( $i == "5") echo "<p></p>";
 	}
 		
 	$wptb_num_rows = get_transient( 'wptb_inserted_rows' );
@@ -119,8 +119,8 @@ function wptb_bar_edit_options_tabs( $current = 'table', $wptb_barid, $wptbOptio
     echo '<h2>';
 	foreach ($links as $i => $value) {
         echo $value;
-		if ( $i == "4") echo "<br/>";
-		if ( $i == "10") echo "<br/>";
+		if ( $i == "4")  echo "<p></p>";
+		if ( $i == "10") echo "<p></p>";
 	}
         
 // add plugin home page link       
