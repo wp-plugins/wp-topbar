@@ -230,7 +230,7 @@ Minor fixes to UI for WordPress 4.4
 
 1. UPDATED: Minor fixes to UI for WordPress 4.4
 2. UPDATED: jQuery UI CSS to version 1.11.4
-3. VALIDATED: Version 5.31 supports WordPress 4.4
+3. VALIDATED: Version 5.32 supports WordPress 4.4
 
 = 5.31 - 9/25/2015 =
 
